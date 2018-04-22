@@ -16,7 +16,9 @@ app.listen(process.env.PORT);
 // if ./.data/sqlite.db does not exist, create it, otherwise print records to console
 db.serialize(function(){
   if(!exists){
-    
+    db.run("CREATE TABLE IF NOT EXISTS users (id TEXT, points INTEGER, lastDaily INTEGER)");
+    db.run("CREATE TABLE IF NOT EXISTS elections (num INTEGER PRIMARY KEY, start INTEGER, end INTEGER, going TEXT, winner TEXT)");
+    db.run("CREATE TABLE IF NOT EXISTS modlogs (
   } else {
     
   }
