@@ -34,7 +34,8 @@ db.serialize(function(){
   db.run("CREATE TABLE IF NOT EXISTS warns (num INTEGER PRIMARY KEY, warn TEXT, mod TEXT, date INTEGER)");
   db.run("CREATE TABLE IF NOT EXISTS items (name TEXT, price TEXT, user TEXT)");
   db.run("CREATE TABLE IF NOT EXISTS expstore (num INTEGER PRIMARY KEY, item TEXT, desc TEXT, stock INTEGER, price INTEGER, approved TEXT, bought TEXT, seller TEXT, buyer TEXT)");
-  db.run("CREATE TABLE IF NOT EXISTS election (num PRIMARY INTEGER KEY, id TEXT, vId TEXT, votes INTEGER, messageId TEXT");
+  db.run("CREATE TABLE IF NOT EXISTS election (num INTEGER PRIMARY KEY, id TEXT, vId TEXT, votes INTEGER, msgId TEXT)");
+  db.run("CREATE TABLE IF NOT EXISTS voters (id TEXT, for TEXT, date INTEGER)");
   
 });
 
