@@ -40,11 +40,9 @@ var f = {
   checkelections: () => {
     if(elec.end > new Date().valueOf()) {
       setTimeout(() => {
-        db.set("end", 0)
-          .set("running", false)
-          .set("candidates", [])
-          .write();
-        client.guilds.get("chnls.a
+        let winners = "";
+        d
+        client.guilds.get("294115797326888961").channels.get(chnls.a).send(`**:yes: The election has officially ended. Winner(s):**\`\`\`\n\`\`\``);
       }, elec.end - new Date().valueOf());
     }
   }
