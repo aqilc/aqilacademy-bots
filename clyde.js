@@ -44,7 +44,7 @@ var f = {
           .set("running", false)
           .set("candidates", [])
           .write();
-        
+        client.guilds.get("chnls.a
       }, elec.end - new Date().valueOf());
     }
   }
