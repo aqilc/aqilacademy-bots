@@ -17,7 +17,10 @@ const elec = low(adapter);
 //The client
 var client = new Discord.Client({ autoreconnect: true });
 
-//All channels need
+//All channels needed to run bot
+const chnls = {
+  a: "382353531837087745",
+}
 
 //Keeps app running
 app.get("/", function (request, response) {
