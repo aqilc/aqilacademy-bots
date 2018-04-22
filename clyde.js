@@ -6,6 +6,8 @@ const fs = require('fs');
 const exists = fs.existsSync('./.data/sqlite.db');
 const sqlite3 = require('sqlite3').verbose();
 const db = new sqlite3.Database('./.data/sqlite.db');
+const Discord = require("discord.js");
+var client = new Discord.Client({ autoreconnect: true });
 
 //Keeps app running
 app.get("/", function (request, response) {
@@ -20,3 +22,16 @@ db.serialize(function(){
   db.run("CREATE TABLE IF NOT EXISTS items (name TEXT, price TEXT, user TEXT)");
   db.run("CREATE TABLE IF NOT EXISTS expstore (num INTEGER PRIMARY KEY, item TEXT, desc TEXT, stock INTEGER, price INTEGER, approved TEXT, bought TEXT, seller TEXT, buyer TEXT)");
 });
+
+var f = {
+  checkelections: () => {
+    
+  }
+};
+
+const cmds = {
+  
+};
+
+client.on("message", (message, channel) => {});
+client.on("ready", () => { console.log(client.user.tag + " has started. Ready for action"); });
