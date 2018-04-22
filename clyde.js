@@ -19,5 +19,5 @@ db.serialize(function(){
   db.run("CREATE TABLE IF NOT EXISTS elections (num INTEGER PRIMARY KEY, start INTEGER, end INTEGER, going TEXT, winner TEXT)");
   db.run("CREATE TABLE IF NOT EXISTS warns (num INTEGER PRIMARY KEY, warn TEXT, mod TEXT, dat INTEGER)");
   db.run("CREATE TABLE IF NOT EXISTS items (name TEXT, price TEXT, user TEXT)");
-  db.run("CREATE TABLE IF NOT EXISTS expstore (item TEXT, price TEXT, approv
+  db.run("CREATE TABLE IF NOT EXISTS expstore (num INTEGER PRIMARY KEY, item TEXT, price TEXT, approved TEXT, bought TEXT, seller TEXT, 
 });
