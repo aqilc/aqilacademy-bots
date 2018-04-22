@@ -36,17 +36,22 @@ db.serialize(function(){
 
 var f = {
   checkelections: () => {
-    db.all("SELECT * FROM elections", (err, res) => {
-      if(res[res.length-1].end > new Date().valueOf()) {
-        let winner = "";
+    db.all("SELECT * FROM elections ORDER BY end", (err, res) => {
+      res.reverse();
+      if(res[0].end > new Date().valueOf()) {
         setTimeout(() => {
-          db.run("SELECT * FROM election", (err, res) => {
-            for(var i of res) {
-              if(i.votes
+          db.run("SELECT * FROM election ORDER BY votes", (err, res) => {
+            let winner = "";
+            let sqlwin = "";
+            for(var i = 1; i < res.length; i ++) {
+              if(res[i].votes === res[0].votes) {
+                winner += `${i + 1}. ${client.users.get(res[i].id).tag}\n   Vice: ${client.users.get(res[i].vId).tag}`;
+                sqlwin += ` ${res[i].id}`;
+              }
             }
             client.guilds.get("294115797326888961").channels.get(chnls.a).send(`**:yes: The election has officially ended. Winner(s):**\`\`\`\n\`\`\``);
           })
-        }, res[length-1].end - new Date().valueOf());
+        }, res[0].end - new Date().valueOf());
       }
     });
   }
