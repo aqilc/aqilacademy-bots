@@ -15,5 +15,9 @@ app.listen(process.env.PORT);
 
 // if ./.data/sqlite.db does not exist, create it, otherwise print records to console
 db.serialize(function(){
-  
+  if(!exists){
+    
+  } else {
+    
+  }
 });
