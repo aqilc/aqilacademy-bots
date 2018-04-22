@@ -1,5 +1,5 @@
 {
-  candidates: [],
-  running: false,
-  end: 0,
+  "candidates": [],
+  "running": false,
+  "end": 0
 }

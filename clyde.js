@@ -7,7 +7,17 @@ const exists = fs.existsSync('./.data/sqlite.db');
 const sqlite3 = require('sqlite3').verbose();
 const db = new sqlite3.Database('./.data/sqlite.db');
 const Discord = require("discord.js");
+
+//Election database
+const low = require("lowdb");
+const FileSync = require('lowdb/adapters/FileSync');
+const adapter = new FileSync("election.json");
+const elec = low(adapter);
+
+//The client
 var client = new Discord.Client({ autoreconnect: true });
+
+//All channels need
 
 //Keeps app running
 app.get("/", function (request, response) {
@@ -25,7 +35,15 @@ db.serialize(function(){
 
 var f = {
   checkelections: () => {
-    
+    if(elec.end > new Date().valueOf()) {
+      setTimeout(() => {
+        db.set("end", 0)
+          .set("running", false)
+          .set("candidates", [])
+          .write();
+        
+      }, elec.end - new Date().valueOf());
+    }
   }
 };
 
