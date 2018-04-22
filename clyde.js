@@ -34,6 +34,8 @@ db.serialize(function(){
   db.run("CREATE TABLE IF NOT EXISTS warns (num INTEGER PRIMARY KEY, warn TEXT, mod TEXT, date INTEGER)");
   db.run("CREATE TABLE IF NOT EXISTS items (name TEXT, price TEXT, user TEXT)");
   db.run("CREATE TABLE IF NOT EXISTS expstore (num INTEGER PRIMARY KEY, item TEXT, desc TEXT, stock INTEGER, price INTEGER, approved TEXT, bought TEXT, seller TEXT, buyer TEXT)");
+  db.run("CREATE TABLE IF NOT EXISTS election (num PRIMARY INTEGER KEY, id TEXT, vId TEXT, votes INTEGER, messageId TEXT");
+  
 });
 
 var f = {
@@ -41,7 +43,9 @@ var f = {
     if(elec.end > new Date().valueOf()) {
       setTimeout(() => {
         let winners = "";
-        d
+        for(var i = 0; i < elec.candidates.length; i++) {
+          elec.candidates
+        }
         client.guilds.get("294115797326888961").channels.get(chnls.a).send(`**:yes: The election has officially ended. Winner(s):**\`\`\`\n\`\`\``);
       }, elec.end - new Date().valueOf());
     }
