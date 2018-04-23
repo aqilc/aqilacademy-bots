@@ -10,6 +10,7 @@ const Discord = require("discord.js");
 
 //The client
 var client = new Discord.Client({ autoreconnect: true });
+client.login(process.env.TOKEN);
 
 //All channels needed to run bot
 const chnls = {
