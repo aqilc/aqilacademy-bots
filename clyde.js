@@ -38,19 +38,21 @@ db.serialize(function(){
 var f = {
   checkelections: () => {
     db.all("SELECT * FROM elections ORDER BY end", (err, res) => {
+      if(res.length === 0)
+        return;
       res.reverse();
       if(res[0].end > new Date().valueOf()) {
         setTimeout(() => {
           db.run("SELECT * FROM election ORDER BY votes", (err, res) => {
             let winner = "";
             let sqlwin = "";
-            for(var i = 1; i < res.length; i ++) {
+            for(var i = 0; i < res.length; i ++) {
               if(res[i].votes === res[0].votes) {
                 winner += `${i + 1}. ${client.users.get(res[i].id).tag}\n   Vice: ${client.users.get(res[i].vId).tag}`;
                 sqlwin += ` ${res[i].id}`;
               }
             }
-            client.guilds.get("294115797326888961").channels.get(chnls.a).send(`**:yes: The election has officially ended. Winner(s):**\`\`\`\n\`\`\``);
+            client.guilds.get("294115797326888961").channels.get(chnls.a).send(`**:yes: The election has officially ended. Winner(s):**\`\`\`\n${winner}\`\`\``);
           })
         }, res[0].end - new Date().valueOf());
       }
@@ -63,4 +65,4 @@ const cmds = {
 };
 
 client.on("message", (message, channel) => {});
-client.on("ready", () => { console.log(client.user.tag + " has started. Ready for action"); });
+client.on("ready", () => { console.log(client.user.tag + " has started. Ready for action"); f.checkelections()});
