@@ -77,7 +77,14 @@ var f = {
     }, 1000);
     return f;
   },
-  check_and_do_cmd: (message, content) => {}
+  check_and_do_cmd: (message, content) => {
+    for (var i in cmds) {
+      if(message.content.slice(prefix.length).split(" ")[0] === i) {
+        cmds[i].do(message, message.content.slice(prefix.length).split(" ").slice(1));
+      }
+    }
+    return f;
+  }
 };
 
 client.on("message", (msg) => {
