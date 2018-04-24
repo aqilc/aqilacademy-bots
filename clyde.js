@@ -1,4 +1,4 @@
-//what are you doing Jett?
+
 //All requires and dependencies
 const express = require('express');
 const app = express();
@@ -31,8 +31,7 @@ db.serialize(function(){
   db.run("CREATE TABLE IF NOT EXISTS expstore (num INTEGER PRIMARY KEY, item TEXT, desc TEXT, stock INTEGER, price INTEGER, approved TEXT, bought TEXT, seller TEXT, buyer TEXT)");
   db.run("CREATE TABLE IF NOT EXISTS elections (num INTEGER PRIMARY KEY, winner TEXT, end INTEGER, start INTEGER, vp TEXT)");
   db.run("CREATE TABLE IF NOT EXISTS election (num INTEGER PRIMARY KEY, id TEXT, vId TEXT, votes INTEGER, msgId TEXT)");
-  db.run("CREATE TABLE IF NOT EXISTS voters (id TEXT, for TEXT, date INTEGER)");
-  
+  db.run("CREATE TABLE IF NOT EXISTS voters (id TEXT, for TEXT, date INTEGER, election INTEGER)");
 });
 
 var f = {
@@ -56,10 +55,23 @@ var f = {
             db.run(`UPDATE elections SET winners = ${sqlwin} WHERE num = ${elec.num}`);
             client.guilds.get("294115797326888961").channels.get(chnls.a).send(`**:yes: The election has officially ended. Winner(s):**\`\`\`\n${winner}\`\`\``);
           })
-        }, res[0].end - new Date().valueOf());
+        }, elec[0].end - new Date().valueOf());
       }
     });
-  }
+    return f;
+  },
+  checksql: () => {
+    let print = "";
+    db.all("SELECT * FROM users", (err, res) => { print += "Users: " + res; });
+    db.all("SELECT * FROM warns", (err, res) => { print += "Warns: " + res; });
+    db.all("SELECT * FROM items", (err, res) => { print += "Items: " + res; });
+    db.all("SELECT * FROM expstore", (err, res) => { print += "EXP Store: " + res; });
+    db.all("SELECT * FROM elections", (err, res) => { print += "Elections: " + res; });
+    db.all("SELECT * FROM election", (err, res) => { print += "Current Election: " + res; });
+    db.all("SELECT * FROM voters", (err, res) => { print += "Voters: " + res; });
+    console.log(print);
+    return f;
+  },
 };
 
 const cmds = {
@@ -67,4 +79,7 @@ const cmds = {
 };
 
 client.on("message", (message, channel) => {});
-client.on("ready", () => { console.log(client.user.tag + " has started. Ready for action"); f.checkelections()});
+client.on("ready", () => {
+  console.log(client.user.tag + " has started. Ready for action");
+  f.checkelections().checksql();
+});
