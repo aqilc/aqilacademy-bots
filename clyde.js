@@ -9,7 +9,7 @@ const db = new sqlite3.Database('./.data/sqlite.db');
 const Discord = require("discord.js");
 
 //Prefix
-xon
+const prefix = "c.";
 
 //The client
 var client = new Discord.Client({ autoreconnect: true });
@@ -77,10 +77,13 @@ var f = {
     }, 1000);
     return f;
   },
+  check_and_do_cmd: (message, content) => {}
 };
 
-client.on("message", (message, channel) => {
-  
+client.on("message", (msg) => {
+  if(msg.content.startsWith(prefix)) {
+    
+  }
 });
 client.on("ready", () => {
   console.log(client.user.tag + " has started. Ready for action");
@@ -95,6 +98,6 @@ const cmds = {
     cat: "utility",
     perms: "mod",
     del: false,
-    do: (message, content) => {},
+    do: (msg, content) => {},
   }
 };
