@@ -41,7 +41,8 @@ var f = {
       if(res.length === 0)
         return;
       res.reverse();
-      if(res[0].end > new Date().valueOf()) {
+      let elec = res;
+      if(elec[0].end > new Date().valueOf()) {
         setTimeout(() => {
           db.run("SELECT * FROM election ORDER BY votes", (err, res) => {
             let winner = "";
@@ -49,9 +50,10 @@ var f = {
             for(var i = 0; i < res.length; i ++) {
               if(res[i].votes === res[0].votes) {
                 winner += `${i + 1}. ${client.users.get(res[i].id).tag}\n   Vice: ${client.users.get(res[i].vId).tag}`;
-                sqlwin += ` ${res[i].id}`;
+                sqlwin += `${res[i].id} ${res[i].vId}  `;
               }
             }
+            db.run(`UPDATE elections SET winners = ${sqlwin} WHERE num = ${elec.num}`);
             client.guilds.get("294115797326888961").channels.get(chnls.a).send(`**:yes: The election has officially ended. Winner(s):**\`\`\`\n${winner}\`\`\``);
           })
         }, res[0].end - new Date().valueOf());
