@@ -8,6 +8,9 @@ const sqlite3 = require('sqlite3').verbose();
 const db = new sqlite3.Database('./.data/sqlite.db');
 const Discord = require("discord.js");
 
+//Prefix
+xon
+
 //The client
 var client = new Discord.Client({ autoreconnect: true });
 client.login(process.env.TOKEN);
@@ -76,12 +79,22 @@ var f = {
   },
 };
 
-const cmds = {
+client.on("message", (message, channel) => {
   
-};
-
-client.on("message", (message, channel) => {});
+});
 client.on("ready", () => {
   console.log(client.user.tag + " has started. Ready for action");
   f.checkelections().checksql();
 });
+
+const cmds = {
+  help: {
+    a: ["commands"],
+    desc: "Shows you all of Clyde's commands",
+    usage: " [command name or category name]",
+    cat: "utility",
+    perms: "mod",
+    del: false,
+    do: (message, content) => {},
+  }
+};
