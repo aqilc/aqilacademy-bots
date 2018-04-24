@@ -63,13 +63,15 @@ var f = {
   checksql: () => {
     let print = "";
     db.all("SELECT * FROM users", (err, res) => { print += "Users: " + res; });
-    db.all("SELECT * FROM warns", (err, res) => { print += "Warns: " + res; });
-    db.all("SELECT * FROM items", (err, res) => { print += "Items: " + res; });
-    db.all("SELECT * FROM expstore", (err, res) => { print += "EXP Store: " + res; });
-    db.all("SELECT * FROM elections", (err, res) => { print += "Elections: " + res; });
-    db.all("SELECT * FROM election", (err, res) => { print += "Current Election: " + res; });
-    db.all("SELECT * FROM voters", (err, res) => { print += "Voters: " + res; });
-    console.log(print);
+    db.all("SELECT * FROM warns", (err, res) => { print += "\nWarns: " + res; });
+    db.all("SELECT * FROM items", (err, res) => { print += "\nItems: " + res; });
+    db.all("SELECT * FROM expstore", (err, res) => { print += "\nEXP Store: " + res; });
+    db.all("SELECT * FROM elections", (err, res) => { print += "\nElections: " + res; });
+    db.all("SELECT * FROM election", (err, res) => { print += "\nCurrent Election: " + res; });
+    db.all("SELECT * FROM voters", (err, res) => { print += "\nVoters: " + res; });
+    setTimeout(() => {
+      console.log(print);
+    }, 1000);
     return f;
   },
 };
