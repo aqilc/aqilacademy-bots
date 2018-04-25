@@ -112,7 +112,13 @@ var f = {
       }
     }
     return f;
-  }
+  },
+  ec: (string) => {
+    if (typeof(string) === "string")
+      return string.replace(/`/g, "`" + String.fromCharCode(8203)).replace(/@/g, "@" + String.fromCharCode(8203));
+    else
+      return string;
+  },
 };
 
 client.on("message", (msg) => {
@@ -145,7 +151,21 @@ const cmds = {
     do: (msg, content) => {
       let evalled;
       if((content.startsWith("```js") || content.startsWith("```")) && content.endsWith("```"))
-        content.slice(3, 
+        content.slice(3, -3);
+      if(!content)
+        return msg.reply("Please enter some code to run");
+      try {
+        evalled = f.ec(eval(content));
+      } catch(err) {
+        evalled = `ERROR: ${f.ec(err)}`;
+      }
+      let embed = new Discord.RichEmbed()
+        .setColor(f.rcol())
+        .setTimestamp()
+        .setAuthor("Run", client.user.avatarURL)
+        .setDescription(`**Input:** \`\`\`js\n${content}\`\`\`**Output:** \`\`\`xl\n${evalled}\`\`\``)
+        .setFooter(`Input length: ${content.length}`, msg.author.avatarURL);
+      msg.channel.send(embed);
     },
   },
 };
