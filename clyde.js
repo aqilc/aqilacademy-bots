@@ -7,6 +7,7 @@ const exists = fs.existsSync('./.data/sqlite.db');
 const sqlite3 = require('sqlite3').verbose();
 const db = new sqlite3.Database('./.data/sqlite.db');
 const Discord = require("discord.js");
+const data = require("./data.json");
 
 //Prefix
 const prefix = "c.";
@@ -83,7 +84,27 @@ var f = {
     return f;
   },
   check_and_do_cmd: (message, content) => {
+    var perms = {
+      mod: (message) => {
+        if(!message.member.permissions.has(["MANAGE_MESSAGES", "MANAGE_ROLES"], true) || !message.member.roles.map(r => r.name).includes("Moderator"))
+          return message.react("You need the `Moderator` role to use this command");
+      },
+      admin: (message) => {
+        if(!message.member.permissions.has(["MANAGE_MESSAGES", "MANAGE_ROLES", "MANAGE_SERVER", "BAN_MEMBERS", "KICK_MEMBERS"], true) || !message.member.roles.map(r => r.name).includes("Administrator"))
+          return message.react("You need the `Administartor` role to use this command");
+      },
+      admin_perm: (message) => {
+        if(!message.member.permissions.has(["ADMINISTRATOR"], true) || !message.member.roles.map(r => r.name).includes("Moderator"))
+          return message.react("You need the `ADMINISTRATOR` permission to use this command");
+      },
+      ba: (message) => {
+        if(!data.devs.includes(message.author.id))
+          return message.react("You need to ba a Bot Administrator to use this command.");
+      },
+    };
     for (var i in cmds) {
+      if(cmds[i].perms !== "")
+        perms[cmds[i].perms](message);
       if(message.content.slice(prefix.length).split(" ")[0] === i) {
         cmds[i].do(message, message.content.slice(prefix.length).split(" ").slice(1));
       }
