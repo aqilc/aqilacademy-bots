@@ -83,7 +83,7 @@ var f = {
     }, 1000);
     return f;
   },
-  check_and_do_cmd: (message, content) => {
+  check_and_do_cmd: (message) => {
     var perms = {
       mod: (message) => {
         if(!message.member.permissions.has(["MANAGE_MESSAGES", "MANAGE_ROLES"], true) || !message.member.roles.map(r => r.name).includes("Moderator"))
@@ -108,22 +108,25 @@ var f = {
       if(message.content.endsWith("-d"))
         message.delete() && message.content.slice(0, -2);
       if(message.content.slice(prefix.length).split(" ")[0] === i) {
-        cmds[i].do(message, message.content.slice(prefix.length).split(" ").slice(1));
+        cmds[i].do(message, message.content.slice(message.content.indexOf(" ")).slice(1).join(""));
       }
     }
     return f;
-  },
+  },//Does a command
   ec: (string) => {
     if (typeof(string) === "string")
       return string.replace(/`/g, "`" + String.fromCharCode(8203)).replace(/@/g, "@" + String.fromCharCode(8203));
     else
       return string;
-  },
+  },// Cleans "evalled"
+  rcol: () => {
+    return Math.round(Math.random() * 16777215);
+  },// Random color
 };
 
 client.on("message", (msg) => {
   if(msg.content.startsWith(prefix)) {
-    f.check_and_do_cmd();
+    f.check_and_do_cmd(msg);
   }
 });
 client.on("ready", () => {
@@ -142,7 +145,7 @@ const cmds = {
     do: (msg, content) => {},
   },
   run: {
-    a: ["commands"],
+    a: ["eval"],
     desc: "Runs code through Clyde",
     usage: " [code]",
     cat: "utility",
@@ -150,10 +153,12 @@ const cmds = {
     del: false,
     do: (msg, content) => {
       let evalled;
+      
       if((content.startsWith("```js") || content.startsWith("```")) && content.endsWith("```"))
         content.slice(3, -3);
-      if(!content)
+      if(!content || content === "")
         return msg.reply("Please enter some code to run");
+      
       try {
         evalled = f.ec(eval(content));
       } catch(err) {
