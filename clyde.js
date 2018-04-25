@@ -28,7 +28,7 @@ app.get("/", function (request, response) {
 app.listen(process.env.PORT);
 
 // if ./.data/sqlite.db does not exist, create it, otherwise print records to console
-db.serialize(function(){
+db.serialize(function() {
   let tables = [
     "users (id TEXT, points INTEGER, lastDaily INTEGER, messages INTEGER, realpoints INTEGER)",
     "warns (num INTEGER PRIMARY KEY, warn TEXT, mod TEXT, date INTEGER)", "items (name TEXT, price TEXT, user TEXT)",
@@ -105,6 +105,8 @@ var f = {
     for (var i in cmds) {
       if(cmds[i].perms !== "")
         perms[cmds[i].perms](message);
+      if(message.content.endsWith("-d"))
+        message.delete() && message.content.slice(0, -2);
       if(message.content.slice(prefix.length).split(" ")[0] === i) {
         cmds[i].do(message, message.content.slice(prefix.length).split(" ").slice(1));
       }
@@ -115,7 +117,7 @@ var f = {
 
 client.on("message", (msg) => {
   if(msg.content.startsWith(prefix)) {
-    
+    f.check_and_do_cmd();
   }
 });
 client.on("ready", () => {
@@ -132,5 +134,18 @@ const cmds = {
     perms: "mod",
     del: false,
     do: (msg, content) => {},
-  }
+  },
+  run: {
+    a: ["commands"],
+    desc: "Runs code through Clyde",
+    usage: " [code]",
+    cat: "utility",
+    perms: "ba",
+    del: false,
+    do: (msg, content) => {
+      let evalled;
+      if((content.startsWith("```js") || content.startsWith("```")) && content.endsWith("```"))
+        content.slice(3, 
+    },
+  },
 };
