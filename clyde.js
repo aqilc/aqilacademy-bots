@@ -108,18 +108,18 @@ var f = {
       if(message.content.endsWith("-d"))
         message.delete() && message.content.slice(0, -2);
       if(message.content.slice(prefix.length).split(" ")[0] === i) {
-        cmds[i].do(message, message.content.slice(message.content.indexOf(" ")).slice(1).join(""));
+        cmds[i].do(message, message.content.slice(message.content.indexOf(" ")));
       }
     }
     return f;
   },//Does a command
-  ec: (string) => {
+  evalclean: (string) => {
     if (typeof(string) === "string")
       return string.replace(/`/g, "`" + String.fromCharCode(8203)).replace(/@/g, "@" + String.fromCharCode(8203));
     else
       return string;
   },// Cleans "evalled"
-  rcol: () => {
+  randomcolor: () => {
     return Math.round(Math.random() * 16777215);
   },// Random color
 };
@@ -160,12 +160,12 @@ const cmds = {
         return msg.reply("Please enter some code to run");
       
       try {
-        evalled = f.ec(eval(content));
+        evalled = f.evalclean(eval(content));
       } catch(err) {
         evalled = `ERROR: ${f.ec(err)}`;
       }
       let embed = new Discord.RichEmbed()
-        .setColor(f.rcol())
+        .setColor(f.randomcolor())
         .setTimestamp()
         .setAuthor("Run", client.user.avatarURL)
         .setDescription(`**Input:** \`\`\`js\n${content}\`\`\`**Output:** \`\`\`xl\n${evalled}\`\`\``)
