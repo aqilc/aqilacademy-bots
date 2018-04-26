@@ -84,34 +84,26 @@ var f = {
     return f;
   },// Checks and console.logs all sql
   check_and_do_cmd: (message) => {
+    let cmdDone = false;
     var perms = {
-      mod: [!message.member.permissions.has(["MANAGE_MESSAGES", "MANAGE_ROLES"], true) || !message.member.roles.map(r => r.name).includes("Moderator"), ,
-      admin: (message) => {
-        if(!message.member.permissions.has(["MANAGE_MESSAGES", "MANAGE_ROLES", "MANAGE_SERVER", "BAN_MEMBERS", "KICK_MEMBERS"], true) || !message.member.roles.map(r => r.name).includes("Administrator"))
-          message.react("You need the `Administartor` role to use this command");
-        return;
-      },
-      admin_perm: (message) => {
-        if(!message.member.permissions.has(["ADMINISTRATOR"], true) || !message.member.roles.map(r => r.name).includes("Moderator"))
-          message.react("You need the `ADMINISTRATOR` permission to use this command");
-        return;
-      },
-      ba: (message) => {
-        if(!data.devs.includes(message.author.id))
-          message.react("You need to be a Clyde Admin to use this command.");
-        return;
-      },
+      undefined: [true, () => {}],
+      "": [true, () => {}],
+      mod: [!message.member.permissions.has(["MANAGE_MESSAGES", "MANAGE_ROLES"], true) || !message.member.roles.map(r => r.name).includes("Moderator"), () => { message.react("You need the `Moderator` role to use this command!"); }],
+      admin: [!message.member.permissions.has(["MANAGE_MESSAGES", "MANAGE_ROLES", "MANAGE_SERVER", "BAN_MEMBERS", "KICK_MEMBERS"], true) || !message.member.roles.map(r => r.name).includes("Moderator"), () => { message.react("You need the `Administrator` role to use this command!"); }],
+      admin_perm: [!message.member.permissions.has(["MANAGE_MESSAGES", "MANAGE_ROLES"], true), () => { message.react("You need the `ADMINISTRATOR` permission to use this command!"); }],
+      ba: [!data.devs.includes(message.author.id), () => { message.react("You need to be a Clyde Admin to use this command!"); }],
     };
     for (var i in cmds) {
-      if(cmds[i].perms !== "")
-        perms[cmds[i].perms](message) && if(;
+      if(perms[cmds[i].perms][0])
+        perms[cmds[i].perms][1]();
       if(message.content.endsWith("-d"))
         message.delete() && message.content.slice(0, -2);
       if(message.content.slice(prefix.length).split(" ")[0] === i) {
+        cmdDone = true;
         cmds[i].do(message, message.content.slice(message.content.indexOf(" ")));
       }
     }
-    return new Promise((resolve, reject) => { resolve(true); });
+    return new Promise((resolve, reject) => { resolve(cmdDone); });
   },// Does a command
   evalclean: (string) => {
     if (typeof(string) === "string")
@@ -140,7 +132,7 @@ var f = {
 
 client.on("message", (msg) => {
   if(msg.content.startsWith(prefix)) {
-    f.check_and_do_cmd(msg);
+    f.check_and_do_cmd(msg).then(t => { if(t) f.add_exp(message.author.id});
   }
 });
 client.on("ready", () => {
