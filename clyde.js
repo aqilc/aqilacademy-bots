@@ -68,7 +68,7 @@ var f = {
       }
     });
     return f;
-  },
+  },// Check if elections are going on and sets up a setTimeout if they are.
   checksql: () => {
     let print = "";
     db.all("SELECT * FROM users", (err, res) => { print += "Users: " + res; });
@@ -82,7 +82,7 @@ var f = {
       console.log(print);
     }, 1000);
     return f;
-  },
+  },// Checks and console.logs all sql
   check_and_do_cmd: (message) => {
     var perms = {
       mod: (message) => {
@@ -112,7 +112,7 @@ var f = {
       }
     }
     return f;
-  },//Does a command
+  },// Does a command
   evalclean: (string) => {
     if (typeof(string) === "string")
       return string.replace(/`/g, "`" + String.fromCharCode(8203)).replace(/@/g, "@" + String.fromCharCode(8203));
@@ -124,7 +124,7 @@ var f = {
   },// Random color
   page_maker: (array, num = 10, page = 0, func) => {
     array.slice(page*num, page*num + num);
-    if(typeof func === "function") {
+    if(func && typeof func === "function") {
       for(var i = 0; i < array.length; i ++) {
         func(i, array[i]);
       }
@@ -132,6 +132,9 @@ var f = {
     }
     else
       return array;
+  },// Makes pages for all the things we need pages for :P
+  add_exp: (id, exp) => {
+    
   },
 };
 
