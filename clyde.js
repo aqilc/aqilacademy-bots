@@ -128,11 +128,14 @@ var f = {
   add_exp: (id, exp) => {
     
   },
+  random: (min, max, round) => {
+    return round ? Math.round(Math.random() * (max-min) + min) : Math.random() * (max-min) + min;
+  },
 };
 
 client.on("message", (msg) => {
   if(msg.content.startsWith(prefix)) {
-    f.check_and_do_cmd(msg).then(t => { if(t) f.add_exp(message.author.id});
+    f.check_and_do_cmd(msg).then(t => { if(!t) f.add_exp(msg.author.id, f.random(10, 20, true)); });
   }
 });
 client.on("ready", () => {
