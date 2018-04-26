@@ -111,7 +111,7 @@ var f = {
         cmds[i].do(message, message.content.slice(message.content.indexOf(" ")));
       }
     }
-    return f;
+    return new Promise((resolve, reject) => { resolve(true); });
   },// Does a command
   evalclean: (string) => {
     if (typeof(string) === "string")
