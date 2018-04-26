@@ -142,7 +142,14 @@ const cmds = {
     cat: "utility",
     perms: "mod",
     del: false,
-    do: (msg, content) => {},
+    do: (msg, content) => {
+      if(content) {
+        return;
+      }
+      let embed = new Discord.RichEmbed()
+        .setAuthor("List of Clyde's commands", msg.author.avatarURL);
+      msg.channel.send(embed);
+    },
   },
   run: {
     a: ["eval"],
