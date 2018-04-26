@@ -39,7 +39,7 @@ db.serialize(function() {
   ];
   for(var i of tables) {
     db.run("CREATE TABLE IF NOT EXISTS " + i);
-    console.log(i + " has been created");
+    console.log(i + " has been created if it didn't exist before");
   }
 });
 
