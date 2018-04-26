@@ -87,19 +87,23 @@ var f = {
     var perms = {
       mod: (message) => {
         if(!message.member.permissions.has(["MANAGE_MESSAGES", "MANAGE_ROLES"], true) || !message.member.roles.map(r => r.name).includes("Moderator"))
-          return message.react("You need the `Moderator` role to use this command");
+          message.react("You need the `Moderator` role to use this command");
+        return;
       },
       admin: (message) => {
         if(!message.member.permissions.has(["MANAGE_MESSAGES", "MANAGE_ROLES", "MANAGE_SERVER", "BAN_MEMBERS", "KICK_MEMBERS"], true) || !message.member.roles.map(r => r.name).includes("Administrator"))
-          return message.react("You need the `Administartor` role to use this command");
+          message.react("You need the `Administartor` role to use this command");
+        return;
       },
       admin_perm: (message) => {
         if(!message.member.permissions.has(["ADMINISTRATOR"], true) || !message.member.roles.map(r => r.name).includes("Moderator"))
-          return message.react("You need the `ADMINISTRATOR` permission to use this command");
+          message.react("You need the `ADMINISTRATOR` permission to use this command");
+        return;
       },
       ba: (message) => {
         if(!data.devs.includes(message.author.id))
-          return message.react("You need to ba a Bot Administrator to use this command.");
+          message.react("You need to be a Clyde Admin to use this command.");
+        return;
       },
     };
     for (var i in cmds) {
