@@ -85,11 +85,7 @@ var f = {
   },// Checks and console.logs all sql
   check_and_do_cmd: (message) => {
     var perms = {
-      mod: (message) => {
-        if(!message.member.permissions.has(["MANAGE_MESSAGES", "MANAGE_ROLES"], true) || !message.member.roles.map(r => r.name).includes("Moderator"))
-          message.react("You need the `Moderator` role to use this command");
-        return;
-      },
+      mod: [!message.member.permissions.has(["MANAGE_MESSAGES", "MANAGE_ROLES"], true) || !message.member.roles.map(r => r.name).includes("Moderator"), ,
       admin: (message) => {
         if(!message.member.permissions.has(["MANAGE_MESSAGES", "MANAGE_ROLES", "MANAGE_SERVER", "BAN_MEMBERS", "KICK_MEMBERS"], true) || !message.member.roles.map(r => r.name).includes("Administrator"))
           message.react("You need the `Administartor` role to use this command");
@@ -108,7 +104,7 @@ var f = {
     };
     for (var i in cmds) {
       if(cmds[i].perms !== "")
-        perms[cmds[i].perms](message);
+        perms[cmds[i].perms](message) && if(;
       if(message.content.endsWith("-d"))
         message.delete() && message.content.slice(0, -2);
       if(message.content.slice(prefix.length).split(" ")[0] === i) {
@@ -187,7 +183,7 @@ const cmds = {
       try {
         evalled = f.evalclean(eval(content));
       } catch(err) {
-        evalled = `ERROR: ${f.ec(err)}`;
+        evalled = `ERROR: ${f.evalclean(err)}`;
       }
       let embed = new Discord.RichEmbed()
         .setColor(f.randomcolor())
