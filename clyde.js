@@ -122,6 +122,17 @@ var f = {
   randomcolor: () => {
     return Math.round(Math.random() * 16777215);
   },// Random color
+  page_maker: (array, num = 10, page = 0, func) => {
+    array.slice(page*num, page*num + num);
+    if(typeof func === "function") {
+      for(var i = 0; i < array.length; i ++) {
+        func(i, array[i]);
+      }
+      return f;
+    }
+    else
+      return array;
+  },
 };
 
 client.on("message", (msg) => {
