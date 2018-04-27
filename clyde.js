@@ -185,7 +185,8 @@ const cmds = {
         .setColor(f.randomcolor())
         .setTimestamp()
         .setAuthor("Run", client.user.avatarURL)
-        .setDescription(`Input length: ${content.length}`, msg.author.avatarURL);
+        .setDescription(``)
+        .setFooter(`Input length: ${content.length}`, msg.author.avatarURL);
       msg.channel.send(embed);
     },
   },
