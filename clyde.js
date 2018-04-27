@@ -18,7 +18,8 @@ client.login(process.env.TOKEN);
 
 //All channels needed to run bot
 const chnls = {
-  a: "382353531837087745",
+  announce: "382353531837087745",
+  staff: "382530174677417984",
 }
 
 //Keeps app running
@@ -62,7 +63,7 @@ var f = {
               }
             }
             db.run(`UPDATE elections SET winners = ${sqlwin} WHERE num = ${elec.num}`);
-            client.guilds.get("294115797326888961").channels.get(chnls.a).send(`**:yes: The election has officially ended. Winner(s):**\`\`\`\n${winner}\`\`\``);
+            client.guilds.get("294115797326888961").channels.get(chnls.announce).send(`**:yes: The election has officially ended. Winner(s):**\`\`\`\n${winner}\`\`\``);
           })
         }, elec[0].end - new Date().valueOf());
       }
@@ -128,9 +129,18 @@ var f = {
       return array;
   },// Makes pages for all the things we need pages for :P
   add_exp: (id, exp) => {
-    db.get("SELECT * FROM users WHERE id = " + id, (err, res) => {
-      if(!row)
-        db.run(`INSERT INTO users (id, points, realPoints, messages) VALUES (${id}"
+    db.get(`SELECT * FROM users WHERE id = "${id}"`, (err, res) => {
+      if(!res)
+        return console.log("Created user: " + id) && db.run(`INSERT INTO users (id, points, realPoints, messages, created) VALUES ("${id}", 0, 0, 0, ${new Date().valueOf()})`);
+      db.run(`UPDATE users SET points = ${res.points + exp} WHERE id = "${id}"`);
+    });
+  },
+  add_message: (id) => {
+    let xp = f.random(10, 20, true);
+    db.get(`SELECT * FROM users WHERE id = "${id}"`, (err, res) => {
+      if(!res)
+        return console.log("Created user: " + id) && db.run(`INSERT INTO users (id, points, realPoints, messages, created) VALUES ("${id}", 0, 0, 0, ${new Date().valueOf()})`);
+      db.run(`UPDATE users SET messages = ${res.messages + 1}, points = ${res.points + xp}, realPoints = ${res.realPoints + xp} WHERE id = "${id}"`);
     });
   },
   random: (min, max, round) => {
@@ -140,7 +150,7 @@ var f = {
 
 client.on("message", (msg) => {
   if(msg.content.startsWith(prefix)) {
-    f.check_and_do_cmd(msg).then(t => { if(!t) f.add_exp(msg.author.id, f.random(10, 20, true)); });
+    f.check_and_do_cmd(msg).then(t => { if(!t) f.add_message(msg.author.id); });
   }
 });
 client.on("ready", () => {
