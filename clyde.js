@@ -1,4 +1,4 @@
-
+      admin_perm: [!message.member.permissions.has(["MANAGE_MESSAGES", "MANAGE_ROLES"], true), () => { 
 //All requires and dependencies
 const express = require('express');
 const app = express();
@@ -88,9 +88,11 @@ var f = {
     var perms = {
       undefined: [true, () => {}],
       "": [true, () => {}],
-      mod: [!message.member.permissions.has(["MANAGE_MESSAGES", "MANAGE_ROLES"], true) || !message.member.roles.map(r => r.name).includes("Moderator"), () => { message.react("You need the `Moderator` role to use this command!"); }],
+      mod: [!message.member.permissions.has(["MANAGE_MESAGES", "MANAGE_ROLES"], true) || !message.member.roles.map(r => r.name).includes("Moderator"), () => {
+        message.react("You need the `Moderator` role to use this command!");
+      }],
       admin: [!message.member.permissions.has(["MANAGE_MESSAGES", "MANAGE_ROLES", "MANAGE_SERVER", "BAN_MEMBERS", "KICK_MEMBERS"], true) || !message.member.roles.map(r => r.name).includes("Moderator"), () => { message.react("You need the `Administrator` role to use this command!"); }],
-      admin_perm: [!message.member.permissions.has(["MANAGE_MESSAGES", "MANAGE_ROLES"], true), () => { message.react("You need the `ADMINISTRATOR` permission to use this command!"); }],
+      admin_perm: [!message.member.perissions.has(["MANAGE_MESSAGES", "MANAGE_ROLES"], true), () => { message.react("You need the `ADMINISTRATOR` permission to use this command!"); }],
       ba: [!data.devs.includes(message.author.id), () => { message.react("You need to be a Clyde Admin to use this command!"); }],
     };
     for (var i in cmds) {
@@ -169,7 +171,6 @@ const cmds = {
     del: false,
     do: (msg, content) => {
       let evalled;
-      
       if((content.startsWith("```js") || content.startsWith("```")) && content.endsWith("```"))
         content.slice(3, -3);
       if(!content || content === "")
@@ -184,8 +185,7 @@ const cmds = {
         .setColor(f.randomcolor())
         .setTimestamp()
         .setAuthor("Run", client.user.avatarURL)
-        .setDescription(`**Input:** \`\`\`js\n${content}\`\`\`**Output:** \`\`\`xl\n${evalled}\`\`\``)
-        .setFooter(`Input length: ${content.length}`, msg.author.avatarURL);
+        .setDescription(`Input length: ${content.length}`, msg.author.avatarURL);
       msg.channel.send(embed);
     },
   },
