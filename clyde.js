@@ -171,7 +171,7 @@ client.on("message", (msg) => {
 });
 client.on("ready", () => {
   console.log(client.user.tag + " has started. Ready for action");
-  f.checkelections().checksql();
+  f.checkelections()//.checksql();
 });
 
 const cmds = {
@@ -183,8 +183,8 @@ const cmds = {
     perms: "mod",
     del: false,
     do: (msg, content) => {
-      if(content) {
-        return;
+      if(content !== "") {
+        return console.log(`"${content}"`);
       }
       let embed = new Discord.RichEmbed()
         .setColor(f.color())
@@ -215,7 +215,7 @@ const cmds = {
         .setColor(f.color())
         .setTimestamp()
         .setAuthor("Run", client.user.avatarURL)
-        .setDescription(``)
+        .setDescription(`**Input:** \`\`\`js\n${content}\`\`\`**Output:** \`\`\`xl\n${evalled}\`\`\``)
         .setFooter(`Input length: ${content.length}`, msg.author.avatarURL);
       msg.channel.send(embed);
     },
