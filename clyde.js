@@ -89,12 +89,18 @@ var f = {
     var perms = {
       undefined: [true, () => {}],
       "": [true, () => {}],
-      mod: [!message.member.permissions.has(["MANAGE_MESAGES", "MANAGE_ROLES"], true) || !message.member.roles.map(r => r.name).includes("Moderator"), () => {
-        message.react("You need the `Moderator` role to use this command!");
+      mod: [!message.member.permissions.has(["MANAGE_MESSAGES", "MANAGE_ROLES"], true) || !message.member.roles.map(r => r.name).includes("Moderator"), () => {
+        message.reply("You need the `Moderator` role to use this command!");
       }],
-      admin: [!message.member.permissions.has(["MANAGE_MESSAGES", "MANAGE_ROLES", "MANAGE_SERVER", "BAN_MEMBERS", "KICK_MEMBERS"], true) || !message.member.roles.map(r => r.name).includes("Moderator"), () => { message.react("You need the `Administrator` role to use this command!"); }],
-      admin_perm: [!message.member.perissions.has(["MANAGE_MESSAGES", "MANAGE_ROLES"], true), () => { message.react("You need the `ADMINISTRATOR` permission to use this command!"); }],
-      ba: [!data.devs.includes(message.author.id), () => { message.react("You need to be a Clyde Admin to use this command!"); }],
+      admin: [!message.member.permissions.has(["MANAGE_MESSAGES", "MANAGE_ROLES", "MANAGE_SERVER", "BAN_MEMBERS", "KICK_MEMBERS"], true) || !f.has_roles(message.member, "Administrator"), () => {
+        message.reply("You need the `Administrator` role to use this command!");
+      }],
+      admin_perm: [!message.member.perissions.has(["ADMINISTRATOR"], true), () => {
+        message.reply("You need the `ADMINISTRATOR` permission to use this command!");
+      }],
+      ba: [!data.devs.includes(message.author.id), () => {
+        message.reply("You need to be a Clyde Admin to use this command!");
+      }],
     };
     for (var i in cmds) {
       if(perms[cmds[i].perms][0])
@@ -145,6 +151,15 @@ var f = {
   },
   random: (min, max, round) => {
     return round ? Math.round(Math.random() * (max-min) + min) : Math.random() * (max-min) + min;
+  },
+  has_roles: (member, role_name = ["Moderator"]) => {
+    if(typeof 
+    let has = true;
+    for(let i of role_name) {
+      if(!member.roles.map(r => r.name).includes(i))
+        has = false;
+    }
+    return has;
   },
 };
 
