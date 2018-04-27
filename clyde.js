@@ -87,15 +87,15 @@ var f = {
   check_and_do_cmd: (message) => {
     let cmdDone = false;
     var perms = {
-      undefined: [true, () => {}],
-      "": [true, () => {}],
-      mod: [!message.member.permissions.has(["MANAGE_MESSAGES", "MANAGE_ROLES"], true) || !message.member.roles.map(r => r.name).includes("Moderator"), () => {
+      undefined: [false, () => {}],
+      "": [false, () => {}],
+      mod: [!message.member.permissions.has(["MANAGE_MESSAGES", "MANAGE_ROLES"], true) || !f.has_roles(message.member, "Moderator"), () => {
         message.reply("You need the `Moderator` role to use this command!");
       }],
-      admin: [!message.member.permissions.has(["MANAGE_MESSAGES", "MANAGE_ROLES", "MANAGE_SERVER", "BAN_MEMBERS", "KICK_MEMBERS"], true) || !f.has_roles(message.member, "Administrator"), () => {
+      admin: [!message.member.permissions.has(["MANAGE_MESSAGES", "MANAGE_ROLES", "MANAGE_GUILD", "BAN_MEMBERS", "KICK_MEMBERS"], true) || !f.has_roles(message.member, "Administrator"), () => {
         message.reply("You need the `Administrator` role to use this command!");
       }],
-      admin_perm: [!message.member.perissions.has(["ADMINISTRATOR"], true), () => {
+      admin_perm: [!message.member.permissions.has(["ADMINISTRATOR"], true), () => {
         message.reply("You need the `ADMINISTRATOR` permission to use this command!");
       }],
       ba: [!data.devs.includes(message.author.id), () => {
@@ -120,7 +120,7 @@ var f = {
     else
       return string;
   },// Cleans "evalled"
-  randomcolor: () => {
+  color: () => {
     return Math.round(Math.random() * 16777215);
   },// Random color
   page_maker: (array, num = 10, page = 0, func) => {
@@ -153,7 +153,8 @@ var f = {
     return round ? Math.round(Math.random() * (max-min) + min) : Math.random() * (max-min) + min;
   },
   has_roles: (member, role_name = ["Moderator"]) => {
-    if(typeof 
+    if(typeof role_name === "string")
+      role_name = [role_name];
     let has = true;
     for(let i of role_name) {
       if(!member.roles.map(r => r.name).includes(i))
@@ -186,6 +187,7 @@ const cmds = {
         return;
       }
       let embed = new Discord.RichEmbed()
+        .setColor(f.color())
         .setAuthor("List of Clyde's commands", msg.author.avatarURL);
       msg.channel.send(embed);
     },
@@ -210,7 +212,7 @@ const cmds = {
         evalled = `ERROR: ${f.evalclean(err)}`;
       }
       let embed = new Discord.RichEmbed()
-        .setColor(f.randomcolor())
+        .setColor(f.color())
         .setTimestamp()
         .setAuthor("Run", client.user.avatarURL)
         .setDescription(``)
