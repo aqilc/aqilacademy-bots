@@ -95,7 +95,7 @@ var f = {
     };
     for (var i in cmds) {
       if(perms[cmds[i].perms][0])
-        perms[cmds[i].perms][1]();
+        return perms[cmds[i].perms][1]();
       if(message.content.endsWith("-d"))
         message.delete() && message.content.slice(0, -2);
       if(message.content.slice(prefix.length).split(" ")[0] === i) {
