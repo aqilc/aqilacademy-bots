@@ -1,4 +1,4 @@
-      admin_perm: [!message.member.permissions.has(["MANAGE_MESSAGES", "MANAGE_ROLES"], true), () => { 
+
 //All requires and dependencies
 const express = require('express');
 const app = express();
@@ -30,7 +30,7 @@ app.listen(process.env.PORT);
 // if ./.data/sqlite.db does not exist, create it, otherwise print records to console
 db.serialize(function() {
   let tables = [
-    "users (id TEXT, points INTEGER, lastDaily INTEGER, messages INTEGER, realpoints INTEGER)",
+    "users (id TEXT, points INTEGER, lastDaily INTEGER, messages INTEGER, realpoints INTEGER, created INTEGER)",
     "warns (num INTEGER PRIMARY KEY, warn TEXT, mod TEXT, date INTEGER)", "items (name TEXT, price TEXT, user TEXT)",
     "expstore (num INTEGER PRIMARY KEY, item TEXT, desc TEXT, stock INTEGER, price INTEGER, approved TEXT, bought TEXT, seller TEXT, buyer TEXT)",
     "elections (num INTEGER PRIMARY KEY, winner TEXT, end INTEGER, start INTEGER, vp TEXT)",
@@ -128,7 +128,10 @@ var f = {
       return array;
   },// Makes pages for all the things we need pages for :P
   add_exp: (id, exp) => {
-    
+    db.get("SELECT * FROM users WHERE id = " + id, (err, res) => {
+      if(!row)
+        db.run(`INSERT INTO users (id, points, realPoints, messages) VALUES (${id}"
+    });
   },
   random: (min, max, round) => {
     return round ? Math.round(Math.random() * (max-min) + min) : Math.random() * (max-min) + min;
