@@ -147,7 +147,7 @@ var f = {
     let xp = f.random(10, 20, true);
     db.get(`SELECT * FROM users WHERE id = "${id}"`, (err, res) => {
       if(!res)
-        return db.run(`INSERT INTO users (id, points, realPoints, messages, created) VALUES ("${id}", 0, 0, 1, ${new Date().valueOf()})`) && console.log("Created user: " + id);
+        return db.run(`INSERT INTO users (id, points, realPoints, messages, created) VALUES (?, ?, ?, ?, ?)`, [id, 0, 0, 1, new Date().valueOf()]) && console.log("Created user: " + id);
       db.run(`UPDATE users SET messages = ${res.messages + 1}, points = ${res.points + xp}, realPoints = ${res.realPoints + xp} WHERE id = "${id}"`);
     });
   },
