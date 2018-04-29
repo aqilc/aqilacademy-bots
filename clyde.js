@@ -197,8 +197,13 @@ const cmds = {
       if(content !== "") {
         if(cmds[content]) {
           
-        } else if(["utility", "bot admin", "exp", "election", "fun"].includes(content)) {
-          msg.channel.send(new Discord.RichEmbed().setAuthor(content.slice(0, 1).toUpperCase() + content.slice(1, content.length) + " Commands", client.user.avatarURL).setDescription(.setColor(f.color())
+        } else if(["utility", "bot admin", "exp", "election", "fun"].includes(content.toLowerCase()) {
+          let cmds = "";
+          for(let i in cmds) {
+            if(cmds[i].cat === content.toLowerCase())
+              cmds += `${prefix + 
+          }
+          msg.channel.send(new Discord.RichEmbed().setAuthor(content.slice(0, 1).toUpperCase() + content.slice(1, content.length) + " Commands", client.user.avatarURL).setDescription(`.setColor(f.color())
         } else
           msg.channel.send(new Discord.RichEmbed().setAuthor(`Error: No command or category named "${content}" found.`, client.user.avatarURL).setColor(f.color()).setFooter(`Do "${prefix}help" to see all commands and categories.`));
         return console.log(`"${content}"`);
