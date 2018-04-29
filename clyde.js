@@ -168,9 +168,11 @@ var f = {
 
 client.on("message", (msg) => {
   try {
-    if(msg.content.startsWith(prefix))
-      return if(f.check_and_do_cmd(msg))
-          f.add_message(msg.author.id);
+    if(msg.content.startsWith(prefix)){
+      if(!f.check_and_do_cmd(msg))
+        f.add_message(msg.author.id);
+      return;
+    }
     
     f.add_message(msg.author.id);
   } catch(err) {
