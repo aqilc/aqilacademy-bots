@@ -107,7 +107,7 @@ var f = {
         return perms[cmds[i].perms][1]();
       if(message.content.endsWith("-d"))
         message.delete() && message.content.slice(0, -2);
-      if(message.content.slice(prefix.length).split(" ")[0] === i) {
+      if((cmds[i].a && cmds[i].a.includes(message.content.slice(prefix.length).split(" ")[0])) || message.content.slice(prefix.length).split(" ")[0] === i) {
         cmdDone = true;
         if(cmds[i].del === true)
           message.delete();
@@ -147,7 +147,7 @@ var f = {
     let xp = f.random(10, 20, true);
     db.get(`SELECT * FROM users WHERE id = "${id}"`, (err, res) => {
       if(!res)
-        return console.log("Created user: " + id) && db.run(`INSERT INTO users (id, points, realPoints, messages, created) VALUES ("${id}", 0, 0, 0, ${new Date().valueOf()})`);
+        return db.run(`INSERT INTO users (id, points, realPoints, messages, created) VALUES ("${id}", 0, 0, 0, ${new Date().valueOf()})`) && console.log("Created user: " + id);
       db.run(`UPDATE users SET messages = ${res.messages + 1}, points = ${res.points + xp}, realPoints = ${res.realPoints + xp} WHERE id = "${id}"`);
     });
   },
@@ -167,8 +167,14 @@ var f = {
 };
 
 client.on("message", (msg) => {
-  if(msg.content.startsWith(prefix)) {
-    f.check_and_do_cmd(msg).then(t => { if(!t) f.add_message(msg.author.id); });
+  try {
+    if(msg.content.startsWith(prefix)) 
+      return f.check_and_do_cmd(msg).then(t => { if(!t) f.add_message(msg.author.id); });
+    
+    f.add_message(msg.author.id);
+  } catch(err) {
+    msg.channel.send(new Discord.RichEmbed().setAuthor("Error", client.user.avaterURL).setDescription(`\`\`\`js\n${err}\`\`\``).setTimestamp());
+    console.log("Error on the \"message\" event: " + err);
   }
 });
 client.on("ready", () => {
