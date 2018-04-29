@@ -114,7 +114,7 @@ var f = {
         cmds[i].do(message, message.content.slice(message.content.indexOf(" ")).trim());
       }
     }
-    return new Promise((resolve, reject) => { resolve(cmdDone); });
+    return cmdDone;
   },// Does a command
   evalclean: (string) => {
     if (typeof(string) === "string")
@@ -168,8 +168,9 @@ var f = {
 
 client.on("message", (msg) => {
   try {
-    if(msg.content.startsWith(prefix)) 
-      return f.check_and_do_cmd(msg).then(t => { if(!t) f.add_message(msg.author.id); });
+    if(msg.content.startsWith(prefix))
+      return if(f.check_and_do_cmd(msg))
+          f.add_message(msg.author.id);
     
     f.add_message(msg.author.id);
   } catch(err) {
