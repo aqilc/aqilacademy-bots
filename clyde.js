@@ -203,9 +203,15 @@ const cmds = {
           return msg.channel.send(new Discord.RichEmbed().setAuthor(`Error: No command or category named "${content}" found.`, client.user.avatarURL).setColor(f.color()).setFooter(`Do "${prefix}help" to see all commands and categories.`));
         return console.log(`help error: "${content}"`);
       }
+      let comds = "";
+      for(let i in cmds) {
+        comds += `**${prefix + i + cmds[i].usage}**, `;
+      }
       let embed = new Discord.RichEmbed()
         .setColor(f.color())
-        .setAuthor("List of Clyde's commands", msg.author.avatarURL);
+        .setAuthor("List of Clyde's commands", msg.author.avatarURL)
+        .setDescription(comds)
+        .addField(`Categories (${prefix}help [category name])`, 
       msg.channel.send(embed);
     },
   },
