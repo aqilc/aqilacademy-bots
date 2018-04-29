@@ -63,7 +63,7 @@ var f = {
               }
             }
             db.run(`UPDATE elections SET winners = ${sqlwin} WHERE num = ${elec.num}`);
-            client.guilds.get("294115797326888961").channels.get(chnls.announce).send(`**:yes: The election has officially ended. Winner(s):**\`\`\`\n${winner}\`\`\``);
+            client.guilds.get("294115797326888961").channels.get(chnls.announce).send(`**:yes: The election has officially ended. Winner(s):**\`\`\`\n${winner}\`\`\``);// What
           })
         }, elec[0].end - new Date().valueOf());
       }
@@ -139,7 +139,7 @@ var f = {
   add_exp: (id, exp) => {
     db.get(`SELECT * FROM users WHERE id = "${id}"`, (err, res) => {
       if(!res)
-        return console.log("Created user: " + id) && db.run(`INSERT INTO users (id, points, realPoints, messages, created) VALUES ("${id}", 0, 0, 0, ${new Date().valueOf()})`);
+        return console.log("Created user: " + id) && db.run(`INSERT INTO users (id, points, realpoints, messages, created) VALUES ("${id}", 0, 0, 0, ${new Date().valueOf()})`);
       db.run(`UPDATE users SET points = ${res.points + exp} WHERE id = "${id}"`);
     });
   },
@@ -147,8 +147,8 @@ var f = {
     let xp = f.random(10, 20, true);
     db.get(`SELECT * FROM users WHERE id = "${id}"`, (err, res) => {
       if(!res)
-        return db.run(`INSERT INTO users (id, points, realPoints, messages, created) VALUES (?, ?, ?, ?, ?)`, [id, 0, 0, 1, new Date().valueOf()]) && console.log("Created user: " + id);
-      db.run(`UPDATE users SET messages = ${res.messages + 1}, points = ${res.points + xp}, realPoints = ${res.realPoints + xp} WHERE id = "${id}"`);
+        return db.run(`INSERT INTO users (id, points, realpoints, messages, created) VALUES (?, ?, ?, ?, ?)`, [id, 0, 0, 1, new Date().valueOf()]) && console.log("Created user: " + id);
+      db.run(`UPDATE users SET messages = ${res.messages + 1}, points = ${res.points + xp}, realpoints = ${res.realPoints + xp} WHERE id = "${id}"`);
     });
   },
   random: (min, max, round) => {
@@ -176,7 +176,7 @@ client.on("message", (msg) => {
     if(data.whitelist.includes(msg.channel.id))
       f.add_message(msg.author.id);
   } catch(err) {
-    msg.channel.send(new Discord.RichEmbed().setAuthor("Error", client.user.avaterURL).setColor(f.color()).setDescription(`\`\`\`js\n${err}\`\`\``).setTimestamp());
+    msg.channel.send(new Discord.RichEmbed().setAuthor("Error", client.user.avatarURL).setColor(f.color()).setDescription(`\`\`\`js\n${err}\`\`\``).setTimestamp());
     console.log("Error on the \"message\" event: " + err);
   }
 });
@@ -196,7 +196,7 @@ const cmds = {
     do: (msg, content) => {
       if(content !== "") {
         if(cmds[content.toLowerCase()]) {
-          return msg.channel.send(new Discord.RichEmbed().setAuthor(content.toLowerCase(), client.user.avatarURL).setDescription(cmds[content.toLowerCase()].desc).addField("Usage", `\`\`\`\n${content.toLowerCase() + cmds[content.toLowerCase()].usage}\`\`\``).addField("Permissions", ["admin", "mod"].includes(cmds[content.toLowerCase()].perms) ? `You need the \`${{ mod: "Moderator", admin: "Administrator" }[cmds[content.toLowerCase()].perms]} role to use this command` : { "bot admin": "You need to be a Bot Administrator to use this command", "admin perm": "You need the `ADMINISTRATOR` permission to use this command", "": "You do not need ANY permissions to use this command" }[cmds[content.toLowerCase()].perms]));
+          return msg.channel.send(new Discord.RichEmbed().setAuthor(content.toLowerCase(), client.user.avatarURL).setDescription(cmds[content.toLowerCase()].desc).addField("Usage", `\`\`\`\n${content.toLowerCase() + cmds[content.toLowerCase()].usage}\`\`\``).addField("Permissions", ["admin", "mod"].includes(cmds[content.toLowerCase()].perms) ? `You need the \`${{ mod: "Moderator", admin: "Administrator" }[cmds[content.toLowerCase()].perms]} role to use this command` : { "bot admin": "You need to be a Bot Administrator to use this command", "admin perm": "You need the `ADMINISTRATOR` permission to use this command", "": "You do not need ANY permissions to use this command" }[cmds[content.toLowerCase()].perms]).addField("Category", `${cmds[content.toLowerCase()].cat} (${prefix}help ${cmds[content.toLowerCase()].cat})`));
         } else if(["utility", "bot admin", "exp", "election", "fun"].includes(content.toLowerCase()))
           return msg.channel.send(new Discord.RichEmbed().setAuthor(content.slice(0, 1).toUpperCase() + content.slice(1, content.length) + " Commands", client.user.avatarURL).setDescription({ fun: "A bunch of fun commands you can just play around with!", utility: "Commands used for modding, and commands that also give us some info about the bot. ", "bot admin": "A bunch of commands only the Clyde Administrators(people who coded Clyde) can use", exp: "These commands let you interact with Clyde EXP and the EXP Store.", election: "Commands you can use to interact with the AqilAcademy Elections!" }[content.toLowerCase()]).addField("Commands", (function(cat) { let cmd = ""; for(let i in cmds) { if(cmds[i].cat === cat) return " "; } return ""})(content.toLowerCase()) === "" ? "No commands yet" : (function(cat) { let cmd = ""; for(let i in cmds) { if(cmds[i].cat === cat) cmd += `**${prefix + i + cmds[i].usage}:** ${cmds[i].desc}\n`; } return cmd})(content.toLowerCase())).setColor(f.color()));
         else
