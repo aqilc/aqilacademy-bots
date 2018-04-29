@@ -98,7 +98,7 @@ var f = {
       admin_perm: [!message.member.permissions.has(["ADMINISTRATOR"], true), () => {
         message.reply("You need the `ADMINISTRATOR` permission to use this command!");
       }],
-      ba: [!data.devs.includes(message.author.id), () => {
+      "bot admin": [!data.devs.includes(message.author.id), () => {
         message.reply("You need to be a Clyde Admin to use this command!");
       }],
     };
@@ -196,9 +196,9 @@ const cmds = {
     do: (msg, content) => {
       if(content !== "") {
         if(cmds[content.toLowerCase()]) {
-          return msg.channel.send(new Discord.RichEmbed().setAuthor(content.toLowerCase(), client.user.avatarURL).setDescription(cmds[content.toLowerCase()].desc).addField("Usage", `\`\`\`\n${content.toLowerCase() + cmds[content.toLowerCase()].usage}\`\`\``));
+          return msg.channel.send(new Discord.RichEmbed().setAuthor(content.toLowerCase(), client.user.avatarURL).setDescription(cmds[content.toLowerCase()].desc).addField("Usage", `\`\`\`\n${content.toLowerCase() + cmds[content.toLowerCase()].usage}\`\`\``).addField("Permissions", ["admin", "mod"].includes(cmds[content.toLowerCase()].perms) ? `You need the \`${{ mod: "Moderator", admin: "Administrator" }[cmds[content.toLowerCase()].perms]} role to use this command` : { "bot admin": "You need to be a Bot Administrator to use this command", "admin perm": "You need the `ADMINISTRATOR` permission to use this command", "": "You do not need ANY permissions to use this command" }[cmds[content.toLowerCase()].perms]));
         } else if(["utility", "bot admin", "exp", "election", "fun"].includes(content.toLowerCase()))
-          return msg.channel.send(new Discord.RichEmbed().setAuthor(content.slice(0, 1).toUpperCase() + content.slice(1, content.length) + " Commands", client.user.avatarURL).setDescription({ fun: "A bunch of fun commands you can just play around with!", utility: "Commands used for modding, and commands that also give us some info about the bot", "bot admin": "A bunch of commands only the Clyde Administrators(people who coded Clyde) can use", exp: "These commands let you interact with Clyde EXP and the EXP Store.", election: "Commands you can use to interact with the AqilAcademy Elections!" }[content.toLowerCase()]).addField("Commands", (function(cat) { let cmd = ""; for(let i in cmds) { if(cmds[i].cat === cat) return " "; } return ""})(content.toLowerCase()) === "" ? "No commands yet" : (function(cat) { let cmd = ""; for(let i in cmds) { if(cmds[i].cat === cat) cmd += `**${prefix + i + cmds[i].usage}:** ${cmds[i].desc}\n`; } return cmd})(content.toLowerCase())).setColor(f.color()));
+          return msg.channel.send(new Discord.RichEmbed().setAuthor(content.slice(0, 1).toUpperCase() + content.slice(1, content.length) + " Commands", client.user.avatarURL).setDescription({ fun: "A bunch of fun commands you can just play around with!", utility: "Commands used for modding, and commands that also give us some info about the bot. ", "bot admin": "A bunch of commands only the Clyde Administrators(people who coded Clyde) can use", exp: "These commands let you interact with Clyde EXP and the EXP Store.", election: "Commands you can use to interact with the AqilAcademy Elections!" }[content.toLowerCase()]).addField("Commands", (function(cat) { let cmd = ""; for(let i in cmds) { if(cmds[i].cat === cat) return " "; } return ""})(content.toLowerCase()) === "" ? "No commands yet" : (function(cat) { let cmd = ""; for(let i in cmds) { if(cmds[i].cat === cat) cmd += `**${prefix + i + cmds[i].usage}:** ${cmds[i].desc}\n`; } return cmd})(content.toLowerCase())).setColor(f.color()));
         else
           return msg.channel.send(new Discord.RichEmbed().setAuthor(`Error: No command or category named "${content}" found.`, client.user.avatarURL).setColor(f.color()).setFooter(`Do "${prefix}help" to see all commands and categories.`));
         return console.log(`"${content}"`);
@@ -214,7 +214,7 @@ const cmds = {
     desc: "Runs code through Clyde",
     usage: " [code]",
     cat: "utility",
-    perms: "ba",
+    perms: "bot admin",
     del: false,
     do: (msg, content) => {
       let evalled;
