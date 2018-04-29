@@ -147,7 +147,7 @@ var f = {
     let xp = f.random(10, 20, true);
     db.get(`SELECT * FROM users WHERE id = "${id}"`, (err, res) => {
       if(!res)
-        return db.run(`INSERT INTO users (id, points, realPoints, messages, created) VALUES ("${id}", 0, 0, 0, ${new Date().valueOf()})`) && console.log("Created user: " + id);
+        return db.run(`INSERT INTO users (id, points, realPoints, messages, created) VALUES ("${id}", 0, 0, 1, ${new Date().valueOf()})`) && console.log("Created user: " + id);
       db.run(`UPDATE users SET messages = ${res.messages + 1}, points = ${res.points + xp}, realPoints = ${res.realPoints + xp} WHERE id = "${id}"`);
     });
   },
@@ -169,14 +169,14 @@ var f = {
 client.on("message", (msg) => {
   try {
     if(msg.content.startsWith(prefix)){
-      if(!f.check_and_do_cmd(msg))
+      if(!f.check_and_do_cmd(msg) && data.whitelist.includes(msg.channel.id))
         f.add_message(msg.author.id);
       return;
     }
-    
-    f.add_message(msg.author.id);
+    if(data.whitelist.includes(msg.channel.id))
+      f.add_message(msg.author.id);
   } catch(err) {
-    msg.channel.send(new Discord.RichEmbed().setAuthor("Error", client.user.avaterURL).setDescription(`\`\`\`js\n${err}\`\`\``).setTimestamp());
+    msg.channel.send(new Discord.RichEmbed().setAuthor("Error", client.user.avaterURL).setColor(f.color()).setDescription(`\`\`\`js\n${err}\`\`\``).setTimestamp());
     console.log("Error on the \"message\" event: " + err);
   }
 });
