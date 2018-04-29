@@ -111,7 +111,7 @@ var f = {
         cmdDone = true;
         if(cmds[i].del === true)
           message.delete();
-        cmds[i].do(message, message.content.slice(message.content.indexOf(" ")).trim());
+        cmds[i].do(message, message.content.includes(" ") ? message.content.slice(message.content.indexOf(" ")).trim() : "");
       }
     }
     return cmdDone;
@@ -195,6 +195,11 @@ const cmds = {
     del: false,
     do: (msg, content) => {
       if(content !== "") {
+        if(cmds[content]) {
+          
+        } else if(["utility", "bot admin", "exp", "election"].includes(content)) {
+          
+        }
         return console.log(`"${content}"`);
       }
       let embed = new Discord.RichEmbed()
