@@ -211,7 +211,7 @@ const cmds = {
         .setColor(f.color())
         .setAuthor("List of Clyde's commands", msg.author.avatarURL)
         .setDescription(comds)
-        .addField(`Categories (${prefix}help [category name])`, 
+        .addField(`Categories (${prefix}help [category name])`, "bot admin, election, exp, fun, and utility");
       msg.channel.send(embed);
     },
   },
@@ -242,6 +242,29 @@ const cmds = {
         .setFooter(`Input length: ${content.length}`, msg.author.avatarURL);
       msg.channel.send(embed);
       console.log("Input: " + content);
+    },
+  },
+  restart: {
+    a: ["rs"],
+    desc: "Restarts Clyde",
+    usage: "",
+    cat: "bot admin",
+    perms: "bot admin",
+    del: true,
+    do: (msg, content) => {
+      process.exit(0);
+      console.log(msg.author.tag + " restarted " + client.user.tag);
+    },
+  },
+  stats: {
+    a: [],
+    desc: "Shows someone's EXP stats.",
+    usage: " (user)",
+    cat: "exp",
+    perms: "",
+    del: false,
+    do: (msg, content) => {
+      db.run
     },
   },
 };
