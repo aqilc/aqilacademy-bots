@@ -195,12 +195,12 @@ const cmds = {
     del: false,
     do: (msg, content) => {
       if(content !== "") {
-        if(cmds[content]) {
-          
-        } else if(["utility", "bot admin", "exp", "election", "fun"].includes(content.toLowerCase())) {
-          msg.channel.send(new Discord.RichEmbed().setAuthor(content.slice(0, 1).toUpperCase() + content.slice(1, content.length) + " Commands", client.user.avatarURL).setDescription({ fun: "A bunch of fun commands you can just play around with!", utility: "Commands used for modding, and commands that also give us some info about the bot", "bot admin": "A bunch of commands only the Clyde Administrators(people who coded Clyde) can use", exp: "These commands let you interact with Clyde EXP and the EXP Store.", election: "Commands you can use to interact with the AqilAcademy Elections!" }[content.toLowerCase()]).addField("Commands", (function(cat) { let cmd = ""; for(let i in cmds) { if(cmds[i].cat === cat) return " "; } return ""})(content.toLowerCase()) === "" ? "No commands yet" : (function(cat) { let cmd = ""; for(let i in cmds) { if(cmds[i].cat === cat) cmd += `**${prefix + i + cmds[i].usage}:** ${cmds[i].desc}\n`; } return cmd})(content.toLowerCase())).setColor(f.color()));
-        } else
-          msg.channel.send(new Discord.RichEmbed().setAuthor(`Error: No command or category named "${content}" found.`, client.user.avatarURL).setColor(f.color()).setFooter(`Do "${prefix}help" to see all commands and categories.`));
+        if(cmds[content.toLowerCase()]) {
+          return msg.channel.send(new Discord.RichEmbed().setAuthor(content.toLowerCase(), client.user.avatarURL).setDescription(cmds[content.toLowerCase()].desc).addField("Usage", `\`\`\`\n${content.toLowerCase() + cmds[content.toLowerCase()].usage}\`\`\``));
+        } else if(["utility", "bot admin", "exp", "election", "fun"].includes(content.toLowerCase()))
+          return msg.channel.send(new Discord.RichEmbed().setAuthor(content.slice(0, 1).toUpperCase() + content.slice(1, content.length) + " Commands", client.user.avatarURL).setDescription({ fun: "A bunch of fun commands you can just play around with!", utility: "Commands used for modding, and commands that also give us some info about the bot", "bot admin": "A bunch of commands only the Clyde Administrators(people who coded Clyde) can use", exp: "These commands let you interact with Clyde EXP and the EXP Store.", election: "Commands you can use to interact with the AqilAcademy Elections!" }[content.toLowerCase()]).addField("Commands", (function(cat) { let cmd = ""; for(let i in cmds) { if(cmds[i].cat === cat) return " "; } return ""})(content.toLowerCase()) === "" ? "No commands yet" : (function(cat) { let cmd = ""; for(let i in cmds) { if(cmds[i].cat === cat) cmd += `**${prefix + i + cmds[i].usage}:** ${cmds[i].desc}\n`; } return cmd})(content.toLowerCase())).setColor(f.color())); // lolololoolololololololololololol
+        else
+          return msg.channel.send(new Discord.RichEmbed().setAuthor(`Error: No command or category named "${content}" found.`, client.user.avatarURL).setColor(f.color()).setFooter(`Do "${prefix}help" to see all commands and categories.`));
         return console.log(`"${content}"`);
       }
       let embed = new Discord.RichEmbed()
