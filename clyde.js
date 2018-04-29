@@ -109,7 +109,9 @@ var f = {
         message.delete() && message.content.slice(0, -2);
       if(message.content.slice(prefix.length).split(" ")[0] === i) {
         cmdDone = true;
-        cmds[i].do(message, message.content.slice(message.content.indexOf(" ")));
+        if(cmds[i].del === true)
+          message.delete();
+        cmds[i].do(message, message.content.slice(message.content.indexOf(" ")).trim());
       }
     }
     return new Promise((resolve, reject) => { resolve(cmdDone); });
@@ -218,6 +220,7 @@ const cmds = {
         .setDescription(`**Input:** \`\`\`js\n${content}\`\`\`**Output:** \`\`\`xl\n${evalled}\`\`\``)
         .setFooter(`Input length: ${content.length}`, msg.author.avatarURL);
       msg.channel.send(embed);
+      console.log("Input: " + content);
     },
   },
 };
