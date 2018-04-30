@@ -264,16 +264,21 @@ const cmds = {
     perms: "",
     del: false,
     do: (msg, content) => {
-      let id;
+      let [embed, id] = [new Discord.RichEmbed(), undefined];
       
       if(content !== "")
         id = content.replace(/[^0-9]/g, "");
       else
         id = msg.author.id;
       
-      if(!client.users.get
+      if(!client.users.get(id))
+        return msg.reply("Please enter a valid ID/User Mention");
       
-      db.get("SELECT * FROM users")
+      db.get(`SELECT * FROM users WHERE id = "${id}"`, (err, res) => {
+        embed.setAuthor(client.users.get(id).tag + "'s stats", client.users.get(id).avatarURL)
+          .setDescription(`**Points(money):** ${res.points}\n**REAL Points:** ${res.realpoints}\n**Messages:** ${res.messages}\n**Account was added in at:** ${new Date(res.created).toUTCString()}`);
+        msg.channel.send(embed);
+      })
     },
   },
 };
