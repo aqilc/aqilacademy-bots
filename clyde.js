@@ -295,6 +295,17 @@ const cmds = {
     perms: "",
     hidden: false,
     del: false,
-    do: (msg, content) => {},
+    do: (msg, content) => {
+      let embed = new Discord.RichEmbed()
+        .setTitle("Clyde Leaderboard", client.user.avatarURL);
+      
+      let page = 0;
+      if(content && !isNaN(Number(content)))
+        page = Number(content)-1;
+      
+      db.all("SELECT * FROM users", (err, res) => {
+        
+      });
+    },
   },
 };
