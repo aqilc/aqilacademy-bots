@@ -303,8 +303,14 @@ const cmds = {
       if(content && !isNaN(Number(content)))
         page = Number(content)-1;
       
-      db.all("SELECT * FROM users", (err, res) => {
+      db.all("SELECT * FROM users ORDER BY realpoints", (err, res) => {
+        if(res.length < page * 10)
+          embed.setDescription(`**Error:**\`\`\`js\nPage does not exist!\`\`\``) && msg.channel.send(embed);
         
+        f.page_maker(res, 10, page, (i, u) => {
+          embed.addField(`[${i + 1}] ${client.users.find(u.id).tag}`, `**Points:** ${u.points}(Real: ${u.realpoints}, Messages: ${u.messages})`);
+        });
+        msg.channel.send(embed);
       });
     },
   },
