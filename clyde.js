@@ -85,8 +85,8 @@ var f = {
     return f;
   },// Checks and console.logs all sql
   check_and_do_cmd: (message) => {
-    let cmdDone = false;
-    var perms = {
+    let [content, cmdDone] = [message.content, false];
+    let perms = {
       undefined: [false, () => {}],
       "": [false, () => {}],
       mod: [!message.member.permissions.has(["MANAGE_MESSAGES", "MANAGE_ROLES"], true) || !f.has_roles(message.member, "Moderator"), () => {
@@ -103,11 +103,11 @@ var f = {
       }],
     };
     for (var i in cmds) {
-      if(perms[cmds[i].perms][0])
-        return perms[cmds[i].perms][1]();
-      if(message.content.endsWith("-d"))
-        message.delete() && message.content.slice(0, -2);
       if((cmds[i].a && cmds[i].a.includes(message.content.slice(prefix.length).split(" ")[0])) || message.content.slice(prefix.length).split(" ")[0] === i) {
+        if(perms[cmds[i].perms][0])
+          return perms[cmds[i].perms][1]();
+        if(content.endsWith("-d"))
+          message.delete() && content.slice(0, -2);
         cmdDone = true;
         if(cmds[i].del === true)
           message.delete();
@@ -276,6 +276,7 @@ const cmds = {
       
       db.get(`SELECT * FROM users WHERE id = "${id}"`, (err, res) => {
         embed.setAuthor(client.users.get(id).tag + "'s stats", client.users.get(id).avatarURL)
+          .setColor(f.color())
           .setDescription(`**Points(money):** ${res.points}\n**REAL Points:** ${res.realpoints}\n**Messages:** ${res.messages}\n**Account was added in at:** ${new Date(res.created).toUTCString()}`);
         msg.channel.send(embed);
       })
