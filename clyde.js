@@ -264,7 +264,16 @@ const cmds = {
     perms: "",
     del: false,
     do: (msg, content) => {
-      db.run
+      let id;
+      
+      if(content !== "")
+        id = content.replace(/[^0-9]/g, "");
+      else
+        id = msg.author.id;
+      
+      if(!client.users.get
+      
+      db.get("SELECT * FROM users")
     },
   },
 };
