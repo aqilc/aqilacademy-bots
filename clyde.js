@@ -219,7 +219,7 @@ const cmds = {
     a: ["eval"],
     desc: "Runs code through Clyde",
     usage: " [code]",
-    cat: "utility",
+    cat: "bot admin",
     perms: "bot admin",
     del: false,
     do: (msg, content) => {
