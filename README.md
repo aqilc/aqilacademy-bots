@@ -14,6 +14,7 @@ Makes [AqilAcademy][aa] work perfectly. Still in production
     usage: "",
     cat: "",
     perms: "",
+    hidden: false,
     del: false,
     do: (msg, content) => {},
   },
