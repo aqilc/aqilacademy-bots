@@ -89,7 +89,7 @@ var f = {
     let needexp = [
       {
         cat: "exp",
-        points: 50000,
+        points: 500000,
         warn: "You need **500 EXP** to use any commands in the **exp** category",
       },
     ];
@@ -114,10 +114,10 @@ var f = {
         db.get(`SELECT * FROM users WHERE id = "${message.author.id}"`, (err, res) => {
           if(perms[cmds[i].perms][0])
             return perms[cmds[i].perms][1]();
-          for(var h of needexp) {
+          for(let h of needexp) {
             if(h.cat === cmds[i].cat) {
               if(res.points < h.points)
-                message.channel.send(new Discord.RichEmbed().setAuthor("Not enough EXP", message.author.id).setDescription(h.warn));
+                return message.channel.send(new Discord.RichEmbed().setColor(f.color()).setAuthor("Not enough EXP", message.author.avatarURL).setDescription(h.warn));
             }
           }
           if(content.endsWith("-d"))
@@ -127,6 +127,7 @@ var f = {
             message.delete();
           cmds[i].do(message, message.content.includes(" ") ? message.content.slice(message.content.indexOf(" ")).trim() : "");
         });
+        break;
       }
     }
     return cmdDone;
