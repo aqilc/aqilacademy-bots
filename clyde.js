@@ -323,14 +323,18 @@ const cmds = {
   },
   daily: {
     a: ["today"],
-    desc: "Gives you free EXP every day! The amount itself is based on your number of points.",
+    desc: "Gives you free EXP every day! The amount itself is based on your number of REAL points.",
     usage: "",
     cat: "exp",
     perms: "",
     hidden: false,
     del: false,
     do: (msg, content) => {
-      
+      db.get(`SELECT * FROM users WHERE id = "${msg.author.id}"`, (err, res) => {
+        let exp = f.random(res.realpoints/20, res.realpoints/10);
+        db.run(`UPDATE users SET points = ${res.points + exp} WHERE id = "${msg.author.id}"`);
+        msg.channel.send(new Discord.RichEmbed().setAuthor("Daily Recieved", msg.author.avatarURL).setColor(f.color()).setDescription(`You have recieved **${exp}** points`));
+      });
     },
   },
 };
