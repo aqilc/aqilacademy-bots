@@ -86,6 +86,12 @@ var f = {
   },// Checks and console.logs all sql
   check_and_do_cmd: (message) => {
     let [content, cmdDone] = [message.content, false];
+    let needexp = [
+      {
+        cat: "exp",
+        points: 500
+      },
+    ];
     let perms = {
       undefined: [false, () => {}],
       "": [false, () => {}],
@@ -313,6 +319,18 @@ const cmds = {
         });
         msg.channel.send(embed);
       });
+    },
+  },
+  daily: {
+    a: ["today"],
+    desc: "Gives you free EXP every day! The amount itself is based on your number of points.",
+    usage: "",
+    cat: "exp",
+    perms: "",
+    hidden: false,
+    del: false,
+    do: (msg, content) => {
+      
     },
   },
 };
