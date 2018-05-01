@@ -126,10 +126,9 @@ var f = {
     return Math.round(Math.random() * 16777215);
   },// Random color
   page_maker: (array, num = 10, page = 0, func) => {
-    array.slice(page*num, page*num + num);
     if(func && typeof func === "function") {
-      for(var i = 0; i < array.length; i ++) {
-        func(i, array[i]);
+      for(var i = 0; i < array.slice(page*num, page*num + num).length; i ++) {
+        func(i, array.slice(page*num, page*num + num)[i]);
       }
       return f;
     }
@@ -297,7 +296,8 @@ const cmds = {
     del: false,
     do: (msg, content) => {
       let embed = new Discord.RichEmbed()
-        .setTitle("Clyde Leaderboard", client.user.avatarURL);
+        .setColor(f.color())
+        .setAuthor("Clyde Leaderboard", client.user.avatarURL);
       
       let page = 0;
       if(content && !isNaN(Number(content)) && Number(content) > 0)
@@ -305,10 +305,11 @@ const cmds = {
       
       db.all("SELECT * FROM users ORDER BY points", (err, rows) => {
         if(rows.length < page * 10)
-          embed.setDescription(`**Error:**\`\`\`js\nPage does not exist!\`\`\``) && msg.channel.send(embed);
+          return embed.setDescription(`**Error:**\`\`\`js\nPage does not exist!\`\`\``) && msg.channel.send(embed);
         
+        rows.reverse();
         f.page_maker(rows, 10, page, (i, user) => {
-          embed.addField(`[${i + 1}] ${client.users.find(user.id).tag}`, `**Points:** ${user.points} (Real: ${user.realpoints}, Messages: ${user.messages})`);
+          embed.addField(`[${i + 1}] ${client.users.get(user.id).tag}`, `**Points:** ${user.points} (Real: ${user.realpoints}, Messages: ${user.messages})`);
         });
         msg.channel.send(embed);
       });
