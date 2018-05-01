@@ -303,7 +303,7 @@ const cmds = {
       if(content && !isNaN(Number(content)))
         page = Number(content)-1;
       
-      db.all("SELECT * FROM users ORDER BY realpoints", (err, res) => {
+      db.all("SELECT * FROM users ORDER BY points", (err, res) => {
         if(res.length < page * 10)
           embed.setDescription(`**Error:**\`\`\`js\nPage does not exist!\`\`\``) && msg.channel.send(embed);
         
