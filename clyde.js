@@ -307,8 +307,8 @@ const cmds = {
         if(res.length < page * 10)
           embed.setDescription(`**Error:**\`\`\`js\nPage does not exist!\`\`\``) && msg.channel.send(embed);
         
-        f.page_maker(res, 10, page, (i, u) => {
-          embed.addField(`[${i + 1}] ${client.users.find(u.id).tag}`, `**Points:** ${u.points}(Real: ${u.realpoints}, Messages: ${u.messages})`);
+        f.page_maker(res, 10, page, (i, user) => {
+          embed.addField(`[${i + 1}] ${client.users.find(user.id).tag}`, `**Points:** ${user.points}(Real: ${user.realpoints}, Messages: ${user.messages})`);
         });
         msg.channel.send(embed);
       });
