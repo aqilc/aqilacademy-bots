@@ -183,12 +183,12 @@ var f = {
 
 client.on("message", (msg) => {
   try {
-    if(msg.content.startsWith(prefix)){
+    if(msg.content.startsWith(prefix) && !msg.author.bot){
       if(!f.check_and_do_cmd(msg) && data.whitelist.includes(msg.channel.id))
         f.add_message(msg.author.id);
       return;
     }
-    if(data.whitelist.includes(msg.channel.id))
+    if(data.whitelist.includes(msg.channel.id) && !msg.author.bot)
       f.add_message(msg.author.id);
   } catch(err) {
     msg.channel.send(new Discord.RichEmbed().setAuthor("Error", client.user.avatarURL).setColor(f.color()).setDescription(`\`\`\`js\n${err}\`\`\``).setTimestamp());
