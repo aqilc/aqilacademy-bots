@@ -89,7 +89,8 @@ var f = {
     let needexp = [
       {
         cat: "exp",
-        points: 500
+        points: 50000,
+        warn: "You need **500 EXP** to use any commands in the **exp** category",
       },
     ];
     let perms = {
@@ -110,14 +111,22 @@ var f = {
     };
     for (var i in cmds) {
       if((cmds[i].a && cmds[i].a.includes(message.content.slice(prefix.length).split(" ")[0])) || message.content.slice(prefix.length).split(" ")[0] === i) {
-        if(perms[cmds[i].perms][0])
-          return perms[cmds[i].perms][1]();
-        if(content.endsWith("-d"))
-          message.delete() && content.slice(0, -2);
-        cmdDone = true;
-        if(cmds[i].del === true)
-          message.delete();
-        cmds[i].do(message, message.content.includes(" ") ? message.content.slice(message.content.indexOf(" ")).trim() : "");
+        db.get(`SELECT * FROM users WHERE id = "${message.author.id}"`, (err, res) => {
+          if(perms[cmds[i].perms][0])
+            return perms[cmds[i].perms][1]();
+          for(var h of needexp) {
+            if(h.cat === cmds[i].cat) {
+              if(res.points < h.points)
+                message.channel.send(new Discord.RichEmbed().setAuthor("Not enough EXP", message.author.id).setDescription(h.warn));
+            }
+          }
+          if(content.endsWith("-d"))
+            message.delete() && content.slice(0, -2);
+          cmdDone = true;
+          if(cmds[i].del === true)
+            message.delete();
+          cmds[i].do(message, message.content.includes(" ") ? message.content.slice(message.content.indexOf(" ")).trim() : "");
+        });
       }
     }
     return cmdDone;
@@ -322,7 +331,7 @@ const cmds = {
     },
   },
   daily: {
-    a: ["today"],
+    a: [],
     desc: "Gives you free EXP every day! The amount itself is based on your number of REAL points.",
     usage: "",
     cat: "exp",
