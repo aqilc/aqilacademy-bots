@@ -300,7 +300,7 @@ const cmds = {
         .setTitle("Clyde Leaderboard", client.user.avatarURL);
       
       let page = 0;
-      if(content && !isNaN(Number(content)))
+      if(content && !isNaN(Number(content)) && Number(content) > 0)
         page = Number(content)-1;
       
       db.all("SELECT * FROM users ORDER BY points", (err, res) => {
@@ -308,7 +308,7 @@ const cmds = {
           embed.setDescription(`**Error:**\`\`\`js\nPage does not exist!\`\`\``) && msg.channel.send(embed);
         
         f.page_maker(res, 10, page, (i, user) => {
-          embed.addField(`[${i + 1}] ${client.users.find(user.id).tag}`, `**Points:** ${user.points}(Real: ${user.realpoints}, Messages: ${user.messages})`);
+          embed.addField(`[${i + 1}] ${client.users.find(user.id).tag}`, `**Points:** ${user.points} (Real: ${user.realpoints}, Messages: ${user.messages})`);
         });
         msg.channel.send(embed);
       });
