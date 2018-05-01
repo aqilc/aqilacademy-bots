@@ -331,6 +331,7 @@ const cmds = {
     del: false,
     do: (msg, content) => {
       db.get(`SELECT * FROM users WHERE id = "${msg.author.id}"`, (err, res) => {
+        if(
         let exp = f.random(res.realpoints/20, res.realpoints/10);
         db.run(`UPDATE users SET points = ${res.points + exp} WHERE id = "${msg.author.id}"`);
         msg.channel.send(new Discord.RichEmbed().setAuthor("Daily Recieved", msg.author.avatarURL).setColor(f.color()).setDescription(`You have recieved **${exp}** points`));
