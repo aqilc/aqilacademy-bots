@@ -322,15 +322,15 @@ const cmds = {
         page = Number(content)-1;
       
       db.all("SELECT * FROM users ORDER BY points", (err, rows) => {
+        embed.setFooter(`Page ${page + 1} | 10 people per page | Total Users: ${rows.length} | To earn more exp, talk in #general`);
+        
         if(rows.length < page * 10)
-          return embed.setDescription(`**Error:**\`\`\`js\nPage does not exist!\`\`\``) && msg.channel.send(embed);
+          return msg.channel.send(embed.setDescription(`**Error:**\`\`\`md\nPage does not exist!\n> Total Users: ${rows.length}\`\`\``));
         
         rows.reverse();
         f.page_maker(rows, 10, page, (i, user) => {
           embed.addField(`[${i + 1}] ${client.users.get(user.id).tag}`, `**Points:** ${user.points} (Real: ${user.realpoints}, Messages: ${user.messages})`);
         });
-        
-        embed.setFooter(`Page ${page + 1} | 10 people per page | To earn more exp, talk in #general`);
         msg.channel.send(embed);
       });
     },
@@ -352,5 +352,15 @@ const cmds = {
         msg.channel.send(new Discord.RichEmbed().setAuthor("Daily Recieved", msg.author.avatarURL).setColor(f.color()).setDescription(`You have recieved **${exp}** points`));
       });
     },
+  },
+  edit: {
+    a: [],
+    desc: "",
+    usage: "",
+    cat: "",
+    perms: "",
+    hidden: false,
+    del: false,
+    do: (msg, content) => {},
   },
 };
