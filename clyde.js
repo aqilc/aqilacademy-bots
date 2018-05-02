@@ -362,8 +362,26 @@ const cmds = {
     hidden: false,
     del: false,
     do: (msg, content) => {
-      if(content.split(" ").length < 3)
-        msg.reply("Please fill up ALL parameters.\n**Parameters:** `[user mention or id] [category] [action]`");
+      let args = content.split(" ");
+      if(args.length < 3)
+        return msg.reply("Please fill up ALL parameters.\n**Parameters:** `[user mention or id] [category] [action]`");
+      
+      if(!client.users.get(args[0].replace(/[^0-9]/g, "")))
+        return msg.reply("Please enter a valid user mention/id");
+      
+      switch(args[1].toLowerCase()) {
+        case "exp":
+          
+          break;
+        case "warns":
+          
+          break;
+        case "items":
+          
+          break;
+        default:
+          return msg.reply("Please enter a valid category!\n**Available categories:**```md\n1. Warns(Actions: remove [IPK])\n2. Items(Actions: add [ID], remove [IPK])\n3. EXP(Actions: delete, add [EXP amount], subtract [EXP amount], set [EXP amount])```");
+      }
     },
   },
 };
