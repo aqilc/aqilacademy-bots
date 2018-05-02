@@ -355,7 +355,7 @@ const cmds = {
   },
   edit: {
     a: [],
-    desc: "Edits a user's stats.\n**Three categories:**```md\nWarns(Actions: remove [IPK])\nItems(Actions: add [ID], remove [IPK])\nEXP(Actions: delete, add [EXP amount], subtract [EXP amount], set [EXP amount])```",
+    desc: "Edits a user's stats.\n**Three categories:**```md\n1. Warns(Actions: remove [IPK])\n2. Items(Actions: add [ID], remove [IPK])\n3. EXP(Actions: delete, add [EXP amount], subtract [EXP amount], set [EXP amount])```",
     usage: " [user mention or id] [category] [action] (a number of some sort)",
     cat: "bot admin",
     perms: "bot admin",
