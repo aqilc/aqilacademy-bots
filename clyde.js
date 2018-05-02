@@ -355,8 +355,8 @@ const cmds = {
   },
   edit: {
     a: [],
-    desc: "",
-    usage: "",
+    desc: "Edits a user's stats. Three categories: Warns, Items, and EXP",
+    usage: " [category] [actio",
     cat: "bot admin",
     perms: "bot admin",
     hidden: false,
