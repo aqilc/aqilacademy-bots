@@ -355,7 +355,7 @@ const cmds = {
   },
   edit: {
     a: [],
-    desc: "Edits a user's stats.\n**Three categories:**```md\n1. Warns(Actions: remove [IPK])\n2. Items(Actions: add [ID], remove [IPK])\n3. EXP(Actions: delete, add [EXP amount], subtract [EXP amount], set [EXP amount])```",
+    desc: "Edits a user's stats.\n**Three categories:**```md\n1. Warns(Actions: remove [IPK])\n2. Items(Actions: add [ID], remove [IPK])\n3. EXP(Actions: delete, add [EXP amount], sub [EXP amount], set [EXP amount])```",
     usage: " [user mention or id] [category] [action] (a number of some sort)",
     cat: "bot admin",
     perms: "bot admin",
@@ -371,7 +371,16 @@ const cmds = {
       
       switch(args[1].toLowerCase()) {
         case "exp":
-          
+          if(["add", "sub", "set"].includes(args[2].toLowerCase()) &&
+          db.get(`SELECT * FROM users WHERE id = "${msg.author.id}"`, () => {
+            switch(args[2].toLowerCase()) {
+              case "add":
+                
+                break;
+              default:
+                return msg.reply("Please enter a valid action! **Actions:** `delete, add [EXP amount], sub [EXP amount], set [EXP amount]`");
+            }
+          });
           break;
         case "warns":
           
