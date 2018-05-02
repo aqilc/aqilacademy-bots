@@ -371,7 +371,8 @@ const cmds = {
       
       switch(args[1].toLowerCase()) {
         case "exp":
-          if(["add", "sub", "set"].includes(args[2].toLowerCase()) &&
+          if(["add", "sub", "set"].includes(args[2].toLowerCase()) && isNaN(Number(args[3])))
+            return msg.reply("Please enter a valid number for the fourth argument!");
           db.get(`SELECT * FROM users WHERE id = "${msg.author.id}"`, () => {
             switch(args[2].toLowerCase()) {
               case "add":
