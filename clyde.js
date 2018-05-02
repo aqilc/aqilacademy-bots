@@ -146,7 +146,7 @@ var f = {
   page_maker: (array, num = 10, page = 0, func) => {
     if(func && typeof func === "function") {
       for(var i = 0; i < array.slice(page*num, page*num + num).length; i ++) {
-        func(i, array.slice(page*num, page*num + num)[i]);
+        func(i + page*num, array.slice(page*num, page*num + num)[i]);
       }
       return f;
     }
