@@ -12,6 +12,15 @@ const data = require("./data.json");
 //Prefix
 const prefix = "c.";
 
+// The exp milestones you have to reach to unlock commands
+const needexp = [
+  {
+    cat: "exp",
+    points: 100,
+    warn: "You need **100 EXP** to use any commands in the **exp** category",
+  },
+];
+
 //The client
 var client = new Discord.Client({ autoreconnect: true });
 client.login(process.env.TOKEN);
@@ -86,13 +95,6 @@ var f = {
   },// Checks and console.logs all sql
   check_and_do_cmd: (message) => {
     let [content, cmdDone] = [message.content, false];
-    let needexp = [
-      {
-        cat: "exp",
-        points: 500,
-        warn: "You need **500 EXP** to use any commands in the **exp** category",
-      },
-    ];
     let perms = {
       undefined: [false, () => {}],
       "": [false, () => {}],
