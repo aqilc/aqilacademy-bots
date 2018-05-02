@@ -329,6 +329,8 @@ const cmds = {
         f.page_maker(rows, 10, page, (i, user) => {
           embed.addField(`[${i + 1}] ${client.users.get(user.id).tag}`, `**Points:** ${user.points} (Real: ${user.realpoints}, Messages: ${user.messages})`);
         });
+        
+        embed.setFooter(`Page ${page + 1} | 10 people per page | To earn more exp, talk in #general`);
         msg.channel.send(embed);
       });
     },
