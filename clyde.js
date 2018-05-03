@@ -41,11 +41,13 @@ app.listen(process.env.PORT);
 db.serialize(function() {
   let tables = [
     "users (id TEXT, points INTEGER, lastDaily INTEGER, messages INTEGER, realpoints INTEGER, created INTEGER)",
-    "warns (num INTEGER PRIMARY KEY, warn TEXT, mod TEXT, date INTEGER)", "items (name TEXT, price TEXT, user TEXT)",
+    "warns (num INTEGER PRIMARY KEY, warn TEXT, mod TEXT, date INTEGER)",
+    "items (num INTEGER PRIMARY KEY, id INTEGER, user TEXT)",
     "expstore (num INTEGER PRIMARY KEY, item TEXT, desc TEXT, stock INTEGER, price INTEGER, approved TEXT, bought TEXT, seller TEXT, buyer TEXT)",
     "elections (num INTEGER PRIMARY KEY, winner TEXT, end INTEGER, start INTEGER, vp TEXT)",
     "election (num INTEGER PRIMARY KEY, id TEXT, vId TEXT, votes INTEGER, msgId TEXT)",
-    "voters (id TEXT, for TEXT, date INTEGER, election INTEGER)"
+    "voters (id TEXT, for TEXT, date INTEGER, election INTEGER)",
+    "suggestions (num INTEGER PRIMARY KEY, suggestion TEXT, by TEXT, votes TEXT, created INTEGER)",
   ];
   for(var i of tables) {
     db.run("CREATE TABLE IF NOT EXISTS " + i);
@@ -371,9 +373,11 @@ const cmds = {
       
       switch(args[1].toLowerCase()) {
         case "exp":
+          let embed = new Discord.RichEmbed()
+            .setAuthor("Edited EXP for " + client.users.get(id).tag, msg.author.;
           if(["add", "sub", "set"].includes(args[2].toLowerCase()) && isNaN(Number(args[3])))
             return msg.reply("Please enter a valid number for the fourth argument!");
-          db.get(`SELECT * FROM users WHERE id = "${msg.author.id}"`, () => {
+          db.get(`SELECT * FROM users WHERE id = "${id}"`, () => {
             switch(args[2].toLowerCase()) {
               case "add":
                 
