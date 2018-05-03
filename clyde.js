@@ -364,7 +364,7 @@ const cmds = {
     hidden: false,
     del: false,
     do: (msg, content) => {
-      let args = content.split(" ");
+      let [args, id] = [content.split(" "), args[0].replace(/[^0-9]/g, "")];
       if(args.length < 3)
         return msg.reply("Please fill up ALL parameters.\n**Parameters:** `[user mention or id] [category] [action]`");
       
@@ -374,7 +374,7 @@ const cmds = {
       switch(args[1].toLowerCase()) {
         case "exp":
           let embed = new Discord.RichEmbed()
-            .setAuthor("Edited EXP for " + client.users.get(id).tag, msg.author.;
+            .setAuthor("Edited EXP for " + client.users.get(id).tag, msg.author.avatarURL);
           if(["add", "sub", "set"].includes(args[2].toLowerCase()) && isNaN(Number(args[3])))
             return msg.reply("Please enter a valid number for the fourth argument!");
           db.get(`SELECT * FROM users WHERE id = "${id}"`, () => {
