@@ -377,14 +377,26 @@ const cmds = {
             .setAuthor("Edited EXP for " + client.users.get(id).tag, msg.author.avatarURL);
           if(["add", "sub", "set"].includes(args[2].toLowerCase()) && isNaN(Number(args[3])))
             return msg.reply("Please enter a valid number for the fourth argument!");
-          db.get(`SELECT * FROM users WHERE id = "${id}"`, () => {
+          db.get(`SELECT * FROM users WHERE id = "${id}"`, (err, res) => {
             switch(args[2].toLowerCase()) {
               case "add":
+                embed.setDescription(`Added **${args[3]} EXP** to <@${id}>`);
+                db.run(`UPDATE users SET points = ${res.points + Number(args[3])} WHERE id = "${id}"`);
+                break;
+              case "sub":
+                embed.setDescription(`Subtracted **${args[3]} EXP** from <@${id}>`);
+                db.run(`UPDATE users SET points = ${res.points - Number(args[3]) < 0 ? 0 : res.points - Number(args[3])} WHERE id = "${id}"`);
+                break;
+              case "set":
+                
+                break;
+              case "delete":
                 
                 break;
               default:
                 return msg.reply("Please enter a valid action! **Actions:** `delete, add [EXP amount], sub [EXP amount], set [EXP amount]`");
             }
+            msg.channel.send(embed);
           });
           break;
         case "warns":
