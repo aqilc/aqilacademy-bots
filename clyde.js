@@ -348,7 +348,7 @@ const cmds = {
     do: (msg, content) => {
       db.get(`SELECT * FROM users WHERE id = "${msg.author.id}"`, (err, res) => {
         if(new Date().getDate() === new Date(res.lastDaily).getDate() && new Date().getFullYear() === new Date(res.lastDaily).getFullYear() && new Date().getMonth() === new Date(res.lastDaily).getMonth())
-          return msg.channel.send(new Discord.RichEmbed().setAuthor("Please wait till tomorrow to recieve your daily :D", msg.author.avatarURL).setColor(f.color()).setDescription("You can get it anytime tomorrow or after"));
+          return msg.channel.send(new Discord.RichEmbed().setAuthor("Please wait till tomorrow to recieve your daily 😁", msg.author.avatarURL).setColor(f.color()).setDescription("You can get it anytime tomorrow or after"));
         let exp = f.random(res.realpoints/20, res.realpoints/10, true);
         db.run(`UPDATE users SET points = ${res.points + exp}, lastDaily = ${new Date().valueOf()} WHERE id = "${msg.author.id}"`);
         msg.channel.send(new Discord.RichEmbed().setAuthor("Daily Recieved", msg.author.avatarURL).setColor(f.color()).setDescription(`You have recieved **${exp}** points`));
