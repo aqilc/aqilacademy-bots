@@ -364,7 +364,8 @@ const cmds = {
     hidden: false,
     del: false,
     do: (msg, content) => {
-      let [args, id] = [content.split(" "), args[0].replace(/[^0-9]/g, "")];
+      let args = content.split(" ");
+      let id = args[0].replace(/[^0-9]/g, "");
       if(args.length < 3)
         return msg.reply("Please fill up ALL parameters.\n**Parameters:** `[user mention or id] [category] [action]`");
       
@@ -378,6 +379,9 @@ const cmds = {
           if(["add", "sub", "set"].includes(args[2].toLowerCase()) && isNaN(Number(args[3])))
             return msg.reply("Please enter a valid number for the fourth argument!");
           db.get(`SELECT * FROM users WHERE id = "${id}"`, (err, res) => {
+            if(!res)
+              return msg.reply("User doesn't exist!");
+            
             switch(args[2].toLowerCase()) {
               case "add":
                 embed.setDescription(`Added **${args[3]} EXP** to <@${id}>`);
@@ -385,13 +389,15 @@ const cmds = {
                 break;
               case "sub":
                 embed.setDescription(`Subtracted **${args[3]} EXP** from <@${id}>`);
-                db.run(`UPDATE users SET points = ${res.points - Number(args[3]) < 0 ? 0 : res.points - Number(args[3])} WHERE id = "${id}"`);
+                db.run(`UPDATE users SET points = ${(res.points - Number(args[3])) < 0 ? 0 : Math.round(res.points - Number(args[3]))} WHERE id = "${id}"`);
                 break;
               case "set":
-                
+                embed.setDescription(`<@${id}>'s **EXP** set to **${args[3]} EXP**`);
+                db.run(`UPDATE users SET points = ${res.points + Number(args[3])} WHERE id = "${id}"`);
                 break;
               case "delete":
-                
+                embed.setDescription(`Deleted <@${id}> from the EXP table`);
+                db.run(`DELETE FROM users WHERE id = "${id}"`);
                 break;
               default:
                 return msg.reply("Please enter a valid action! **Actions:** `delete, add [EXP amount], sub [EXP amount], set [EXP amount]`");
