@@ -57,9 +57,11 @@ db.serialize(function() {
 
 var f = {
   log: (type, log) => {
-    let chnl = { main: "382499510401630209", general: "433004874930716673", announce: "382353531837087745", staff: "382530174677417984", xp: "407643635358892032" }[type];
+    let chnl = { main: "382499510401630209", chat: "433004874930716673", announce: "382353531837087745", staff: "382530174677417984", exp: "407643635358892032" }[type];
     if(!chnl)
-      throw new Error(`Incorrect channel type on something. All channel types: ${String(chnl)}`);
+      throw new Error(`Incorrect channel type on something. All channel types: ${chnl}`);
+    
+    client.channels.get(chnl).send(log);
   },
   checkelections: () => {
     db.all("SELECT * FROM elections ORDER BY end", (err, res) => {
@@ -442,13 +444,13 @@ const cmds = {
       
       //Actually bans the user
       msg.guild.ban(id, `Banned for: ${reason} (Moderator: ${msg.author.tag})`).then(user => {
-        console.log(`${user.tag} was banned`);
         embed.setAuthor(`${user.tag} was banned`, user.avatarURL);
         if(reason)
           embed.addField("Reason:", `${reason}`);
         embed.addField("Moderator:", `<@${msg.author.id}> (ID: \`${msg.author.id}\`)`);
         if(roles)
           embed.addField("Roles:", "```" + roles.join("\n") + "```");
+        f.log("main", embed);
         msg.channel.send(embed);
       }).catch(err => {
         msg.channel.send(`ERROR:\`\`\`${err}\`\`\``);
