@@ -425,7 +425,7 @@ const cmds = {
   },
   ban: {
     a: [],
-    desc: "Bans a user. User can be inside or outsode AqilAcademy.",
+    desc: "Bans a user. User can be inside or outside AqilAcademy.",
     usage: " [id/user mention] (reason)",
     cat: "utility",
     perms: "admin",
