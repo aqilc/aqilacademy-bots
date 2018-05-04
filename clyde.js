@@ -37,7 +37,7 @@ app.get("/", function (request, response) {
 });
 app.listen(process.env.PORT);
 
-// if ./.data/sqlite.db does not exist, create it, otherwise print records to console
+// if ./.data/sqlite.db does not exist, create it, and add tables
 db.serialize(function() {
   let tables = [
     "users (id TEXT, points INTEGER, lastDaily INTEGER, messages INTEGER, realpoints INTEGER, created INTEGER)",
@@ -443,7 +443,7 @@ const cmds = {
       }
       
       //Actually bans the user
-      msg.guild.ban(id, `Banned for: ${reason} (Moderator: ${msg.author.tag})`).then(user => {
+      msg.guild.ban(id, `Banned for: ${reason === "" || !reason ? "No reason specified" : reason} (Moderator: ${msg.author.tag})`).then(user => {
         embed.setAuthor(`${user.tag} was banned`, user.avatarURL);
         if(reason)
           embed.addField("Reason:", `${reason}`);
