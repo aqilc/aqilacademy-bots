@@ -416,4 +416,39 @@ const cmds = {
       }
     },
   },
+  ban: {
+    a: [],
+    desc: "Bans a user. User can be inside or outsode AqilAcademy.",
+    usage: " [id/user mention] (reason)",
+    cat: "utility",
+    perms: "admin",
+    hidden: false,
+    del: true,
+    do: (msg, content) => {
+      //Defines variables
+      let [roles, reason, id, embed] = [undefined, undefined, ;
+      let reason;
+      let id = f.sti(content.split("R:")[0]);
+      
+      //Checks for ban
+      reason = content.split("R:")[1];
+      if(msg.guild.members.get(id)) {
+        if(msg.guild.members.find("id", client.user.id).highestRole.comparePositionTo(msg.guild.members.find("id", id).highestRole) < 0) return msg.reply(`Please give me a role higher than <@${id}> for me to execute this command`);
+        if(msg.author.id !== msg.guild.owner.id && id !== msg.guild.owner.id && msg.member.roles.highestRole.comparePostionTo(msg.guild.members.find("id", id).highestRole) < 0) return msg.reply(`You need a higher role to ban <@${id}>`);
+        roles = msg.guild.members.get(id).roles.map(r => r.name);
+      }
+      
+      //Actually bans the user
+      msg.guild.ban(id, `Banned for: ${reason} (Moderator: ${msg.author.tag})`).then(user => {
+        f.log(`${user.tag} was banned from ${msg.guild.id}`);
+        embed.setAuthor(`${user.tag} was banned`, user.avatarURL);
+        embed.addField("Reason:", `${reason}`);
+        embed.addField("Moderator:", `<@${msg.author.id}> (ID: \`${msg.author.id}\`)`);
+        if(roles) embed.addField("Roles:", "```" + roles.join("\n") + "```");
+        msg.channel.send(embed);
+      }).catch(err => {
+        msg.channel.send(`ERROR:\`\`\`${err}\`\`\``);
+      });
+    },
+  },
 };
