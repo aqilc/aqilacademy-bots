@@ -56,6 +56,11 @@ db.serialize(function() {
 });
 
 var f = {
+  log: (type, log) => {
+    let chnl = { main: "382499510401630209", general: "433004874930716673", announce: "382353531837087745", staff: "382530174677417984", xp: "407643635358892032" }[type];
+    if(!chnl)
+      throw new Error(`Incorrect channel type on something. All channel types: ${String(chnl)}`);
+  },
   checkelections: () => {
     db.all("SELECT * FROM elections ORDER BY end", (err, res) => {
       if(res.length === 0)
@@ -426,10 +431,9 @@ const cmds = {
     del: true,
     do: (msg, content) => {
       //Defines variables
-      let [roles, reason, id, embed] = [undefined, undefined, content.split(" ")[0].replace(/[^0-9]/g, ""), new Discord.RichEmbed()];
+      let [roles, reason, id, embed] = [undefined, content.slice(content.indexOf(" ")), content.split(" ")[0].replace(/[^0-9]/g, ""), new Discord.RichEmbed()];
       
       //Checks for ban
-      reason = content.slice(content.indexOf(" "));
       if(msg.guild.members.get(id)) {
         if(msg.guild.members.find("id", client.user.id).highestRole.comparePositionTo(msg.guild.members.find("id", id).highestRole) < 0) return msg.reply(`Please give me a role higher than <@${id}> for me to execute this command`);
         if(msg.author.id !== msg.guild.owner.id && id !== msg.guild.owner.id && msg.member.roles.highestRole.comparePostionTo(msg.guild.members.find("id", id).highestRole) < 0) return msg.reply(`You need a higher role to ban <@${id}>`);
