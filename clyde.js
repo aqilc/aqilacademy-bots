@@ -511,7 +511,9 @@ const cmds = {
     hidden: false,
     del: true,
     do: (msg, content) => {
-      client.channel.send
+      let embed = new Discord.RichEmbed();
+      
+      client.channels.find(data.echnl).send(embed);
     },
   },
 };
