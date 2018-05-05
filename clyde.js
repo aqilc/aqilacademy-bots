@@ -136,7 +136,7 @@ var f = {
           cmdDone = true;
           if(cmds[i].del === true)
             message.delete();
-          cmds[i].do(message, message.content.includes(" ") ? message.content.slice(message.content.indexOf(" ")).trim() : "");
+          cmds[i].do(message, content.includes(" ") ? content.slice(message.content.indexOf(" ")).trim() : "");
         });
         break;
       }
