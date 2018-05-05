@@ -469,4 +469,14 @@ const cmds = {
       });
     },
   },
+  startelection: {
+    a: [],
+    desc: "",
+    usage: "",
+    cat: "",
+    perms: "",
+    hidden: false,
+    del: false,
+    do: (msg, content) => {},
+  },
 };
