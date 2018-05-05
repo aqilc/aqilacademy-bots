@@ -17,8 +17,15 @@ const needexp = [
   {
     cat: "exp",
     points: 100,
+    ignore: [],
     warn: "You need **100 EXP** to use any commands in the **exp** category",
   },
+  {
+    cat: "elections",
+    points: 500,
+    ignore: [],
+    warn: "You need **500 EXP** to use any commands in the **election* category",
+  }
 ];
 
 //The client
@@ -127,6 +134,10 @@ var f = {
             return perms[cmds[i].perms][1]();
           for(let h of needexp) {
             if(h.cat === cmds[i].cat) {
+              if(res.points < h.points)
+                return message.channel.send(new Discord.RichEmbed().setColor(f.color()).setAuthor("Not enough EXP", message.author.avatarURL).setDescription(h.warn));
+            }
+            else if (h.cmd === i) {
               if(res.points < h.points)
                 return message.channel.send(new Discord.RichEmbed().setColor(f.color()).setAuthor("Not enough EXP", message.author.avatarURL).setDescription(h.warn));
             }
@@ -376,13 +387,13 @@ const cmds = {
       if(args.length < 3)
         return msg.reply("Please fill up ALL parameters.\n**Parameters:** `[user mention or id] [category] [action]`");
       
-      if(!client.users.get(args[0].replace(/[^0-9]/g, "")))
+      if(id.length !== 18)
         return msg.reply("Please enter a valid user mention/id");
       
       switch(args[1].toLowerCase()) {
         case "exp":
           let embed = new Discord.RichEmbed()
-            .setAuthor("Edited EXP for " + client.users.get(id).tag, msg.author.avatarURL);
+            .setAuthor("Edited EXP for " + client.users.get(id) ? client.users.get(id).tag : id, msg.author.avatarURL);
           if(["add", "sub", "set"].includes(args[2].toLowerCase()) && isNaN(Number(args[3])))
             return msg.reply("Please enter a valid number for the fourth argument!");
           db.get(`SELECT * FROM users WHERE id = "${id}"`, (err, res) => {
