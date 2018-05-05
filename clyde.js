@@ -23,7 +23,7 @@ const needexp = [
   {
     cat: "elections",
     points: 500,
-    ignore: [],
+    ignore: ["run"],
     warn: "You need **500 EXP** to use any commands in the **election* category",
   }
 ];
@@ -133,7 +133,7 @@ var f = {
           if(perms[cmds[i].perms][0])
             return perms[cmds[i].perms][1]();
           for(let h of needexp) {
-            if(h.cat === cmds[i].cat) {
+            if(h.cat === cmds[i].cat && !h.ignore.includes(i)) {
               if(res.points < h.points)
                 return message.channel.send(new Discord.RichEmbed().setColor(f.color()).setAuthor("Not enough EXP", message.author.avatarURL).setDescription(h.warn));
             }
