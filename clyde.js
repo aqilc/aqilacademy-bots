@@ -445,7 +445,7 @@ const cmds = {
     del: true,
     do: (msg, content) => {
       //Defines variables
-      let [roles, reason, id, embed] = [undefined, content.slice(content.indexOf(" ")), content.split(" ")[0].replace(/[^0-9]/g, ""), new Discord.RichEmbed()];
+      let [roles, reason, id, embed] = [undefined, content.slice(content.indexOf(" ")).slice(content.indexOf(" ")), content.split(" ")[0].replace(/[^0-9]/g, ""), new Discord.RichEmbed()];
       
       //Checks for ban
       if(msg.guild.members.get(id)) {
@@ -456,7 +456,8 @@ const cmds = {
       
       //Actually bans the user
       msg.guild.ban(id, `Banned for: ${reason === "" || !reason ? "No reason specified" : reason} (Moderator: ${msg.author.tag})`).then(user => {
-        embed.setAuthor(`${user.tag} was banned`, user.avatarURL);
+        embed.setAuthor(`${user.tag} was banned`, user.avatarURL)
+        .setColor(;
         if(reason)
           embed.addField("Reason:", `${reason}`);
         embed.addField("Moderator:", `<@${msg.author.id}> (ID: \`${msg.author.id}\`)`);
@@ -469,14 +470,49 @@ const cmds = {
       });
     },
   },
+  kick: {
+    a: [],
+    desc: "Kicks a user. User has to be inside AqilAcademy.",
+    usage: " [id/user mention] (reason)",
+    cat: "utility",
+    perms: "mod",
+    hidden: false,
+    del: true,
+    do: (msg, content) => {
+      //Defines variables
+      let [roles, reason, id, embed] = [undefined, content.slice(content.indexOf(" ")).slice(content.indexOf(" ")), content.split(" ")[0].replace(/[^0-9]/g, ""), new Discord.RichEmbed()];
+      
+      //Checks for ban
+      if(msg.guild.members.get(id)) {
+        if(msg.guild.members.find("id", client.user.id).highestRole.comparePositionTo(msg.guild.members.find("id", id).highestRole) < 0) return msg.reply(`Please give me a role higher than <@${id}> for me to execute this command`);
+        if(msg.author.id !== msg.guild.owner.id && id !== msg.guild.owner.id && msg.member.roles.highestRole.comparePostionTo(msg.guild.members.find("id", id).highestRole) < 0) return msg.reply(`You need a higher role to ban <@${id}>`);
+        roles = msg.guild.members.get(id).roles.map(r => r.name);
+      } else
+        return msg.reply("Message has to be inside AqilAcademy");
+      
+      //Actually bans the user
+      msg.member.kick(id, `Kicked for: ${reason === "" || !reason ? "No reason specified" : reason} (Moderator: ${msg.author.tag})`)
+      embed.setAuthor(`${msg.author.tag} was banned`, msg.author.avatarURL);
+      if(reason)
+        embed.addField("Reason:", `${reason}`);
+      embed.addField("Moderator:", `<@${msg.author.id}> (ID: \`${msg.author.id}\`)`)
+        .setColor(f.color());
+      if(roles)
+        embed.addField("Roles:", "```" + roles.join("\n") + "```");
+      f.log("main", embed);
+      msg.channel.send(embed);
+    },
+  },
   startelection: {
     a: [],
-    desc: "",
-    usage: "",
-    cat: "",
-    perms: "",
+    desc: "Starts an AqilAcademy Election.",
+    usage: " (hours)",
+    cat: "election",
+    perms: "bot admin",
     hidden: false,
-    del: false,
-    do: (msg, content) => {},
+    del: true,
+    do: (msg, content) => {
+      
+    },
   },
 };
