@@ -457,7 +457,7 @@ const cmds = {
       //Actually bans the user
       msg.guild.ban(id, `Banned for: ${reason === "" || !reason ? "No reason specified" : reason} (Moderator: ${msg.author.tag})`).then(user => {
         embed.setAuthor(`${user.tag} was banned`, user.avatarURL)
-        .setColor(;
+          .setColor(f.color());
         if(reason)
           embed.addField("Reason:", `${reason}`);
         embed.addField("Moderator:", `<@${msg.author.id}> (ID: \`${msg.author.id}\`)`);
