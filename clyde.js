@@ -511,9 +511,13 @@ const cmds = {
     hidden: false,
     del: true,
     do: (msg, content) => {
-      let embed = new Discord.RichEmbed();
+      let embed = new Discord.RichEmbed()
+        .setAuthor("A New Election has started!", client.user.avatarURL)
+        .setColor(f.color())
+        .addField("How to run", `To run, use the \`${prefix}run\` command. To learn mor
+        .addField("How to vote", "There are **2** reactions. A :thumbsup: and a :thumbsdown:. These will be your voting buttons. You can only vote once and you cannot vote for your Vice or yourself. We would advise you to not share who you voted for.")
       
-      client.channels.find(data.echnl).send(embed);
+      client.channels.get(data.echnl).send(embed);
     },
   },
 };
