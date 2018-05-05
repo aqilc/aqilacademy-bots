@@ -445,7 +445,7 @@ const cmds = {
     del: true,
     do: (msg, content) => {
       //Defines variables
-      let [roles, reason, id, embed] = [undefined, content.slice(content.indexOf(" ")).slice(content.indexOf(" ")), content.split(" ")[0].replace(/[^0-9]/g, ""), new Discord.RichEmbed()];
+      let [roles, reason, id, embed] = [undefined, content.slice(content.indexOf(" ")), content.split(" ")[0].replace(/[^0-9]/g, ""), new Discord.RichEmbed()];
       
       //Checks for ban
       if(msg.guild.members.get(id)) {
@@ -480,7 +480,7 @@ const cmds = {
     del: true,
     do: (msg, content) => {
       //Defines variables
-      let [roles, reason, id, embed] = [undefined, content.slice(content.indexOf(" ")).slice(content.indexOf(" ")), content.split(" ")[0].replace(/[^0-9]/g, ""), new Discord.RichEmbed()];
+      let [roles, reason, id, embed] = [undefined, content.slice(content.indexOf(" ")), content.split(" ")[0].replace(/[^0-9]/g, ""), new Discord.RichEmbed()];
       
       //Checks for ban
       if(msg.guild.members.get(id)) {
@@ -496,9 +496,8 @@ const cmds = {
       if(reason)
         embed.addField("Reason:", `${reason}`);
       embed.addField("Moderator:", `<@${msg.author.id}> (ID: \`${msg.author.id}\`)`)
-        .setColor(f.color());
-      if(roles)
-        embed.addField("Roles:", "```" + roles.join("\n") + "```");
+        .setColor(f.color())
+        .addField("Roles:", "```" + roles.join("\n") + "```");
       f.log("main", embed);
       msg.channel.send(embed);
     },
@@ -512,7 +511,7 @@ const cmds = {
     hidden: false,
     del: true,
     do: (msg, content) => {
-      
+      client.channel.send
     },
   },
 };
