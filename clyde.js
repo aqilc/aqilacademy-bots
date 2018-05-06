@@ -1,5 +1,4 @@
-
-//All requires and dependencies
+// All requires and dependencies
 const express = require('express');
 const app = express();
 const fs = require('fs');
@@ -9,7 +8,7 @@ const db = new sqlite3.Database('./.data/sqlite.db');
 const Discord = require("discord.js");
 const data = require("./data.json");
 
-//Prefix
+// Prefix
 const prefix = "c.";
 
 // The exp milestones you have to reach to unlock commands
@@ -23,16 +22,16 @@ const needexp = [
   {
     cat: "elections",
     points: 500,
-    ignore: ["run"],
+    ignore: [],
     warn: "You need **500 EXP** to use any commands in the **election* category",
   }
 ];
 
-//The client
+// The client
 var client = new Discord.Client({ autoreconnect: true });
 client.login(process.env.TOKEN);
 
-//All channels needed to run bot
+// All channels needed to run bot
 const chnls = {
   announce: "382353531837087745",
   staff: "382530174677417984",
@@ -62,6 +61,7 @@ db.serialize(function() {
   }
 });
 
+// All Functions
 var f = {
   log: (type, log) => {
     let chnl = { main: "382499510401630209", chat: "433004874930716673", announce: "382353531837087745", staff: "382530174677417984", exp: "407643635358892032" }[type];
@@ -203,6 +203,7 @@ var f = {
   },
 };
 
+// Events
 client.on("message", (msg) => {
   try {
     if(msg.content.startsWith(prefix) && !msg.author.bot){
@@ -222,6 +223,7 @@ client.on("ready", () => {
   f.checkelections()//.checksql();
 });
 
+// Commands
 const cmds = {
   help: {
     a: ["commands"],
