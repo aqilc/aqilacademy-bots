@@ -201,18 +201,8 @@ var f = {
     }
     return has;
   },
-  imagedata_to_image: (imagedata) => {
-    var canvas = document.createElement('canvas');
-    var ctx = canvas.getContext('2d');
-    canvas.width = imagedata.width;
-    canvas.height = imagedata.height;
-    ctx.putImageData(imagedata, 0, 0);
-
-    var image = new Image();
-    image.src = canvas.toDataURL();
-    return image;
-  }
 };
+
 
 // Events
 client.on("message", (msg) => {
@@ -542,14 +532,20 @@ const cmds = {
   },
   endelection: {
     a: [],
-    desc: "",
+    desc: "Ends the ongoing election",
     usage: "",
-    cat: "",
-    perms: "",
+    cat: "election",
+    perms: "bot admin",
     hidden: false,
     del: false,
     do: (msg, content) => {
-      
+      db.all(`SELECT * FROM elections`, (err, res) => {
+        if(res[res.length-1].end > new Date().valueOf())
+          return msg.reply("No ongoing election.");
+        db.run(`UPDATE elections SET end = ${new Date().valueOf()} WHERE num = ${res[res.length-1].num}`);
+        client.channels.get(data.echnl).send(new Discord.RichEmbed().setAuthor("Election has officially stopped by " + msg.author.tag, msg.author.avatarURL).setDescription("There might have been technical problems so please don't be angry"));
+        msg.reply("Ended Election #" + res[res.length-1].num)
+      });
     },
   },
 };
