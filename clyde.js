@@ -537,7 +537,7 @@ const cmds = {
     cat: "election",
     perms: "bot admin",
     hidden: false,
-    del: false,
+    del: true,
     do: (msg, content) => {
       db.all(`SELECT * FROM elections`, (err, res) => {
         if(res[res.length-1].end > new Date().valueOf())
