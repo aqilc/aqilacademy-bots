@@ -51,7 +51,7 @@ db.serialize(function() {
     "warns (num INTEGER PRIMARY KEY, warn TEXT, mod TEXT, date INTEGER)",
     "items (num INTEGER PRIMARY KEY, id INTEGER, user TEXT)",
     "expstore (num INTEGER PRIMARY KEY, item TEXT, desc TEXT, stock INTEGER, price INTEGER, approved TEXT, bought TEXT, seller TEXT, buyer TEXT)",
-    "elections (num INTEGER PRIMARY KEY, winner TEXT, end INTEGER, start INTEGER, vp TEXT, mId TEXT)",
+    "elections (num INTEGER PRIMARY KEY, winner TEXT, end INTEGER, start INTEGER, vp TEXT)",
     "election (num INTEGER PRIMARY KEY, id TEXT, vId TEXT, votes INTEGER, msgId TEXT)",
     "voters (id TEXT, for TEXT, date INTEGER, election INTEGER)",
     "suggestions (num INTEGER PRIMARY KEY, suggestion TEXT, by TEXT, votes TEXT, created INTEGER)",
@@ -535,6 +535,8 @@ const cmds = {
     perms: "",
     hidden: false,
     del: false,
-    do: (msg, content) => {},
+    do: (msg, content) => {
+      
+    },
   },
 };
