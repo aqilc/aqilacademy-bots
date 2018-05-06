@@ -527,5 +527,14 @@ const cmds = {
       });
     },
   },
-  endelection
+  endelection: {
+    a: [],
+    desc: "",
+    usage: "",
+    cat: "",
+    perms: "",
+    hidden: false,
+    del: false,
+    do: (msg, content) => {},
+  },
 };
