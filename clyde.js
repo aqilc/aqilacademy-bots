@@ -548,4 +548,14 @@ const cmds = {
       });
     },
   },
+  elections: {
+    a: [],
+    desc: "Shows some elections from AqilAcademy's history",
+    usage: "",
+    cat: "election",
+    perms: "",
+    hidden: false,
+    del: false,
+    do: (msg, content) => {},
+  },
 };
