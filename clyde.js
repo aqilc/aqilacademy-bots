@@ -352,7 +352,7 @@ const cmds = {
         
         rows.reverse();
         f.page_maker(rows, 10, page, (i, user) => {
-          embed.addField(`[${i + 1}] ${!client.users.get(user.id) ? "No Tag found(user should be deleted)" : client.users.get(user.id).tag}`, `**Points:** ${user.points} (Real: ${user.realpoints}, Messages: ${user.messages})\n**ID: \`${user.id}\`**`);
+          embed.addField(`[${i + 1}] ${!client.users.get(user.id) ? "No Tag found(user should be deleted)" : client.users.get(user.id).tag}`, `**Points:** ${user.points} (Real: ${user.realpoints}) points\n**ID: \`${user.id}\`**`);
         });
         msg.channel.send(embed);
       });
