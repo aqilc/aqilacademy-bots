@@ -523,8 +523,30 @@ const cmds = {
   elections: {
     desc: "Shows some elections from AqilAcademy's history",
     cat: "election",
+    usage: " (page)",
     hidden: false,
     del: false,
-    do: (msg, content) => {},
+    do: (msg, content) => {
+      let embed = new Discord.RichEmbed()
+        .setColor(f.color())
+        .setAuthor("AqilAcademy Elections in the past", client.user.avatarURL);
+      
+      let page = 0;
+      if(content && !isNaN(Number(content)) && Number(content) > 0)
+        page = Number(content)-1;
+      
+      db.all("SELECT * FROM users ORDER BY points", (err, rows) => {
+        embed.setFooter(`Page ${page + 1} | 10 people per page | Total Users: ${rows.length} | To earn more exp, talk in #general`);
+        
+        if(rows.length < page * 10)
+          return msg.channel.send(embed.setDescription(`**Error:**\`\`\`md\nPage does not exist!\n> Total Users: ${rows.length}\`\`\``));
+        
+        rows.reverse();
+        f.page_maker(rows, 10, page, (i, user) => {
+          embed.addField(`[${i + 1}] ${!client.users.get(user.id) ? "No Tag found(user should be deleted)" : client.users.get(user.id).tag}`, `**Points:** ${user.points} (Real: ${user.realpoints}) points\n**ID: \`${user.id}\`**`);
+        });
+        msg.channel.send(embed);
+      });
+    },
   },
 };
