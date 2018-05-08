@@ -232,7 +232,7 @@ const cmds = {
     do: (msg, content) => {
       if(content !== "") {
         if(cmds[content.toLowerCase()])
-          return msg.channel.send(new Discord.RichEmbed().setAuthor(prefix + content.toLowerCase(), client.user.avatarURL).setDescription(cmds[content.toLowerCase()].desc).setColor(f.color()).addField("Usage", `\`\`\`\n${prefix + content.toLowerCase() + (cmds[content.toLowerCase()].usage ? cmds[content.toLowerCase()].usage : "")}\`\`\``).addField("Permissions", ["admin", "mod"].includes(cmds[content.toLowerCase()].perms) ? `You need the \`${{ mod: "Moderator", admin: "Administrator" }[cmds[content.toLowerCase()].perms]} role to use this command` : { "bot admin": "You need to be a Bot Administrator to use this command", "admin perm": "You need the `ADMINISTRATOR` permission to use this command", "": "You do not need ANY permissions to use this command", undefined: "You do not need ANY permissions to use this command" }[cmds[content.toLowerCase()].perms], true).addField("Category", `${cmds[content.toLowerCase()].cat} (${prefix}help ${cmds[content.toLowerCase()].cat})`, true).addField("Alias(es)", cmds[content.toLowerCase()].a.length > 0 ? (cmds[content.toLowerCase()].a.length > 1 ? cmds[content.toLowerCase()].a.slice(0, -1).join(", ") + " and " + cmds[content.toLowerCase()].a[cmds[content.toLowerCase()].a.length-1] : cmds[content.toLowerCase()].a[0]) : "None", true));
+          return msg.channel.send(new Discord.RichEmbed().setAuthor(prefix + content.toLowerCase(), client.user.avatarURL).setDescription(cmds[content.toLowerCase()].desc).setColor(f.color()).addField("Usage", `\`\`\`\n${prefix + content.toLowerCase() + (cmds[content.toLowerCase()].usage ? cmds[content.toLowerCase()].usage : "")}\`\`\``).addField("Permissions", ["admin", "mod"].includes(cmds[content.toLowerCase()].perms) ? `You need the \`${{ mod: "Moderator", admin: "Administrator" }[cmds[content.toLowerCase()].perms]} role to use this command` : { "bot admin": "You need to be a Bot Administrator to use this command", "admin perm": "You need the `ADMINISTRATOR` permission to use this command", "": "You do not need ANY permissions to use this command", undefined: "You do not need ANY permissions to use this command" }[cmds[content.toLowerCase()].perms], true).addField("Category", `${cmds[content.toLowerCase()].cat} (${prefix}help ${cmds[content.toLowerCase()].cat})`, true).addField("Alias(es)", (cmds[content.toLowerCase()].a && cmds[content.toLowerCase()].a.length > 0) ? (cmds[content.toLowerCase()].a.length > 1 ? cmds[content.toLowerCase()].a.slice(0, -1).join(", ") + " and " + cmds[content.toLowerCase()].a[cmds[content.toLowerCase()].a.length-1] : cmds[content.toLowerCase()].a[0]) : "None", true));
         else if(["utility", "bot admin", "exp", "election", "fun"].includes(content.toLowerCase()))
           return msg.channel.send(new Discord.RichEmbed().setAuthor(content.slice(0, 1).toUpperCase() + content.slice(1, content.length) + " Commands", client.user.avatarURL).setDescription({ fun: "A bunch of fun commands you can just play around with!", utility: "Commands used for modding, and commands that also give us some info about the bot. ", "bot admin": "A bunch of commands only the Clyde Administrators(people who coded Clyde) can use", exp: "These commands let you interact with Clyde EXP and the EXP Store.", election: "Commands you can use to interact with the AqilAcademy Elections!" }[content.toLowerCase()]).addField("Commands", (function(cat) { let cmd = ""; for(let i in cmds) { if(cmds[i].cat === cat) return " "; } return ""})(content.toLowerCase()) === "" ? "No commands yet" : (function(cat) { let cmd = ""; for(let i in cmds) { if(cmds[i].cat === cat && !cmds[i].hidden) cmd += `**${prefix + i + (cmds[i].usage ? cmds[i].usage : "")}:** ${cmds[i].desc.split("\n")[0]}\n`; } return cmd})(content.toLowerCase())).setColor(f.color()));
         else
@@ -242,12 +242,12 @@ const cmds = {
       let comds = "";
       for(let i in cmds) {
         if(!cmds[i].hidden)
-          comds += `**${prefix + i + (cmds[i].usage ? cmds[i].usage : "")}**, `;
+          comds += `${prefix + i} `;
       }
       let embed = new Discord.RichEmbed()
         .setColor(f.color())
         .setAuthor("List of Clyde's commands", msg.author.avatarURL)
-        .setDescription(comds)
+        .setDescription("```" + comds + "```")
         .addField(`Categories (${prefix}help [category name])`, "bot admin, election, exp, fun, and utility");
       msg.channel.send(embed);
     },
@@ -531,18 +531,24 @@ const cmds = {
       if(content && !isNaN(Number(content)) && Number(content) > 0)
         page = Number(content)-1;
       
-      db.all("SELECT * FROM users ORDER BY points", (err, rows) => {
-        embed.setFooter(`Page ${page + 1} | 10 people per page | Total Users: ${rows.length} | To earn more exp, talk in #general`);
+      db.all("SELECT * FROM elections ORDER BY end", (err, rows) => {
+        embed.setFooter(`Page ${page + 1} | 10 per page | Total Users: ${rows.length} | To earn more exp, talk in #general`);
         
         if(rows.length < page * 10)
-          return msg.channel.send(embed.setDescription(`**Error:**\`\`\`md\nPage does not exist!\n> Total Users: ${rows.length}\`\`\``));
+          return msg.channel.send(embed.setDescription(`**Error:**\`\`\`md\nPage does not exist!\n> Total elections: ${rows.length}\`\`\``));
         
         rows.reverse();
-        f.page_maker(rows, 10, page, (i, user) => {
-          embed.addField(`[${i + 1}] ${!client.users.get(user.id) ? "No Tag found(user should be deleted)" : client.users.get(user.id).tag}`, `**Points:** ${user.points} (Real: ${user.realpoints}) points\n**ID: \`${user.id}\`**`);
+        f.page_maker(rows, 10, page, (i, row) => {
+          embed.addField(`Election #${i + 1}`, `**Start:** ${new Date(row.start).toUTCString()}\n**End:**`);
         });
         msg.channel.send(embed);
       });
     },
+  },
+  gamble: {
+    desc: "50/50 chance to recieve or lose a part of the entered EXP",
+    usage: " [exp amount or \"all\"(all your exp)]",
+    cat: "exp",
+    do: (msg, content) => {},
   },
 };
