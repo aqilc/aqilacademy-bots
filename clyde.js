@@ -230,8 +230,14 @@ client.on("messageReactionAdd", (reaction, user) => {
     
     db.get(`SELECT * FROM election WHERE msgId = "${reaction.message.id}"`, (err, res) => {
       if(reaction.message.author.id === res.id || reaction.message.author.id === res.vId)
-        reaction.message.author.send("You can only vote for someone other than you or your vice president!") ;
+        reaction.message.author.send("You can only vote for someone other than you or your vice president!") && reaction.remove();
       
+      db.get(`SELECT * FROM users WHERE id = "${reaction.message.id}"`, (err, user) => {
+        if((user.realpoints > user.points && user.realpoints < 500) || user.points < 500) 
+          reaction.message.author.send("You need **500 EXP** to vote in the AqilAcademy Elections!") && reaction.remove();
+        
+        
+      });
     });
   });
 });
