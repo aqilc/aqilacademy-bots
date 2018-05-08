@@ -235,18 +235,21 @@ client.on("messageReactionAdd", (reaction, user) => {
       return;
     
     db.get(`SELECT * FROM election WHERE msgId = "${reaction.message.id}"`, (err, res) => {
-      if(reaction.message.author.id === res.id || reaction.message.author.id === res.vId)
-        reaction.message.author.send("You can only vote for someone other than you or your vice president!") && reaction.remove();
+      if(user.id === res.id || user.id === res.vId)
+        user.send("You can only vote for someone other than you or your vice president!") && reaction.remove();
       
-      db.get(`SELECT * FROM users WHERE id = "${reaction.message.id}"`, (err, user) => {
-        if((user.realpoints > user.points && user.realpoints < 500) || user.points < 500) 
-          reaction.message.author.send("You need **500 EXP** to vote in the AqilAcademy Elections!") && reaction.remove();
+      db.get(`SELECT * FROM users WHERE id = "${reaction.message.id}"`, (err, ur) => {
+        if((ur.realpoints > ur.points && ur.realpoints < 500) || ur.points < 500) 
+          user.send("You need **500 EXP** to vote in the AqilAcademy Elections!") && reaction.remove();
         
-        db.run(`INSERT INTO voters (id, for, date) VALUES ($id, $for, $date)`, { $id: reaction.message.author.id, $for: res.id, $date: new Date().valueOf() });
+        db.run(`INSERT INTO voters (id, for, date) VALUES ($id, $for, $date)`, { $id: user.id, $for: res.id, $date: new Date().valueOf() });
         db.run(`UPDATE election SET votes = ${res.votes + 1} WHERE id = "${res.id}"`);
       });
     });
   });
+});
+client.on("messageReactionRemove", (reaction, user) => {
+  
 });
 
 // Commands
