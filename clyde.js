@@ -88,7 +88,7 @@ var f = {
               }
             }
             db.run(`UPDATE elections SET winners = ${sqlwin} WHERE num = ${elec.num}`);
-            client.guilds.get("294115797326888961").channels.get(chnls.announce).send(`**:yes: The election has officially ended. Winner(s):**\`\`\`\n${winner}\`\`\``);// What
+            client.guilds.get("294115797326888961").channels.get(chnls.announce).send(`**:yes: The election has officially ended. Winner(s):**\`\`\`\n${winner}\`\`\``);
           })
         }, elec[0].end - new Date().valueOf());
       }
@@ -221,6 +221,7 @@ client.on("ready", () => {
   console.log(client.user.tag + " has started. Ready for action");
   f.checkelections()//.checksql();
 });
+client.on("messageReaction", (
 
 // Commands
 const cmds = {
@@ -532,14 +533,14 @@ const cmds = {
         page = Number(content)-1;
       
       db.all("SELECT * FROM elections ORDER BY end", (err, rows) => {
-        embed.setFooter(`Page ${page + 1} | 10 per page | Total Users: ${rows.length} | To earn more exp, talk in #general`);
+        embed.setFooter(`Page ${page + 1} | 10 per page | Total Elections: ${rows.length}`);
         
         if(rows.length < page * 10)
           return msg.channel.send(embed.setDescription(`**Error:**\`\`\`md\nPage does not exist!\n> Total elections: ${rows.length}\`\`\``));
         
         rows.reverse();
         f.page_maker(rows, 10, page, (i, row) => {
-          embed.addField(`Election #${i + 1}`, `**Start:** ${new Date(row.start).toUTCString()}\n**End:**`);
+          embed.addField(`Election #${i + 1}`, `**Start:** ${new Date(row.start).toUTCString()}\n${row.end < new Date().valueOf() ? `**End:** ${new Date(row.end).toUTCString()}` : "Ongoing"}\n**Winner:** ${client.users.get(row.winner) ? client.users.get(row.winner).tag : row.winner} (VP: ${client.users.get(row.vp) ? client.users.get(row.vp).tag : row.vp})`);
         });
         msg.channel.send(embed);
       });
