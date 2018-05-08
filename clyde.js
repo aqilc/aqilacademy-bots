@@ -242,12 +242,12 @@ const cmds = {
       let comds = "";
       for(let i in cmds) {
         if(!cmds[i].hidden)
-          comds += `${prefix + i} `;
+          comds += prefix + i + "                    ".split("").slice(prefix.length + i.length).join("");
       }
       let embed = new Discord.RichEmbed()
         .setColor(f.color())
         .setAuthor("List of Clyde's commands", msg.author.avatarURL)
-        .setDescription("```" + comds + "```")
+        .setDescription("```md\n" + comds + "```")
         .addField(`Categories (${prefix}help [category name])`, "bot admin, election, exp, fun, and utility");
       msg.channel.send(embed);
     },
