@@ -221,7 +221,18 @@ client.on("ready", () => {
   console.log(client.user.tag + " has started. Ready for action");
   f.checkelections()//.checksql();
 });
-client.on("messageReaction", (
+client.on("messageReactionAdd", (reaction, user) => {
+  if(!reaction.me)
+    return;
+  db.get("SELECT * FROM elections ORDER BY end DESC", (err, row) => {
+    if(row.end < new Date().valueOf())
+      return;
+    
+    db.get(`SELECT * FROM election WHERE msgId = "${reaction.message.id}"`, (err, res) => {
+      
+    });
+  });
+});
 
 // Commands
 const cmds = {
