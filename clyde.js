@@ -66,9 +66,10 @@ var f = {
   log: (type, log) => {
     let chnl = { main: "382499510401630209", chat: "433004874930716673", announce: "382353531837087745", staff: "382530174677417984", exp: "407643635358892032" }[type];
     if(!chnl)
-      throw new Error(`Incorrect channel type on something. All channel types: ${chnl}`);
+      throw new Error(`Incorrect channel type on something. All channel types: \n{ main: "382499510401630209", chat: "433004874930716673", announce: "382353531837087745", staff: "382530174677417984", exp: "407643635358892032" }`);
     
     client.channels.get(chnl).send(log);
+    return f;
   },
   checkelections: () => {
     db.all("SELECT * FROM elections ORDER BY end", (err, res) => {
@@ -175,6 +176,7 @@ var f = {
         return console.log("Created user: " + id) && db.run(`INSERT INTO users (id, points, realpoints, messages, created) VALUES ("${id}", 0, 0, 0, ${new Date().valueOf()})`);
       db.run(`UPDATE users SET points = ${res.points + exp} WHERE id = "${id}"`);
     });
+    return f;
   },
   add_message: (id) => {
     let xp = f.random(10, 20, true);
@@ -183,6 +185,7 @@ var f = {
         return db.run(`INSERT INTO users (id, points, realpoints, messages, created) VALUES (?, ?, ?, ?, ?)`, [id, 0, 0, 1, new Date().valueOf()]) && console.log("Created user: " + id);
       db.run(`UPDATE users SET messages = ${res.messages + 1}, points = ${res.points + xp}, realpoints = ${res.realpoints + xp} WHERE id = "${id}"`);
     });
+    return f;
   },
   random: (min, max, round) => {
     return round ? Math.round(Math.random() * (max-min) + min) : Math.random() * (max-min) + min;
