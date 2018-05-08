@@ -17,7 +17,7 @@ const needexp = [
     cat: "exp",
     points: 100,
     ignore: ["stats"],
-    warn: "You need **100 EXP** to use any commands in the **exp** category excluding `.stats`",
+    warn: `You need **100 EXP** to use any commands in the **exp** category excluding \`${prefix}stats\``,
   },
   {
     cat: "elections",
@@ -198,7 +198,6 @@ var f = {
     return has;
   },
 };
-
 
 // Events
 client.on("message", (msg) => {
