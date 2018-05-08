@@ -404,7 +404,7 @@ const cmds = {
     perms: "bot admin",
     do: (msg, content) => {
       let args = content.split(" ");
-      let id = args[0].replace(/[^0-9]/g, "");
+      let id = content.replace(/[^0-9]/g, "");
       if(args.length < 3)
         return msg.reply("Please fill up ALL parameters.\n**Parameters:** `[user mention or id] [category] [action]`");
       
@@ -590,6 +590,27 @@ const cmds = {
     desc: "50/50 chance to recieve or lose a part of the entered EXP",
     usage: " [exp amount or \"all\"(all your exp)]",
     cat: "exp",
-    do: (msg, content) => {},
+    do: (msg, content) => {
+      let gambled;
+        if(!content)
+          return msg.channel.send("<:clydeDeny:361217772220448769> Please enter the amount of EXP you want to gamble");
+        if(content !== "all" && isNaN(Number(content)))
+          return message.channel.send("<:clydeDeny:361217772220448769> Please enter a NUMERIC amount of exp to gamble");
+        
+        sql.get(`SELECT * FROM scores WHERE userId = "${message.author.id}"`).then(user => {
+          if(content === "all")
+            gambled = user.points;
+          else if (Number(content) > user.points)
+            return message.channel.send("<:clydeDeny:361217772220448769> You do not have the amount of EXP you gambled. Talk to get more.");
+          else
+            gambled = Number(content);
+          let eygb = Math.round(Math.random() * gambled * 2) - gambled;// Exp You Get Back
+          sql.run(`UPDATE scores SET points = ${user.points + eygb} WHERE userId = "${message.author.id}"`);
+          if(eygb >= 0)
+            message.channel.send(`You have gained **${eygb} EXP**. Congrats!`);
+          else
+            message.channel.send(`You have lost **${-eygb} EXP**. :P`);
+        });
+    },
   },
 };
