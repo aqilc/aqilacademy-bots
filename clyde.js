@@ -222,13 +222,15 @@ client.on("ready", () => {
   f.checkelections()//.checksql();
 });
 client.on("messageReactionAdd", (reaction, user) => {
-  if(!reaction.me)
+  if(reaction.me)
     return;
   db.get("SELECT * FROM elections ORDER BY end DESC", (err, row) => {
     if(row.end < new Date().valueOf())
       return;
     
     db.get(`SELECT * FROM election WHERE msgId = "${reaction.message.id}"`, (err, res) => {
+      if(reaction.message.author.id === res.id || reaction.message.author.id === res.vId)
+        reaction.message.author.send("You can only vote for someone other than you or your vice president!") ;
       
     });
   });
