@@ -595,21 +595,21 @@ const cmds = {
         if(!content)
           return msg.channel.send("<:clydeDeny:361217772220448769> Please enter the amount of EXP you want to gamble");
         if(content !== "all" && isNaN(Number(content)))
-          return message.channel.send("<:clydeDeny:361217772220448769> Please enter a NUMERIC amount of exp to gamble");
+          return msg.channel.send("<:clydeDeny:361217772220448769> Please enter a NUMERIC amount of exp to gamble");
         
-        sql.get(`SELECT * FROM scores WHERE userId = "${message.author.id}"`).then(user => {
+        db.get(`SELECT * FROM users WHERE id = "${msg.author.id}"`).then(user => {
           if(content === "all")
             gambled = user.points;
           else if (Number(content) > user.points)
-            return message.channel.send("<:clydeDeny:361217772220448769> You do not have the amount of EXP you gambled. Talk to get more.");
+            return msg.channel.send("<:clydeDeny:361217772220448769> You do not have the amount of EXP you gambled. Talk to get more.");
           else
             gambled = Number(content);
           let eygb = Math.round(Math.random() * gambled * 2) - gambled;// Exp You Get Back
-          sql.run(`UPDATE scores SET points = ${user.points + eygb} WHERE userId = "${message.author.id}"`);
+          db.run(`UPDATE users SET points = ${user.points + eygb} WHERE id = "${msg.author.id}"`);
           if(eygb >= 0)
-            message.channel.send(`You have gained **${eygb} EXP**. Congrats!`);
+            msg.channel.send(`You have gained **${eygb} EXP**. Congrats!`);
           else
-            message.channel.send(`You have lost **${-eygb} EXP**. :P`);
+            msg.channel.send(`You have lost **${-eygb} EXP**. :P`);
         });
     },
   },
