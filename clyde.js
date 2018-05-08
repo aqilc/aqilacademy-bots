@@ -16,8 +16,8 @@ const needexp = [
   {
     cat: "exp",
     points: 100,
-    ignore: [],
-    warn: "You need **100 EXP** to use any commands in the **exp** category",
+    ignore: ["stats"],
+    warn: "You need **100 EXP** to use any commands in the **exp** category excluding `.stats`",
   },
   {
     cat: "elections",
@@ -49,10 +49,11 @@ db.serialize(function() {
     "users (id TEXT, points INTEGER, lastDaily INTEGER, messages INTEGER, realpoints INTEGER, created INTEGER)",
     "warns (num INTEGER PRIMARY KEY, warn TEXT, mod TEXT, date INTEGER)",
     "items (num INTEGER PRIMARY KEY, id INTEGER, user TEXT)",
+    "quests (num INTEGER PRIMARY KEY, do INTEGER, user TEXT)",
     "expstore (num INTEGER PRIMARY KEY, item TEXT, desc TEXT, stock INTEGER, price INTEGER, approved TEXT, bought TEXT, seller TEXT, buyer TEXT)",
     "elections (num INTEGER PRIMARY KEY, winner TEXT, end INTEGER, start INTEGER, vp TEXT)",
     "election (num INTEGER PRIMARY KEY, id TEXT, vId TEXT, votes INTEGER, msgId TEXT)",
-    "voters (id TEXT, for TEXT, date INTEGER)",
+    "voters (id TEXT, for TEXT, date INTEGER, election INTEGER)",
     "suggestions (num INTEGER PRIMARY KEY, suggestion TEXT, by TEXT, votes TEXT, created INTEGER)",
   ];
   for(var i of tables) {
@@ -130,14 +131,10 @@ var f = {
           if(perms[cmds[i].perms][0])
             return perms[cmds[i].perms][1]();
           for(let h of needexp) {
-            if(h.cat === cmds[i].cat && !h.ignore.includes(i)) {
-              if(res.points < h.points)
+            if(h.cat === cmds[i].cat && !h.ignore.includes(i) && res.points < h.points)
                 return message.channel.send(new Discord.RichEmbed().setColor(f.color()).setAuthor("Not enough EXP", message.author.avatarURL).setDescription(h.warn));
-            }
-            else if (h.cmd === i) {
-              if(res.points < h.points)
+            else if (h.cmd === i && res.points < h.points)
                 return message.channel.send(new Discord.RichEmbed().setColor(f.color()).setAuthor("Not enough EXP", message.author.avatarURL).setDescription(h.warn));
-            }
           }
           if(content.endsWith("-d"))
             message.delete() && content.slice(0, -2);
@@ -242,7 +239,7 @@ client.on("messageReactionAdd", (reaction, user) => {
         if((ur.realpoints > ur.points && ur.realpoints < 500) || ur.points < 500) 
           user.send("You need **500 EXP** to vote in the AqilAcademy Elections!") && reaction.remove();
         
-        db.run(`INSERT INTO voters (id, for, date) VALUES ($id, $for, $date)`, { $id: user.id, $for: res.id, $date: new Date().valueOf() });
+        db.run(`INSERT INTO voters (id, for, date, election) VALUES ($id, $for, $date, $election)`, { $id: user.id, $for: res.id, $date: new Date().valueOf(), $election: row.num});
         db.run(`UPDATE election SET votes = ${res.votes + 1} WHERE id = "${res.id}"`);
       });
     });
