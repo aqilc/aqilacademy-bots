@@ -52,7 +52,7 @@ db.serialize(function() {
     "expstore (num INTEGER PRIMARY KEY, item TEXT, desc TEXT, stock INTEGER, price INTEGER, approved TEXT, bought TEXT, seller TEXT, buyer TEXT)",
     "elections (num INTEGER PRIMARY KEY, winner TEXT, end INTEGER, start INTEGER, vp TEXT)",
     "election (num INTEGER PRIMARY KEY, id TEXT, vId TEXT, votes INTEGER, msgId TEXT)",
-    "voters (id TEXT, for TEXT, date INTEGER, election INTEGER)",
+    "voters (id TEXT, for TEXT, date INTEGER)",
     "suggestions (num INTEGER PRIMARY KEY, suggestion TEXT, by TEXT, votes TEXT, created INTEGER)",
   ];
   for(var i of tables) {
@@ -228,6 +228,9 @@ client.on("messageReactionAdd", (reaction, user) => {
   if(reaction.me)
     return;
   db.get("SELECT * FROM elections ORDER BY end DESC", (err, row) => {
+    if(!row)
+      return;
+    
     if(row.end < new Date().valueOf())
       return;
     
@@ -239,7 +242,8 @@ client.on("messageReactionAdd", (reaction, user) => {
         if((user.realpoints > user.points && user.realpoints < 500) || user.points < 500) 
           reaction.message.author.send("You need **500 EXP** to vote in the AqilAcademy Elections!") && reaction.remove();
         
-        
+        db.run(`INSERT INTO voters (id, for, date) VALUES ($id, $for, $date)`, { $id: reaction.message.author.id, $for: res.id, $date: new Date().valueOf() });
+        db.run(`UPDATE election SET votes = ${res.votes + 1} WHERE id = "${res.id}"`);
       });
     });
   });
