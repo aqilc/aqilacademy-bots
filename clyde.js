@@ -249,7 +249,22 @@ client.on("messageReactionAdd", (reaction, user) => {
   });
 });
 client.on("messageReactionRemove", (reaction, user) => {
-  
+  if(reaction.me)
+    return;
+  db.get("SELECT * FROM elections ORDER BY end DESC", (err, row) => {
+    if(!row)
+      return;
+    
+    if(row.end < new Date().valueOf())
+      return;
+    
+    db.get(`SELECT * FROM election WHERE msgId = "${reaction.message.id}"`, (err, res) => {
+      user.send(`Successfully removed your vote for <@${res.id}>`);
+      
+      db.run(`DELETE FROM voters WHERE id = "${user.id}"`);
+      db.run(`UPDATE election SET votes = ${res.votes - 1} WHERE id = "${res.id}"`);
+    });
+  });
 });
 
 // Commands
