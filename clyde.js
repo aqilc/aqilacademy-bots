@@ -96,17 +96,13 @@ var f = {
     return f;
   },// Check if elections are going on and sets up a setTimeout if they are.
   checksql: () => {
-    let print = "";
-    db.all("SELECT * FROM users", (err, res) => { print += "Users: " + res; });
-    db.all("SELECT * FROM warns", (err, res) => { print += "\nWarns: " + res; });
-    db.all("SELECT * FROM items", (err, res) => { print += "\nItems: " + res; });
-    db.all("SELECT * FROM expstore", (err, res) => { print += "\nEXP Store: " + res; });
-    db.all("SELECT * FROM elections", (err, res) => { print += "\nElections: " + res; });
-    db.all("SELECT * FROM election", (err, res) => { print += "\nCurrent Election: " + res; });
-    db.all("SELECT * FROM voters", (err, res) => { print += "\nVoters: " + res; });
-    setTimeout(() => {
-      console.log(print);
-    }, 1000);
+    db.all("SELECT * FROM users", (err, res) => { console.log("users", res); });
+    db.all("SELECT * FROM warns", (err, res) => { console.log("warns", res); });
+    db.all("SELECT * FROM items", (err, res) => { console.log("items", res); });
+    db.all("SELECT * FROM expstore", (err, res) => { console.log("store", res); });
+    db.all("SELECT * FROM elections", (err, res) => { console.log("elections", res); });
+    db.all("SELECT * FROM election", (err, res) => { console.log("election", res); });
+    db.all("SELECT * FROM voters", (err, res) => { console.log("voters", res); });
     return f;
   },// Checks and console.logs all sql
   check_and_do_cmd: (message) => {
@@ -352,7 +348,7 @@ const cmds = {
     do: (msg, content) => {
       db.get(`SELECT * FROM users WHERE id = "${msg.author.id}"`, (err, res) => {
         if(new Date().getDate() === new Date(res.lastDaily).getDate() && new Date().getFullYear() === new Date(res.lastDaily).getFullYear() && new Date().getMonth() === new Date(res.lastDaily).getMonth())
-          return msg.channel.send(new Discord.RichEmbed().setAuthor("Please wait till tomorrow to recieve your daily 😁", msg.author.avatarURL).setColor(f.color()).setDescription("You can get it anytime tomorrow or after"));
+          return msg.channel.send(new Discord.RichEmbed().setAuthor("Please wait till tomorrow to recieve your daily", msg.author.avatarURL).setColor(f.color()).setFooter("You can get it anytime tomorrow or after"));
         let exp = f.random(res.realpoints/20, res.realpoints/10, true);
         db.run(`UPDATE users SET points = ${res.points + exp}, lastDaily = ${new Date().valueOf()} WHERE id = "${msg.author.id}"`);
         msg.channel.send(new Discord.RichEmbed().setAuthor("Daily Recieved", msg.author.avatarURL).setColor(f.color()).setDescription(`You have recieved **${exp}** points`));
