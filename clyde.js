@@ -55,6 +55,8 @@ db.serialize(function() {
     "election (num INTEGER PRIMARY KEY, id TEXT, vId TEXT, votes INTEGER, msgId TEXT)",
     "voters (id TEXT, for TEXT, date INTEGER, election INTEGER)",
     "suggestions (num INTEGER PRIMARY KEY, suggestion TEXT, by TEXT, votes TEXT, created INTEGER)",
+    "waiting (user TEXT, id INTEGER)",
+    "blacklist (user TEXT, reason TEXT, by TEXT, when INTEGER, time INTEGER)",
   ];
   for(var i of tables) {
     db.run("CREATE TABLE IF NOT EXISTS " + i);
