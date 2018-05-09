@@ -592,25 +592,27 @@ const cmds = {
     cat: "exp",
     do: (msg, content) => {
       let gambled;
-        if(!content)
-          return msg.channel.send("<:clydeDeny:361217772220448769> Please enter the amount of EXP you want to gamble");
-        if(content !== "all" && isNaN(Number(content)))
-          return msg.channel.send("<:clydeDeny:361217772220448769> Please enter a NUMERIC amount of exp to gamble");
-        
-        db.get(`SELECT * FROM users WHERE id = "${msg.author.id}"`).then(user => {
-          if(content === "all")
-            gambled = user.points;
-          else if (Number(content) > user.points)
-            return msg.channel.send("<:clydeDeny:361217772220448769> You do not have the amount of EXP you gambled. Talk to get more.");
-          else
-            gambled = Number(content);
-          let eygb = Math.round(Math.random() * gambled * 2) - gambled;// Exp You Get Back
-          db.run(`UPDATE users SET points = ${user.points + eygb} WHERE id = "${msg.author.id}"`);
-          if(eygb >= 0)
-            msg.channel.send(`You have gained **${eygb} EXP**. Congrats!`);
-          else
-            msg.channel.send(`You have lost **${-eygb} EXP**. :P`);
-        });
+      if(!content)
+        content = "10";
+      if(content !== "all" && isNaN(Number(content)))
+        return msg.reply("Please enter a NUMERIC amount of exp to gamble");
+
+      db.get(`SELECT * FROM users WHERE id = "${msg.author.id}"`, (err, user) => {
+        if(!user)
+          return msg.reply("Please talk in #general and get re
+        if(content === "all")
+          gambled = user.points;
+        else if (Number(content) > user.points)
+          return msg.reply("You do not have the amount of EXP you gambled. Talk to get more.");
+        else
+          gambled = Number(content);
+        let eygb = Math.round(Math.random() * gambled * 2) - gambled;// Exp You Get Back
+        db.run(`UPDATE users SET points = ${user.points + eygb} WHERE id = "${msg.author.id}"`);
+        if(eygb >= 0)
+          msg.channel.send(`You have gained **${eygb} EXP**. Congrats!`);
+        else
+          msg.channel.send(`You have lost **${-eygb} EXP**. :P`);
+      });
     },
   },
 };
