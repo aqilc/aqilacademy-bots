@@ -599,7 +599,7 @@ const cmds = {
 
       db.get(`SELECT * FROM users WHERE id = "${msg.author.id}"`, (err, user) => {
         if(!user)
-          return msg.reply("Please talk in #general and get re
+          return msg.reply("Please talk in #general and get registered onto the EXP system!");
         if(content === "all")
           gambled = user.points;
         else if (Number(content) > user.points)
