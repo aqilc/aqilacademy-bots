@@ -408,7 +408,7 @@ const cmds = {
       if(args.length < 3)
         return msg.reply("Please fill up ALL parameters.\n**Parameters:** `[user mention or id] [category] [action]`");
       
-      if(id.length !== 18)
+      if(!client.fetchUser(id))
         return msg.reply("Please enter a valid user mention/id");
       
       switch(args[1].toLowerCase()) {
