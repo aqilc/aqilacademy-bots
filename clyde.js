@@ -22,13 +22,13 @@ const needexp = [
   {
     cat: "elections",
     points: 500,
-    ignore: [],
     warn: "You need **500 EXP** to use any commands in the **election* category",
   },
   {
     cmd: "run",
     points: 3000,
-    igg
+    warn: "You need **3000 EXP** to use the **run** command!",
+  },
 ];
 
 // The client
@@ -137,7 +137,8 @@ var f = {
           if(perms[cmds[i].perms][0])
             return perms[cmds[i].perms][1]();
           for(let h of needexp) {
-            if(h.cat === cmds[i].cat && !h.ignore.includes(i) && res.points < h.points)
+            if(h.cat === cmds[i].cat && res.points < h.points)
+              if(h.ignore && !h.ignore.includes(i))
                 return message.channel.send(new Discord.RichEmbed().setColor(f.color()).setAuthor("Not enough EXP", message.author.avatarURL).setDescription(h.warn));
             else if (h.cmd === i && res.points < h.points)
                 return message.channel.send(new Discord.RichEmbed().setColor(f.color()).setAuthor("Not enough EXP", message.author.avatarURL).setDescription(h.warn));
