@@ -179,9 +179,13 @@ var f = {
   },
   add_message: (id) => {
     let xp = f.random(10, 20, true);
+    if(Math.random() >= 0.99)
+      xp = f.random(0, 5000, true) * 10 && client.users.get(id).send(new Discord.RichEmbed().setAuthor("YOU JUST WON A JACKPOT!", client.users.get(id).avatarURL).setDescription(`You have earned **${xp} EXP**!\nGreat job, keep talking to earn more prizes like these.`).setColor(f.color()));
+    if([0, 6].includes(new Date().getDay()))
+      xp *= 2;
     db.get(`SELECT * FROM users WHERE id = "${id}"`, (err, res) => {
       if(!res)
-        return db.run(`INSERT INTO users (id, points, realpoints, messages, created) VALUES (?, ?, ?, ?, ?)`, [id, 0, 0, 1, new Date().valueOf()]) && console.log("Created user: " + id);
+        return db.run(`INSERT INTO users (id, points, realpoints, messages, created) VALUES (?, ?, ?, ?, ?)`, [id, xp, 0, 1, new Date().valueOf()]) && console.log("Created user: " + id);
       db.run(`UPDATE users SET messages = ${res.messages + 1}, points = ${res.points + xp}, realpoints = ${res.realpoints + xp} WHERE id = "${id}"`);
     });
     return f;
