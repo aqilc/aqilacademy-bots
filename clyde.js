@@ -24,7 +24,11 @@ const needexp = [
     points: 500,
     ignore: [],
     warn: "You need **500 EXP** to use any commands in the **election* category",
-  }
+  },
+  {
+    cmd: "run",
+    points: 3000,
+    igg
 ];
 
 // The client
@@ -614,8 +618,8 @@ const cmds = {
   run: {
     a: [],
     desc: "Run for president in the AqilAcademy elections!",
-    usage: " [vice president mention or id(has to be inside the server)] |=| [description] |=| [",
-    cat: "",
+    usage: " [vice president mention or id(has to be inside the server)] |=| [slogan] |=| [description of term] |=|",
+    cat: "elections",
     perms: "",
     hidden: false,
     del: false,
