@@ -56,7 +56,7 @@ db.serialize(function() {
     "voters (id TEXT, for TEXT, date INTEGER, election INTEGER)",
     "suggestions (num INTEGER PRIMARY KEY, suggestion TEXT, by TEXT, votes TEXT, created INTEGER)",
     "waiting (user TEXT, id INTEGER)",
-    "blacklist (user TEXT, reason TEXT, by TEXT, when INTEGER, time INTEGER)",
+    "blacklist (user TEXT, reason TEXT, by TEXT, date INTEGER, time INTEGER)",
   ];
   for(var i of tables) {
     db.run("CREATE TABLE IF NOT EXISTS " + i);
@@ -323,17 +323,6 @@ const cmds = {
       console.log("Input: " + content);
     },
   },
-  restart: {
-    a: ["rs"],
-    desc: "Restarts Clyde",
-    cat: "bot admin",
-    perms: "bot admin",
-    del: true,
-    do: (msg, content) => {
-      process.exit(0);
-      console.log(msg.author.tag + " restarted " + client.user.tag);
-    },
-  },
   stats: {
     desc: "Shows someone's EXP stats.",
     usage: " (user)",
@@ -406,7 +395,7 @@ const cmds = {
     perms: "bot admin",
     do: (msg, content) => {
       let args = content.split(" ");
-      let id = content.replace(/[^0-9]/g, "");
+      let id = args[0].replace(/[^0-9]/g, "");
       if(args.length < 3)
         return msg.reply("Please fill up ALL parameters.\n**Parameters:** `[user mention or id] [category] [action]`");
       
