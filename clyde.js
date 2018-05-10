@@ -594,20 +594,31 @@ const cmds = {
 
       db.get(`SELECT * FROM users WHERE id = "${msg.author.id}"`, (err, user) => {
         if(!user)
-          return msg.reply("Please talk in #general and get registered onto the EXP system!");
+          return msg.reply("Please talk in #general and get registered into the EXP system!");
         if(content === "all")
           gambled = user.points;
         else if (Number(content) > user.points)
-          return msg.reply("You do not have the amount of EXP you gambled. Talk to get more.");
+          return msg.reply("You do not have the amount of EXP you gambled.");
         else
           gambled = Number(content);
+        
         let eygb = Math.round(Math.random() * gambled * 2) - gambled;// Exp You Get Back
         db.run(`UPDATE users SET points = ${user.points + eygb} WHERE id = "${msg.author.id}"`);
         if(eygb >= 0)
           msg.channel.send(`You have gained **${eygb} EXP**. Congrats!`);
         else
-          msg.channel.send(`You have lost **${-eygb} EXP**. :P`);
+          msg.channel.send(`You have lost **${-eygb} EXP**.`);
       });
     },
+  },
+  run: {
+    a: [],
+    desc: "Run for president in the AqilAcademy elections!",
+    usage: " [vice president mention or id(has to be inside the server)] |=| [description] |=| [",
+    cat: "",
+    perms: "",
+    hidden: false,
+    del: false,
+    do: (msg, content) => {},
   },
 };
