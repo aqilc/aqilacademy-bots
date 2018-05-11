@@ -217,16 +217,39 @@ var f = {
 // Events
 client.on("message", (msg) => {
   try {
+    
+    //What happens when DMed
+    if(msg.channel.type !== "text") {
+      db.get("SELECT * FROM elections ORDER BY end DESC", (err, res) => {
+        if(res.end < new Date().valueOf())
+          return;
+        
+        let ids = [
+          
+        ];
+        
+        db.all("SELECT * FROM waiting", (err, rows) => {
+          
+        });
+      });
+    }
+    
+    // Does commands
     if(msg.content.startsWith(prefix) && !msg.author.bot){
       if(!f.check_and_do_cmd(msg) && data.whitelist.includes(msg.channel.id))
         f.add_message(msg.author.id);
       return;
     }
+    
+    // Adds exp
     if(data.whitelist.includes(msg.channel.id) && !msg.author.bot)
       f.add_message(msg.author.id);
+    
+    // Tells prefix if mentioned
     if(msg.content.trim() === `<@!${client.user.id}>`)
       return msg.channel.send(`My prefix is: \`${prefix}\``);
   } catch(err) {
+    // What happens when an error occurs
     msg.channel.send(new Discord.RichEmbed().setAuthor("Error", client.user.avatarURL).setColor(f.color()).setDescription(`**error on client event "message":**\`\`\`js\n${err}\`\`\``).setTimestamp());
     console.log("Error on the \"message\" event: " + err);
   }
@@ -235,6 +258,8 @@ client.on("ready", () => {
   console.log(client.user.tag + " has started. Ready for action");
   f.checkelections()//.checksql();
 });
+
+// Election voting systems
 client.on("messageReactionAdd", (reaction, user) => {
   if(reaction.me)
     return;
