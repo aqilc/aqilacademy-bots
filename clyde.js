@@ -626,8 +626,12 @@ const cmds = {
     cat: "elections",
     do: (msg, content) => {
       let args = content.split("|=|").map(a => a.trim());
+      let vp = args[0].replace(/[^0-9]/g, "");
       
-      
+      if(!args[2])
+        return msg.reply("Please fill in all required parameters.\n**Required Parameters:** ` [Vice President mention or id] |=| [slogan] |=| [description of term]`");
+      if(!msg.guild.members.get(vp))
+        msg.reply("Please enter a valid member of AqilAcademy for your Vice President");
     },
   },
 };
