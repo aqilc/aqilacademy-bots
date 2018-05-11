@@ -227,7 +227,7 @@ client.on("message", (msg) => {
     if(msg.content.trim() === `<@!${client.user.id}>`)
       return msg.channel.send(`My prefix is: \`${prefix}\``);
   } catch(err) {
-    msg.channel.send(new Discord.RichEmbed().setAuthor("Error", client.user.avatarURL).setColor(f.color()).setDescription(`\`\`\`js\n${err}\`\`\``).setTimestamp());
+    msg.channel.send(new Discord.RichEmbed().setAuthor("Error", client.user.avatarURL).setColor(f.color()).setDescription(`**error on client event "message": \`\`\`js\n${err}\`\`\``).setTimestamp());
     console.log("Error on the \"message\" event: " + err);
   }
 });
