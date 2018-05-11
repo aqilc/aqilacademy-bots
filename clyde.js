@@ -1,4 +1,5 @@
 // All requires and dependencies
+const http = require('http');
 const express = require('express');
 const app = express();
 const fs = require('fs');
@@ -42,10 +43,13 @@ const chnls = {
 }
 
 //Keeps app running
-app.get("/", function (request, response) {
-  response.sendFile(__dirname + '/views/index.html');
+app.get("/", (request, response) => {
+  response.sendStatus(200);
 });
 app.listen(process.env.PORT);
+setInterval(() => {
+  http.get(`http://${process.env.PROJECT_DOMAIN}.glitch.me/`);
+}, 280000);
 
 // if ./.data/sqlite.db does not exist, create it, and add tables
 db.serialize(function() {
@@ -617,13 +621,13 @@ const cmds = {
     },
   },
   run: {
-    a: [],
     desc: "Run for president in the AqilAcademy elections!",
-    usage: " [vice president mention or id(has to be inside the server)] |=| [slogan] |=| [description of term] |=|",
+    usage: " [vice president mention or id(has to be inside the server)] |=| [slogan] |=| [description of term]",
     cat: "elections",
-    perms: "",
-    hidden: false,
-    del: false,
-    do: (msg, content) => {},
+    do: (msg, content) => {
+      let args = content.split("|=|").map(a => a.trim());
+      
+      
+    },
   },
 };
