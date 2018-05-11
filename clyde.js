@@ -63,7 +63,7 @@ db.serialize(function() {
     "election (num INTEGER PRIMARY KEY, id TEXT, vId TEXT, votes INTEGER, msgId TEXT)",
     "voters (id TEXT, for TEXT, date INTEGER, election INTEGER)",
     "suggestions (num INTEGER PRIMARY KEY, suggestion TEXT, by TEXT, votes TEXT, created INTEGER)",
-    "waiting (user TEXT, id INTEGER)",
+    "waiting (user TEXT, id INTEGER, start INTEGER, time INTEGER)",
     "blacklist (user TEXT, reason TEXT, by TEXT, date INTEGER, time INTEGER)",
   ];
   for(var i of tables) {
@@ -620,7 +620,7 @@ const cmds = {
       });
     },
   },
-  run: {
+  president: {
     desc: "Run for president in the AqilAcademy elections!",
     usage: " [vice president mention or id(has to be inside the server)] |=| [slogan] |=| [description of term]",
     cat: "elections",
