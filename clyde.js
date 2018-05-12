@@ -301,7 +301,7 @@ client.on("messageReactionRemove", (reaction, user) => {
       user.send(`Successfully removed your vote for <@${res.id}>`);
       
       db.run(`DELETE FROM voters WHERE id = "${user.id}"`);
-      db.run(`UPDATE election SET votes = ${res.votes - 1} WHERE id = "${res.id}"`);
+      db.run(`UPDATE election SET votes = ${res.votes - 1} WHERE id = "${res.id}", election = ${row.id}`);
     });
   });
 });
