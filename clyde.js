@@ -21,14 +21,14 @@ const needexp = [
     warn: `You need **100 EXP** to use any commands in the **exp** category excluding \`${prefix}stats\``,
   },
   {
-    cat: "elections",
-    points: 500,
-    warn: "You need **500 EXP** to use any commands in the **election* category",
-  },
-  {
     cmd: "run",
     points: 3000,
     warn: "You need **3000 EXP** to use the **run** command!",
+  },
+  {
+    cat: "elections",
+    points: 500,
+    warn: "You need **500 EXP** to use any commands in the **election** category",
   },
 ];
 
@@ -225,7 +225,10 @@ client.on("message", (msg) => {
           return;
         
         let ids = [
-          
+          () => {
+            if(msg.content === "y")
+              return;
+          },
         ];
         
         db.all("SELECT * FROM waiting", (err, rows) => {
