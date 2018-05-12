@@ -282,7 +282,7 @@ client.on("messageReactionAdd", (reaction, user) => {
           user.send("You need **500 EXP** to vote in the AqilAcademy Elections!") && reaction.remove();
         
         db.run(`INSERT INTO voters (id, for, date, election) VALUES ($id, $for, $date, $election)`, { $id: user.id, $for: res.id, $date: new Date().valueOf(), $election: row.num});
-        db.run(`UPDATE election SET votes = ${res.votes + 1} WHERE id = "${res.id}"`);
+        db.run(`UPDATE election SET votes = ${res.votes + 1} WHERE id = "${res.id}", election = ${row.num}`);
       });
     });
   });
