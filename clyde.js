@@ -420,6 +420,8 @@ const cmds = {
     cat: "exp",
     do: (msg, content) => {
       db.get(`SELECT * FROM users WHERE id = "${msg.author.id}"`, (err, res) => {
+        if(!res)
+          return msg.reply("Please talk in <#433004874930716673> to get registered into the **EXP** database!\n**Reminder:** <#433004874930716673> is the only place you earn **EXP** by talking");
         if(new Date().getDate() === new Date(res.lastDaily).getDate() && new Date().getFullYear() === new Date(res.lastDaily).getFullYear() && new Date().getMonth() === new Date(res.lastDaily).getMonth())
           return msg.channel.send(new Discord.RichEmbed().setAuthor("Please wait till tomorrow to recieve your daily", msg.author.avatarURL).setColor(f.color()).setFooter("You can get it anytime tomorrow or after"));
         let exp = f.random(res.realpoints/20, res.realpoints/10, true);
