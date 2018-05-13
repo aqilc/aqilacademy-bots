@@ -224,18 +224,20 @@ client.on("message", (msg) => {
     //What happens when DMed
     if(msg.channel.type !== "text") {
       db.get("SELECT * FROM elections ORDER BY end DESC", (err, res) => {
-        if(res.end < new Date().valueOf())
-          return;
-        
-        let ids = [
-          () => {
-            if(msg.content === "y")
-              return;
-          },
-        ];
-        
-        db.all("SELECT * FROM waiting", (err, rows) => {
-          
+        db.get("SELECT * FROM election", (err, row) => {
+          if(res.end < new Date().valueOf())
+            return;
+
+          let ids = [
+            () => {
+              //if(msg.content === "yes")
+                //msg.channel.send(`Thanks! You and ${
+            },
+          ];
+
+          db.all("SELECT * FROM waiting", (err, rows) => {
+
+          });
         });
       });
     }
@@ -668,8 +670,13 @@ const cmds = {
         msg.reply("Please enter a valid member of AqilAcademy for your Vice President");
       if(args[1] === "" || args[2] === "")
         msg.reply("No empty parameters allowed");
-      
-      msg.channel.send(new Discord.RichEmbed().setAuthor("Wait for your VP to approve then you will be put in!", msg.author.avatarURL).setColor(f.color()));
+      db.get("SELECT * FROM elections ORDER BY end DESC", (err, res) => {
+        if(res.end < new Date().valueOf())
+          return msg.reply("There isn't an election going on yet!");
+        
+        db.run(`INSERT INTO waiting (user, id, start, time) VALUES  (${vp}, 0, ${new Date().valueOf()}, ${res.end - new Date().valueOf()})`);
+        msg.channel.send(new Discord.RichEmbed().setAuthor("Wait for your VP to approve then you will be put in!", msg.author.avatarURL).setColor(f.color()));
+      });
     },
   },
 };
