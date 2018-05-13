@@ -42,6 +42,9 @@ const chnls = {
   staff: "382530174677417984",
 }
 
+//
+const nums = {};
+
 //Keeps app running
 app.get("/", (request, response) => {
   response.sendStatus(200);
@@ -651,6 +654,7 @@ const cmds = {
     },
   },
   president: {
+    a: ["pres", "electme"],
     desc: "Run for president in the AqilAcademy elections!",
     usage: " [vice president mention or id(has to be inside the server)] |=| [slogan] |=| [description of term]",
     cat: "elections",
