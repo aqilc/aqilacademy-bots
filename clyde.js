@@ -666,6 +666,10 @@ const cmds = {
         return msg.reply("Please fill in all required parameters.\n**Required Parameters:** ` [Vice President mention or id] |=| [slogan] |=| [description of term]`");
       if(!msg.guild.members.get(vp))
         msg.reply("Please enter a valid member of AqilAcademy for your Vice President");
+      if(args[1] === "" || args[2] === "")
+        msg.reply("No empty parameters allowed");
+      
+      msg.channel.send(new Discord.RichEmbed().setAuthor("Wait for your VP to approve then you will be put in!", msg.author.avatarURL).setColor(f.color()));
     },
   },
 };
