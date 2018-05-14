@@ -582,7 +582,7 @@ const cmds = {
   },
   startelection: {
     desc: "Starts an AqilAcademy Election.",
-    usage: " (hours)",
+    usage: " (title)",
     cat: "election",
     perms: "bot admin",
     del: true,
@@ -598,7 +598,7 @@ const cmds = {
           .addField("Election Rules", "Here are the current election rules. They can also be found in <#382676611205693441>")
           .setImage("https://cdn.glitch.com/87717c00-94ec-4ab4-96ea-8f031a709af4%2FCapture.PNG?1525539358951");
         f.checkelections();
-        db.run(`INSERT INTO elections (end, start) VALUES (${new Date().valueOf() + 172800000}, ${new Date().valueOf()})`);
+        db.run(`INSERT INTO elections (end, start, title) VALUES (${new Date().valueOf() + 172800000}, ${new Date().valueOf()}, "${content === "" || !content ? "" : content}")`);
         client.channels.get(data.echnl).send(embed);
       });
     },
@@ -690,6 +690,10 @@ const cmds = {
         return msg.reply("Please fill in all required parameters.\n**Required Parameters:** ` [Vice President mention or id] |=| [slogan] |=| [description of term]`");
       if(!msg.guild.members.get(vp))
         msg.reply("Please enter a valid member of AqilAcademy for your Vice President");
+      if(msg.author.id === vp)
+        msg.reply("Your Vice President cannot be yourself :face_palm:");
+      if(client.users.get(vp).bot)
+        msg.reply("Your Vice President has to be a human user");
       if(args[1] === "" || args[2] === "")
         msg.reply("No empty parameters allowed");
       db.get("SELECT * FROM elections ORDER BY end DESC", (err, res) => {
