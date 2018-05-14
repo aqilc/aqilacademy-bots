@@ -244,7 +244,8 @@ client.on("message", (msg) => {
           db.get(`SELECT * FROM users WHERE id = "${msg.author.id}"`, (err, user) => {
             if(res.end < new Date().valueOf())
               return;
-
+            
+            // Functions for waiting IDs
             let ids = [
               (f, data) => {
                 if(msg.content === "yes") {
@@ -709,8 +710,9 @@ const cmds = {
         if(res.end < new Date().valueOf())
           return msg.reply("There isn't an election going on yet!");
         
-        db.run(`INSERT INTO waiting (user, id, start, time, for, data) VALUES  ("${vp}", 0, ${new Date().valueOf()}, ${res.end - new Date().valueOf()}, "${msg.author.id}", "${args[1] + "|=|" + args[2]}")`);
+        db.run(`INSERT INTO waiting (user, id, start, time, for, data) VALUES ("${vp}", 0, ${new Date().valueOf()}, ${res.end - new Date().valueOf()}, "${msg.author.id}", "${args[1] + "|=|" + args[2]}")`);
         msg.channel.send(new Discord.RichEmbed().setAuthor("Wait for your VP to approve then you will be put in!", msg.author.avatarURL).setColor(f.color()));
+        client.users.get(vp).send(`<@${msg.author.id}> has asked you to be his Vice President! Put a \`yes\` if you agree and \`no\` if you don't.\n**Note:** You CAN be multiple people's Vice President`);
       });
     },
   },
