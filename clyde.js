@@ -89,6 +89,7 @@ db.serialize(function() {
     db.run("CREATE TABLE IF NOT EXISTS " + i);
     //console.log(i + " has been created if it didn't exist before");
   }
+  
 });
 
 // All Functions
@@ -247,9 +248,10 @@ client.on("message", msg => {
             
             // Functions for waiting IDs
             let ids = [
-              (f, data) => {
+              (f, d) => {
                 if(msg.content === "yes") {
-                  client.channels.get(data.echnl).send(new Discord.RichEmbed().setAuthor(client.users.get(f).tag + " is running for president!", client.users.get(f).avatarURL).setDescription(`with <@${msg.author.id}> as his/her Vice President!`).addField("Slogan", data.split("|=|")[0]).addField("Description of term", data.split("|=|")[1])).then(message => {
+                  client.channels.get(data.echnl).send(new Discord.RichEmbed().setAuthor(client.users.get(f).tag + " is running for president!", client.users.get(f).avatarURL).setDescription(`with <@${msg.author.id}> as his/her Vice President!`).addField("Slogan", d.split("|=|")[0]).addField("Description of term", d.split("|=|")[1]).setColor(f.color())).then(message => {
+                    message.react("👍").then(message => { message.react("👎"); });
                     db.run(`INSERT INTO election (id, vId, votes, msgId) VALUES ("${f}", "${msg.author.id}", 0, "${message.id}")`);
                     db.run(`DELETE FROM waiting WHERE id = "${msg.author.id}"`);
                   });
@@ -623,7 +625,7 @@ const cmds = {
     del: true,
     do: (msg, content) => {
       db.all(`SELECT * FROM elections`, (err, res) => {
-        if(res[res.length-1].end > new Date().valueOf())
+        if(res && res[res.length-1].end > new Date().valueOf())
           return msg.reply("An election is already in progress!");
         let embed = new Discord.RichEmbed()
           .setAuthor("A New Election has started!", client.user.avatarURL)
@@ -734,10 +736,18 @@ const cmds = {
       db.get("SELECT * FROM elections ORDER BY end DESC", (err, res) => {
         if(res.end < new Date().valueOf())
           return msg.reply("There isn't an election going on yet!");
-        
-        db.run(`INSERT INTO waiting (user, id, start, time, for, data) VALUES ("${vp}", 0, ${new Date().valueOf()}, ${res.end - new Date().valueOf()}, "${msg.author.id}", "${args[1] + "|=|" + args[2]}")`);
-        msg.channel.send(new Discord.RichEmbed().setAuthor("Wait for your VP to approve then you will be put in!", msg.author.avatarURL).setColor(f.color()));
-        client.users.get(vp).send(`<@${msg.author.id}> has asked you to be his Vice President! Put a \`yes\` if you agree and \`no\` if you don't.\n**Note:** You CAN be multiple people's Vice President`);
+        db.get(`SELECT * FROM elections WHERE id = "${msg.author.id}"`, (err, row) => {
+          if(row)
+            return msg.reply("You are already in the election!");
+          db.get(`SELECT * FROM waiting WHERE for = "${msg.author.id}"`, (err, w) => {
+            if(w)
+              return msg.reply("You are already waiting for a Vice President!");
+            
+            db.run(`INSERT INTO waiting (user, id, start, time, for, data) VALUES ("${vp}", 0, ${new Date().valueOf()}, ${res.end - new Date().valueOf()}, "${msg.author.id}", "${args[1] + "|=|" + args[2]}")`);
+            msg.channel.send(new Discord.RichEmbed().setAuthor("Wait for your VP to approve then you will be put in!", msg.author.avatarURL).setColor(f.color()));
+            client.users.get(vp).send(`<@${msg.author.id}> has asked you to be his Vice President! Put a \`yes\` if you agree and \`no\` if you don't.\n**Note:** You CAN be multiple people's Vice President`);
+          });
+        });
       });
     },
   },
