@@ -82,7 +82,7 @@ db.serialize(function() {
     "election (num INTEGER PRIMARY KEY, id TEXT, vId TEXT, votes INTEGER, msgId TEXT, up TEXT)",
     "voters (id TEXT, for TEXT, date INTEGER, election INTEGER)",
     "suggestions (num INTEGER PRIMARY KEY, suggestion TEXT, by TEXT, votes TEXT, created INTEGER)",
-    "waiting (user TEXT, id INTEGER, start INTEGER, time INTEGER, for TEXT)",
+    "waiting (user TEXT, id INTEGER, start INTEGER, time INTEGER, for TEXT, data TEXT)",
     "blacklist (user TEXT, reason TEXT, by TEXT, date INTEGER, time INTEGER)",
   ];
   for(var i of tables) {
@@ -247,8 +247,12 @@ client.on("message", (msg) => {
 
             let ids = [
               (f) => {
-                if(msg.content === "yes")
-                  return //msg.channel.send(`Thanks! You and <@${f}> have been entered into the election!
+                if(msg.content === "yes") {
+                  //client.channels.send(new Discord.RichEmbed().setAuthor(client.users.get(f).tag + " is running for president!", client.users.get(f).avatarURL).setDescription(`with <@${msg.author.id}> as his/her Vice President!`).addField("Slogan", 
+                  //db.run(`INSERT INTO election (id, vId, votes, msgId) VALUES ("${f}", "${msg.author.id}", 0, 
+                  
+                  return msg.channel.send(`Thanks! You and <@${f}> have been entered into the election!`);
+                }
               },
             ];
 
