@@ -78,7 +78,7 @@ db.serialize(function() {
     "items (num INTEGER PRIMARY KEY, id INTEGER, user TEXT)",
     "quests (num INTEGER PRIMARY KEY, do INTEGER, user TEXT)",
     "expstore (num INTEGER PRIMARY KEY, item TEXT, desc TEXT, stock INTEGER, price INTEGER, approved TEXT, bought TEXT, seller TEXT, buyer TEXT)",
-    "elections (num INTEGER PRIMARY KEY, winner TEXT, end INTEGER, start INTEGER, vp TEXT)",
+    "elections (num INTEGER PRIMARY KEY, winner TEXT, end INTEGER, start INTEGER, vp TEXT, title TEXT)",
     "election (num INTEGER PRIMARY KEY, id TEXT, vId TEXT, votes INTEGER, msgId TEXT, up TEXT)",
     "voters (id TEXT, for TEXT, date INTEGER, election INTEGER)",
     "suggestions (num INTEGER PRIMARY KEY, suggestion TEXT, by TEXT, votes TEXT, created INTEGER)",
@@ -246,9 +246,9 @@ client.on("message", (msg) => {
               return;
 
             let ids = [
-              (f) => {
+              (f, data) => {
                 if(msg.content === "yes") {
-                  //client.channels.send(new Discord.RichEmbed().setAuthor(client.users.get(f).tag + " is running for president!", client.users.get(f).avatarURL).setDescription(`with <@${msg.author.id}> as his/her Vice President!`).addField("Slogan", 
+                  //client.channels.send(new Discord.RichEmbed().setAuthor(client.users.get(f).tag + " is running for president!", client.users.get(f).avatarURL).setDescription(`with <@${msg.author.id}> as his/her Vice President!`).addField("Slogan", ${data.split("|=|")[0]}).addField("Description of term"
                   //db.run(`INSERT INTO election (id, vId, votes, msgId) VALUES ("${f}", "${msg.author.id}", 0, 
                   
                   return msg.channel.send(`Thanks! You and <@${f}> have been entered into the election!`);
@@ -696,7 +696,7 @@ const cmds = {
         if(res.end < new Date().valueOf())
           return msg.reply("There isn't an election going on yet!");
         
-        db.run(`INSERT INTO waiting (user, id, start, time, for) VALUES  ("${vp}", 0, ${new Date().valueOf()}, ${res.end - new Date().valueOf()}, "${msg.author.id}")`);
+        db.run(`INSERT INTO waiting (user, id, start, time, for, data) VALUES  ("${vp}", 0, ${new Date().valueOf()}, ${res.end - new Date().valueOf()}, "${msg.author.id}", "${args[1] + "|=|" + args[2]}")`);
         msg.channel.send(new Discord.RichEmbed().setAuthor("Wait for your VP to approve then you will be put in!", msg.author.avatarURL).setColor(f.color()));
       });
     },
