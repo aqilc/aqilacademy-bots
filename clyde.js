@@ -299,10 +299,25 @@ client.on("ready", () => {
   f.checkelections()//.checksql();
 });
 client.on("guildMemberRemove", member => {
-  db.get(`SELECT * FROM election WHERE id = "${member.user.id}"`, (err, res) => {
-    if(!res)
-      return;
-     db.run(
+  db.all(`SELECT * FROM election WHERE id = "${member.user.id}", vId = "${member.user.id}"`, (err, res) => {
+    for(let i of res) {
+      if(!res)
+        return;
+
+      db.run(`DELETE FROM election WHERE id = "${i.id}"`);
+      if(member.user.id === i.id) {
+        member.user.send("You and your Vice President have been disqualified from the election");
+        if(client.users.get(i.vId))
+          client.users.get(i.vId).send("Your President left AqilAcademy so you both have been disqualified from the election.");
+      } else if(member.user.id === i.vId) {
+        member.user.send("You and your President have been disqualified from the AqilAcademy Election.");
+        if(client.users.get(i.vId))
+          client.users.get(i.vId).send("Your Vice President left AqilAcademy so you both have been disqualified from the election.");
+      }
+      client.channels.get(data.echnl).fetchMessage(i.msgId).then(message => {
+        message.delete();
+      }).catch(console.log);
+    }
   })
 });
 
