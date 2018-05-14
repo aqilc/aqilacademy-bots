@@ -248,7 +248,7 @@ client.on("message", (msg) => {
             let ids = [
               () => {
                 if(msg.content === "yes")
-                  msg.channel.send(`Thanks! You and ${rows.
+                  return //msg.channel.send(`Thanks! You and ${rows.
               },
             ];
 
