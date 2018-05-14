@@ -42,8 +42,24 @@ const chnls = {
   staff: "382530174677417984",
 }
 
-//
-const nums = {};
+// Number stuff
+const nums = {
+  1: "one",
+  2: "two",
+  3: "three",
+  4: "four",
+  5: "five",
+  6: "six",
+  7: "seven",
+  8: "eight",
+  9: "nine",
+  0: "zero",
+  one: "one",
+  two: "two",
+  three: "three",
+  four: "four",
+  five: "five",
+};
 
 //Keeps app running
 app.get("/", (request, response) => {
@@ -66,7 +82,7 @@ db.serialize(function() {
     "election (num INTEGER PRIMARY KEY, id TEXT, vId TEXT, votes INTEGER, msgId TEXT, up TEXT)",
     "voters (id TEXT, for TEXT, date INTEGER, election INTEGER)",
     "suggestions (num INTEGER PRIMARY KEY, suggestion TEXT, by TEXT, votes TEXT, created INTEGER)",
-    "waiting (user TEXT, id INTEGER, start INTEGER, time INTEGER)",
+    "waiting (user TEXT, id INTEGER, start INTEGER, time INTEGER, for TEXT)",
     "blacklist (user TEXT, reason TEXT, by TEXT, date INTEGER, time INTEGER)",
   ];
   for(var i of tables) {
@@ -224,20 +240,22 @@ client.on("message", (msg) => {
     //What happens when DMed
     if(msg.channel.type !== "text") {
       db.get("SELECT * FROM elections ORDER BY end DESC", (err, res) => {
-        db.get("SELECT * FROM election", (err, row) => {
-          if(res.end < new Date().valueOf())
-            return;
+        db.all("SELECT * FROM election", (err, rows) => {
+          db.get(`SELECT * FROM users WHERE id = "${msg.author.id}"`, (err, user) => {
+            if(res.end < new Date().valueOf())
+              return;
 
-          let ids = [
-            () => {
-              //if(msg.content === "yes")
-                //msg.channel.send(`Thanks! You and ${
-            },
-          ];
+            let ids = [
+              () => {
+                if(msg.content === "yes")
+                  msg.channel.send(`Thanks! You and ${rows.
+              },
+            ];
 
-          db.all("SELECT * FROM waiting", (err, rows) => {
+            db.all("SELECT * FROM waiting", (err, rows) => {
 
-          });
+            });
+          })
         });
       });
     }
