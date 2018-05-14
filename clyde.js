@@ -246,9 +246,9 @@ client.on("message", (msg) => {
               return;
 
             let ids = [
-              () => {
+              (f) => {
                 if(msg.content === "yes")
-                  return //msg.channel.send(`Thanks! You and ${rows.
+                  return //msg.channel.send(`Thanks! You and <@${f}> have been entered into the election!
               },
             ];
 
@@ -692,7 +692,7 @@ const cmds = {
         if(res.end < new Date().valueOf())
           return msg.reply("There isn't an election going on yet!");
         
-        db.run(`INSERT INTO waiting (user, id, start, time) VALUES  (${vp}, 0, ${new Date().valueOf()}, ${res.end - new Date().valueOf()})`);
+        db.run(`INSERT INTO waiting (user, id, start, time, for) VALUES  ("${vp}", 0, ${new Date().valueOf()}, ${res.end - new Date().valueOf()}, "${msg.author.id}")`);
         msg.channel.send(new Discord.RichEmbed().setAuthor("Wait for your VP to approve then you will be put in!", msg.author.avatarURL).setColor(f.color()));
       });
     },
