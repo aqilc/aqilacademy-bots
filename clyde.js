@@ -249,7 +249,7 @@ client.on("message", msg => {
             let ids = [
               (f, data) => {
                 if(msg.content === "yes") {
-                  client.channels.send(new Discord.RichEmbed().setAuthor(client.users.get(f).tag + " is running for president!", client.users.get(f).avatarURL).setDescription(`with <@${msg.author.id}> as his/her Vice President!`).addField("Slogan", data.split("|=|")[0]).addField("Description of term", data.split("|=|")[1])).then(message => {
+                  client.channels.get(data.echnl).send(new Discord.RichEmbed().setAuthor(client.users.get(f).tag + " is running for president!", client.users.get(f).avatarURL).setDescription(`with <@${msg.author.id}> as his/her Vice President!`).addField("Slogan", data.split("|=|")[0]).addField("Description of term", data.split("|=|")[1])).then(message => {
                     db.run(`INSERT INTO election (id, vId, votes, msgId) VALUES ("${f}", "${msg.author.id}", 0, "${message.id}")`);
                     db.run(`DELETE FROM waiting WHERE id = "${msg.author.id}"`);
                   });
@@ -620,7 +620,7 @@ const cmds = {
     del: true,
     do: (msg, content) => {
       db.all(`SELECT * FROM elections`, (err, res) => {
-        if(res[res.length-1].end < new Date().valueOf())
+        if(res[res.length-1].end > new Date().valueOf())
           return msg.reply("An election is already in progress!");
         let embed = new Discord.RichEmbed()
           .setAuthor("A New Election has started!", client.user.avatarURL)
