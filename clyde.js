@@ -248,16 +248,25 @@ client.on("message", (msg) => {
             let ids = [
               (f, data) => {
                 if(msg.content === "yes") {
-                  //client.channels.send(new Discord.RichEmbed().setAuthor(client.users.get(f).tag + " is running for president!", client.users.get(f).avatarURL).setDescription(`with <@${msg.author.id}> as his/her Vice President!`).addField("Slogan", ${data.split("|=|")[0]}).addField("Description of term"
-                  //db.run(`INSERT INTO election (id, vId, votes, msgId) VALUES ("${f}", "${msg.author.id}", 0, 
+                  client.channels.send(new Discord.RichEmbed().setAuthor(client.users.get(f).tag + " is running for president!", client.users.get(f).avatarURL).setDescription(`with <@${msg.author.id}> as his/her Vice President!`).addField("Slogan", data.split("|=|")[0]).addField("Description of term", data.split("|=|")[1])).then(message => {
+                    db.run(`INSERT INTO election (id, vId, votes, msgId) VALUES ("${f}", "${msg.author.id}", 0, "${message.id}")`);
+                    db.run(`DELETE FROM waiting WHERE id = "${msg.author.id}"`);
+                  });
                   
-                  return msg.channel.send(`Thanks! You and <@${f}> have been entered into the election!`);
+                  msg.channel.send(`Thanks! You and <@${f}> have been entered into the election!`);
+                  client.users.get(f).send(`<@${msg.author.id} has approved your request to be your Vice President! You both have been put ito the Election.`);
+                } else if (msg.content === "no") {
+                  db.run(`DELETE FROM waiting WHERE id = "${msg.author.id}"`);
+                  msg.channel.send(`Thanks! <@${f}> has been informed about your rejection immediately.`);
+                  client.users.get(f).send(`<@${msg.author.id} has rejected your request to be your Vice President.`);
                 }
               },
             ];
 
             db.all("SELECT * FROM waiting", (err, rows) => {
-
+              for(let i of rows) {
+                ids[i.id](i.for, i.data);
+              }
             });
           })
         });
