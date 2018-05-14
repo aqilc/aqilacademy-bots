@@ -333,6 +333,9 @@ client.on("messageReactionAdd", (reaction, user) => {
       return;
     
     db.get(`SELECT * FROM election WHERE msgId = "${reaction.message.id}"`, (err, res) => {
+      if(!res)
+        return;
+      
       if(user.id === res.id || user.id === res.vId)
         user.send("You can only vote for someone other than you or your vice president!") && reaction.remove();
       
@@ -642,7 +645,7 @@ const cmds = {
     del: true,
     do: (msg, content) => {
       db.all(`SELECT * FROM elections`, (err, res) => {
-        if(res[res.length-1].end > new Date().valueOf())
+        if(res[res.length-1].end < new Date().valueOf())
           return msg.reply("No ongoing election.");
         db.run(`UPDATE elections SET end = ${new Date().valueOf()} WHERE num = ${res[res.length-1].num}`);
         client.channels.get(data.echnl).send(new Discord.RichEmbed().setAuthor("Election has officially stopped by " + msg.author.tag, msg.author.avatarURL).setDescription("There might have been technical problems so please don't be angry"));
