@@ -234,7 +234,7 @@ var f = {
 };
 
 // Events
-client.on("message", (msg) => {
+client.on("message", msg => {
   try {
     
     //What happens when DMed
@@ -297,6 +297,13 @@ client.on("message", (msg) => {
 client.on("ready", () => {
   console.log(client.user.tag + " has started. Ready for action");
   f.checkelections()//.checksql();
+});
+client.on("guildMemberRemove", member => {
+  db.get(`SELECT * FROM election WHERE id = "${member.user.id}"`, (err, res) => {
+    if(!res)
+      return;
+     db.run(
+  })
 });
 
 // Election voting systems
