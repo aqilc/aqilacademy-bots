@@ -257,11 +257,11 @@ client.on("message", msg => {
                   });
                   
                   msg.channel.send(`Thanks! You and <@${f}> have been entered into the election!`);
-                  client.users.get(f).send(`<@${msg.author.id} has approved your request to be your Vice President! You both have been put ito the Election.`);
+                  client.users.get(f).send(`<@${msg.author.id}> has approved your request to be your Vice President! You both have been put into the Election.`);
                 } else if (msg.content === "no") {
                   db.run(`DELETE FROM waiting WHERE id = "${msg.author.id}"`);
                   msg.channel.send(`Thanks! <@${f}> has been informed about your rejection immediately.`);
-                  client.users.get(f).send(`<@${msg.author.id} has rejected your request to be your Vice President.`);
+                  client.users.get(f).send(`<@${msg.author.id}> has rejected your request to be your Vice President.`);
                 }
               },
             ];
