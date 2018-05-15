@@ -64,6 +64,7 @@ const trans = {
   yes: true,
   false: "no",
   true: "yes",
+  undefined: "no",
 };
 
 //Keeps app running
