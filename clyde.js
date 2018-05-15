@@ -757,4 +757,12 @@ const cmds = {
       });
     },
   },
+  withdraw: {
+    desc: "Withdraws from the AqilAcademy Election",
+    cat: "election",
+    del: true,
+    do: (msg, content) => {
+      
+    },
+  },
 };
