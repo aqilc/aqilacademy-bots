@@ -42,8 +42,8 @@ const chnls = {
   staff: "382530174677417984",
 }
 
-// Number stuff
-const nums = {
+// Translates stuff
+const trans = {
   1: "one",
   2: "two",
   3: "three",
@@ -54,11 +54,16 @@ const nums = {
   8: "eight",
   9: "nine",
   0: "zero",
-  one: "one",
-  two: "two",
-  three: "three",
-  four: "four",
-  five: "five",
+  one: 1,
+  two: 2,
+  three: 3,
+  four: 4,
+  five: 5,
+  
+  no: false,
+  yes: true,
+  false: "no",
+  true: "yes",
 };
 
 //Keeps app running
