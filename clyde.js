@@ -630,8 +630,9 @@ const cmds = {
     perms: "bot admin",
     del: true,
     do: (msg, content) => {
-      db.all(`SELECT * FROM elections`, (err, res) => {
-        if(res && res[res.length-1].end > new Date().valueOf())
+      db.get(`SELECT * FROM elections ORDER BY end DESC`, (err, res) => {
+        console.log(res);
+        if(res && (res !== {} || res !== []) && res.end > new Date().valueOf())
           return msg.reply("An election is already in progress!");
         let embed = new Discord.RichEmbed()
           .setAuthor("A New Election has started!", client.user.avatarURL)
