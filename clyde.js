@@ -263,7 +263,7 @@ client.on("message", msg => {
                   });
                   
                   msg.channel.send(`Thanks! You and <@${id}> have been entered into the election!`);
-                  client.users.get(f).send(`<@${msg.author.id}> has approved your request to be your Vice President! You both have been put into the Election.`);
+                  client.users.get(id).send(`<@${msg.author.id}> has approved your request to be your Vice President! You both have been put into the Election.`);
                 } else if (msg.content === "no") {
                   db.run(`DELETE FROM waiting WHERE id = "${msg.author.id}"`);
                   msg.channel.send(`Thanks! <@${id}> has been informed about your rejection immediately.`);
@@ -660,6 +660,7 @@ const cmds = {
         if(res[res.length-1].end < new Date().valueOf())
           return msg.reply("No ongoing election.");
         db.run(`UPDATE elections SET end = ${new Date().valueOf()} WHERE num = ${res[res.length-1].num}`);
+        db.run(`DELETE FROM waiting WHERE id = 0`);
         client.channels.get(data.echnl).send(new Discord.RichEmbed().setAuthor("Election has officially stopped by " + msg.author.tag, msg.author.avatarURL).setDescription("There might have been technical problems so please don't be angry"));
         msg.reply("Ended Election #" + res[res.length-1].num)
       });
