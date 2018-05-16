@@ -99,7 +99,7 @@ db.serialize(function() {
 });
 
 // All Functions
-var f = {
+const f = {
   log: (type, log) => {
     let chnl = { main: "382499510401630209", chat: "433004874930716673", announce: "382353531837087745", staff: "382530174677417984", exp: "407643635358892032" }[type];
     if(!chnl)
@@ -254,19 +254,19 @@ client.on("message", msg => {
             
             // Functions for waiting IDs
             let ids = [
-              (f, d) => {
+              (id, d) => {
                 if(msg.content === "yes") {
-                  client.channels.get(data.echnl).send(new Discord.RichEmbed().setAuthor(client.users.get(f).tag + " is running for president!", client.users.get(f).avatarURL).setDescription(`with <@${msg.author.id}> as his/her Vice President!`).addField("Slogan", d.split("|=|")[0]).addField("Description of term", d.split("|=|")[1]).setColor(f.color())).then(message => {
+                  client.channels.get(data.echnl).send(new Discord.RichEmbed().setAuthor(client.users.get(id).tag + " is running for president!", client.users.get(id).avatarURL).setDescription(`with <@${msg.author.id}> as his/her Vice President!`).addField("Slogan", d.split("|=|")[0]).addField("Description of term", d.split("|=|")[1]).setColor(f.color())).then(message => {
                     message.react("👍").then(message => { message.react("👎"); });
-                    db.run(`INSERT INTO election (id, vId, votes, msgId) VALUES ("${f}", "${msg.author.id}", 0, "${message.id}")`);
+                    db.run(`INSERT INTO election (id, vId, votes, msgId) VALUES ("${id}", "${msg.author.id}", 0, "${message.id}")`);
                     db.run(`DELETE FROM waiting WHERE id = "${msg.author.id}"`);
                   });
                   
-                  msg.channel.send(`Thanks! You and <@${f}> have been entered into the election!`);
+                  msg.channel.send(`Thanks! You and <@${id}> have been entered into the election!`);
                   client.users.get(f).send(`<@${msg.author.id}> has approved your request to be your Vice President! You both have been put into the Election.`);
                 } else if (msg.content === "no") {
                   db.run(`DELETE FROM waiting WHERE id = "${msg.author.id}"`);
-                  msg.channel.send(`Thanks! <@${f}> has been informed about your rejection immediately.`);
+                  msg.channel.send(`Thanks! <@${id}> has been informed about your rejection immediately.`);
                   client.users.get(f).send(`<@${msg.author.id}> has rejected your request to be your Vice President.`);
                 }
               },
@@ -347,11 +347,14 @@ client.on("messageReactionAdd", (reaction, user) => {
       if(user.id === res.id || user.id === res.vId)
         user.send("You can only vote for someone other than you or your vice president!") && reaction.remove();
       
-      db.get(`SELECT * FROM users WHERE id = "${reaction.message.id}"`, (err, ur) => {
-        if((ur.realpoints > ur.points && ur.realpoints < 500) || ur.points < 500) 
+      db.get(`SELECT * FROM users WHERE id = "${user.id}"`, (err, ur) => {
+        if((ur.realpoints > ur.points && ur.realpoints < 500) || ur.points < 500)
           user.send("You need **500 EXP** to vote in the AqilAcademy Elections!") && reaction.remove();
-        
-        db.run(`INSERT INTO voters (id, for, date, election) VALUES ($id, $for, $date, $election)`, { $id: user.id, $for: res.id, $date: new Date().valueOf(), $election: row.num});
+        db.get(`SELECT * FROM voters WHERE id = "${user.id}"`, (err, voter) => {
+          if(voter)
+            user.send("You have already voted!") && reaction.remove();
+          db.run(`INSERT INTO voters (id, for, date, election) VALUES ($id, $for, $date, $election)`, { $id: user.id, $for: res.id, $date: new Date().valueOf(), $election: row.num});
+        });
         db.run(`UPDATE election SET votes = ${res.votes + 1} WHERE id = "${res.id}", election = ${row.num}`);
       });
     });
