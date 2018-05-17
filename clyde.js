@@ -172,7 +172,7 @@ const f = {
               if(h.ignore && !h.ignore.includes(i))
                 return message.channel.send(new Discord.RichEmbed().setColor(f.color()).setAuthor("Not enough EXP", message.author.avatarURL).setDescription(h.warn));
             else if (h.cmd === i && res.points < h.points)
-                return message.channel.send(new Discord.RichEmbed().setColor(f.color()).setAuthor("Not enough EXP", message.author.avatarURL).setDescription(h.warn));
+              return message.channel.send(new Discord.RichEmbed().setColor(f.color()).setAuthor("Not enough EXP", message.author.avatarURL).setDescription(h.warn));
           }
           if(content.endsWith("-d"))
             message.delete() && content.slice(0, -2);
@@ -258,7 +258,7 @@ client.on("message", msg => {
               (id, d) => {
                 if(msg.content === "yes") {
                   client.channels.get(data.echnl).send(new Discord.RichEmbed().setAuthor(client.users.get(id).tag + " is running for president!", client.users.get(id).avatarURL).setDescription(`with <@${msg.author.id}> as his/her Vice President!`).addField("Slogan", d.split("|=|")[0]).addField("Description of term", d.split("|=|")[1]).setColor(f.color())).then(message => {
-                    message.react("👍").then(message => { message.react("👎"); });
+                    message.react("👍");
                     db.run(`INSERT INTO election (id, vId, votes, msgId) VALUES ("${id}", "${msg.author.id}", 0, "${message.id}")`);
                     db.run(`DELETE FROM waiting WHERE id = "${msg.author.id}"`);
                   });
@@ -334,6 +334,8 @@ client.on("guildMemberRemove", member => {
 client.on("messageReactionAdd", (reaction, user) => {
   if(reaction.me)
     return;
+  if(reaction.emoji.identifier !== "👍")
+    return;
   db.get("SELECT * FROM elections ORDER BY end DESC", (err, row) => {
     if(!row)
       return;
@@ -363,6 +365,8 @@ client.on("messageReactionAdd", (reaction, user) => {
 });
 client.on("messageReactionRemove", (reaction, user) => {
   if(reaction.me)
+    return;
+  if(reaction.emoji.identifier !== "👍")
     return;
   db.get("SELECT * FROM elections ORDER BY end DESC", (err, row) => {
     if(!row)
@@ -771,6 +775,15 @@ const cmds = {
     del: true,
     do: (msg, content) => {
       
+    },
+  },
+  election: {
+    desc: "Shows you some stats for elections",
+    usage: " [candidates or voters] (page num)",
+    cat: "election",
+    do: (msg, content) => {
+      let type = content.split(" ")[0],
+          page = Number(content.split(" ")[1]);
     },
   },
 };
