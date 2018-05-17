@@ -72,12 +72,11 @@ const trans = {
 //Keeps app running
 http.createServer(function (req, res) {
   res.writeHead(200, {'Content-Type': 'text/plain'});
-  res.end('Hello World\n');
+  res.end('Clyde is ready');
 }).listen(8080, 'localhost');
 app.get("/", (request, response) => {
   response.sendStatus(200);
 });
-app.listen(process.env.PORT);
 setInterval(() => {
   http.get(`http://${process.env.PROJECT_DOMAIN}.glitch.me/`);
 }, 280000);
