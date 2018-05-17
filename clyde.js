@@ -330,6 +330,7 @@ client.on("guildMemberRemove", member => {
 
 // Election voting systems
 client.on("messageReactionAdd", (reaction, user) => {
+  console.log(user.tag);
   if(reaction.me)
     return;
   if(reaction.emoji.identifier !== "👍")
@@ -356,7 +357,7 @@ client.on("messageReactionAdd", (reaction, user) => {
             user.send("You have already voted!") && reaction.remove();
           db.run(`INSERT INTO voters (id, for, date, election) VALUES ($id, $for, $date, $election)`, { $id: user.id, $for: res.id, $date: new Date().valueOf(), $election: row.num});
         });
-        db.run(`UPDATE election SET votes = ${res.votes + 1} WHERE id = "${res.id}", election = ${row.num}`);
+        db.run(`UPDATE election SET votes = ${reaction.count - 1} WHERE id = "${res.id}", election = ${row.num}`);
       });
     });
   });
@@ -377,7 +378,7 @@ client.on("messageReactionRemove", (reaction, user) => {
       user.send(`Successfully removed your vote for <@${res.id}>`);
       
       db.run(`DELETE FROM voters WHERE id = "${user.id}"`);
-      db.run(`UPDATE election SET votes = ${res.votes - 1} WHERE id = "${res.id}", election = ${row.id}`);
+      db.run(`UPDATE election SET votes = ${reaction.count - 1} WHERE id = "${res.id}", election = ${row.id}`);
     });
   });
 });
