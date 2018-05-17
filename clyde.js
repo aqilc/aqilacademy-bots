@@ -1,3 +1,5 @@
+#!/usr/bin/env node
+
 // All requires and dependencies
 const http = require('http');
 const express = require('express');
@@ -68,6 +70,10 @@ const trans = {
 };
 
 //Keeps app running
+http.createServer(function (req, res) {
+  res.writeHead(200, {'Content-Type': 'text/plain'});
+  res.end('Hello World\n');
+}).listen(8080, 'localhost');
 app.get("/", (request, response) => {
   response.sendStatus(200);
 });
