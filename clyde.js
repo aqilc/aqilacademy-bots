@@ -785,20 +785,32 @@ const cmds = {
       db.get("SELECT end FROM elections ORDER BY end DESC", (err, end) => {
         if(end < new Date().valueOf())
           return msg.reply("An election isn't running");
-        let type = content.split(" ")[0].trim() === "candidates" || content.split(" ")[0].trim() === "voters" ? content.split(" ")[0].trim() : (() => { return msg.reply("The first parameter has to be either `candidates` or `voters`") })(),
+        let type = content.split(" ")[0] || "candidates",
             page = Number(content.split(" ")[1]) && Number(content.split(" ")[1]) > 0 ? Number(content.split(" ")[1]) - 1 : 0;
-        switch ( type ) {
+        switch (type) {
+          case "presidents":
+          case "pres":
+          case "cands":
+          case "candidate":
           case "candidates":
             db.all("SELECT * FROM election", (err, res) => {
               let embed = new Discord.RichEmbed()
-                .setAuthor("Candidates " + (res.length <= 10 ? "(All)" : `(Page: ${page + 1})`), msg.guild.iconURL);
+                .setAuthor("Candidates " + (res.length <= 10 ? "(All)" : `(Page: ${page + 1})`), msg.guild.iconURL)
+                .setFooter(`Check #elections for more info | 10 candidates per page | ${res.length} candidates`);
               
-              f.page_maker
+              f.page_maker(res, 10, res.length <= 10 ? 0 : 1, (i, row) => {
+                embed.addField(client.users.get(row.id).tag, `**Vice:** ${client.users.get(row.vId).tag} (ID: \`${row.vId}\`)\n**Votes:** ${row.votes}`);
+              });
+              
+              msg.channel.send(embed);
             });
             break;
+          case "vote":
           case "voters":
 
             break;
+          default:
+            return msg.reply("The first parameter has to be either `candidates` or `voters`")
         }
       });
     },
