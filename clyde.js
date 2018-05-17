@@ -782,8 +782,25 @@ const cmds = {
     usage: " [candidates or voters] (page num)",
     cat: "election",
     do: (msg, content) => {
-      let type = content.split(" ")[0].trim() === "candidates" || content.split(" ")[0].trim() === "voters" ? content.split(" ")[0].trim() : (() => { return msg.reply("The first parameter has to be either `candidates` or `voters`") })(),
-          page = Number(content.split(" ")[1]) && Number(content.split(" ")[1]) > 0 ? Number(content.split(" ")[1]) + 1 : 1;
+      db.get("SELECT end FROM elections ORDER BY end DESC", (err, end) => {
+        if(end < new Date().valueOf())
+          return msg.reply("An election isn't running");
+        let type = content.split(" ")[0].trim() === "candidates" || content.split(" ")[0].trim() === "voters" ? content.split(" ")[0].trim() : (() => { return msg.reply("The first parameter has to be either `candidates` or `voters`") })(),
+            page = Number(content.split(" ")[1]) && Number(content.split(" ")[1]) > 0 ? Number(content.split(" ")[1]) - 1 : 0;
+        switch ( type ) {
+          case "candidates":
+            db.all("SELECT * FROM election", (err, res) => {
+              let embed = new Discord.RichEmbed()
+                .setAuthor("Candidates " + (res.length <= 10 ? "(All)" : `(Page: ${page + 1})`), msg.guild.iconURL);
+              
+              f.page_maker
+            });
+            break;
+          case "voters":
+
+            break;
+        }
+      });
     },
   },
 };
