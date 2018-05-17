@@ -332,6 +332,7 @@ client.on("guildMemberRemove", member => {
 
 // Election voting systems
 client.on("messageReactionAdd", (reaction, user) => {
+  console.log(user.tag + " reacted");
   if(reaction.me)
     return;
   if(reaction.emoji.identifier !== "👍")
@@ -364,6 +365,7 @@ client.on("messageReactionAdd", (reaction, user) => {
   });
 });
 client.on("messageReactionRemove", (reaction, user) => {
+  console.log(user.tag);
   if(reaction.me)
     return;
   if(reaction.emoji.identifier !== "👍")
