@@ -647,7 +647,7 @@ const cmds = {
           .setImage("https://cdn.glitch.com/87717c00-94ec-4ab4-96ea-8f031a709af4%2FCapture.PNG?1525539358951");
         f.checkelections();
         db.run(`INSERT INTO elections (end, start, title) VALUES (${new Date().valueOf() + 172800000}, ${new Date().valueOf()}, "${content === "" || !content ? "" : content}")`);
-        msg.guild.channels.get(data.echnl).overwritePermissions(msg.guild.roles.get(), { READ_MESSAGES: true });
+        msg.guild.channels.get(data.echnl).overwritePermissions(msg.guild.roles.get("294115797326888961"), { READ_MESSAGES: true });
         client.channels.get(data.echnl).send(embed);
       });
     },
@@ -663,7 +663,7 @@ const cmds = {
           return msg.reply("No ongoing election.");
         db.run(`UPDATE elections SET end = ${new Date().valueOf()} WHERE num = ${res[res.length-1].num}`);
         db.run(`DELETE FROM waiting WHERE id = 0`);
-        msg.guild.channels.get(data.echnl).overwritePermissions(msg.guild.roles.find("name", "everyone"), { READ_MESSAGES: false });
+        msg.guild.channels.get(data.echnl).overwritePermissions(msg.guild.roles.get("294115797326888961"), { READ_MESSAGES: false });
         client.channels.get(data.echnl).send(new Discord.RichEmbed().setAuthor("Election has officially stopped by " + msg.author.tag, msg.author.avatarURL).setDescription("There might have been technical problems so please don't be angry"));
         msg.reply("Ended Election #" + res[res.length-1].num)
       });
