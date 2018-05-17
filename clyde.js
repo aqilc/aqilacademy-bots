@@ -243,7 +243,6 @@ const f = {
 // Events
 client.on("message", msg => {
   try {
-    
     //What happens when DMed
     if(msg.channel.type !== "text") {
       db.get("SELECT * FROM elections ORDER BY end DESC", (err, res) => {
@@ -782,11 +781,11 @@ const cmds = {
     usage: " [candidates or voters] (page num)",
     cat: "election",
     do: (msg, content) => {
-      db.get("SELECT end FROM elections ORDER BY end DESC", (err, end) => {
-        if(end < new Date().valueOf())
+      db.get("SELECT * FROM elections ORDER BY end DESC", (err, elec) => {
+        if(elec.end < new Date().valueOf())
           return msg.reply("An election isn't running");
         let type = content.split(" ")[0] || "candidates",
-            page = Number(content.split(" ")[1]) && Number(content.split(" ")[1]) > 0 ? Number(content.split(" ")[1]) - 1 : 0;
+            page = !isNaN(Number(content.split(" ")[1])) && Number(content.split(" ")[1]) > 0 ? Number(content.split(" ")[1]) - 1 : 0;
         switch (type) {
           case "presidents":
           case "pres":
@@ -796,10 +795,11 @@ const cmds = {
             db.all("SELECT * FROM election", (err, res) => {
               let embed = new Discord.RichEmbed()
                 .setAuthor("Candidates " + (res.length <= 10 ? "(All)" : `(Page: ${page + 1})`), msg.guild.iconURL)
+                .setColor(f.color())
                 .setFooter(`Check #elections for more info | 10 candidates per page | ${res.length} candidates`);
               
               f.page_maker(res, 10, res.length <= 10 ? 0 : 1, (i, row) => {
-                embed.addField(client.users.get(row.id).tag, `**Vice:** ${client.users.get(row.vId).tag} (ID: \`${row.vId}\`)\n**Votes:** ${row.votes}`);
+                embed.addField(client.users.get(row.id).tag, `**Vice:** ${client.users.get(row.vId).tag} (ID: \`${row.vId}\`)\n**Votes:** ${row.votes} votes`);
               });
               
               msg.channel.send(embed);
@@ -807,7 +807,20 @@ const cmds = {
             break;
           case "vote":
           case "voters":
-
+            db.all("SELECT * FROM voters WHERE election = " + elec.num, (err, res) => {
+              let embed = new Discord.RichEmbed()
+                .setAuthor("Voters " + (res.length <= 10 ? "(All)" : `(Page: ${page + 1})`), msg.guild.iconURL)
+                .setColor(f.color())
+                .setFooter(`Check #elections for more info | 10 voters per page | ${res.length} voters`);
+              if(res.length === 0)
+                embed.setDescription("No voters(yet)!")
+              else
+                f.page_maker(res, 10, res.length <= 10 ? 0 : 1, (i, row) => {
+                embed.addField(client.users.get(row.id).tag, `**For:** ${client.users.get(row.for).tag}\n**When:** ${new Date(row.date).toUTCString()}`);
+              });
+              
+              msg.channel.send(embed);
+            });
             break;
           default:
             return msg.reply("The first parameter has to be either `candidates` or `voters`")
