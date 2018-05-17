@@ -345,7 +345,7 @@ client.on("messageReactionAdd", (reaction, user) => {
     db.get(`SELECT * FROM election WHERE msgId = "${reaction.message.id}"`, (err, res) => {
       if(!res)
         return;
-      
+      console.log(res);
       if(user.id === res.id || user.id === res.vId)
         user.send("You can only vote for someone other than you or your vice president!") && reaction.remove();
       
