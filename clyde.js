@@ -95,7 +95,6 @@ db.serialize(function() {
     db.run("CREATE TABLE IF NOT EXISTS " + i);
     //console.log(i + " has been created if it didn't exist before");
   }
-  
 });
 
 // All Functions
@@ -332,7 +331,6 @@ client.on("guildMemberRemove", member => {
 
 // Election voting systems
 client.on("messageReactionAdd", (reaction, user) => {
-  console.log(user.tag + " reacted");
   if(reaction.me)
     return;
   if(reaction.emoji.identifier !== "👍")
@@ -365,7 +363,6 @@ client.on("messageReactionAdd", (reaction, user) => {
   });
 });
 client.on("messageReactionRemove", (reaction, user) => {
-  console.log(user.tag);
   if(reaction.me)
     return;
   if(reaction.emoji.identifier !== "👍")
@@ -785,8 +782,8 @@ const cmds = {
     usage: " [candidates or voters] (page num)",
     cat: "election",
     do: (msg, content) => {
-      let type = content.split(" ")[0],
-          page = Number(content.split(" ")[1]) && Number(content.split(" ")[1]) > 0 ? Number(content.split(" ")[1])+1 : 1;
+      let type = content.split(" ")[0].trim() === "candidates" || content.split(" ")[0].trim() === "voters" ? content.split(" ")[0].trim() : (() => { return msg.reply("The first parameter has to be either `candidates` or `voters`") })(),
+          page = Number(content.split(" ")[1]) && Number(content.split(" ")[1]) > 0 ? Number(content.split(" ")[1]) + 1 : 1;
     },
   },
 };
