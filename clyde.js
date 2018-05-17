@@ -798,9 +798,12 @@ const cmds = {
                 .setColor(f.color())
                 .setFooter(`Check #elections for more info | 10 candidates per page | ${res.length} candidates`);
               
-              f.page_maker(res, 10, res.length <= 10 ? 0 : 1, (i, row) => {
-                embed.addField(client.users.get(row.id).tag, `**Vice:** ${client.users.get(row.vId).tag} (ID: \`${row.vId}\`)\n**Votes:** ${row.votes} votes`);
-              });
+              if(res.length === 0)
+                embed.setDescription("No voters(yet)!")
+              else
+                f.page_maker(res, 10, res.length <= 10 ? 0 : 1, (i, row) => {
+                  embed.addField(client.users.get(row.id).tag, `**Vice:** ${client.users.get(row.vId).tag} (ID: \`${row.vId}\`)\n**Votes:** ${row.votes} votes`);
+                });
               
               msg.channel.send(embed);
             });
@@ -812,12 +815,13 @@ const cmds = {
                 .setAuthor("Voters " + (res.length <= 10 ? "(All)" : `(Page: ${page + 1})`), msg.guild.iconURL)
                 .setColor(f.color())
                 .setFooter(`Check #elections for more info | 10 voters per page | ${res.length} voters`);
+              
               if(res.length === 0)
                 embed.setDescription("No voters(yet)!")
               else
                 f.page_maker(res, 10, res.length <= 10 ? 0 : 1, (i, row) => {
-                embed.addField(client.users.get(row.id).tag, `**For:** ${client.users.get(row.for).tag}\n**When:** ${new Date(row.date).toUTCString()}`);
-              });
+                  embed.addField(client.users.get(row.id).tag, `**For:** ${client.users.get(row.for).tag}\n**When:** ${new Date(row.date).toUTCString()}`);
+                });
               
               msg.channel.send(embed);
             });
