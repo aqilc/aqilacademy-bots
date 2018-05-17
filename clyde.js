@@ -647,7 +647,7 @@ const cmds = {
           .setImage("https://cdn.glitch.com/87717c00-94ec-4ab4-96ea-8f031a709af4%2FCapture.PNG?1525539358951");
         f.checkelections();
         db.run(`INSERT INTO elections (end, start, title) VALUES (${new Date().valueOf() + 172800000}, ${new Date().valueOf()}, "${content === "" || !content ? "" : content}")`);
-        msg.guild.channels.get(data.echnl).overwritePermissions(msg.guild.roles.find("name", "everyone"), { READ_MESSAGES: true });
+        msg.guild.channels.get(data.echnl).overwritePermissions(msg.guild.roles.get(), { READ_MESSAGES: true });
         client.channels.get(data.echnl).send(embed);
       });
     },
