@@ -127,7 +127,7 @@ const f = {
             }
             db.run(`UPDATE elections SET winners = ${sqlwin} WHERE num = ${elec.num}`);
             client.guilds.get("294115797326888961").channels.get(chnls.announce).send(`**:yes: The election has officially ended. Winner(s):**\`\`\`\n${winner}\`\`\``);
-            client.guilds.get("294115797326888961").channels.get(data.echnl).overwritePermissions(client.guilds.get("294115797326888961").guild.roles.find("name", "everyone"), { READ_MESSAGES: true });
+            client.guilds.get("294115797326888961").channels.get(data.echnl).overwritePermissions(client.guilds.get("294115797326888961").guild.roles.get("294115797326888961"), { READ_MESSAGES: true });
           })
         }, elec[0].end - new Date().valueOf());
       }
