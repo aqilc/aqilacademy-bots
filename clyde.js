@@ -667,6 +667,7 @@ const cmds = {
           return msg.reply("No ongoing election.");
         db.run(`UPDATE elections SET end = ${new Date().valueOf()} WHERE num = ${res[res.length-1].num}`);
         db.run(`DELETE FROM waiting WHERE id = 0`);
+        db.run("DELETE FROM election");
         msg.guild.channels.get(data.echnl).overwritePermissions(msg.guild.roles.get("294115797326888961"), { READ_MESSAGES: false });
         client.channels.get(data.echnl).send(new Discord.RichEmbed().setAuthor("Election has officially stopped by " + msg.author.tag, msg.author.avatarURL).setDescription("There might have been technical problems so please don't be angry"));
         msg.reply("Ended Election #" + res[res.length-1].num)
@@ -744,20 +745,20 @@ const cmds = {
       if(!args[2])
         return msg.reply("Please fill in all required parameters.\n**Required Parameters:** ` [Vice President mention or id] |=| [slogan] |=| [description of term]`");
       if(!msg.guild.members.get(vp))
-        msg.reply("Please enter a valid member of AqilAcademy for your Vice President");
+        return msg.reply("Please enter a valid member of AqilAcademy for your Vice President");
       if(msg.author.id === vp)
-        msg.reply("Your Vice President cannot be yourself :face_palm:");
+        return msg.reply("Your Vice President cannot be yourself :face_palm:");
       if(client.users.get(vp).bot)
-        msg.reply("Your Vice President has to be a human user");
+        return msg.reply("Your Vice President has to be a human user");
       if(args[1] === "" || args[2] === "")
-        msg.reply("No empty parameters allowed");
+        return msg.reply("No empty parameters allowed");
       db.get("SELECT * FROM elections ORDER BY end DESC", (err, res) => {
         if(res.end < new Date().valueOf())
           return msg.reply("There isn't an election going on yet!");
-        db.get(`SELECT * FROM elections WHERE id = "${msg.author.id}"`, (err, row) => {
+        db.get(`SELECT * FROM election WHERE id = "${msg.author.id}"`, (err, row) => {
           if(row)
             return msg.reply("You are already in the election!");
-          db.get(`SELECT * FROM waiting WHERE for = "${msg.author.id}"`, (err, w) => {
+          db.get(`SELECT * FROM waiting WHERE for = "${msg.author.id}", id = 0`, (err, w) => {
             if(w)
               return msg.reply("You are already waiting for a Vice President!");
             
@@ -783,7 +784,7 @@ const cmds = {
     cat: "election",
     do: (msg, content) => {
       let type = content.split(" ")[0],
-          page = Number(content.split(" ")[1]);
+          page = Number(content.split(" ")[1]) && Number(content.split(" ")[1]) > 0 ? Number(content.split(" ")[1])+1 : 1;
     },
   },
 };
