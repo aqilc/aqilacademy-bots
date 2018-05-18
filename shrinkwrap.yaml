@@ -1813,6 +1813,7 @@ packages:
     name: gkt
     optional: true
     resolution:
+      registry: 'https://registry.npmjs.org/'
       tarball: 'https://tgz.pm2.io/gkt-1.0.0.tgz'
     version: 1.0.0
 registry: 'https://registry.npmjs.org/'
