@@ -73,7 +73,8 @@ const trans = {
 http.createServer(function (req, res) {
   res.writeHead(200, {'Content-Type': 'text/plain'});
   res.end('Clyde is ready');
-}).listen(9909, 'localhost');
+}).listen(9900, 'localhost');
+app.listen(process.env.PORT);
 app.get("/", (request, response) => {
   response.sendStatus(200);
 });
@@ -788,7 +789,7 @@ const cmds = {
     cat: "election",
     do: (msg, content) => {
       db.get("SELECT * FROM elections ORDER BY end DESC", (err, elec) => {
-        if(elec.end < new Date().valueOf())
+        if(!elec || elec.end < new Date().valueOf())
           return msg.reply("An election isn't running");
         let type = content.split(" ")[0] || "candidates",
             page = !isNaN(Number(content.split(" ")[1])) && Number(content.split(" ")[1]) > 0 ? Number(content.split(" ")[1]) - 1 : 0;
