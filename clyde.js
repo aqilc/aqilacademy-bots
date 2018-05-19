@@ -23,7 +23,7 @@ const needexp = [
     warn: `You need **100 EXP** to use any commands in the **exp** category excluding \`${prefix}stats\``,
   },
   {
-    cmd: "run",
+    cmd: "president",
     points: 3000,
     warn: "You need **3000 EXP** to use the **run** command!",
   },
@@ -342,6 +342,7 @@ client.on("messageReactionAdd", (reaction, user) => {
   if(reaction.emoji.identifier !== "👍")
     return;
   db.get("SELECT * FROM elections ORDER BY end DESC", (err, row) => {
+    console.log(row);
     if(!row)
       return;
     
