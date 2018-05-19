@@ -122,7 +122,6 @@ const f = {
       if(elec[0].end > new Date().valueOf()) {
         setInterval(async () => {
           let messages = await client.channels.get(data.echnl).fetchMessages({ limit: 100 });
-          messages.array();
 
           db.get("SELECT * FROM elections ORDER BY end DESC", (err, election) => {
             if(!election || election.end < new Date().valueOf())
@@ -130,10 +129,8 @@ const f = {
             db.all("SELECT * FROM election", (err, res) => {
               if(!res)
                 return;
-              console.log(res);
-              for(let i of messages) {
+              for(let i of messages.array()) {
                 if(res.map(r => r.msgId).includes(i.id)) {
-                  console.log(i.reactions.array().filter(r => decodeURIComponent(r.emoji.identifier))[0].count + "somwthjflks");
                   db.run(`UPDATE election SET votes = ${i.reactions.array().filter(r => decodeURIComponent(r.emoji.identifier) === "👍")[0].count - 1} WHERE msgId = "${i.id}"`);
                 }
               }
@@ -393,7 +390,7 @@ client.on("messageReactionAdd", (reaction, user) => {
 client.on("messageReactionRemove", (reaction, user) => {
   if(reaction.me)
     return;
-  if(reaction.emoji.identifier !== "👍")
+  if(decodeURIComponent(reaction.emoji.identifier) !== "👍")
     return;
   db.get("SELECT * FROM elections ORDER BY end DESC", (err, row) => {
     if(!row)
