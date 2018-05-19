@@ -390,6 +390,20 @@ client.on("messageReactionRemove", (reaction, user) => {
   });
 });
 
+setTimeout(() => {
+  setInterval(async () => {
+    let messages = await client.channels.get(data.echnl).fetchMessages({ limit: 100 });
+    messages.array();
+    
+    db.get("SELECT * FROM elections ORDER BY end DESC")
+    db.all("SELECT * FROM election", (err, res) => {
+      for(let i of messages) {
+
+      }
+    });
+  }, 1000)
+}, 1000);
+
 // Commands
 const cmds = {
   help: {
