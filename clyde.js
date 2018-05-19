@@ -356,8 +356,8 @@ client.on("guildMemberRemove", member => {
 // Election voting systems
 client.on("messageReactionAdd", (reaction, user) => {
   console.log(user.tag);
-  if(reaction.me)
-    return;
+  //if(reaction.me)
+    //return;
   if(decodeURIComponent(reaction.emoji.identifier) !== "👍")
     return;
   db.get("SELECT * FROM elections ORDER BY end DESC", (err, row) => {
