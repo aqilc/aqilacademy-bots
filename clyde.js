@@ -382,7 +382,7 @@ client.on("messageReactionAdd", (reaction, user) => {
             user.send("You have already voted!") && reaction.remove();
           db.run(`INSERT INTO voters (id, for, date, election) VALUES (?, ?, ?, ?)`, [ user.id, res.id, new Date().valueOf(), row.num ]);
         });
-        db.run(`UPDATE election SET votes = ${reaction.count - 1} WHERE id = "${res.id}" AND election = ${row.num}`);
+        db.run(`UPDATE election SET votes = ${reaction.count - 1} WHERE id = "${res.id}" AND num = ${row.num}`);
       });
     });
   });
