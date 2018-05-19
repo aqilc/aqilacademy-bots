@@ -120,7 +120,7 @@ const f = {
       res.reverse();
       let elec = res;
       if(elec[0].end > new Date().valueOf()) {
-        setInterval(async () => {
+        /*setInterval(async () => {
           let messages = await client.channels.get(data.echnl).fetchMessages({ limit: 100 });
           messages.array();
 
@@ -135,7 +135,7 @@ const f = {
               }
             });
           });
-        }, 1000)
+        }, 1000)*/
         setTimeout(() => {
           db.run("SELECT * FROM election ORDER BY votes", (err, res) => {
             let winner = "";
@@ -333,7 +333,7 @@ client.on("guildMemberRemove", member => {
       return;
     for(let i of res) {
       db.run(`DELETE FROM election WHERE id = "${i.id}"`);
-      db.run(`DELETE FROM waiting WHERE id = "${i.id}", for = "${i.id}"`);
+      db.run(`DELETE FROM waiting WHERE id = "${i.id}" OR for = "${i.id}"`);
       if(member.user.id === i.id) {
         member.user.send("You and your Vice President have been disqualified from the election");
         if(client.users.get(i.vId))
@@ -352,12 +352,12 @@ client.on("guildMemberRemove", member => {
 });
 
 // Election voting systems
-client.on("messageReactionAdd", async (reaction, user) => {
+client.on("messageReactionAdd", (reaction, user) => {
   console.log(user.tag);
   //if(reaction.me)
     //return;
-  if(decodeURIComponent(reaction.emoji.identifier) !== "👍")
-    return;
+  //if(decodeURIComponent(reaction.emoji.identifier) !== "👍")
+    //return;
   db.get("SELECT * FROM elections ORDER BY end DESC", (err, row) => {
     console.log(row);
     if(!row)
@@ -379,9 +379,9 @@ client.on("messageReactionAdd", async (reaction, user) => {
         db.get(`SELECT * FROM voters WHERE id = "${user.id}"`, (err, voter) => {
           if(voter)
             user.send("You have already voted!") && reaction.remove();
-          db.run(`INSERT INTO voters (id, for, date, election) VALUES ($id, $for, $date, $election)`, [ user.id, $for: res.id, $date: new Date().valueOf(), $election: row.num});
+          db.run(`INSERT INTO voters (id, for, date, election) VALUES (?, ?, ?, ?)`, [ user.id, res.id, new Date().valueOf(), row.num ]);
         });
-        db.run(`UPDATE election SET votes = ${reaction.count - 1} WHERE id = "${res.id}", election = ${row.num}`);
+        db.run(`UPDATE election SET votes = ${reaction.count - 1} WHERE id = "${res.id}" AND election = ${row.num}`);
       });
     });
   });
