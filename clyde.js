@@ -120,9 +120,8 @@ const f = {
       res.reverse();
       let elec = res;
       if(elec[0].end > new Date().valueOf()) {
-        setInterval(async () => {
+        /*setInterval(async () => {
           let messages = await client.channels.get(data.echnl).fetchMessages({ limit: 100 });
-
           db.get("SELECT * FROM elections ORDER BY end DESC", (err, election) => {
             if(!election || election.end < new Date().valueOf())
               return;
@@ -131,12 +130,14 @@ const f = {
                 return;
               for(let i of messages.array()) {
                 if(res.map(r => r.msgId).includes(i.id)) {
+                  if(!i.reactions.array().filter(r => decodeURIComponent(r.emoji.identifier) === "👍")[0])
+                    return;
                   db.run(`UPDATE election SET votes = ${i.reactions.array().filter(r => decodeURIComponent(r.emoji.identifier) === "👍")[0].count - 1} WHERE msgId = "${i.id}"`);
                 }
               }
             });
           });
-        }, 1000)
+        }, 1000)*/
         setTimeout(() => {
           db.run("SELECT * FROM election ORDER BY votes", (err, res) => {
             let winner = "";
@@ -355,10 +356,10 @@ client.on("guildMemberRemove", member => {
 // Election voting systems
 client.on("messageReactionAdd", (reaction, user) => {
   console.log(user.tag);
-  //if(reaction.me)
-    //return;
-  //if(decodeURIComponent(reaction.emoji.identifier) !== "👍")
-    //return;
+  if(reaction.me)
+    return;
+  if(decodeURIComponent(reaction.emoji.identifier) !== "👍")
+    return;
   db.get("SELECT * FROM elections ORDER BY end DESC", (err, row) => {
     console.log(row);
     if(!row)
@@ -381,8 +382,8 @@ client.on("messageReactionAdd", (reaction, user) => {
           if(voter)
             user.send("You have already voted!") && reaction.remove();
           db.run(`INSERT INTO voters (id, for, date, election) VALUES (?, ?, ?, ?)`, [ user.id, res.id, new Date().valueOf(), row.num ]);
+          db.run(`UPDATE election SET votes = ${reaction.count - 1} WHERE id = "${res.id}"`);
         });
-        db.run(`UPDATE election SET votes = ${reaction.count - 1} WHERE id = "${res.id}" AND num = ${row.num}`);
       });
     });
   });
