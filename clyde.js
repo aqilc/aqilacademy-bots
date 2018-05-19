@@ -120,6 +120,22 @@ const f = {
       res.reverse();
       let elec = res;
       if(elec[0].end > new Date().valueOf()) {
+        setInterval(async () => {
+          let messages = await client.channels.get(data.echnl).fetchMessages({ limit: 100 });
+          messages.array();
+
+          db.get("SELECT * FROM elections ORDER BY end DESC", (err, election) => {
+            if(!election || election.end < new Date().valueOf())
+              return;
+            db.all("SELECT * FROM election", (err, res) => {
+              for(let i of messages) {
+                if(res.map(r => r.msgId).includes(i.id)) {
+                  db.run(`UPDATE election SET votes = ${i.reactions.array().length - 1} WHERE msgId = "${i.id}"`);
+                }
+              }
+            });
+          });
+        }, 1000)
         setTimeout(() => {
           db.run("SELECT * FROM election ORDER BY votes", (err, res) => {
             let winner = "";
@@ -332,6 +348,7 @@ client.on("guildMemberRemove", member => {
       }).catch(console.log);
     }
   })
+  db.run(`DELETE * FROM users WHERE id = "${member.user.id}"`);
 });
 
 // Election voting systems
@@ -339,7 +356,7 @@ client.on("messageReactionAdd", async (reaction, user) => {
   console.log(user.tag);
   //if(reaction.me)
     //return;
-  if(reaction.emoji.identifier !== "👍")
+  if(decodeURIComponent(reaction.emoji.identifier) !== "👍")
     return;
   db.get("SELECT * FROM elections ORDER BY end DESC", (err, row) => {
     console.log(row);
@@ -357,12 +374,12 @@ client.on("messageReactionAdd", async (reaction, user) => {
         user.send("You can only vote for someone other than you or your vice president!") && reaction.remove();
       
       db.get(`SELECT * FROM users WHERE id = "${user.id}"`, (err, ur) => {
-        if((ur.realpoints > ur.points && ur.realpoints < 500) || ur.points < 500)
+        if(!ur || (ur.realpoints > ur.points && ur.realpoints < 500) || ur.points < 500)
           user.send("You need **500 EXP** to vote in the AqilAcademy Elections!") && reaction.remove();
         db.get(`SELECT * FROM voters WHERE id = "${user.id}"`, (err, voter) => {
           if(voter)
             user.send("You have already voted!") && reaction.remove();
-          db.run(`INSERT INTO voters (id, for, date, election) VALUES ($id, $for, $date, $election)`, { $id: user.id, $for: res.id, $date: new Date().valueOf(), $election: row.num});
+          db.run(`INSERT INTO voters (id, for, date, election) VALUES ($id, $for, $date, $election)`, [ user.id, $for: res.id, $date: new Date().valueOf(), $election: row.num});
         });
         db.run(`UPDATE election SET votes = ${reaction.count - 1} WHERE id = "${res.id}", election = ${row.num}`);
       });
@@ -389,25 +406,6 @@ client.on("messageReactionRemove", (reaction, user) => {
     });
   });
 });
-
-setTimeout(() => {
-  setInterval(async () => {
-    let messages = await client.channels.get(data.echnl).fetchMessages({ limit: 100 });
-    messages.array();
-    
-    db.get("SELECT * FROM elections ORDER BY end DESC", (err, election) => {
-      if(!election || election.end < new Date().valueOf())
-        return;
-      db.all("SELECT * FROM election", (err, res) => {
-        for(let i of messages) {
-          if(res.map(r => r.msgId).includes(i.id)) {
-            
-          }
-        }
-      });
-    });
-  }, 1000)
-}, 1000);
 
 // Commands
 const cmds = {
