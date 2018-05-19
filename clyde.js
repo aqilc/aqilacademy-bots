@@ -120,9 +120,10 @@ const f = {
       res.reverse();
       let elec = res;
       if(elec[0].end > new Date().valueOf()) {
-        /*setInterval(async () => {
+        setInterval(async () => {
           let messages = await client.channels.get(data.echnl).fetchMessages({ limit: 100 });
           messages.array();
+          console.log(messages);
 
           db.get("SELECT * FROM elections ORDER BY end DESC", (err, election) => {
             if(!election || election.end < new Date().valueOf())
@@ -130,12 +131,13 @@ const f = {
             db.all("SELECT * FROM election", (err, res) => {
               for(let i of messages) {
                 if(res.map(r => r.msgId).includes(i.id)) {
-                  db.run(`UPDATE election SET votes = ${i.reactions.array().length - 1} WHERE msgId = "${i.id}"`);
+                  console.log(i.reactions.array().filter(r => decodeURIComponent(r.emoji.identifier))[0].count);
+                  db.run(`UPDATE election SET votes = ${i.reactions.array().filter(r => decodeURIComponent(r.emoji.identifier) === "👍")[0].count - 1} WHERE msgId = "${i.id}"`);
                 }
               }
             });
           });
-        }, 1000)*/
+        }, 1000)
         setTimeout(() => {
           db.run("SELECT * FROM election ORDER BY votes", (err, res) => {
             let winner = "";
