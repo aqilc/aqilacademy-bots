@@ -120,7 +120,7 @@ const f = {
       res.reverse();
       let elec = res;
       if(elec[0].end > new Date().valueOf()) {
-        /*setInterval(async () => {
+        setInterval(async () => {
           let messages = await client.channels.get(data.echnl).fetchMessages({ limit: 100 });
           db.get("SELECT * FROM elections ORDER BY end DESC", (err, election) => {
             if(!election || election.end < new Date().valueOf())
@@ -137,7 +137,7 @@ const f = {
               }
             });
           });
-        }, 1000)*/
+        }, 1000)
         setTimeout(() => {
           db.run("SELECT * FROM election ORDER BY votes", (err, res) => {
             let winner = "";
