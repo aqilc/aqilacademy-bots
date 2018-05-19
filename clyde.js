@@ -371,14 +371,14 @@ client.on("messageReactionAdd", (reaction, user) => {
         return;
       console.log(res);
       if(user.id === res.id || user.id === res.vId)
-        user.send("You can only vote for someone other than you or your vice president!") && reaction.remove();
+        user.send("You can only vote for someone other than you or your vice president!").catch(console.log) && reaction.remove(user);
       
       db.get(`SELECT * FROM users WHERE id = "${user.id}"`, (err, ur) => {
         if(!ur || (ur.realpoints > ur.points && ur.realpoints < 500) || ur.points < 500)
-          user.send("You need **500 EXP** to vote in the AqilAcademy Elections!") && reaction.remove();
+          user.send("You need **500 EXP** to vote in the AqilAcademy Elections!").catch(console.log) && reaction.remove(user);
         db.get(`SELECT * FROM voters WHERE id = "${user.id}"`, (err, voter) => {
           if(voter)
-            user.send("You have already voted!") && reaction.remove();
+            user.send("You have already voted!").catch(console.log) && reaction.remove(user);
           db.run(`INSERT INTO voters (id, for, date, election) VALUES (?, ?, ?, ?)`, [ user.id, res.id, new Date().valueOf(), row.num ]);
           db.run(`UPDATE election SET votes = ${reaction.count - 1} WHERE id = "${res.id}"`);
         });
