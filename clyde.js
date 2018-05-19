@@ -395,11 +395,16 @@ setTimeout(() => {
     let messages = await client.channels.get(data.echnl).fetchMessages({ limit: 100 });
     messages.array();
     
-    db.get("SELECT * FROM elections ORDER BY end DESC")
-    db.all("SELECT * FROM election", (err, res) => {
-      for(let i of messages) {
-
-      }
+    db.get("SELECT * FROM elections ORDER BY end DESC", (err, election) => {
+      if(!election || election.end < new Date().valueOf())
+        return;
+      db.all("SELECT * FROM election", (err, res) => {
+        for(let i of messages) {
+          if(res.map(r => r.msgId).includes(i.id)) {
+            
+          }
+        }
+      });
     });
   }, 1000)
 }, 1000);
