@@ -130,9 +130,9 @@ const f = {
                 return;
               for(let i of messages.array()) {
                 if(res.map(r => r.msgId).includes(i.id)) {
-                  if(!i.reactions.array().filter(r => decodeURIComponent(r.emoji.identifier) === "👍")[0])
+                  if(!i.reactions.array().filter(r => r.emoji.name === "👍")[0])
                     return;
-                  db.run(`UPDATE election SET votes = ${i.reactions.array().filter(r => decodeURIComponent(r.emoji.identifier) === "👍")[0].count - 1} WHERE msgId = "${i.id}"`);
+                  db.run(`UPDATE election SET votes = ${i.reactions.array().filter(r => r.emoji.name === "👍")[0].count - 1} WHERE msgId = "${i.id}"`);
                 }
               }
             });
@@ -355,8 +355,10 @@ client.on("guildMemberRemove", member => {
 
 // Election voting systems
 client.on("messageReactionAdd", (reaction, user) => {
-  console.log(user.tag);
-  if(decodeURIComponent(reaction.emoji.identifier) !== "👍")
+  console.log(user.tag + " " + reaction.emoji.name);
+  if(reaction.emoji.name !== "👍")
+    return;
+  if(reaction.message.channel.id !== data.echnl)
     return;
   db.get("SELECT * FROM elections ORDER BY end DESC", (err, row) => {
     console.log(row);
@@ -381,13 +383,16 @@ client.on("messageReactionAdd", (reaction, user) => {
             user.send("You have already voted!").catch(console.log) && reaction.remove(user);
           db.run(`INSERT INTO voters (id, for, date, election) VALUES (?, ?, ?, ?)`, [ user.id, res.id, new Date().valueOf(), row.num ]);
           db.run(`UPDATE election SET votes = ${reaction.count - 1} WHERE id = "${res.id}"`);
+          user.send("
         });
       });
     });
   });
 });
 client.on("messageReactionRemove", (reaction, user) => {
-  if(decodeURIComponent(reaction.emoji.identifier) !== "👍")
+  if(reaction.emoji.name !== "👍")
+    return;
+  if(reaction.message.channel.id !== data.echnl)
     return;
   db.get("SELECT * FROM elections ORDER BY end DESC", (err, row) => {
     if(!row)
@@ -397,6 +402,8 @@ client.on("messageReactionRemove", (reaction, user) => {
       return;
     
     db.get(`SELECT * FROM election WHERE msgId = "${reaction.message.id}"`, (err, res) => {
+      if(!res)
+        return;
       user.send(`Successfully removed your vote for <@${res.id}>`);
       
       db.run(`DELETE FROM voters WHERE id = "${user.id}"`);
