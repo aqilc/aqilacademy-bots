@@ -173,10 +173,10 @@ const f = {
           if(perms[cmds[i].perms][0])
             return perms[cmds[i].perms][1]();
           for(let h of needexp) {
-            if(h.cat === cmds[i].cat && res.points < h.points)
+            if(h.cat === cmds[i].cat && (!res || res.points < h.points))
               if(h.ignore && !h.ignore.includes(i))
                 return message.channel.send(new Discord.RichEmbed().setColor(f.color()).setAuthor("Not enough EXP", message.author.avatarURL).setDescription(h.warn));
-            else if (h.cmd === i && res.points < h.points)
+            else if (h.cmd === i && (!res || res.points < h.points))
               return message.channel.send(new Discord.RichEmbed().setColor(f.color()).setAuthor("Not enough EXP", message.author.avatarURL).setDescription(h.warn));
           }
           if(content.endsWith("-d"))
@@ -758,7 +758,7 @@ const cmds = {
       if(args[1] === "" || args[2] === "")
         return msg.reply("No empty parameters allowed");
       db.get("SELECT * FROM elections ORDER BY end DESC", (err, res) => {
-        if(res.end < new Date().valueOf())
+        if(!res || res.end < new Date().valueOf())
           return msg.reply("There isn't an election going on yet!");
         db.get(`SELECT * FROM election WHERE id = "${msg.author.id}"`, (err, row) => {
           if(row)
