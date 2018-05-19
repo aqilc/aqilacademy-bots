@@ -247,7 +247,7 @@ const f = {
 };
 
 // Events
-client.on("message", msg => {
+client.on("message", async msg => {
   try {
     //What happens when DMed
     if(msg.channel.type !== "text") {
@@ -335,7 +335,7 @@ client.on("guildMemberRemove", member => {
 });
 
 // Election voting systems
-client.on("messageReactionAdd", (reaction, user) => {
+client.on("messageReactionAdd", async (reaction, user) => {
   console.log(user.tag);
   //if(reaction.me)
     //return;
