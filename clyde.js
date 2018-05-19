@@ -123,15 +123,17 @@ const f = {
         setInterval(async () => {
           let messages = await client.channels.get(data.echnl).fetchMessages({ limit: 100 });
           messages.array();
-          console.log(messages);
 
           db.get("SELECT * FROM elections ORDER BY end DESC", (err, election) => {
             if(!election || election.end < new Date().valueOf())
               return;
             db.all("SELECT * FROM election", (err, res) => {
+              if(!res)
+                return;
+              console.log(res);
               for(let i of messages) {
                 if(res.map(r => r.msgId).includes(i.id)) {
-                  console.log(i.reactions.array().filter(r => decodeURIComponent(r.emoji.identifier))[0].count);
+                  console.log(i.reactions.array().filter(r => decodeURIComponent(r.emoji.identifier))[0].count + "somwthjflks");
                   db.run(`UPDATE election SET votes = ${i.reactions.array().filter(r => decodeURIComponent(r.emoji.identifier) === "👍")[0].count - 1} WHERE msgId = "${i.id}"`);
                 }
               }
