@@ -35,7 +35,7 @@ const needexp = [
 ];
 
 // The client
-var client = new Discord.Client({ autoreconnect: true });
+var client = new Discord.Client();
 client.login(process.env.TOKEN);
 
 // All channels needed to run bot
