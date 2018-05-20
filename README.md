@@ -6,6 +6,9 @@ Makes [AqilAcademy][aa] work perfectly. Still in production
 - [Clyde 1.0][c]
 - [Clyde 2.0][c2]
 
+## Random Code
+A bunch of random code that might come in handy!
+
 ### Command constructor
 ```
 : {
