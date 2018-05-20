@@ -1,6 +1,6 @@
 # Clyde 3
 -----------------------------------------------------------
-Makes [AqilAcademy][aa] work perfectly. Still in production
+Makes [AqilAcademy][aa] work perfectly. Still in production![](https://david-dm.org/JettBurns14/Discord-tool-bot.svg)![](https://img.shields.io/github/release/JettBurns14/Discord-tool-bot.svg)
 
 ### Links to other Clydes
 - [Clyde 1.0][c]
