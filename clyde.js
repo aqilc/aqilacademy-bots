@@ -73,7 +73,7 @@ const trans = {
 http.createServer(function (req, res) {
   res.writeHead(200, {'Content-Type': 'text/plain'});
   res.end('Clyde is ready');
-}).listen(9900, 'localhost');
+}).listen(9900, 'localhost'); // runs Clyde somewhere else, don't activate unless necessary
 app.listen(process.env.PORT);
 app.get("/", (request, response) => {
   response.sendStatus(200);
@@ -120,6 +120,12 @@ const f = {
       res.reverse();
       let elec = res;
       if(elec[0].end > new Date().valueOf()) {
+        db.all("SELECT * FROM election", async (err, cands) => {
+          for(let i of cands) {
+            let mess = await client.channes.get(data.echnl).fetchMessage(cands.msgId);
+            
+          }
+        });
         setTimeout(() => {
           db.run("SELECT * FROM election ORDER BY votes", (err, res) => {
             let winner = "";
