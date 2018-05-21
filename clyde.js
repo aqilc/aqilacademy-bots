@@ -358,8 +358,8 @@ client.on("messageReactionAdd", (reaction, user) => {
       db.get(`SELECT * FROM users WHERE id = "${user.id}"`, (err, ur) => {
         if(err)
           return console.log(err);
-        if(!ur || (ur.realpoints > ur.points && ur.realpoints < 500) || ur.points < 500)
-          user.send("You need **500 EXP** to vote in the AqilAcademy Elections!").catch(console.log) && reaction.remove(user);
+        if(!ur || (ur.realpoints > ur.points && ur.realpoints < 1000) || ur.points < 1000)
+          user.send("You need **1000 EXP** to vote in the AqilAcademy Elections!").catch(console.log) && reaction.remove(user);
         db.get(`SELECT * FROM voters WHERE id = "${user.id}"`, (err, voter) => {
           if(err)
             return console.log(err);
@@ -388,7 +388,7 @@ client.on("messageReactionRemove", (reaction, user) => {
     
     db.get(`SELECT * FROM election WHERE msgId = "${reaction.message.id}"`, (err, res) => {
       if(!res)
-        return;
+        return user.send(`No one running under this message`);
       user.send(`Successfully removed your vote for <@${res.id}>`);
       
       db.run(`DELETE FROM voters WHERE id = "${user.id}"`);
