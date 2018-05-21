@@ -42,7 +42,7 @@ setInterval(async () => {
       }
     });
   });
-}, 1000)
+}, 5000)
 ```
 
 [c]: https://github.com/ShadowKA/AqilAcademy-bot "Clyde Repository"
