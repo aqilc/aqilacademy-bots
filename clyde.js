@@ -131,13 +131,16 @@ const f = {
               return;
             for(let h of mess.reactions.array().filter(r => r.emoji.name === "👍")[0].users.array()) {
               if(cids.includes(h.id)) {
-                let sent = await h.send(`Your vote for <@${cands.id === h.id ? cands.vId : cands.id}> has been removed because you cannot vote for yourself or your VP`).catch(console.log);
+                let sent = await h.send(`Your vote for <@${i.id === h.id ? i.vId === h.id ?  : i.id}> has been removed because you cannot vote for yourself or your VP`).catch(console.log);
                 return mess.reactions.array().filter(r => r.emoji.name === "👍")[0].remove(h);
               }
             }
             db.run(`UPDATE election SET votes = ${mess.reactions.array().filter(r => r.emoji.name === "👍")[0].count - 1} WHERE msgId = "${i.id}"`);
             db.all("SELECT * FROM voters", (err, voters) => {
-              if(voters.map(v => v.for).includes(
+              for(let h of mess.reactions.array().filter(r => r.emoji.name === "👍")[0].users.array()) {
+                if(voters.map(v => v.for).includes(i.id) && voters.map(v => v.id).includes(h.id))
+                  return;
+              }
             });
           }
         });
