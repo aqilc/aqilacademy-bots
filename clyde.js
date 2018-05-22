@@ -131,15 +131,19 @@ const f = {
               return;
             for(let h of mess.reactions.array().filter(r => r.emoji.name === "👍")[0].users.array()) {
               if(cids.includes(h.id)) {
-                let sent = await h.send(`Your vote for <@${i.id === h.id ? i.vId === h.id ?  : i.id}> has been removed because you cannot vote for yourself or your VP`).catch(console.log);
+                let sent = await h.send(`Your vote for <@${i.id === h.id ? i.id : (i.vId === h.id ? i.id : "noone")}> has been removed because you cannot vote for yourself or your VP`).catch(console.log);
                 return mess.reactions.array().filter(r => r.emoji.name === "👍")[0].remove(h);
               }
             }
-            db.run(`UPDATE election SET votes = ${mess.reactions.array().filter(r => r.emoji.name === "👍")[0].count - 1} WHERE msgId = "${i.id}"`);
+            db.run(`UPDATE election SET votes = ${mess.reactions.array().filter(r => r.emoji.name === "👍")[0].count - 1} WHERE msgId = "${i.msgId}"`);
             db.all("SELECT * FROM voters", (err, voters) => {
               for(let h of mess.reactions.array().filter(r => r.emoji.name === "👍")[0].users.array()) {
-                if(voters.map(v => v.for).includes(i.id) && voters.map(v => v.id).includes(h.id))
-                  return;
+                for(let j of voters) {
+                  if(j.id === h.id && j.for === i.id)
+                    return;
+                  
+                  db.run(`INSERT INTO voters (id, for, election, date) VALUES ("${h.id}", "${i.id}", ${elec.num}, ${new Date().valueOf()})`);
+                }
               }
             });
           }
