@@ -130,12 +130,14 @@ const f = {
             if(!mess.reactions.array().filter(r => r.emoji.name === "👍")[0])
               return;
             for(let h of mess.reactions.array().filter(r => r.emoji.name === "👍")[0].users.array()) {
-              if(cids.includes(h.id))
-                return h.send(`Your vote for ${cands.id === h.id ? cands.vId
+              if(cids.includes(h.id)) {
+                let sent = await h.send(`Your vote for <@${cands.id === h.id ? cands.vId : cands.id}> has been removed because you cannot vote for yourself or your VP`).catch(console.log);
+                return mess.reactions.array().filter(r => r.emoji.name === "👍")[0].remove(h);
+              }
             }
             db.run(`UPDATE election SET votes = ${mess.reactions.array().filter(r => r.emoji.name === "👍")[0].count - 1} WHERE msgId = "${i.id}"`);
             db.all("SELECT * FROM voters", (err, voters) => {
-
+              if(voters.map(v => v.for).includes(
             });
           }
         });
