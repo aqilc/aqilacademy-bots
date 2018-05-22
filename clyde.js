@@ -114,36 +114,48 @@ const f = {
     return f;
   },
   checkelections: () => {
-    db.all("SELECT * FROM elections ORDER BY end", (err, res) => {
-      if(res.length === 0)
+    db.get("SELECT * FROM elections ORDER BY end DESC", (err, elec) => {
+      if(!elec || elec.end < new Date().valueOf())
         return;
-      res.reverse();
-      let elec = res;
-      if(elec[0].end > new Date().valueOf()) {
-        setInterval(async () => {
-          db.all("SELECT * FROM election", async (err, cands) => {
-            for(let i of cands) {
-              let mess = await client.channes.get(data.echnl).fetchMessage(cands.msgId);
-              
-            }
-          });
-        }, 5000);
-        setTimeout(() => {
-          db.run("SELECT * FROM election ORDER BY votes", (err, res) => {
-            let winner = "";
-            let sqlwin = "";
-            for(var i = 0; i < res.length; i ++) {
-              if(res[i].votes === res[0].votes) {
-                winner += `${i + 1}. ${client.users.get(res[i].id).tag}\n   Vice: ${client.users.get(res[i].vId).tag}`;
-                sqlwin += `${res[i].id} ${res[i].vId}  `;
+      
+      setInterval(async () => {
+        db.all("SELECT * FROM election", async (err, cands) => {
+          if(!cands) 
+            return;
+
+          let cids = cands.map(c => c.id) + cands.map(c => c.vId);
+          console.log(cids);
+          for(let i of cands) {
+            let mess = await client.channes.get(data.echnl).fetchMessage(cands.msgId);
+            for(let i of mess.array()) {
+              if(!i.reactions.array().filter(r => r.emoji.name === "👍")[0])
+                return;
+              for(let h of i.reactions.array().filter(r => r.emoji.name === "👍")[0].users.array()) {
+
               }
+              db.run(`UPDATE election SET votes = ${i.reactions.array().filter(r => r.emoji.name === "👍")[0].count - 1} WHERE msgId = "${i.id}"`);
+              db.all("SELECT * FROM voters", (err, voters) => {
+
+              });
             }
-            db.run(`UPDATE elections SET winners = ${sqlwin} WHERE num = ${elec.num}`);
-            client.guilds.get("294115797326888961").channels.get(chnls.announce).send(`**:yes: The election has officially ended. Winner(s):**\`\`\`\n${winner}\`\`\``);
-            client.guilds.get("294115797326888961").channels.get(data.echnl).overwritePermissions(client.guilds.get("294115797326888961").guild.roles.get("294115797326888961"), { READ_MESSAGES: true });
-          })
-        }, elec[0].end - new Date().valueOf());
-      }
+          }
+        });
+      }, 5000);
+      setTimeout(() => {
+        db.run("SELECT * FROM election ORDER BY votes", (err, res) => {
+          let winner = "";
+          let sqlwin = "";
+          for(var i = 0; i < res.length; i ++) {
+            if(res[i].votes === res[0].votes) {
+              winner += `${i + 1}. ${client.users.get(res[i].id).tag}\n   Vice: ${client.users.get(res[i].vId).tag}`;
+              sqlwin += `${res[i].id} ${res[i].vId}  `;
+            }
+          }
+          db.run(`UPDATE elections SET winners = ${sqlwin} WHERE num = ${elec.num}`);
+          client.guilds.get("294115797326888961").channels.get(chnls.announce).send(`**:yes: The election has officially ended. Winner(s):**\`\`\`\n${winner}\`\`\``);
+          client.guilds.get("294115797326888961").channels.get(data.echnl).overwritePermissions(client.guilds.get("294115797326888961").guild.roles.get("294115797326888961"), { READ_MESSAGES: true });
+        })
+      }, elec.end - new Date().valueOf());
     });
     return f;
   },// Check if elections are going on and sets up a setTimeout if they are.
