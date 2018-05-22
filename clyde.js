@@ -120,12 +120,14 @@ const f = {
       res.reverse();
       let elec = res;
       if(elec[0].end > new Date().valueOf()) {
-        db.all("SELECT * FROM election", async (err, cands) => {
-          for(let i of cands) {
-            let mess = await client.channes.get(data.echnl).fetchMessage(cands.msgId);
-            
-          }
-        });
+        setInterval(async () => {
+          db.all("SELECT * FROM election", async (err, cands) => {
+            for(let i of cands) {
+              let mess = await client.channes.get(data.echnl).fetchMessage(cands.msgId);
+              
+            }
+          });
+        }, 5000);
         setTimeout(() => {
           db.run("SELECT * FROM election ORDER BY votes", (err, res) => {
             let winner = "";
