@@ -131,7 +131,7 @@ const f = {
               if(!i.reactions.array().filter(r => r.emoji.name === "👍")[0])
                 return;
               for(let h of i.reactions.array().filter(r => r.emoji.name === "👍")[0].users.array()) {
-
+                
               }
               db.run(`UPDATE election SET votes = ${i.reactions.array().filter(r => r.emoji.name === "👍")[0].count - 1} WHERE msgId = "${i.id}"`);
               db.all("SELECT * FROM voters", (err, voters) => {
@@ -620,7 +620,9 @@ const cmds = {
           .addField("How to vote", "There are **2** reactions. A :thumbsup: and a :thumbsdown:. These will be your voting buttons. You can only vote once and you cannot vote for your Vice or yourself. We would advise you to not share who you voted for.")
           .addField("Election Rules", "Here are the current election rules. They can also be found in <#382676611205693441>")
           .setImage("https://cdn.glitch.com/87717c00-94ec-4ab4-96ea-8f031a709af4%2FCapture.PNG?1525539358951");
-        f.checkelections();
+        setTimeout(() => {
+          f.checkelections();
+        }, 2000);
         db.run(`INSERT INTO elections (end, start, title) VALUES (${new Date().valueOf() + 172800000}, ${new Date().valueOf()}, "${content === "" || !content ? "" : content}")`);
         msg.guild.channels.get(data.echnl).overwritePermissions(msg.guild.roles.get("294115797326888961"), { READ_MESSAGES: true });
         client.channels.get(data.echnl).send(embed);
