@@ -123,21 +123,20 @@ const f = {
           if(!cands) 
             return;
 
-          let cids = cands.map(c => c.id) + cands.map(c => c.vId);
+          let cids = cands.map(c => c.id).concat(cands.map(c => c.vId));
           console.log(cids);
           for(let i of cands) {
-            let mess = await client.channes.get(data.echnl).fetchMessage(cands.msgId);
-            for(let i of mess.array()) {
-              if(!i.reactions.array().filter(r => r.emoji.name === "👍")[0])
-                return;
-              for(let h of i.reactions.array().filter(r => r.emoji.name === "👍")[0].users.array()) {
-                
-              }
-              db.run(`UPDATE election SET votes = ${i.reactions.array().filter(r => r.emoji.name === "👍")[0].count - 1} WHERE msgId = "${i.id}"`);
-              db.all("SELECT * FROM voters", (err, voters) => {
-
-              });
+            let mess = await client.channels.get(data.echnl).fetchMessage(i.msgId);
+            if(!mess.reactions.array().filter(r => r.emoji.name === "👍")[0])
+              return;
+            for(let h of mess.reactions.array().filter(r => r.emoji.name === "👍")[0].users.array()) {
+              if(cids.includes(h.id))
+                return h.send(`Your vote for ${cands.id === h.id ? cands.vId
             }
+            db.run(`UPDATE election SET votes = ${mess.reactions.array().filter(r => r.emoji.name === "👍")[0].count - 1} WHERE msgId = "${i.id}"`);
+            db.all("SELECT * FROM voters", (err, voters) => {
+
+            });
           }
         });
       }, 5000);
