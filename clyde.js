@@ -293,13 +293,13 @@ client.on("message", async msg => {
                     message.react("👍");
                     db.run(`INSERT INTO election (id, vId, votes, msgId) VALUES ("${id}", "${msg.author.id}", 0, "${message.id}")`);
                   });
-                  db.run(`DELETE FROM waiting WHERE for = "${msg.author.id}"`);
+                  db.run(`DELETE FROM waiting WHERE for = "${id}"`);
                   msg.channel.send(`Thanks! You and <@${id}> have been entered into the election!`);
                   client.users.get(id).send(`<@${msg.author.id}> has approved your request to be your Vice President! You both have been put into the Election.`);
                 } else if (msg.content === "no") {
                   db.run(`DELETE FROM waiting WHERE id = "${msg.author.id}"`);
                   msg.channel.send(`Thanks! <@${id}> has been informed about your rejection immediately.`);
-                  client.users.get(f).send(`<@${msg.author.id}> has rejected your request to be your Vice President.`);
+                  client.users.get(id).send(`<@${msg.author.id}> has rejected your request to be your Vice President.`);
                 }
               },
             ];
