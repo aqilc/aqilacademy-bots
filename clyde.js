@@ -295,6 +295,8 @@ client.on("message", async msg => {
                   db.run(`DELETE FROM waiting WHERE for = "${id}"`);
                   msg.channel.send(`Thanks! You and <@${id}> have been entered into the election!`);
                   client.users.get(id).send(`<@${msg.author.id}> has approved your request to be your Vice President! You both have been put into the Election.`);
+                  msg.guild.members.get(id).addRole(msg.guild.roles.find("name", "Candidate").id, "Elections")
+                  msg.member.addRole(msg.guild.roles.find("name", "Candidate").id, "Elections")
                 } else if (msg.content === "no") {
                   db.run(`DELETE FROM waiting WHERE id = "${msg.author.id}"`);
                   msg.channel.send(`Thanks! <@${id}> has been informed about your rejection immediately.`);
@@ -783,7 +785,7 @@ const cmds = {
                 embed.setDescription("No candidates (yet)!")
               else
                 f.page_maker(res, 10, res.length <= 10 ? 0 : 1, (i, row) => {
-                  embed.addField(client.users.get(row.id).tag, `**Vice:** ${client.users.get(row.vId).tag} (ID: \`${row.vId}\`)\n**Votes:** ${row.votes} votes`);
+                  embed.addField(`${row.num}. ${client.users.get(row.id).tag}`, `**Vice:** ${client.users.get(row.vId).tag} (ID: \`${row.vId}\`)\n**Votes:** ${row.votes} votes`);
                 });
               
               msg.channel.send(embed);
