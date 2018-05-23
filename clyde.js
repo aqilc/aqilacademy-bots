@@ -622,7 +622,7 @@ const cmds = {
         let embed = new Discord.RichEmbed()
           .setAuthor("A New Election has started!", client.user.avatarURL)
           .setColor(f.color())
-          .addField("How to run", `To run, use the \`${prefix}run\` command. To learn more about the command, do \`${prefix}help run\`.\n**Requirnments:**\`\`\`md\n1. Your should have a 1000 REAL EXP\n2. You need to be a member for AqilAcademy for over 2 weeks\`\`\``)
+          .addField("How to run", `To run, use the \`${prefix}president\` command. To learn more about the command, do \`${prefix}help run\`.\n**Requirnments:**\`\`\`md\n1. Your should have a 1000 REAL EXP\n2. You need to be a member for AqilAcademy for over 2 weeks\`\`\``)
           .addField("How to vote", "There are **2** reactions. A :thumbsup: and a :thumbsdown:. These will be your voting buttons. You can only vote once and you cannot vote for your Vice or yourself. We would advise you to not share who you voted for.")
           .addField("Election Rules", "Here are the current election rules. They can also be found in <#382676611205693441>")
           .setImage("https://cdn.glitch.com/87717c00-94ec-4ab4-96ea-8f031a709af4%2FCapture.PNG?1525539358951");
