@@ -141,7 +141,6 @@ const f = {
                 for(let j of voters) {
                   if(j.id === h.id && j.for === i.id)
                     return;
-                  
                   db.run(`INSERT INTO voters (id, for, election, date) VALUES ("${h.id}", "${i.id}", ${elec.num}, ${new Date().valueOf()})`);
                 }
               }
