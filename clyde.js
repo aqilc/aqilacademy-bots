@@ -737,7 +737,7 @@ const cmds = {
         db.get(`SELECT * FROM election WHERE id = "${msg.author.id}"`, (err, row) => {
           if(row)
             return msg.reply("You are already in the election!");
-          db.get(`SELECT * FROM waiting WHERE for = "${msg.author.id}", id = 0`, (err, w) => {
+          db.get(`SELECT * FROM waiting WHERE for = "${msg.author.id}" AND id = 0`, (err, w) => {
             if(w)
               return msg.reply("You are already waiting for a Vice President!");
             
