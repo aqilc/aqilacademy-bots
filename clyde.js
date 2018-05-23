@@ -292,9 +292,8 @@ client.on("message", async msg => {
                   client.channels.get(data.echnl).send(new Discord.RichEmbed().setAuthor(client.users.get(id).tag + " is running for president!", client.users.get(id).avatarURL).setDescription(`with <@${msg.author.id}> as his/her Vice President!`).addField("Slogan", d.split("|=|")[0]).addField("Description of term", d.split("|=|")[1]).setColor(f.color())).then(message => {
                     message.react("👍");
                     db.run(`INSERT INTO election (id, vId, votes, msgId) VALUES ("${id}", "${msg.author.id}", 0, "${message.id}")`);
-                    db.run(`DELETE FROM waiting WHERE id = "${msg.author.id}"`);
                   });
-                  
+                  db.run(`DELETE FROM waiting WHERE for = "${msg.author.id}"`);
                   msg.channel.send(`Thanks! You and <@${id}> have been entered into the election!`);
                   client.users.get(id).send(`<@${msg.author.id}> has approved your request to be your Vice President! You both have been put into the Election.`);
                 } else if (msg.content === "no") {
