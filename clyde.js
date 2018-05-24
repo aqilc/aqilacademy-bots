@@ -141,13 +141,13 @@ const f = {
                 for(let j of voters) {
                   if(j.id === h.id && j.for === i.id)
                     return;
-                  db.run(`INSERT INTO voters (id, for, election, date) VALUES ("${h.id}", "${i.id}", ${elec.num}, ${new Date().valueOf()})`);
+                  //db.run(`INSERT INTO voters (id, for, election, date) VALUES ("${h.id}", "${i.id}", ${elec.num}, ${new Date().valueOf()})`);
                 }
               }
             });
           }
         });
-      }, 5000);
+      }, 60000);
       setTimeout(() => {
         db.run("SELECT * FROM election ORDER BY votes", (err, res) => {
           let winner = "";
