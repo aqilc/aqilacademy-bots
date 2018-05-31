@@ -791,6 +791,7 @@ const cmds = {
               msg.channel.send(embed);
             });
             break;
+          case "v":
           case "vote":
           case "voters":
             db.all("SELECT * FROM voters WHERE election = " + elec.num, (err, res) => {
@@ -815,4 +816,5 @@ const cmds = {
       });
     },
   },
+  
 };
