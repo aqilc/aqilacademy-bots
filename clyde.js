@@ -766,9 +766,14 @@ const cmds = {
             client.users.get(w.user).send("Sorry, you have been taken off the waiting list for Vice President because your President withdrew");
             return;
           }
-          db.get(`SELECT * FROM election WHERE id = "${msg.author.id}"`, (err, row) => {
+          db.get(`SELECT * FROM election WHERE id = "${msg.author.id}"`, async (err, row) => {
             if(!row)
-              return msg.reply("You are not waiting for a Vice President to confirm AN in the election.");
+              return msg.reply("You are not waiting for a Vice President to confirm AND you are not in the election.");
+            
+            client.users.get(row.vId).send(`Your President(<@${row.id}>) has withdrawn from the elections! You are not his Vice President anymore`);
+            msg.channel.send(`You and <@${row.vId}> have been taken out of the election`);
+            let mess = await client.channels.get(data.echnl).fetchMessage(row.msgId);
+            mess.delete();
           });
         });
       });
