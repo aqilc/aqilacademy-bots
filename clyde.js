@@ -756,7 +756,22 @@ const cmds = {
     cat: "election",
     del: true,
     do: (msg, content) => {
-      
+      db.get("SELECT * FROM elections ORDER BY end DESC", (err, res) => {
+        if(!res || res.end < new Date().valueOf())
+          return msg.reply("There isn't an election going on yet!");
+        db.get(`SELECT * FROM waiting WHERE for = "${msg.author.id}" AND id = 0`, (err, w) => {
+          if(w) {
+            db.run(`DELETE FROM waiting WHERE for = "${w.for}" AND id = 0`);
+            msg.channel.send(`You and <@${w.user}> have been taken off the waiting list to put you both in the elections`);
+            client.users.get(w.user).send("Sorry, you have been taken off the waiting list for Vice President because your President withdrew");
+            return;
+          }
+          db.get(`SELECT * FROM election WHERE id = "${msg.author.id}"`, (err, row) => {
+            if(!row)
+              return msg.reply("You are not waiting for a Vice President to confirm AN in the election.");
+          });
+        });
+      });
     },
   },
   election: {
