@@ -23,28 +23,6 @@ A bunch of random code that might come in handy!
   },
 ```
 
-### Emergency Vote Check System
-```
-setInterval(async () => {
-  let messages = await client.channels.get(data.echnl).fetchMessages({ limit: 100 });
-  db.get("SELECT * FROM elections ORDER BY end DESC", (err, election) => {
-    if(!election || election.end < new Date().valueOf())
-      return;
-    db.all("SELECT * FROM election", (err, res) => {
-      if(!res)
-        return;
-      for(let i of messages.array()) {
-        if(res.map(r => r.msgId).includes(i.id)) {
-          if(!i.reactions.array().filter(r => r.emoji.name === "👍")[0])
-            return;
-          db.run(`UPDATE election SET votes = ${i.reactions.array().filter(r => r.emoji.name === "👍")[0].count - 1} WHERE msgId = "${i.id}"`);
-        }
-      }
-    });
-  });
-}, 5000)
-```
-
 ### Previous voting system
 ```
 // Election voting systems
