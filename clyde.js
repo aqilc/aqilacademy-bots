@@ -96,6 +96,8 @@ db.serialize(function() {
     "suggestions (num INTEGER PRIMARY KEY, suggestion TEXT, by TEXT, votes TEXT, created INTEGER)",
     "waiting (user TEXT, id INTEGER, start INTEGER, time INTEGER, for TEXT, data TEXT)",
     "blacklist (user TEXT, reason TEXT, by TEXT, date INTEGER, time INTEGER)",
+    "contests (num PRIMARY INTEGER KEY, title TEXT, desc TEXT, start INTEGER, end INTEGER, prize TEXT, channel TEXT)",
+    "cvotes (for TEXT, votes INTEGER, contest INTEGER, end INTEGER)",
   ];
   for(var i of tables) {
     db.run("CREATE TABLE IF NOT EXISTS " + i);
