@@ -280,7 +280,7 @@ client.on("message", async msg => {
   try {
     //What happens when DMed
     if(msg.channel.type !== "text") {
-      f.log("main", `**${message.author.tag}**(ID: msg.content);
+      f.log("main", `**${msg.author.tag}**(ID: ${msg.author.id}) said ${msg.content}`);
       db.get("SELECT * FROM elections ORDER BY end DESC", (err, res) => {
         db.all("SELECT * FROM election", (err, rows) => {
           db.get(`SELECT * FROM users WHERE id = "${msg.author.id}"`, (err, user) => {
@@ -839,5 +839,14 @@ const cmds = {
       });
     },
   },
-  
+  startcontest: {
+    a: [],
+    desc: "Starts a contest!",
+    usage: " (title) |=| ",
+    cat: "",
+    perms: "",
+    hidden: false,
+    del: false,
+    do: (msg, content) => {},
+  },
 };
