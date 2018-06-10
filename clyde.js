@@ -85,7 +85,7 @@ setInterval(() => {
 // if ./.data/sqlite.db does not exist, create it, and add tables
 db.serialize(function() {
   let tables = [
-    "users (id TEXT, points INTEGER, lastDaily INTEGER, messages INTEGER, realpoints INTEGER, created INTEGER)",
+    "users (id TEXT, points INTEGER, lastDaily INTEGER, messages INTEGER, realpoints INTEGER, created INTEGER, streak INTEGER)",
     "warns (num INTEGER PRIMARY KEY, warn TEXT, mod TEXT, date INTEGER)",
     "items (num INTEGER PRIMARY KEY, id INTEGER, user TEXT)",
     "quests (num INTEGER PRIMARY KEY, do INTEGER, user TEXT)",
