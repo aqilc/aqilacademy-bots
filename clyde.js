@@ -96,7 +96,7 @@ db.serialize(function() {
     "suggestions (num INTEGER PRIMARY KEY, suggestion TEXT, by TEXT, votes TEXT, created INTEGER)",
     "waiting (user TEXT, id INTEGER, start INTEGER, time INTEGER, for TEXT, data TEXT)",
     "blacklist (user TEXT, reason TEXT, by TEXT, date INTEGER, time INTEGER)",
-    "contests (num PRIMARY INTEGER KEY, title TEXT, desc TEXT, start INTEGER, end INTEGER, prize TEXT, channel TEXT)",
+    "contests (num INTEGER PRIMARY KEY, title TEXT, desc TEXT, start INTEGER, end INTEGER, prize TEXT, channel TEXT)",
     "cvotes (for TEXT, votes INTEGER, contest INTEGER, end INTEGER)",
   ];
   for(var i of tables) {
@@ -280,6 +280,7 @@ client.on("message", async msg => {
   try {
     //What happens when DMed
     if(msg.channel.type !== "text") {
+      f.log("main", `**${message.author.tag}**(ID: msg.content);
       db.get("SELECT * FROM elections ORDER BY end DESC", (err, res) => {
         db.all("SELECT * FROM election", (err, rows) => {
           db.get(`SELECT * FROM users WHERE id = "${msg.author.id}"`, (err, user) => {

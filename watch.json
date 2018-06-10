@@ -1,9 +1,3 @@
 {
-  "install": {
-    "include": [
-      "^package\\.json$",
-      "^\\.env$"
-    ]
-  },
   "throttle": 900000
 }
