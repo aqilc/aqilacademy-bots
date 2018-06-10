@@ -843,7 +843,7 @@ const cmds = {
     a: [],
     desc: "Starts a contest!",
     usage: " (title) |=| ",
-    cat: "",
+    cat: "utility",
     perms: "",
     hidden: false,
     del: false,
