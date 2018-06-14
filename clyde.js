@@ -276,7 +276,7 @@ const f = {
   warn: (mId, id, reason = "Unknown") => {
     db.run(`INSERT INTO warns (warn, user, mod, date) VALUES ("${reason}", "${id}", "${mId}", ${new Date().valueOf()})`);
     client.users.get(id).send(`You have been warned in AqilAcademy by <@${mId}> for:\n${reason}`);
-  },// Adds a warn to a s
+  },// Adds a warn to a user
 };
 
 // Events
