@@ -86,7 +86,7 @@ setInterval(() => {
 db.serialize(function() {
   let tables = [
     "users (id TEXT, points INTEGER, lastDaily INTEGER, messages INTEGER, realpoints INTEGER, created INTEGER, streak INTEGER)",
-    "warns (num INTEGER PRIMARY KEY, warn TEXT, mod TEXT, date INTEGER)",
+    "warns (num INTEGER PRIMARY KEY, warn TEXT, user, TEXT, mod TEXT, date INTEGER)",
     "items (num INTEGER PRIMARY KEY, id INTEGER, user TEXT)",
     "quests (num INTEGER PRIMARY KEY, do INTEGER, user TEXT)",
     "expstore (num INTEGER PRIMARY KEY, item TEXT, desc TEXT, stock INTEGER, price INTEGER, approved TEXT, bought TEXT, seller TEXT, buyer TEXT)",
@@ -246,7 +246,7 @@ const f = {
       db.run(`UPDATE users SET points = ${res.points + exp} WHERE id = "${id}"`);
     });
     return f;
-  },
+  },// Adds EXP to a person
   add_message: (id) => {
     let xp = f.random(10, 20, true);
     if(Math.random() >= 0.99)
@@ -259,10 +259,10 @@ const f = {
       db.run(`UPDATE users SET messages = ${res.messages + 1}, points = ${res.points + xp}, realpoints = ${res.realpoints + xp} WHERE id = "${id}"`);
     });
     return f;
-  },
+  },// Adds a "message"'s amount of stuff to a person
   random: (min, max, round) => {
     return round ? Math.round(Math.random() * (max-min) + min) : Math.random() * (max-min) + min;
-  },
+  },// Simplifies "Math.random()"
   has_roles: (member, role_name = ["Moderator"]) => {
     if(typeof role_name === "string")
       role_name = [role_name];
@@ -272,7 +272,11 @@ const f = {
         has = false;
     }
     return has;
-  },
+  },// Checks if a user has the roles
+  warn: (mId, id, reason = "Unknown") => {
+    db.run(`INSERT INTO warns (warn, user, mod, date) VALUES ("${reason}", "${id}", "${mId}", ${new Date().valueOf()})`);
+    client.users.get(id).send(`You have been warned in AqilAcademy by <@${mId}> for:\n${reason}`);
+  },// Adds a warn to a s
 };
 
 // Events
