@@ -406,6 +406,7 @@ const cmds = {
     usage: " [code]",
     cat: "bot admin",
     perms: "bot admin",
+    hidden: true,
     do: (msg, content) => {
       let evalled;
       if((content.startsWith("```js") || content.startsWith("```")) && content.endsWith("```"))
@@ -553,6 +554,13 @@ const cmds = {
           return msg.reply("Please enter a valid category!\n**Available categories:**```md\n1. Warns(Actions: remove [IPK])\n2. Items(Actions: add [ID], remove [IPK])\n3. EXP(Actions: delete, add [EXP amount], subtract [EXP amount], set [EXP amount])```");
       }
     },
+  },
+  transfer: {
+    a: ["give"],
+    desc: "Transfers given amount of EXP from you to the user mentioned",
+    usage: " [id or mention] [exp amount]",
+    cat: "exp",
+    do: (msg, content) => {},
   },
   ban: {
     desc: "Bans a user. User can be inside or outside AqilAcademy.",
@@ -847,10 +855,12 @@ const cmds = {
     a: [],
     desc: "Starts a contest!",
     usage: " (title) |=| ",
-    cat: "utility",
+    cat: "",
     perms: "",
     hidden: false,
     del: false,
-    do: (msg, content) => {},
+    do: (msg, content) => {
+      
+    },
   },
 };
