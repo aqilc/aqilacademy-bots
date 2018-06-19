@@ -390,7 +390,7 @@ const cmds = {
       let comds = "";
       for(let i in cmds) {
         if(!cmds[i].hidden)
-          comds += prefix + i + "                    ".split("").slice(prefix.length + i.length).join("");
+          comds += prefix + i + "                    ".slice(prefix.length + i.length);
       }
       let embed = new Discord.RichEmbed()
         .setColor(f.color())
@@ -562,9 +562,14 @@ const cmds = {
     cat: "exp",
     do: (msg, content) => {
       content.split(" ");
-      
       if(content.length < 2)
-        return msg.reply("Please enter the required parameters!\n**Required Parameters:** `[id or mention]
+        return msg.reply("Please enter the required parameters!\n**Required Parameters:** `[id or mention] [exp amount]`");
+      if(!client.users.get(content[0].replace(/[^0-9]/g, "")))
+        return msg.reply("Please enter a valid user ID/mention!")
+      if(isNaN(Number(content[1])) || Number(content[1]) < 1)
+        return msg.reply("Please enter a positive integer value for the EXP Amount");
+      
+      msg.channel.send("EXP Transfer complete!
     },
   },
   ban: {
