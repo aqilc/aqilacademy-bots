@@ -561,7 +561,7 @@ const cmds = {
     usage: " [id or mention] [exp amount]",
     cat: "exp",
     do: (msg, content) => {
-      content.split(" ");
+      content = content.split(" ");
       if(content.length < 2)
         return msg.reply("Please enter the required parameters!\n**Required Parameters:** `[id or mention] [exp amount]`");
       if(!client.users.get(content[0].replace(/[^0-9]/g, "")))
@@ -569,7 +569,7 @@ const cmds = {
       if(isNaN(Number(content[1])) || Number(content[1]) < 1)
         return msg.reply("Please enter a positive integer value for the EXP Amount");
       
-      msg.channel.send("EXP Transfer complete!
+      msg.channel.send("EXP Transfer complete!", new Discord.RichEmbed().setAuthor("EXP Transfer", msg.guild.iconURL).setDescription(`<@${msg.author.id}> sent **${content[1]} EXP** to <@${content[0].replace(/[^0-9]/g, "")}>`));
     },
   },
   ban: {
@@ -862,13 +862,11 @@ const cmds = {
     },
   },
   startcontest: {
-    a: [],
     desc: "Starts a contest!",
     usage: " (title) |=| ",
     cat: "",
     perms: "",
-    hidden: false,
-    del: false,
+    hidden: true,
     do: (msg, content) => {
       
     },
