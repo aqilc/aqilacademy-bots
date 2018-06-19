@@ -560,7 +560,12 @@ const cmds = {
     desc: "Transfers given amount of EXP from you to the user mentioned",
     usage: " [id or mention] [exp amount]",
     cat: "exp",
-    do: (msg, content) => {},
+    do: (msg, content) => {
+      content.split(" ");
+      
+      if(content.length < 2)
+        return msg.reply("Please enter the required parameters!\n**Required Parameters:** `[id or mention]
+    },
   },
   ban: {
     desc: "Bans a user. User can be inside or outside AqilAcademy.",
