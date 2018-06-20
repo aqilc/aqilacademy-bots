@@ -572,6 +572,8 @@ const cmds = {
         return msg.reply("Please enter a positive integer value for the EXP Amount");
       
       db.get(`SELECT * FROM users WHERE id = "${msg.author.id}"`, (err, user) => {
+        if(!user)
+          return msg.reply("You don't have any points!");
         if(user.points < Number(content[1]))
           return msg.reply("You do not have enough EXP!");
         f.add_exp(msg.author.id, -Number(content[1])).add_exp(content[0].replace(/[^0-9]/g, ""), Number(content[1]));
