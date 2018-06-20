@@ -564,12 +564,17 @@ const cmds = {
       content = content.split(" ");
       if(content.length < 2)
         return msg.reply("Please enter the required parameters!\n**Required Parameters:** `[id or mention] [exp amount]`");
-      if(!client.users.get(content[0].replace(/[^0-9]/g, "")))
-        return msg.reply("Please enter a valid user ID/mention!")
+      if(content[0].replace(/[^0-9]/g, "") === msg.author.id)
+        return msg.reply("You cannot transfer EXP to yourself!");
+      if(!client.users.get(content[0].replace(/[^0-9]/g, "")));
+        return msg.reply("Please enter a valid user ID/mention!");
       if(isNaN(Number(content[1])) || Number(content[1]) < 1)
         return msg.reply("Please enter a positive integer value for the EXP Amount");
       
-      msg.channel.send("EXP Transfer complete!", new Discord.RichEmbed().setAuthor("EXP Transfer", msg.guild.iconURL).setDescription(`<@${msg.author.id}> sent **${content[1]} EXP** to <@${content[0].replace(/[^0-9]/g, "")}>`));
+      db.get(`SELECT * FROM users WHERE id = "${msg.author.id}"`, (err, user) => {
+        
+        msg.channel.send("<:exp:458774880310263829> EXP Transfer complete!", new Discord.RichEmbed().setAuthor("EXP Transfer", msg.guild.iconURL).setDescription(`<@${msg.author.id}> sent **${content[1]} EXP** to <@${content[0].replace(/[^0-9]/g, "")}>`).setColor(f.color()));
+      });
     },
   },
   ban: {
