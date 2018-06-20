@@ -881,11 +881,9 @@ const cmds = {
   warn: {
     a: [],
     desc: "Warns (adds an infraction to) a user.",
-    usage: "",
-    cat: "",
-    perms: "",
-    hidden: false,
-    del: false,
+    usage: " [reason] (S:[severity])",
+    cat: "utility",
+    perms: "mod",
     do: (msg, content) => {},
   },
 };
