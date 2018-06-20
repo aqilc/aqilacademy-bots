@@ -572,7 +572,9 @@ const cmds = {
         return msg.reply("Please enter a positive integer value for the EXP Amount");
       
       db.get(`SELECT * FROM users WHERE id = "${msg.author.id}"`, (err, user) => {
-        
+        if(user.points < Number(content[1]))
+          return msg.reply("You do not have enough EXP!");
+        f.add_exp(msg.author.id, -Number(content[1])).add_exp(content[0].replace(/[^0-9]/g, ""), Number(content[1]));
         msg.channel.send("<:exp:458774880310263829> EXP Transfer complete!", new Discord.RichEmbed().setAuthor("EXP Transfer", msg.guild.iconURL).setDescription(`<@${msg.author.id}> sent **${content[1]} EXP** to <@${content[0].replace(/[^0-9]/g, "")}>`).setColor(f.color()));
       });
     },
