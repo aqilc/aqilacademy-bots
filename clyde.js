@@ -878,4 +878,14 @@ const cmds = {
       
     },
   },
+  warn: {
+    a: [],
+    desc: "Warns (adds an infraction to) a user.",
+    usage: "",
+    cat: "",
+    perms: "",
+    hidden: false,
+    del: false,
+    do: (msg, content) => {},
+  },
 };
