@@ -447,7 +447,7 @@ const cmds = {
       db.get(`SELECT * FROM users WHERE id = "${id}"`, (err, res) => {
         embed.setAuthor(client.users.get(id).tag + "'s stats", client.users.get(id).avatarURL)
           .setColor(f.color())
-          .setDescription(`**Points(money):** ${res.points}\n**REAL Points:** ${res.realpoints}\n**Messages:** ${res.messages}\n**Account was added in at:** ${new Date(res.created).toUTCString()}`);
+          .addField("EXP", `**Points:** ${res.points}\n**Real Points:** ${res.realpoints}\n**Last Daily collected at:** ${new Date(res.lastDaily).toUTCS;
         msg.channel.send(embed);
       })
     },
@@ -567,7 +567,11 @@ const cmds = {
                 });
                 break;
               case "reset":
-                embed.setDescription(`Removed ALL[${res.lengt`);
+                embed.setDescription(`Removed ALL[${res.length}] infractions from <@${id}>`);
+                db.run(`DELETE * FROM warns WHERE id = "${id}"`);
+                break;
+              default:
+                return msg.reply("Please enter a valid action! **Actions:** `remove [IPK], reset`");
             }
           });
           break;
