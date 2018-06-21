@@ -445,10 +445,16 @@ const cmds = {
         return msg.reply("Please enter a valid ID/User Mention");
       
       db.get(`SELECT * FROM users WHERE id = "${id}"`, (err, res) => {
+        db.all(`SELECT * FROM warns WHERE id = "${id}"`, (error, warn) => {
+          db.get(`SELECT * FROM blacklist WHERE id = "${id}"`, (er, black) => {
         embed.setAuthor(client.users.get(id).tag + "'s stats", client.users.get(id).avatarURL)
           .setColor(f.color())
-          .addField("EXP", `**Points:** ${res.points}\n**Real Points:** ${res.realpoints}\n**Last Daily collected at:** ${new Date(res.lastDaily).toUTCS;
+          .addField("EXP", `**Points:** ${res.points}\n**Real Points:** ${res.realpoints}\n**Last Daily collected at:** ${new Date(res.lastDaily).toUTCString()}\n**Streak:** ${res.streak}`, true)
+          .addField("Stats", `**Recorded Messages:** ${res.messages}\n**Account added to Clyde at:** ${new Date(res.created).toUTCString()}\n**Blacklisted:** ${black ? "Yes" : "No"}`)
+          .addField(`Total Infractions: ${warn.length}`, `;
         msg.channel.send(embed);
+          });
+        });
       })
     },
   },
