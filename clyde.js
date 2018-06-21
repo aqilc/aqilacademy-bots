@@ -273,7 +273,7 @@ const f = {
     }
     return has;
   },// Checks if a user has the roles
-  warn: (mId, id, reason = "Unknown", severity) => {
+  warn: (mId, id, reason = "Unknown", severity = 1) => {
     db.run(`INSERT INTO warns (warn, user, mod, severity, date) VALUES ("${reason}", "${id}", "${mId}", ${severity}, ${new Date().valueOf()})`);
     client.users.get(id).send(`You have been warned in AqilAcademy by <@${mId}> for:\n${reason}`);
   },// Adds a warn to a user
@@ -444,15 +444,18 @@ const cmds = {
       if(!client.users.get(id))
         return msg.reply("Please enter a valid ID/User Mention");
       
+      let severity = 0;
       db.get(`SELECT * FROM users WHERE id = "${id}"`, (err, res) => {
         db.all(`SELECT * FROM warns WHERE id = "${id}"`, (error, warn) => {
+          if(warn)
+            warn.forEach((w) => severity += w);
           db.get(`SELECT * FROM blacklist WHERE id = "${id}"`, (er, black) => {
-        embed.setAuthor(client.users.get(id).tag + "'s stats", client.users.get(id).avatarURL)
-          .setColor(f.color())
-          .addField("<:exp:458774880310263829> EXP", `**Points:** ${res.points}\n**Real Points:** ${res.realpoints}\n**Last Daily collected at:** ${new Date(res.lastDaily).toUTCString()}\n**Streak:** ${res.streak}`, true)
-          .addField("<:data:421914770116050945> Stats", `**Recorded Messages:** ${res.messages}\n**Account added to Clyde at:** ${new Date(res.created).toUTCString()}\n**Blacklisted:** ${black ? "Yes" : "No"}`)
-          .addField(`Total Infractions: ${warn ? warn.length : 0}`, `**Total Severity:**`);
-        msg.channel.send(embed);
+            embed.setAuthor(client.users.get(id).tag + "'s stats", client.users.get(id).avatarURL)
+              .setColor(f.color())
+              .addField("<:exp:458774880310263829> EXP", `**Points:** ${res.points}\n**Real Points:** ${res.realpoints}\n**Last Daily at:** ${new Date(res.lastDaily).toLocaleString('en', { timeZone: 'UTC' })}\n**Streak:** ${res.streak}`, true)
+              .addField("📈 Stats", `**Recorded Messages:** ${res.messages}\n**Account added at:** ${new Date(res.created).toLocaleString('en', { timeZone: 'UTC' })}\n**Blacklisted:** ${black ? "Yes" : "No"}`, true)
+              .addField(`⚠ Total Infractions: ${warn ? warn.length : 0}`, `**Total Severity:** ${severity}`, true);
+            msg.channel.send(embed);
           });
         });
       })
