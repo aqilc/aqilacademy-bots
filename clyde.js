@@ -444,8 +444,26 @@ const cmds = {
       if(!client.users.get(id))
         return msg.reply("Please enter a valid ID/User Mention");
       
-      let severity = 0;
-      db.get(`SELECT * FROM users WHERE id = "${id}"`, (err, res) => {
+      let severity = 0,
+          lbp = 0;
+      db.all(`SELECT * FROM users ORDER BY points DESC`, (err, res) => {
+        if(!res.filter(r => r.id === id)[0])
+          res = {
+            realpoints: 0,
+            points: 0,
+            lastDaily: 0,
+            created: 0,
+            streak: 0,
+            messages: 0,
+          },
+          lbp = res.length + 1;
+        else {
+          for(let i = 0; i < res.length; i ++) {
+            if(res[i].id === id)
+              lbp = i + 1,
+              res = res[i];
+          }
+        }
         db.all(`SELECT * FROM warns WHERE id = "${id}"`, (error, warn) => {
           if(warn)
             warn.forEach((w) => severity += w);
