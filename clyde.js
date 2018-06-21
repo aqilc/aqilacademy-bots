@@ -270,7 +270,7 @@ const f = {
   },// Checks if a user has the roles
   warn: (mId, id, reason = "Unknown", severity = 1) => {
     db.run(`INSERT INTO warns (warn, user, mod, severity, date) VALUES ("${reason}", "${id}", "${mId}", ${severity}, ${new Date().valueOf()})`);
-    client.users.get(id).send(new Discord.RichEmbed().setAuthor("You have been warned in AqilAcademy", client.users.get(mId).avatarURL).setDescription(reason).setColor(f.color()).setFooter(`You were warned by ${client.users.get(mId).tag}`));
+    client.users.get(id).send(new Discord.RichEmbed().setAuthor("You have been warned in AqilAcademy by " + client.users.get(mId).tag, client.users.get(mId).avatarURL).setDescription(reason).setColor(f.color()).setFooter(`You were warned by ${severity}`));
   },// Adds a warn to a user
 };
 
@@ -459,13 +459,13 @@ const cmds = {
               res = res[i];
           }
         }
-        db.all(`SELECT * FROM warns WHERE id = "${id}"`, (error, warn) => {
+        db.all(`SELECT * FROM warns WHERE user = "${id}"`, (error, warn) => {
           if(warn)
-            warn.forEach((w) => { severity += w; });
+            warn.forEach((w) => { severity += w.severity; });
           db.get(`SELECT * FROM blacklist WHERE id = "${id}"`, (er, black) => {
             embed.setAuthor(client.users.get(id).tag + "'s stats", client.users.get(id).avatarURL)
               .setColor(f.color())
-              .addField("<:exp:458774880310263829> EXP", `**Points:** ${res.points}\n**Real Points:** ${res.realpoints}\n**Last Daily at:** ${new Date(res.lastDaily).toLocaleString('en', { timeZone: 'UTC' })}\n**Streak:** ${res.streak}`, true)
+              .addField("<:exp:458774880310263829> EXP", `**Points:** ${res.points}\n**Real Points:** ${res.realpoints}\n**Last Daily at:** ${new Date(res.lastDaily).toLocaleString('en', { timeZone: 'UTC' })}\n**Streak:** ${res.streak}\n**Place on leaderboard:** \`${lbp + (JSON.parse(JSON.stringify(lbp)[JSON.stringify(lbp).length - 1]) < 4 ? ["th", "st", "nd", "rd"][JSON.stringify(lbp)[JSON.stringify(lbp).length - 1]] : "th")}\``, true)
               .addField("📈 Stats", `**Recorded Messages:** ${res.messages}\n**Account added at:** ${new Date(res.created).toLocaleString('en', { timeZone: 'UTC' })}\n**Blacklisted:** ${black ? "Yes" : "No"}`, true)
               .addField(`⚠ Total Infractions: ${warn ? warn.length : 0}`, `**Total Severity:** ${severity}`, true);
             msg.channel.send(embed);
