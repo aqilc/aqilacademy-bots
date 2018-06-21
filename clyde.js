@@ -270,7 +270,7 @@ const f = {
   },// Checks if a user has the roles
   warn: (mId, id, reason = "Unknown", severity = 1) => {
     db.run(`INSERT INTO warns (warn, user, mod, severity, date) VALUES ("${reason}", "${id}", "${mId}", ${severity}, ${new Date().valueOf()})`);
-    client.users.get(id).send(`You have been warned in AqilAcademy by <@${mId}> for:\n${reason}`);
+    client.users.get(id).send(new Discord.RichEmbed().setAuthor("You have been warned in AqilAcademy", client.users.get(mId).avatarURL).setDescription(reason).setColor(f.color()).setFooter(`You were warned by ${client.users.get(mId).tag}`));
   },// Adds a warn to a user
 };
 
@@ -279,7 +279,7 @@ client.on("message", async msg => {
   try {
     //What happens when DMed
     if(msg.channel.type !== "text") {
-      f.log("main", `**${msg.author.tag}**(ID: ${msg.author.id}) said ${msg.content}`);
+      f.log("main", `**${msg.author.tag}**(ID: ${msg.author.id}) said:\`\`\`${msg.content}\`\`\``);
       db.get("SELECT * FROM elections ORDER BY end DESC", (err, res) => {
         db.all("SELECT * FROM election", (err, rows) => {
           db.get(`SELECT * FROM users WHERE id = "${msg.author.id}"`, (err, user) => {
@@ -461,7 +461,7 @@ const cmds = {
         }
         db.all(`SELECT * FROM warns WHERE id = "${id}"`, (error, warn) => {
           if(warn)
-            warn.forEach((w) => severity += w);
+            warn.forEach((w) => { severity += w; });
           db.get(`SELECT * FROM blacklist WHERE id = "${id}"`, (er, black) => {
             embed.setAuthor(client.users.get(id).tag + "'s stats", client.users.get(id).avatarURL)
               .setColor(f.color())
