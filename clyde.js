@@ -881,11 +881,19 @@ const cmds = {
     },
   },
   warn: {
-    a: [],
     desc: "Warns (adds an infraction to) a user.",
     usage: " [reason] (S:[severity])",
     cat: "utility",
     perms: "mod",
-    do: (msg, content) => {},
+    do: (msg, content) => {
+      let reason,
+          severity;
+      
+      if(content.includes("S:"))
+        reason = content.split("S:")[0],
+        severity = isNaN(Number(content.split("S:")[1])) || Number(content.split("S:")[1]) < 1 ? 1 : Number(content.split("S:")[1]);
+      
+      
+    },
   },
 };
