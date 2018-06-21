@@ -5,7 +5,6 @@
   "dependencies": {
     "discord.js": "^11.3.2",
     "express": "^4.16.3",
-    "pm2": "^2.10.4",
     "sqlite3": "^4.0.0"
   },
   "engines": {

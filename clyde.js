@@ -1,4 +1,3 @@
-#!/usr/bin/env node
 
 // All requires and dependencies
 const http = require('http');
@@ -70,10 +69,6 @@ const trans = {
 };
 
 //Keeps app running
-http.createServer(function (req, res) {
-  res.writeHead(200, {'Content-Type': 'text/plain'});
-  res.end('Clyde is ready');
-}).listen(9900, 'localhost'); // runs Clyde somewhere else, don't activate unless necessary
 app.listen(process.env.PORT);
 app.get("/", (request, response) => {
   response.sendStatus(200);
