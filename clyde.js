@@ -86,7 +86,7 @@ setInterval(() => {
 db.serialize(function() {
   let tables = [
     "users (id TEXT, points INTEGER, lastDaily INTEGER, messages INTEGER, realpoints INTEGER, created INTEGER, streak INTEGER)",
-    "warns (num INTEGER PRIMARY KEY, warn TEXT, user, TEXT, mod TEXT, date INTEGER)",
+    "warns (num INTEGER PRIMARY KEY, warn TEXT, user, TEXT, mod TEXT, severity INTEGER, date INTEGER)",
     "items (num INTEGER PRIMARY KEY, id INTEGER, user TEXT)",
     "quests (num INTEGER PRIMARY KEY, do INTEGER, user TEXT)",
     "expstore (num INTEGER PRIMARY KEY, item TEXT, desc TEXT, stock INTEGER, price INTEGER, approved TEXT, bought TEXT, seller TEXT, buyer TEXT)",
@@ -273,8 +273,8 @@ const f = {
     }
     return has;
   },// Checks if a user has the roles
-  warn: (mId, id, reason = "Unknown") => {
-    db.run(`INSERT INTO warns (warn, user, mod, date) VALUES ("${reason}", "${id}", "${mId}", ${new Date().valueOf()})`);
+  warn: (mId, id, reason = "Unknown", severity) => {
+    db.run(`INSERT INTO warns (warn, user, mod, severity, date) VALUES ("${reason}", "${id}", "${mId}", ${severity}, ${new Date().valueOf()})`);
     client.users.get(id).send(`You have been warned in AqilAcademy by <@${mId}> for:\n${reason}`);
   },// Adds a warn to a user
 };
@@ -449,9 +449,9 @@ const cmds = {
           db.get(`SELECT * FROM blacklist WHERE id = "${id}"`, (er, black) => {
         embed.setAuthor(client.users.get(id).tag + "'s stats", client.users.get(id).avatarURL)
           .setColor(f.color())
-          .addField("EXP", `**Points:** ${res.points}\n**Real Points:** ${res.realpoints}\n**Last Daily collected at:** ${new Date(res.lastDaily).toUTCString()}\n**Streak:** ${res.streak}`, true)
-          .addField("Stats", `**Recorded Messages:** ${res.messages}\n**Account added to Clyde at:** ${new Date(res.created).toUTCString()}\n**Blacklisted:** ${black ? "Yes" : "No"}`)
-          .addField(`Total Infractions: ${warn.length}`, `;
+          .addField("<:exp:458774880310263829> EXP", `**Points:** ${res.points}\n**Real Points:** ${res.realpoints}\n**Last Daily collected at:** ${new Date(res.lastDaily).toUTCString()}\n**Streak:** ${res.streak}`, true)
+          .addField("<:data:421914770116050945> Stats", `**Recorded Messages:** ${res.messages}\n**Account added to Clyde at:** ${new Date(res.created).toUTCString()}\n**Blacklisted:** ${black ? "Yes" : "No"}`)
+          .addField(`Total Infractions: ${warn ? warn.length : 0}`, `**Total Severity:**`);
         msg.channel.send(embed);
           });
         });
@@ -938,7 +938,7 @@ const cmds = {
       else
         reason = content;
       
-      f.warn(id, reason, severity);
+      f.warn(msg.author.id, id, reason, severity);
     },
   },
 };
