@@ -502,8 +502,9 @@ const cmds = {
     cat: "bot admin",
     perms: "bot admin",
     do: (msg, content) => {
-      let args = content.split(" ");
-      let id = args[0].replace(/[^0-9]/g, "");
+      let args = content.split(" "),
+          embed,
+          id = args[0].replace(/[^0-9]/g, "");
       if(args.length < 3)
         return msg.reply("Please fill up ALL parameters.\n**Parameters:** `[user mention or id] [category] [action]`");
       
@@ -513,7 +514,7 @@ const cmds = {
       switch(args[1].toLowerCase()) {
         case "xp":
         case "exp":
-          let embed = new Discord.RichEmbed()
+          embed = new Discord.RichEmbed()
             .setColor(f.color())
             .setAuthor("Edited EXP for " + (client.users.get(id) ? client.users.get(id).tag : id), msg.author.avatarURL);
           if(["add", "sub", "set"].includes(args[2].toLowerCase()) && isNaN(Number(args[3])))
@@ -547,7 +548,28 @@ const cmds = {
           break;
         case "warn":
         case "warns":
-          
+          embed = new Discord.RichEmbed()
+            .setColor(f.color())
+            .setAuthor("Edited Rule Infractions for " + (client.users.get(id) ? client.users.get(id).tag : id), msg.author.avatarURL);
+          if(args[2].toLowerCase() === "remove" && isNaN(Number(args[3])))
+            return msg.reply("Please enter a valid number for the fourth argument!");
+          db.all(`SELECT * FROM warns WHERE id = "${id}"`, (err, res) => {
+            if(!res)
+              return msg.reply("User doesn't exist!");
+            
+            switch(args[2].toLowerCase()) {
+              case "remove":
+                db.get(`SELECT * FROM warns WHERE id = "${id}" AND num = ${Number(args[3])}`, (err, warn) => {
+                  if(!warn)
+                    return msg.reply("IPK and User don't match");
+                  embed.setDescription(`Removed Infraction #${args[3]}:\`\`\`${warn.warn}\`\`\``);
+                  db.run(`DELETE FROM warns WHERE num = ${Number(args[3])}`);
+                });
+                break;
+              case "reset":
+                embed.setDescription(`Removed ALL[${res.lengt`);
+            }
+          });
           break;
         case "item":
         case "items":
