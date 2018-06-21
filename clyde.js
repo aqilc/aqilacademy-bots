@@ -511,6 +511,7 @@ const cmds = {
         return msg.reply("Please enter a valid user mention/id");
       
       switch(args[1].toLowerCase()) {
+        case "xp":
         case "exp":
           let embed = new Discord.RichEmbed()
             .setColor(f.color())
@@ -544,9 +545,11 @@ const cmds = {
             msg.channel.send(embed);
           });
           break;
+        case "warn":
         case "warns":
           
           break;
+        case "item":
         case "items":
           
           break;
@@ -882,18 +885,28 @@ const cmds = {
   },
   warn: {
     desc: "Warns (adds an infraction to) a user.",
-    usage: " [reason] (S:[severity])",
+    usage: " [user id or mention] [reason] (S:[severity])",
     cat: "utility",
     perms: "mod",
     do: (msg, content) => {
-      let reason,
+      let id,
+          reason,
           severity;
       
+      id = content.split(" ")[0].replace(/[^0-9]/g, "");
+      if(id.length < 18)
+        return msg.reply("Please include a VALID user ID/Mention!");
+      
+      content.slice(content.split(" ")[0].length + 1);
+      if(!content || content === "")
+        return msg.reply("You HAVE to include a reason!");
       if(content.includes("S:"))
         reason = content.split("S:")[0],
         severity = isNaN(Number(content.split("S:")[1])) || Number(content.split("S:")[1]) < 1 ? 1 : Number(content.split("S:")[1]);
+      else
+        reason = content;
       
-      
+      f.warn(id, reason, severity);
     },
   },
 };
