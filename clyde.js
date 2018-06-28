@@ -2,6 +2,8 @@
 // All requires and dependencies
 const http = require('http');
 const express = require('express');
+const canvas = require("canvas");
+const snekfetch = require("snekfetch");
 const app = express();
 const fs = require('fs');
 const exists = fs.existsSync('./.data/sqlite.db');
