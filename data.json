@@ -7,8 +7,8 @@
     [
       1,
       "science",
-      "",
-      []
+      "How hot is the center of the Earth?",
+      [["A", "~ 9,800° Fahrenhiet"], ["B", "~ 10,800° Fahrenhiet", true], ]
     ],
     []
   ]
