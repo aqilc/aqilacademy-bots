@@ -14,13 +14,7 @@
       ]
     ],
     [
-      3, "math", "How hot is the center of the Earth?",
-      [
-        ["A", "~ 9,800° Fahrenhiet"],
-        ["B", "~ 10,800° Fahrenhiet", true],
-        ["C", "~ 1,800° Fahrenhiet"],
-        ["D", "~ 18,000° Fahrenhiet"]
-      ]
+      3, 
     ]
   ]
 }
