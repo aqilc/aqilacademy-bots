@@ -959,4 +959,15 @@ const cmds = {
       f.warn(msg.author.id, id, reason, severity);
     },
   },
+  testImage: {
+    a: ['ti'],
+    desc: "For testing image production",
+    usage: " [type] (parameters)",
+    cat: "utility",
+    perms: "bot admin",
+    hidden: true,
+    do: (msg, content) => {
+      
+    },
+  },
 };
