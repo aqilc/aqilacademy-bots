@@ -172,6 +172,7 @@ packages:
     dev: false
     engines:
       node: '>=0.10'
+    hasBin: true
     resolution:
       integrity: sha1-+hN8S9aY7fVc1c0CrFWfkaTEups=
   /discord.js/11.3.2:
@@ -421,6 +422,7 @@ packages:
       integrity: sha512-lc/aahn+t4/SWV/qcmumYjymLsWfN3ELhpmVuUFjgsORruuZPVSwAQryq+HHGvO/SI2KVX26bx+En+zhM8g8hQ==
   /mime/1.4.1:
     dev: false
+    hasBin: true
     resolution:
       integrity: sha512-KI1+qOZu5DcW6wayYHSzR/tXKCDC5Om4s1z2QJjDULzLcmf3DvzS7oluY4HCTrc+9FiKmWUgeNLg7W3uIQvxtQ==
   /minimatch/3.0.4:
@@ -454,6 +456,7 @@ packages:
     dependencies:
       minimist: 0.0.8
     dev: false
+    hasBin: true
     resolution:
       integrity: sha1-MAV0OOrGz3+MR2fzhkjWaX11yQM=
   /ms/2.0.0:
@@ -472,6 +475,7 @@ packages:
     dev: false
     engines:
       node: '>= 0.10.x'
+    hasBin: true
     resolution:
       integrity: sha512-t/ZswCM9JTWjAdXS9VpvqhI2Ct2sL2MdY4fUXqGJaGBk13ge99ObqRksRTbBE56K+wxUXwwfZYOuZHifFW9q+Q==
   /negotiator/0.6.1:
@@ -493,6 +497,7 @@ packages:
       semver: 5.5.0
       tar: 4.4.4
     dev: false
+    hasBin: true
     resolution:
       integrity: sha512-16lql9QTqs6KsB9fl3neWyZm02KxIKdI9FlJjrB0y7eMTP5Nyz+xalwPbOlw3iw7EejllJPmlJSnY711PLD1ug==
   /nopt/4.0.1:
@@ -500,6 +505,7 @@ packages:
       abbrev: 1.1.1
       osenv: 0.1.5
     dev: false
+    hasBin: true
     resolution:
       integrity: sha1-0NRoWv1UFRk8jHUFYC0NF81kR00=
   /npm-bundled/1.0.3:
@@ -630,6 +636,7 @@ packages:
       minimist: 1.2.0
       strip-json-comments: 2.0.1
     dev: false
+    hasBin: true
     resolution:
       integrity: sha512-y3bGgqKj3QBdxLbLkomlohkvsA8gdAiUQlSBJnBhfn+BPxg4bc62d8TcBW15wavDfgexCgccckhcZvywyQYPOw==
   /readable-stream/2.3.6:
@@ -648,6 +655,7 @@ packages:
     dependencies:
       glob: 7.1.2
     dev: false
+    hasBin: true
     resolution:
       integrity: sha512-lreewLK/BlghmxtfH36YYVg1i8IAce4TI7oao75I1g245+6BctqTVQiBP3YUJ9C6DQOXJmkYR9X9fCLtCOJc5w==
   /safe-buffer/5.1.1:
@@ -668,6 +676,7 @@ packages:
       integrity: sha512-NqVDv9TpANUjFm0N8uM5GxL36UgKi9/atZw+x7YFnQ8ckwFGKrl4xX4yWtrey3UJm5nP1kUbnYgLopqWNSRhWw==
   /semver/5.5.0:
     dev: false
+    hasBin: true
     resolution:
       integrity: sha512-4SJ3dm0WAwWy/NVeioZh5AntkdJoWKxHxcmyP622fOkgHa4z3R0TdBJICINyaSDE6uNwVc8gZr+ZinwZAH4xIA==
   /send/0.16.2:
@@ -857,7 +866,7 @@ packages:
     resolution:
       integrity: sha1-hFK0u36Dx8GI2AQcGoN8dz1ti7k=
 registry: 'https://registry.npmjs.org/'
-shrinkwrapMinorVersion: 7
+shrinkwrapMinorVersion: 8
 shrinkwrapVersion: 3
 specifiers:
   canvas: ^1.6.11
