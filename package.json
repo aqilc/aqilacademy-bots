@@ -1,6 +1,6 @@
 {
   "scripts": {
-    "start": "node clyde.js, node clyde2.js"
+    "start": "node clyde.js"
   },
   "dependencies": {
     "discord.js": "^11.3.2",
