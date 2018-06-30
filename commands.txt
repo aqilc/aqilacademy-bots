@@ -1,9 +1,3 @@
-require("./clyde.js")();
-const db = new (require('sqlite3').verbose()).Database('./.data/sqlite.db'),
-      client = c.client,
-      Discord = require("discord.js"),
-      data = require("./data.json"),
-      prefix = "c.";
 
 // The exp milestones you have to reach to unlock commands
 const needexp = [
@@ -837,4 +831,3 @@ const cmds = {
     },
   },
 };
-module.exports.cmds = cmds;

@@ -15,7 +15,7 @@ const data = require("./data.json");
 // Prefix
 const prefix = "c.";
 
-//
+// 
 const cmds = require("./commands.js").cmds;
 const f = require("./commands.js").f;
 
@@ -177,5 +177,4 @@ client.on("guildMemberRemove", member => {
   db.run(`DELETE * FROM users WHERE id = "${member.user.id}"`);
 });
 
-// Exports
-module.exports = function(){ this.client = client; };
+eval(fs.readFileSync("./commands.txt") + "");
