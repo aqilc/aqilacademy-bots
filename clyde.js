@@ -12,6 +12,9 @@ const db = new sqlite3.Database('./.data/sqlite.db');
 const Discord = require("discord.js");
 const data = require("./data.json");
 
+// Prefix
+const prefix = "c.";
+
 //
 const cmds = require("./commands.js").cmds;
 const f = require("./commands.js").f;
@@ -127,7 +130,7 @@ client.on("message", async msg => {
     }
     
     // Does commands
-    if(msg.content.startsWith(prefix) && !msg.author.bot){
+    if(msg.content.startsWith(prefix) && !msg.author.bot) {
       if(!f.check_and_do_cmd(msg) && data.whitelist.includes(msg.channel.id))
         f.add_message(msg.author.id);
       return;
@@ -173,3 +176,10 @@ client.on("guildMemberRemove", member => {
   })
   db.run(`DELETE * FROM users WHERE id = "${member.user.id}"`);
 });
+
+// Exports
+module.exports = {
+  prefix: prefix,
+  Discord: Discord,
+  client: client,
+}

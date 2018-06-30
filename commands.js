@@ -1,7 +1,9 @@
-const db = new require('sqlite3').verbose().Database('./.data/sqlite.db');
-
-// Prefix
-const prefix = "c.";
+const c = require("./clyde.js"),
+      db = new (require('sqlite3').verbose()).Database('./.data/sqlite.db'),
+      client = c.client,
+      Discord = c.Discord,
+      data = require("./data.json"),
+      prefix = c.prefix;
 
 // The exp milestones you have to reach to unlock commands
 const needexp = [
