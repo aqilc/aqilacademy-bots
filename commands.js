@@ -1,5 +1,5 @@
-const c = require("./clyde.js"),
-      db = new (require('sqlite3').verbose()).Database('./.data/sqlite.db'),
+require("./clyde.js")();
+const db = new (require('sqlite3').verbose()).Database('./.data/sqlite.db'),
       client = c.client,
       Discord = require("discord.js"),
       data = require("./data.json"),

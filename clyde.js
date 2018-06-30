@@ -19,7 +19,7 @@ const prefix = "c.";
 const cmds = require("./commands.js").cmds;
 const f = require("./commands.js").f;
 
-// The client
+// The Client
 var client = new Discord.Client();
 client.login(process.env.TOKEN);
 
@@ -178,7 +178,4 @@ client.on("guildMemberRemove", member => {
 });
 
 // Exports
-module.exports = {
-  prefix: prefix,
-  client: client
-};
+module.exports = function(){ this.client = client; };
