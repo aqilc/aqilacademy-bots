@@ -2,7 +2,7 @@
 // All requires and dependencies
 const http = require('http');
 const express = require('express');
-const canvas = require("canvas");
+const Canvas = require("canvas");
 const snekfetch = require("snekfetch");
 const app = express();
 const fs = require('fs');
@@ -972,10 +972,10 @@ const cmds = {
     perms: "bot admin",
     hidden: true,
     do: (msg, content) => {
-      let Canvas = new canvas.createCanvas(400, 400),
+      let canvas = new Canvas.createCanvas(400, 400),
           ctx = Canvas.getContext("2d");
       
-      let attach = Discord.Attachment(Canvas.toBuffer(), "test.img");
+      msg.channel.send("Hello", Discord.Attachment(Canvas.toBuffer(), "test.img"));
     },
   },
 };
