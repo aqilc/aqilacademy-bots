@@ -958,16 +958,16 @@ const cmds = {
       f.warn(msg.author.id, id, reason, severity);
     },
   },
-  testImage: {
+  testimage: {
     a: ['ti'],
     desc: "For testing image production",
     usage: " [type] (parameters)",
     cat: "utility",
     perms: "bot admin",
     hidden: true,
-    do: (msg, content) => {
-      let canvas = new Canvas.createCanvas(400, 400),
-          ctx = Canvas.getContext("2d");
+    do: async (msg, content) => {
+      let canvas = Canvas.createCanvas(400, 400),
+          ctx = canvas.getContext("2d");
       
       msg.channel.send("Hello", Discord.Attachment(Canvas.toBuffer(), "test.img"));
     },
