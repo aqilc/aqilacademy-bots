@@ -1,10 +1,9 @@
 
 // All requires and dependencies
 const http = require('http');
-const express = require('express');
 const Canvas = require("canvas");
 const snekfetch = require("snekfetch");
-const app = express();
+const app = require('express')();
 const fs = require('fs');
 const exists = fs.existsSync('./.data/sqlite.db');
 const sqlite3 = require('sqlite3').verbose();
@@ -16,7 +15,7 @@ const data = require("./data.json");
 const prefix = "c.";
 
 // The Client
-var client = new Discord.Client();
+const client = new Discord.Client();
 client.login(process.env.TOKEN);
 
 //Keeps app running
@@ -142,8 +141,6 @@ client.on("guildMemberRemove", member => {
   db.run(`DELETE * FROM users WHERE id = "${member.user.id}"`);
 });
 
-
-// some other vars
 // The exp milestones you have to reach to unlock commands
 const needexp = [
   {
@@ -194,7 +191,6 @@ const trans = {
   true: "yes",
   undefined: "no",
 };
-
 
 // All Functions
 const f = {
@@ -369,8 +365,6 @@ const f = {
     client.users.get(id).send(new Discord.RichEmbed().setAuthor("You have been warned in AqilAcademy by " + client.users.get(mId).tag, client.users.get(mId).avatarURL).setDescription(reason).setColor(f.color()).setFooter(`Severity(Level of warn): ${severity}`));
   },// Adds a warn to a user
 };
-
-module.exports.f = f;
 
 // Commands
 const cmds = {
