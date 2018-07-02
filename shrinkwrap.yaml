@@ -1,5 +1,5 @@
 dependencies:
-  canvas: 1.6.11
+  canvas: 2.0.0-alpha.12
   discord.js: 11.3.2
   express: 4.16.3
   snekfetch: 4.0.4
@@ -83,15 +83,16 @@ packages:
       node: '>= 0.8'
     resolution:
       integrity: sha1-0ygVQE1olpn4Wk6k+odV3ROpYEg=
-  /canvas/1.6.11:
+  /canvas/2.0.0-alpha.12:
     dependencies:
       nan: 2.10.0
+      node-pre-gyp: 0.9.1
     dev: false
     engines:
-      node: '>=0.8.0'
+      node: '>=4'
     requiresBuild: true
     resolution:
-      integrity: sha512-ElVw5Uk8PReGpzXfDg6PDa+wntnZLGWWfdSHI0Pc8GyXiFbW13drSTzWU6C4E5QylHe+FnLqI7ngMRlp3eGZIQ==
+      integrity: sha512-ra8lev8agfQmiowJ2xJCVKA3L79RqwNcd2XboiHYWfRKlVk29NLye0ozK8/4iUHt/TIMe+knQoCEI6Dtlwep8w==
   /chownr/1.0.1:
     dev: false
     resolution:
@@ -500,6 +501,22 @@ packages:
     hasBin: true
     resolution:
       integrity: sha512-16lql9QTqs6KsB9fl3neWyZm02KxIKdI9FlJjrB0y7eMTP5Nyz+xalwPbOlw3iw7EejllJPmlJSnY711PLD1ug==
+  /node-pre-gyp/0.9.1:
+    dependencies:
+      detect-libc: 1.0.3
+      mkdirp: 0.5.1
+      needle: 2.2.1
+      nopt: 4.0.1
+      npm-packlist: 1.1.10
+      npmlog: 4.1.2
+      rc: 1.2.8
+      rimraf: 2.6.2
+      semver: 5.5.0
+      tar: 4.4.4
+    dev: false
+    hasBin: true
+    resolution:
+      integrity: sha1-8RwHUW3ZL4cZnbx+GDjqt81WyeA=
   /nopt/4.0.1:
     dependencies:
       abbrev: 1.1.1
@@ -869,7 +886,7 @@ registry: 'https://registry.npmjs.org/'
 shrinkwrapMinorVersion: 8
 shrinkwrapVersion: 3
 specifiers:
-  canvas: ^1.6.11
+  canvas: ^2.0.0-alpha.12
   discord.js: ^11.3.2
   express: ^4.16.3
   snekfetch: ^4.0.4

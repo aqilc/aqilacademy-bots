@@ -969,7 +969,7 @@ const cmds = {
       let canvas = Canvas.createCanvas(400, 400),
           ctx = canvas.getContext("2d");
       
-      msg.channel.send("Hello", Discord.Attachment(Canvas.toBuffer(), "test.img"));
+      msg.channel.send("hello", canvas.toBuffer());
     },
   },
 };
