@@ -972,10 +972,10 @@ const cmds = {
     perms: "bot admin",
     hidden: true,
     do: (msg, content) => {
-      let Canvas = new canvas(400, 400),
-          img = Canvas.getContext("2d");
+      let Canvas = new canvas.createCanvas(400, 400),
+          ctx = Canvas.getContext("2d");
       
-      
+      let attach = Discord.Attachment(Canvas.toBuffer(), "test.img");
     },
   },
 };
