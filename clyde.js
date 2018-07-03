@@ -972,7 +972,12 @@ const cmds = {
       // Displays user tag
       ctx.font = "50px sans-serif";
       ctx.fillStyle = "#ffffff";
-      ctx.fillText(msg.author.tag, canvas.width/2 - ctx.measureText(msg.author.tag).width/2, canvas.height/2);
+      ctx.fillText(msg.author.tag + "!", canvas.width/2 - ctx.measureText(msg.author.tag + "!").width/2, canvas.height/2 + 20);
+      
+      // Says "Hello,"
+      ctx.font = "20px sans-serif";
+      ctx.fillStyle = "#ffffff";
+      ctx.fillText("Hello,", canvas.width/2 - ctx.measureText("Hello,").width/2, canvas.height/2 - 30);
       
       msg.channel.send(new Discord.Attachment(canvas.toBuffer(), "test-image.png"));
     },
