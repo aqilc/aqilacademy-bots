@@ -966,10 +966,15 @@ const cmds = {
     perms: "bot admin",
     hidden: true,
     do: async (msg, content) => {
-      let canvas = Canvas.createCanvas(400, 400),
+      let canvas = Canvas.createCanvas(400, 100),
           ctx = canvas.getContext("2d");
       
-      msg.channel.send("hello", new Discord.Attachment(canvas.toBuffer(), "test-image.png"));
+      // Displays user tag
+      ctx.font = "50px sans-serif";
+      ctx.fillStyle = "#ffffff";
+      ctx.fillText(msg.author.tag, canvas.width/2 - ctx.measureText(msg.author.tag).width/2, canvas.height/2);
+      
+      msg.channel.send(new Discord.Attachment(canvas.toBuffer(), "test-image.png"));
     },
   },
 };
