@@ -968,18 +968,23 @@ const cmds = {
     do: async (msg, content) => {
       let canvas = Canvas.createCanvas(400, 100),
           ctx = canvas.getContext("2d");
-      
-      // Displays user tag
-      ctx.font = "50px sans-serif";
-      ctx.fillStyle = "#ffffff";
-      ctx.fillText(msg.author.tag + "!", canvas.width/2 - ctx.measureText(msg.author.tag + "!").width/2, canvas.height/2 + 20);
-      
-      // Says "Hello,"
-      ctx.font = "20px sans-serif";
-      ctx.fillStyle = "#ffffff";
-      ctx.fillText("Hello,", canvas.width/2 - ctx.measureText("Hello,").width/2, canvas.height/2 - 30);
-      
-      msg.channel.send(new Discord.Attachment(canvas.toBuffer(), "test-image.png"));
+      switch(content) {
+        case "hello":
+          // Displays user tag
+          ctx.font = "50px sans-serif";
+          ctx.fillStyle = "#ffffff";
+          ctx.fillText(msg.author.tag + "!", canvas.width/2 - ctx.measureText(msg.author.tag + "!").width/2, canvas.height/2 + 20);
+
+          // Says "Hello,"
+          ctx.font = "20px sans-serif";
+          ctx.fillStyle = "#ffffff";
+          ctx.fillText("Hello,", canvas.width/2 - ctx.measureText("Hello,").width/2, canvas.height/2 - 30);
+
+          msg.channel.send(new Discord.Attachment(canvas.toBuffer(), "test-image.png"));
+          break;
+        default:
+          cmds.testimage.do(msg, "hello");
+      }
     },
   },
 };
