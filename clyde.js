@@ -967,9 +967,7 @@ const cmds = {
     hidden: true,
     do: async (msg, content) => {
       let canvas = Canvas.createCanvas(400, 400),
-          ctx = canvas.getContext("2d"),
-          img = await Canvas.loadImage("https://i.ytimg.com/vi/UpX74_GZavk/maxresdefault.jpg");
-      ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+          ctx = canvas.getContext("2d");
       
       msg.channel.send("hello", new Discord.Attachment(canvas.toBuffer(), "test-image.png"));
     },
