@@ -367,13 +367,15 @@ const f = {
   get_id: (msg, text) => {
     if(text === "")
       return false;
-    let id = text.replace(/[^0-9]/g, "");
+    let id = text.replace(/[^0-9]/g, ""), person;
     if(id.length === 18)
       return id;
     else if(text.includes("#") && text.split("#")[1].trim().length === 4)
-      return msg.guild.members.array().filter(m => m.user.tag.toLowerCase() === text.toLowerCase())[0].id;
+      person = msg.guild.members.array().filter(m => m.user.tag.toLowerCase() === text.toLowerCase())[0];
     else
-      return msg.guild.members.array().filter(m => m.user.username.toLowerCase() === text.toLowerCase())[0].id;
+      person = msg.guild.members.array().filter(m => m.user.username.toLowerCase() === text.toLowerCase() || m.nickname === text.toLowerCase())[0];
+    if(person)
+      return person.id;
     return false;
   },
   autofont: (msg, canvas, size = 70) => {
@@ -688,7 +690,7 @@ const cmds = {
     del: true,
     do: (msg, content) => {
       //Defines variables
-      let [roles, reason, id, embed] = [undefined, content.slice(content.indexOf(" ")), content.split(" ")[0].replace(/[^0-9]/g, ""), new Discord.RichEmbed()];
+      let [roles, reason, id, embed] = [undefined, content.slice(content.indexOf(" ")), f.get_id(content.split(" ")[0]), new Discord.RichEmbed()];
       
       //Checks for ban
       if(msg.guild.members.get(id)) {
@@ -821,7 +823,7 @@ const cmds = {
     cat: "elections",
     do: (msg, content) => {
       let args = content.split("|=|").map(a => a.trim());
-      let vp = args[0].replace(/[^0-9]/g, "");
+      let vp = f.get_id(args[0]);
       
       if(!args[2])
         return msg.reply("Please fill in all required parameters.\n**Required Parameters:** ` [Vice President mention or id] |=| [slogan] |=| [description of term]`");
@@ -956,8 +958,8 @@ const cmds = {
           reason,
           severity;
       
-      id = content.split(" ")[0].replace(/[^0-9]/g, "");
-      if(id.length < 18)
+      id = f.get_id(msg, content.split(" ")[0]);
+      if(!id || id.length < 18)
         return msg.reply("Please include a VALID user ID/Mention!");
       
       content.slice(content.split(" ")[0].length + 1);
@@ -971,6 +973,12 @@ const cmds = {
       
       f.warn(msg.author.id, id, reason, severity);
     },
+  },
+  infractions: {
+    a: ["warns"],
+    desc: "Shows you your warns/infractions",
+    cat: "utility",
+    do: (msg, content) => {},
   },
   testimage: {
     a: ['ti'],
