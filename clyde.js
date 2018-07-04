@@ -582,6 +582,7 @@ const cmds = {
             msg.channel.send(embed);
           });
           break;
+        case "infraction":
         case "warn":
         case "warns":
           embed = new Discord.RichEmbed()
@@ -609,6 +610,7 @@ const cmds = {
               default:
                 return msg.reply("Please enter a valid action! **Actions:** `remove [IPK], reset`");
             }
+            msg.channel.send(embed);
           });
           break;
         case "item":
