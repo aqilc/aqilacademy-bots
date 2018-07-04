@@ -41,8 +41,6 @@ db.serialize(function() {
     "suggestions (num INTEGER PRIMARY KEY, suggestion TEXT, by TEXT, votes TEXT, created INTEGER)",
     "waiting (user TEXT, id INTEGER, start INTEGER, time INTEGER, for TEXT, data TEXT)",
     "blacklist (user TEXT, reason TEXT, by TEXT, date INTEGER, time INTEGER)",
-    "contests (num INTEGER PRIMARY KEY, title TEXT, desc TEXT, start INTEGER, end INTEGER, prize TEXT, channel TEXT)",
-    "cvotes (for TEXT, votes INTEGER, contest INTEGER, end INTEGER)",
   ];
   for(var i of tables) {
     db.run("CREATE TABLE IF NOT EXISTS " + i);
@@ -377,6 +375,9 @@ const f = {
     if(person)
       return person.id;
     return false;
+  },
+  calculate_stats: (id) => {
+    
   },
   autofont: (msg, canvas, size = 70) => {
     
@@ -976,6 +977,8 @@ const cmds = {
     cat: "utility",
     do: (msg, content) => {
       let id = f.get_id(content) || msg.author.id;
+      
+      db.all("SELECT * FROM warns WHERE")
     },
   },
   testimage: {
@@ -990,12 +993,7 @@ const cmds = {
       switch(content) {
         case "hello":
           canvas = createCanvas(400, 100),
-          ctx = canvas.getContext("2d"); 
-          
-          ctx.beginPath();
-          ctx.arc(canvas.width/2, canvas.height/2, 200, 0, Math.PI * 2, true);
-          ctx.closePath();
-          ctx.clip();
+            ctx = canvas.getContext("2d");
           
           // Background
           let { body: buffer } = await snekfetch.get("https://png.pngtree.com/thumb_back/fw800/back_pic/03/70/42/7957b6808adc0e9.jpg"),
@@ -1022,6 +1020,12 @@ const cmds = {
           ctx.fillText("Hello,", canvas.width/2 - ctx.measureText("Hello,").width/2, 25);
 
           msg.channel.send(new Discord.Attachment(canvas.toBuffer(), "test-image.png"));
+          break;
+        case "profile":
+          canvas = createCanvas(300, 400);
+            ctx = canvas.getContext("2d");
+          
+          
           break;
         default:
           cmds.testimage.do(msg, "hello");
