@@ -364,8 +364,14 @@ const f = {
     db.run(`INSERT INTO warns (warn, user, mod, severity, date) VALUES ("${reason}", "${id}", "${mId}", ${severity}, ${new Date().valueOf()})`);
     client.users.get(id).send(new Discord.RichEmbed().setAuthor("You have been warned in AqilAcademy by " + client.users.get(mId).tag, client.users.get(mId).avatarURL).setDescription(reason).setColor(f.color()).setFooter(`Severity(Level of warn): ${severity}`));
   },// Adds a warn to a user
-  get_id: async (text) => {
-    
+  get_id: async (msg, text) => {
+    let id = text.replace(/[^0-9]/g, "");
+    if(id.length === 18)
+      return id;
+    else if(text.includes("#") && text.split("#")[1].trim().length === 4)
+      return msg.guild.members.array().filter(m => m.user.tag.toLowercase() === text.toLowercase())[0].id;
+    else
+      return msg.guild.members.array().filter(m => m.user.username.toLowercase() === text.toLowercase())[0].id;
   },
   autofont: (msg, canvas, size = 70) => {
     
