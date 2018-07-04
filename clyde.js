@@ -1,7 +1,7 @@
 
 // All requires and dependencies
 const http = require('http');
-const Canvas = require("canvas");
+const { createCanvas, loadImage, Image } = require("canvas");
 const snekfetch = require("snekfetch");
 const app = require('express')();
 const fs = require('fs');
@@ -972,7 +972,7 @@ const cmds = {
     perms: "bot admin",
     hidden: true,
     do: async (msg, content) => {
-      let canvas = Canvas.createCanvas(400, 100),
+      let canvas = createCanvas(400, 100),
           ctx = canvas.getContext("2d");
       switch(content) {
         case "hello":
@@ -983,7 +983,7 @@ const cmds = {
           
           // Background
           let { body: buffer } = await snekfetch.get("https://png.pngtree.com/thumb_back/fw800/back_pic/03/70/42/7957b6808adc0e9.jpg"),
-              img = await Canvas.loadImage(buffer);
+              img = await loadImage(buffer);
           ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
           
           // Displays user tag
