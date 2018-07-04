@@ -972,6 +972,7 @@ const cmds = {
       switch(content) {
         case "hello":
           ctx.beginPath();
+          ctx.arc(canvas.width/2, canvas.height/2, 100, 0, Math.PI * 2, true);
           ctx.closePath();
           ctx.clip();
           
