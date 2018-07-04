@@ -31,7 +31,7 @@ setInterval(() => {
 db.serialize(function() {
   let tables = [
     "users (id TEXT, points INTEGER, lastDaily INTEGER, messages INTEGER, realpoints INTEGER, created INTEGER, streak INTEGER)",
-    "warns (num INTEGER PRIMARY KEY, warn TEXT, user, TEXT, mod TEXT, severity INTEGER, date INTEGER)",
+    "warns (num INTEGER PRIMARY KEY, warn TEXT, user TEXT, mod TEXT, severity INTEGER, date INTEGER)",
     "items (num INTEGER PRIMARY KEY, id INTEGER, user TEXT)",
     "quests (num INTEGER PRIMARY KEY, do INTEGER, user TEXT)",
     "expstore (num INTEGER PRIMARY KEY, item TEXT, desc TEXT, stock INTEGER, price INTEGER, approved TEXT, bought TEXT, seller TEXT, buyer TEXT)",
@@ -955,8 +955,8 @@ const cmds = {
           reason,
           severity;
       
-      id = f.get_id(msg, content.split(" ")[0]);
-      if(!id || id.length < 18)
+      id = f.get_id(msg, content.includes("<") && content.includes(">") ? contecontent.indexOf(">")[0]);
+      if(!id)
         return msg.reply("Please include a VALID user ID/Mention!");
       
       content.slice(content.split(" ")[0].length + 1);
@@ -976,9 +976,14 @@ const cmds = {
     desc: "Shows you your warns/infractions",
     cat: "utility",
     do: (msg, content) => {
-      let id = f.get_id(content) || msg.author.id;
+      let id = f.get_id(content) || msg.author.id,
+          txt = "";
       
-      db.all("SELECT * FROM warns WHERE")
+      db.all(`SELECT * FROM warns WHERE user = "${id}"`, (err, warns) => {
+        if(!warns)
+          return msg.reply("You do not have any warns! Nice Job! 🎉");
+        
+      });
     },
   },
   testimage: {
