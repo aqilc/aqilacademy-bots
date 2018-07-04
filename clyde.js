@@ -594,6 +594,9 @@ const cmds = {
             if(!res)
               return msg.reply("User doesn't exist!");
             
+            if(res.length == 0)
+              return msg.reply("This user doesn't have any warns!");
+            
             switch(args[2].toLowerCase()) {
               case "remove":
                 db.get(`SELECT * FROM warns WHERE user = "${id}" AND num = ${Number(args[3])}`, (err, warn) => {
@@ -982,7 +985,7 @@ const cmds = {
           txt = "";
       
       db.all(`SELECT * FROM warns WHERE user = "${id}"`, (err, warns) => {
-        if(!warns)
+        if(!warns || warns.length == 0)
           return msg.reply("You do not have any warns! Nice Job! 🎉");
         
         txt += `You have ${warns.length} Infractions. Page 1:\`\`\`md\n`;
