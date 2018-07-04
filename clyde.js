@@ -989,8 +989,12 @@ const cmds = {
 
           // Says "Hello,"
           ctx.font = "20px sans-serif";
+          ctx.fillStyle = "#000000";
+          for(let i = 0; i < 360; i += 20) {
+            ctx.fillText("Hello,", canvas.width/2 - ctx.measureText("Hello,").width/2 + Math.sin(i) * 3, 25 + Math.cos(i) * 3);
+          }
           ctx.fillStyle = "#ffffff";
-          ctx.fillText("Hello,", canvas.width/2 - ctx.measureText("Hello,").width/2, canvas.height/2 - 30);
+          ctx.fillText("Hello,", canvas.width/2 - ctx.measureText("Hello,").width/2, 25);
 
           msg.channel.send(new Discord.Attachment(canvas.toBuffer(), "test-image.png"));
           break;
