@@ -964,11 +964,11 @@ const cmds = {
       if(!id)
         return msg.reply("Please include a VALID user ID/Mention!");
       
-      content.slice(content.split(" ")[0].length + 1);
+      content = content.slice(content.split(" ")[0].length + 1);
       if(!content || content === "")
         return msg.reply("You HAVE to include a reason!");
       if(content.includes("S:"))
-        reason = content.split("S:")[0].slice(content.indexOf(" ")),
+        reason = content.split("S:")[0],
         severity = isNaN(Number(content.split("S:")[1])) || Number(content.split("S:")[1]) < 1 ? 1 : Number(content.split("S:")[1]);
       else
         reason = content;
@@ -984,9 +984,11 @@ const cmds = {
       let id = f.get_id(msg, content.split(" ")[0]) || msg.author.id,
           txt = "";
       
-      db.all(`SELECT * FROM warns WHERE user = "${id}"`, (err, warns) => {
+      if(!client.fetchUser(id))
+        return msg.reply("User doesn't exist!");
+      db.all(`SELECT * FROM warns WHERE user = "${id}"`, async (err, warns) => {
         if(!warns || warns.length == 0)
-          return msg.reply("You do not have any warns! Nice Job! 🎉");
+          return id === msg.author.id ? msg.reply("You do not have any warns! Nice Job! 🎉") : msg.channel.send(`${await client.fetchUser(id).tag} doesn't have any warns!`);
         
         txt += `You have ${warns.length} Infractions. Page 1:\`\`\`md\n`;
         
