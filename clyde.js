@@ -364,7 +364,7 @@ const f = {
     db.run(`INSERT INTO warns (warn, user, mod, severity, date) VALUES ("${reason}", "${id}", "${mId}", ${severity}, ${new Date().valueOf()})`);
     client.users.get(id).send(new Discord.RichEmbed().setAuthor("You have been warned in AqilAcademy by " + client.users.get(mId).tag, client.users.get(mId).avatarURL).setDescription(reason).setColor(f.color()).setFooter(`Severity(Level of warn): ${severity}`));
   },// Adds a warn to a user
-  autofont: () => {},
+  autofont: (msg, canvas, size) => {},
 };
 
 // Commands
@@ -971,9 +971,11 @@ const cmds = {
           ctx = canvas.getContext("2d");
       switch(content) {
         case "hello":
-          for(let i = 0; i < 1000; i++) {
-            
-          }
+          
+          // Background
+          let { body: buffer } = await snekfetch.get("https://accademiadomani.it/images/easyblog_articles/56/6357113891872042921262103204_cropped-astronaut-moon-looks-to-earth-drink-beer-wide-hd-wallpaper.imgopt1000x70.jpg"),
+              img = await Canvas.loadImage(buffer);
+          ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
           
           // Displays user tag
           ctx.font = "50px sans-serif";
