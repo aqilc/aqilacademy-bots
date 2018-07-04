@@ -971,6 +971,9 @@ const cmds = {
           ctx = canvas.getContext("2d");
       switch(content) {
         case "hello":
+          ctx.beginPath();
+          ctx.closePath();
+          ctx.clip();
           
           // Background
           let { body: buffer } = await snekfetch.get("https://png.pngtree.com/thumb_back/fw800/back_pic/03/70/42/7957b6808adc0e9.jpg"),
