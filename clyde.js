@@ -973,14 +973,19 @@ const cmds = {
         case "hello":
           
           // Background
-          let { body: buffer } = await snekfetch.get("https://accademiadomani.it/images/easyblog_articles/56/6357113891872042921262103204_cropped-astronaut-moon-looks-to-earth-drink-beer-wide-hd-wallpaper.imgopt1000x70.jpg"),
+          let { body: buffer } = await snekfetch.get("https://png.pngtree.com/thumb_back/fw800/back_pic/03/70/42/7957b6808adc0e9.jpg"),
               img = await Canvas.loadImage(buffer);
           ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
           
           // Displays user tag
           ctx.font = "50px sans-serif";
+          ctx.fillStyle = "#000000";
+          for(let i = 0; i < 360; i += 20) {
+            ctx.fillText(msg.author.tag + "!", canvas.width/2 - ctx.measureText(msg.author.tag + "!").width/2 + Math.sin(i) * 3, canvas.height/2 + 20 + Math.cos(i) * 3);
+          }
           ctx.fillStyle = "#ffffff";
           ctx.fillText(msg.author.tag + "!", canvas.width/2 - ctx.measureText(msg.author.tag + "!").width/2, canvas.height/2 + 20);
+          
 
           // Says "Hello,"
           ctx.font = "20px sans-serif";
