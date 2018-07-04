@@ -654,7 +654,7 @@ const cmds = {
     del: true,
     do: (msg, content) => {
       //Defines variables
-      let [roles, reason, id, embed] = [undefined, content.slice(content.indexOf(" ")), content.split(" ")[0].replace(/[^0-9]/g, ""), new Discord.RichEmbed()];
+      let [roles, reason, id, embed] = [undefined, content.slice(content.indexOf(" ")), f.get_id(content.split(" ")[0]), new Discord.RichEmbed()];
       
       //Checks for ban
       if(msg.guild.members.get(id)) {
@@ -955,7 +955,7 @@ const cmds = {
           reason,
           severity;
       
-      id = f.get_id(msg, content.includes("<") && content.includes(">") ? contecontent.indexOf(">")[0]);
+      id = f.get_id(msg, content.includes("<") && content.includes(">") ? content.slice(0, content.indexOf(">") + 1) : content.split(" ")[0]);
       if(!id)
         return msg.reply("Please include a VALID user ID/Mention!");
       
