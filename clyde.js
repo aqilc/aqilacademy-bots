@@ -533,11 +533,11 @@ const cmds = {
   },
   edit: {
     a: [],
-    desc: "Edits a user's stats.\n**Three categories:**```md\n1. Warns(Actions: remove [IPK])\n2. Items(Actions: add [ID], remove [IPK])\n3. EXP(Actions: delete, add [EXP amount], sub [EXP amount], set [EXP amount])```",
+    desc: "Edits a user's stats.\n**Three categories:**```md\n1. Warns(Actions: remove [IPK], reset)\n2. Items(Actions: add [ID], remove [IPK])\n3. EXP(Actions: delete, add [EXP amount], sub [EXP amount], set [EXP amount])```",
     usage: " [user mention or id] [category] [action] (a number of some sort)",
     cat: "bot admin",
     perms: "bot admin",
-    do: (msg, content) => {
+    do: async (msg, content) => {
       let args = content.split(" "),
           embed,
           id = f.get_id(msg, args[0]);
@@ -589,13 +589,13 @@ const cmds = {
             .setAuthor("Edited Rule Infractions for " + (client.users.get(id) ? client.users.get(id).tag : id), msg.author.avatarURL);
           if(args[2].toLowerCase() === "remove" && isNaN(Number(args[3])))
             return msg.reply("Please enter a valid number for the fourth argument!");
-          db.all(`SELECT * FROM warns WHERE id = "${id}"`, (err, res) => {
+          db.all(`SELECT * FROM warns WHERE user = "${id}"`, (err, res) => {
             if(!res)
               return msg.reply("User doesn't exist!");
             
             switch(args[2].toLowerCase()) {
               case "remove":
-                db.get(`SELECT * FROM warns WHERE id = "${id}" AND num = ${Number(args[3])}`, (err, warn) => {
+                db.get(`SELECT * FROM warns WHERE user = "${id}" AND num = ${Number(args[3])}`, (err, warn) => {
                   if(!warn)
                     return msg.reply("IPK and User don't match");
                   embed.setDescription(`Removed Infraction #${args[3]}:\`\`\`${warn.warn}\`\`\``);
@@ -604,7 +604,7 @@ const cmds = {
                 break;
               case "reset":
                 embed.setDescription(`Removed ALL[${res.length}] infractions from <@${id}>`);
-                db.run(`DELETE * FROM warns WHERE id = "${id}"`);
+                db.run(`DELETE FROM warns WHERE user = "${id}"`);
                 break;
               default:
                 return msg.reply("Please enter a valid action! **Actions:** `remove [IPK], reset`");
@@ -986,7 +986,7 @@ const cmds = {
         txt += `You have ${warns.length} Infractions. Page 1:\`\`\`md\n`;
         
         f.page_maker(warns, 10, 0, (i, warn) => {
-          txt += `# Reason: ${warn.warn}\n- IPK: ${warn.num} | Moderator: ${client.users.get(warn.mod) ? client.users.get(warn.mod).tag : warn.mod}\n\n`;
+          txt += `# Reason: ${warn.warn}\n- IPK: ${warn.num} | Moderator: ${client.users.get(warn.mod) ? client.users.get(warn.mod).tag : warn.mod} | Severity: ${warn.severity}\n\n`;
         });
         txt += "```";
         
