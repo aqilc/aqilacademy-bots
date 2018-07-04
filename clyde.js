@@ -540,7 +540,7 @@ const cmds = {
     do: (msg, content) => {
       let args = content.split(" "),
           embed,
-          id = f.get_id(args[0]);
+          id = f.get_id(msg, args[0]);
       if(args.length < 3)
         return msg.reply("Please fill up ALL parameters.\n**Parameters:** `[user mention or id] [category] [action]`");
       
@@ -654,7 +654,7 @@ const cmds = {
     del: true,
     do: (msg, content) => {
       //Defines variables
-      let [roles, reason, id, embed] = [undefined, content.slice(content.indexOf(" ")), f.get_id(content.split(" ")[0]), new Discord.RichEmbed()];
+      let [roles, reason, id, embed] = [undefined, content.slice(content.indexOf(" ")), f.get_id(msg, content.split(" ")[0]), new Discord.RichEmbed()];
       
       //Checks for ban
       if(msg.guild.members.get(id)) {
@@ -687,7 +687,7 @@ const cmds = {
     del: true,
     do: (msg, content) => {
       //Defines variables
-      let [roles, reason, id, embed] = [undefined, content.slice(content.indexOf(" ")), f.get_id(content.split(" ")[0]), new Discord.RichEmbed()];
+      let [roles, reason, id, embed] = [undefined, content.slice(content.indexOf(" ")), f.get_id(msg, content.split(" ")[0]), new Discord.RichEmbed()];
       
       //Checks for ban
       if(msg.guild.members.get(id)) {
@@ -820,7 +820,7 @@ const cmds = {
     cat: "elections",
     do: (msg, content) => {
       let args = content.split("|=|").map(a => a.trim());
-      let vp = f.get_id(args[0]);
+      let vp = f.get_id(msg, args[0]);
       
       if(!args[2])
         return msg.reply("Please fill in all required parameters.\n**Required Parameters:** ` [Vice President mention or id] |=| [slogan] |=| [description of term]`");
@@ -955,7 +955,7 @@ const cmds = {
           reason,
           severity;
       
-      id = f.get_id(msg, content.includes("<") && content.includes(">") ? content.slice(0, content.indexOf(">") + 1) : content.split(" ")[0]);
+      id = f.get_id(msg, content.split(" ")[0]);
       if(!id)
         return msg.reply("Please include a VALID user ID/Mention!");
       
@@ -963,7 +963,7 @@ const cmds = {
       if(!content || content === "")
         return msg.reply("You HAVE to include a reason!");
       if(content.includes("S:"))
-        reason = content.split("S:")[0],
+        reason = content.split("S:")[0].slice(content.indexOf(" ")),
         severity = isNaN(Number(content.split("S:")[1])) || Number(content.split("S:")[1]) < 1 ? 1 : Number(content.split("S:")[1]);
       else
         reason = content;
@@ -976,13 +976,21 @@ const cmds = {
     desc: "Shows you your warns/infractions",
     cat: "utility",
     do: (msg, content) => {
-      let id = f.get_id(content) || msg.author.id,
+      let id = f.get_id(msg, content.split(" ")[0]) || msg.author.id,
           txt = "";
       
       db.all(`SELECT * FROM warns WHERE user = "${id}"`, (err, warns) => {
         if(!warns)
           return msg.reply("You do not have any warns! Nice Job! 🎉");
         
+        txt += `You have ${warns.length} Infractions. Page 1:\`\`\`md\n`;
+        
+        f.page_maker(warns, 10, 0, (i, warn) => {
+          txt += `# Reason: ${warn.warn}\n- IPK: ${warn.num} | Moderator: ${client.users.get(warn.mod) ? client.users.get(warn.mod).tag : warn.mod}\n\n`;
+        });
+        txt += "```";
+        
+        msg.channel.send(txt);
       });
     },
   },
