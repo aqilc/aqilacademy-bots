@@ -415,13 +415,13 @@ const f = {
         db.all(`SELECT * FROM warns WHERE user = "${id}"`, (error, warn) => {
           if(warn)
             warn.forEach((w) => { stats.severity += w.severity; });
-          stats.warn = warn;
+          stats.warns = warn;
           db.get(`SELECT * FROM blacklist WHERE id = "${id}"`, (er, black) => {
             if(black)
               stats.blacklisted = true;
 
             db.get(`SELECT * FROM elections WHERE winner = "${id}"`, (err, elecs) => {
-              stats.elections_won = elecs.length;
+              stats.elections_won = elecs ? elecs.length : 0;
               resolve(stats);
             });
           });
@@ -497,45 +497,19 @@ const cmds = {
     desc: "Shows someone's EXP stats.",
     usage: " (user)",
     cat: "exp",
-    do: (msg, content) => {
+    do: async (msg, content) => {
       let [embed, id] = [new Discord.RichEmbed(), f.get_id(msg, content) || msg.author.id];
       
       if(!client.users.get(id))
         return msg.reply("Please enter a valid ID/User Mention");
-      
-      let severity = 0,
-          lbp = 0;
-      db.all(`SELECT * FROM users ORDER BY points DESC`, (err, res) => {
-        if(!res.filter(r => r.id === id)[0])
-          res = {
-            realpoints: 0,
-            points: 0,
-            lastDaily: 0,
-            created: 0,
-            streak: 0,
-            messages: 0,
-          },
-          lbp = res.length + 1;
-        else {
-          for(let i = 0; i < res.length; i ++) {
-            if(res[i].id === id)
-              lbp = i + 1,
-              res = res[i];
-          }
-        }
-        db.all(`SELECT * FROM warns WHERE user = "${id}"`, (error, warn) => {
-          if(warn)
-            warn.forEach((w) => { severity += w.severity; });
-          db.get(`SELECT * FROM blacklist WHERE id = "${id}"`, (er, black) => {
-            embed.setAuthor(client.users.get(id).tag + "'s stats", client.users.get(id).avatarURL)
-              .setColor(f.color())
-              .addField("<:exp:458774880310263829> EXP", `**Points:** ${res.points}\n**Real Points:** ${res.realpoints}\n**Last Daily at:** ${new Date(res.lastDaily).toLocaleString('en', { timeZone: 'UTC' })}\n**Streak:** ${res.streak}\n**Place on leaderboard:** \`${lbp + (JSON.parse(JSON.stringify(lbp)[JSON.stringify(lbp).length - 1]) < 4 ? ["th", "st", "nd", "rd"][JSON.stringify(lbp)[JSON.stringify(lbp).length - 1]] : "th")}\``, true)
-              .addField("📈 Stats", `**Recorded Messages:** ${res.messages}\n**Account added at:** ${new Date(res.created).toLocaleString('en', { timeZone: 'UTC' })}\n**Blacklisted:** ${black ? "Yes" : "No"}`, true)
-              .addField(`⚠ Total Infractions: ${warn ? warn.length : 0}`, `**Total Severity:** ${severity}`, true);
-            msg.channel.send(embed);
-          });
-        });
-      })
+      let stats = await f.calculate_stats(id);
+      embed.setAuthor(client.users.get(id).tag + "'s stats", client.users.get(id).avatarURL)
+        .setColor(f.color())
+        .addField("<:exp:458774880310263829> EXP", `**Points:** ${stats.points}\n**Real Points:** ${stats.realpoints}\n**Last Daily at:** ${new Date(stats.lastDaily).toLocaleString('en', { timeZone: 'UTC' })}\n**Streak:** ${stats.streak}\n**Place on leaderboard:** \`${stats.leaderboard_place + (JSON.parse(JSON.stringify(stats.leaderboard_place)[JSON.stringify(stats.leaderboard_place).length - 1]) < 4 ? ["th", "st", "nd", "rd"][JSON.stringify(stats.leaderboard_place)[JSON.stringify(stats.leaderboard_place).length - 1]] : "th")}\``, true)
+        .addField("📈 Stats", `**Recorded Messages:** ${stats.messages}\n**Account added at:** ${new Date(stats.created).toLocaleString('en', { timeZone: 'UTC' })}\n**Blacklisted:** ${stats.blacklisted ? "Yes" : "No"}`, true)
+        .addField(`⚠ Total Infractions: ${stats.warns.length}`, `**Total Severity:** ${stats.severity}`, true);
+      msg.channel.send(embed);
+      console.log(stats);
     },
   },
   leaderboard: {
