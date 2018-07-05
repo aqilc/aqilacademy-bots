@@ -1045,7 +1045,10 @@ const cmds = {
           canvas = createCanvas(300, 400);
             ctx = canvas.getContext("2d");
           
-          
+          // Background
+          { body: buffer } = await snekfetch.get("https://png.pngtree.com/thumb_back/fw800/back_pic/03/70/42/7957b6808adc0e9.jpg"),
+              img = await loadImage(buffer);
+          ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
           break;
         default:
           cmds.testimage.do(msg, "hello");
