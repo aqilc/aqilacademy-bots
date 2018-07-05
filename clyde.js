@@ -1121,8 +1121,8 @@ const cmds = {
           
           // Text
           ctx.fillStyle = "rgba(50, 50, 50, 0.4)";
-          ctx.font = "bold 30px Trebuchet MS";
-          ctx.fillText("Stats", 105, 50);
+          ctx.font = "bold 30px arial";
+          ctx.fillText("STATS", 105, 50);
           
           // Avatar
           f.round_rect(ctx, 10, 10, 85, 85, 4, false, false);
