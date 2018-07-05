@@ -1121,14 +1121,13 @@ const cmds = {
           
           // Text
           ctx.fillStyle = "rgba(100, 100, 100, 0.9)";
-          ctx.font = "30px calibri";
-          ctx.fillText("STATS", 105, 25);
+          ctx.font = "bold 30px monospace";
+          ctx.fillText("STATS", 105, 50);
           
           // Avatar
           f.round_rect(ctx, 10, 10, 85, 85, 4, false, false);
           ctx.clip();
           ctx.drawImage(avatar, 10, 10, 85, 85);
-          ctx.save();
           
           msg.channel.send(new Discord.Attachment(canvas.toBuffer(), "test-image.png"));
           break;
