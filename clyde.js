@@ -1138,10 +1138,10 @@ const cmds = {
           
           let { font: font, size: size } = f.autofont(client.users.get(id).tag, canvas, 20, 85, 12, { before: "bold", after: "Arial" });
           ctx.fillStyle = "rgba(255, 255, 255, 0.5)";
-          ctx.fillRect(20, 95 - size - size/4, 65, size + size/4);
+          f.round_rect(ctx, 25, 95 - size - size/4, 70, size + size/4, { tl: 4 }, true, false);
           ctx.font = font;
           ctx.fillStyle = "rgb(50, 50, 50)";
-          ctx.fillText(client.users.get(id).tag, 20 + (85 - ctx.measureText(client.users.get(id).tag).width)/4, 95 - size/4);
+          ctx.fillText(client.users.get(id).tag, (90 - ctx.measureText(client.users.get(id).tag).width), 95 - size/4);
           
           
           msg.channel.send(new Discord.Attachment(canvas.toBuffer(), "test-image.png"));
