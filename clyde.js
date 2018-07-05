@@ -1042,16 +1042,19 @@ const cmds = {
           msg.channel.send(new Discord.Attachment(canvas.toBuffer(), "test-image.png"));
           break;
         case "profile":
-          canvas = createCanvas(300, 400);
+          canvas = createCanvas(400, 200);
             ctx = canvas.getContext("2d");
           
           // Background
-          { body: buffer } = await snekfetch.get("https://png.pngtree.com/thumb_back/fw800/back_pic/03/70/42/7957b6808adc0e9.jpg"),
-              img = await loadImage(buffer);
-          ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+          let { body: buffer2 } = await snekfetch.get("https://i.pinimg.com/originals/90/cd/dc/90cddc7eeddbac6b17b4e25674e9e971.jpg"),
+              img2 = await loadImage(buffer2);
+          ctx.drawImage(img2, 0, 0, canvas.width, canvas.height);
+          
+          msg.channel.send(new Discord.Attachment(canvas.toBuffer(), "test-image.png"));
           break;
         default:
           cmds.testimage.do(msg, "hello");
+          break;
       }
     },
   },
