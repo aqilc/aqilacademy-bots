@@ -1120,9 +1120,9 @@ const cmds = {
           f.round_rect(ctx, 100, 20, canvas.width - 120, 80, { tl: 4, tr: 4 }, true, false);
           
           // Text
-          ctx.fillStyle = "rgba(100, 100, 100, 0.9)";
-          ctx.font = "bold 30px monospace";
-          ctx.fillText("STATS", 105, 50);
+          ctx.fillStyle = "rgba(50, 50, 50, 0.4)";
+          ctx.font = "bold 30px Trebuchet MS";
+          ctx.fillText("Stats", 105, 50);
           
           // Avatar
           f.round_rect(ctx, 10, 10, 85, 85, 4, false, false);
