@@ -440,7 +440,7 @@ const f = {
       radius = {tl: radius, tr: radius, br: radius, bl: radius};
     } else {
       var defaultRadius = {tl: 0, tr: 0, br: 0, bl: 0};
-      for (var side in defaultRadius) {
+      for (let side in defaultRadius) {
         radius[side] = radius[side] || defaultRadius[side];
       }
     }
@@ -464,6 +464,7 @@ const f = {
   },
   autofont: (msg, canvas, size = 70) => {
     
+    do {} while()
   },
 };
 
