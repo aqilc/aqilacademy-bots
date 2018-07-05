@@ -378,55 +378,52 @@ const f = {
   },
   calculate_stats: (id) => {
     if(!client.users.get(id))
-      return {;
+      return false;
+    
+    return new Promise(function(resolve, reject) {
+      let stats = {
+        elections_won: 0,
 
-    let stats = {
-      elections_won: 0,
-      
-      realpoints: 0,
-      points: 0,
-      messages: 0,
-      created: 0,
-      streak: 0,
-      lastDaily: 0,
-      lbp: 1,
-      
-      blacklisted: false,
-      
-      warns: [],
-      severity: 0,
-    };
-    db.all(`SELECT * FROM users ORDER BY points DESC`, (err, res) => {
-      if(!res.filter(r => r.id === id)[0])
-        res = {
-          realpoints: 0,
-          points: 0,
-          lastDaily: 0,
-          created: 0,
-          streak: 0,
-          messages: 0,
-        },
-        stats.lbp = res.length + 1;
-      else {
-        for(let i = 0; i < res.length; i ++) {
-          if(res[i].id === id)
-            stats.lbp = i + 1,
-            res = res[i];
+        realpoints: 0,
+        points: 0,
+        messages: 0,
+        created: 0,
+        streak: 0,
+        lastDaily: 0,
+        leaderboard_place: 1,
+
+        blacklisted: false,
+
+        warns: [],
+        severity: 0,
+      };
+      db.all(`SELECT * FROM users ORDER BY points DESC`, (err, res) => {
+        if(!res.filter(r => r.id === id)[0])
+          stats.leaderboard_place = res.length + 1;
+        else {
+          for(let i = 0; i < res.length; i ++) {
+            if(res[i].id === id) {
+              stats.leaderboard_place = i + 1;
+
+              delete res[i].id;
+              for(let j in res[i])
+                stats[j] = res[i][j];
+            }
+          }
         }
-      }
-      for(let i in res)
-        stats[i] = res[i];
-      
-      db.all(`SELECT * FROM warns WHERE user = "${id}"`, (error, warn) => {
-        if(warn)
-          warn.forEach((w) => { stats.severity += w.severity; });
-        stats.warn = warn;
-        db.get(`SELECT * FROM blacklist WHERE id = "${id}"`, (er, black) => {
-          if(black)
-            stats.blacklisted = true;
-          
-          db.get(`SELECT * FROM elections WHERE winner = "${id}"`, (err, elecs) => {
-            
+
+        db.all(`SELECT * FROM warns WHERE user = "${id}"`, (error, warn) => {
+          if(warn)
+            warn.forEach((w) => { stats.severity += w.severity; });
+          stats.warn = warn;
+          db.get(`SELECT * FROM blacklist WHERE id = "${id}"`, (er, black) => {
+            if(black)
+              stats.blacklisted = true;
+
+            db.get(`SELECT * FROM elections WHERE winner = "${id}"`, (err, elecs) => {
+              stats.elections_won = elecs.length;
+              resolve(stats);
+            });
           });
         });
       });
