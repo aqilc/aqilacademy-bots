@@ -1135,9 +1135,12 @@ const cmds = {
           ctx.clip();
           ctx.drawImage(avatar, 10, 10, 85, 85);
           
-          let { font: font, size: size } = f.autofont(msg.author.tag, canvas, 105, canvas.width - 25, 40, { before: "bold", after: "Arial" });
+          let { font: font, size: size } = f.autofont(msg.author.tag, canvas, 20, 95, 40, { before: "bold", after: "Arial" });
+          ctx.fillStyle = "rgba(255, 255, 255, 0.7)";
           ctx.fillRect(10, 95 - size, 95, size);
           ctx.font = font;
+          ctx.f
+          ctx.fillText(msg.author.tag, 10, 95);
           
           
           msg.channel.send(new Discord.Attachment(canvas.toBuffer(), "test-image.png"));
