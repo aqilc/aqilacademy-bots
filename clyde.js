@@ -1114,13 +1114,19 @@ const cmds = {
           // Background
           ctx.drawImage(bg, 0, 0, canvas.width, canvas.height);
           
+          // Boxes for stats to be put on
           ctx.fillStyle = "rgba(255, 255, 255, 0.7)";
           f.round_rect(ctx, 20, 100, canvas.width - 40, canvas.height - 120, { tl: 4, br: 4, bl: 4 }, true, false);
           f.round_rect(ctx, 100, 20, canvas.width - 120, 80, { tl: 4, tr: 4 }, true, false);
           
-          f.round_rect(ctx, 10, 10, 85, 85, 5, false, false);
+          // Avatar
+          f.round_rect(ctx, 10, 10, 85, 85, 4, false, false);
           ctx.clip();
           ctx.drawImage(avatar, 10, 10, 85, 85);
+          ctx.save();
+          
+          ctx.fillStyle = "rgba(100, 100, 100, 0.9)";
+          ctx.fillText("
           
           msg.channel.send(new Discord.Attachment(canvas.toBuffer(), "test-image.png"));
           break;
