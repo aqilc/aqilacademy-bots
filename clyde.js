@@ -466,7 +466,7 @@ const f = {
     let ctx = canvas.getContext("2d");
     
     // Sizes the text size down to fit space
-    do { ctx.font = `${size -= 1}px`; } while(ctx.measureText(msg).width + x > (mX || canvas.width));
+    while(ctx.measureText(msg).width + x > mX) { ctx.font = `${size -= 1}px arial`; } /*while(ctx.measureText(msg).width + x > mX);*/
     
     // Returns size
     return ctx.font;
@@ -1127,7 +1127,7 @@ const cmds = {
           
           // Text
           ctx.fillStyle = "rgba(50, 50, 50, 0.4)";
-          ctx.font = "bold " + f.autofont("Stats for " + msg.author.tag, canvas, 105, canvas.width - 25, 40) + " arial";
+          ctx.font = "bold " + f.autofont("Stats for " + msg.author.tag, canvas, 105, canvas.width - 25, 40);
           ctx.fillText("Stats for " + msg.author.tag, 105, 50);
           
           // Avatar
