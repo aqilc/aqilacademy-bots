@@ -462,9 +462,14 @@ const f = {
       ctx.stroke();
     }
   },
-  autofont: (msg, canvas, size = 70) => {
+  autofont: (msg, canvas, x, mX, size = 70) => {
+    let ctx = canvas.getContext("2d");
     
-    do {} while()
+    // Sizes the text size down to fit space
+    do { ctx.font = `${size -= 1}px`; } while(ctx.measureText(msg).width + x > (mX || canvas.width));
+    
+    // Returns size
+    return ctx.font;
   },
 };
 
@@ -1122,8 +1127,8 @@ const cmds = {
           
           // Text
           ctx.fillStyle = "rgba(50, 50, 50, 0.4)";
-          ctx.font = "bold 30px arial";
-          ctx.fillText("STATS", 105, 50);
+          ctx.font = "bold " + f.autofont("Stats for " + msg.author.tag, canvas, 105, canvas.width - 25, 40) + " arial";
+          ctx.fillText("Stats for " + msg.author.tag, 105, 50);
           
           // Avatar
           f.round_rect(ctx, 10, 10, 85, 85, 4, false, false);
