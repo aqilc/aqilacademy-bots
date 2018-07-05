@@ -1069,10 +1069,20 @@ const cmds = {
           canvas = createCanvas(400, 200);
             ctx = canvas.getContext("2d");
           
-          // Background
+          // User stats
+          let stats = await f.calculate_stats(msg.author.id) || {};
+          
+          // All images
           let { body: buffer2 } = await snekfetch.get("https://i.pinimg.com/originals/90/cd/dc/90cddc7eeddbac6b17b4e25674e9e971.jpg"),
-              img2 = await loadImage(buffer2);
-          ctx.drawImage(img2, 0, 0, canvas.width, canvas.height);
+              bg = await loadImage(buffer2),
+              { body: buffer3 } = await snekfetch.get(msg.author.displayAvatarURL),
+              avatar = await loadImage(buffer3);
+          
+          // Background
+          ctx.drawImage(bg, 0, 0, canvas.width, canvas.height);
+          
+          ctx.fillStyle = "rgba(255, 255, 255, 0.5)";
+          ctx.fillRect(20, 20, canvas.width - 40, canvas.height - 40);
           
           msg.channel.send(new Discord.Attachment(canvas.toBuffer(), "test-image.png"));
           break;
