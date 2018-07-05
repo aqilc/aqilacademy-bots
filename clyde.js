@@ -1121,7 +1121,7 @@ const cmds = {
           
           // Text
           ctx.fillStyle = "rgba(100, 100, 100, 0.9)";
-          ctx.font = "30px Calibri";
+          ctx.font = "30px calibri";
           ctx.fillText("STATS", 105, 25);
           
           // Avatar
