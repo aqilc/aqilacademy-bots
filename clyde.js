@@ -462,14 +462,14 @@ const f = {
       ctx.stroke();
     }
   },
-  autofont: (msg, canvas, x, mX, size = 70) => {
+  autofont: (msg, canvas, x, mX, size = 70, addons) => {
     let ctx = canvas.getContext("2d");
     
     // Sizes the text size down to fit space
-    while(ctx.measureText(msg).width + x > mX) { ctx.font = `${size -= 1}px arial`; } /*while(ctx.measureText(msg).width + x > mX);*/
+    do { ctx.font = `${addons.before || ""} ${size -= 1}px ${addons.after || "arial"}`; } while(ctx.measureText(msg).width + x > mX);
     
     // Returns size
-    return ctx.font;
+    return { font: ctx.font, size: size };
   },
 };
 
@@ -1126,14 +1126,19 @@ const cmds = {
           f.round_rect(ctx, 100, 20, canvas.width - 120, 80, { tl: 4, tr: 4 }, true, false);
           
           // Text
-          ctx.fillStyle = "rgba(50, 50, 50, 0.4)";
-          ctx.font = "bold " + f.autofont("Stats for " + msg.author.tag, canvas, 105, canvas.width - 25, 40);
-          ctx.fillText("Stats for " + msg.author.tag, 105, 50);
+          ctx.fillStyle = "rgba(50, 50, 50, 0.7)";
+          ctx.font = "bold 30px arial";
+          ctx.fillText("Stats", 105, 50);
           
           // Avatar
           f.round_rect(ctx, 10, 10, 85, 85, 4, false, false);
           ctx.clip();
           ctx.drawImage(avatar, 10, 10, 85, 85);
+          
+          let { font: font, size: size } = f.autofont(msg.author.tag, canvas, 105, canvas.width - 25, 40, { before: "bold", after: "Arial" });
+          ctx.fillRect(10, 95 - size, 95, size);
+          ctx.font = font;
+          
           
           msg.channel.send(new Discord.Attachment(canvas.toBuffer(), "test-image.png"));
           break;
