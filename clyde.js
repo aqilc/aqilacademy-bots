@@ -363,7 +363,7 @@ const f = {
     client.users.get(id).send(new Discord.RichEmbed().setAuthor("You have been warned in AqilAcademy by " + client.users.get(mId).tag, client.users.get(mId).avatarURL).setDescription(reason).setColor(f.color()).setFooter(`Severity(Level of warn): ${severity}`));
   },// Adds a warn to a user
   get_id: (msg, text) => {
-    if(text === "")
+    if(!text || text === "")
       return false;
     let id = text.replace(/[^0-9]/g, ""), person;
     if(id.length === 18)
@@ -1073,7 +1073,7 @@ const cmds = {
     hidden: true,
     do: async (msg, content) => {
       let canvas, ctx;
-      switch(content) {
+      switch(content.split(" ")[0]) {
         case "hello":
           canvas = createCanvas(400, 100),
             ctx = canvas.getContext("2d");
@@ -1105,16 +1105,17 @@ const cmds = {
           msg.channel.send(new Discord.Attachment(canvas.toBuffer(), "test-image.png"));
           break;
         case "profile":
-          canvas = createCanvas(400, 200);
+          canvas = createCanvas(400, 200),
             ctx = canvas.getContext("2d");
           
           // User stats
-          let stats = await f.calculate_stats(msg.author.id) || {};
+          let id = f.get_id(msg, content.split(" ")[1]) || msg.author.id,
+              stats = await f.calculate_stats(id) || {};
           
           // All images
           let { body: buffer2 } = await snekfetch.get("https://i.pinimg.com/originals/90/cd/dc/90cddc7eeddbac6b17b4e25674e9e971.jpg"),
               bg = await loadImage(buffer2),
-              { body: buffer3 } = await snekfetch.get(msg.author.displayAvatarURL),
+              { body: buffer3 } = await snekfetch.get(client.users.get(id).displayAvatarURL),
               avatar = await loadImage(buffer3);
           
           // Background
@@ -1135,12 +1136,12 @@ const cmds = {
           ctx.clip();
           ctx.drawImage(avatar, 10, 10, 85, 85);
           
-          let { font: font, size: size } = f.autofont(msg.author.tag, canvas, 20, 85, 12, { before: "bold", after: "Arial" });
+          let { font: font, size: size } = f.autofont(client.users.get(id).tag, canvas, 20, 85, 12, { before: "bold", after: "Arial" });
           ctx.fillStyle = "rgba(255, 255, 255, 0.5)";
-          ctx.fillRect(10, 95 - size - size/4, 95, size + size/4);
+          ctx.fillRect(20, 95 - size - size/4, 65, size + size/4);
           ctx.font = font;
-          ctx.fillStyle = "rgb(100, 100, 100)";
-          ctx.fillText(msg.author.tag, 20 + (85 - ctx.measureText(msg.author.tag).width), 95 - size/4);
+          ctx.fillStyle = "rgb(50, 50, 50)";
+          ctx.fillText(client.users.get(id).tag, 20 + (85 - ctx.measureText(client.users.get(id).tag).width)/4, 95 - size/4);
           
           
           msg.channel.send(new Discord.Attachment(canvas.toBuffer(), "test-image.png"));
