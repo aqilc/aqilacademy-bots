@@ -1122,7 +1122,8 @@ const cmds = {
           
           // Text
           ctx.fillStyle = "rgba(50, 50, 50, 0.7)";
-          ctx.font = "bold 30px arial";
+          ctx.font = "bold 6px arial";
+          ctx.fillRect(120, 
           
           // Avatar
           f.round_rect(ctx, 10, 10, 85, 85, 4, false, false);
