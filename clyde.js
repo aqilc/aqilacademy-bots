@@ -365,15 +365,18 @@ const f = {
   get_id: (msg, text) => {
     if(!text || text === "")
       return false;
+    if(msg === "me")
+      return msg.author.id;
+    
     let id = text.replace(/[^0-9]/g, ""), person;
     if(id.length === 18)
       return id;
     else if(text.includes("#") && text.split("#")[1].trim().length === 4)
       person = msg.guild.members.array().filter(m => m.user.tag.toLowerCase() === text.toLowerCase())[0];
     else {
-      person = msg.guild.members.array().filter(m => m.user.username === text.toLowerCase() || m.nickname === text.toLowercase)
-      if(
-      person = msg.guild.members.array().filter(m => m.user.username.toLowerCase().startsWith(text.toLowerCase()) || (m.nickname ? m.nickname.toLowerCase().startsWith(text.toLowerCase()) : false))[0];
+      person = msg.guild.members.array().filter(m => m.user.username.toLowerCase() === text.toLowerCase() || (m.nickname ? m.nickname : "").toLowerCase() === text.toLowerCase())[0];
+      if(!person)
+        person = msg.guild.members.array().filter(m => m.user.username.toLowerCase().startsWith(text.toLowerCase()) || (m.nickname ? m.nickname.toLowerCase().startsWith(text.toLowerCase()) : false))[0];
     }
     if(person)
       return person.id;
