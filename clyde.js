@@ -1102,7 +1102,7 @@ const cmds = {
           msg.channel.startTyping();
           
           // User stats
-          let id = f.get_id(msg, content.slice(content.indexOf(" "))) || msg.author.id,
+          let id = f.get_id(msg, (() => {console.log(content.indexOf(" ")); return content.slice(content.indexOf(" ") + 1)})()) || msg.author.id,
               stats = await f.calculate_stats(id) || {},
               user = id === msg.author.id ? msg.author : await client.fetchUser(id);
           
