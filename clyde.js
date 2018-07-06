@@ -1095,8 +1095,8 @@ const cmds = {
           msg.channel.send(new Discord.Attachment(canvas.toBuffer(), "test-image.png"));
           break;
         case "profile":
-          canvas = createCanvas(400, 200),
-            ctx = canvas.getContext("2d");
+          let canvas = createCanvas(400, 200),
+              ctx = canvas.getContext("2d");
           
           // Starts typing to indicate that its calculating something
           msg.channel.startTyping();
@@ -1145,7 +1145,6 @@ const cmds = {
           break;
         default:
           cmds.testimage.do(msg, "hello");
-          break;
       }
     },
   },
