@@ -50,7 +50,7 @@ db.serialize(function() {
 
 // Events
 client.on("message", async msg => {
-  //try {
+  try {
     //What happens when DMed
     if(msg.channel.type !== "text") {
       f.log("main", `**${msg.author.tag}**(ID: ${msg.author.id}) said:\`\`\`${msg.content}\`\`\``);
@@ -105,11 +105,11 @@ client.on("message", async msg => {
     // Tells prefix if mentioned
     if(msg.content.trim() === `<@!${client.user.id}>`)
       return msg.channel.send(`My prefix is: \`${prefix}\``);
-  /*} catch(err) {
+  } catch(err) {
     // What happens when an error occurs
     msg.channel.send(new Discord.RichEmbed().setAuthor("Error", client.user.avatarURL).setColor(f.color()).setDescription(`**error on client event "message":**\`\`\`js\n${err}\`\`\``).setTimestamp());
     console.log("Error on the \"message\" event: " + err);
-  }*/
+  }
 });
 client.on("ready", () => {
   console.log(client.user.tag + " has started. Ready for action");
@@ -1123,7 +1123,9 @@ const cmds = {
           // Text
           ctx.fillStyle = "rgba(50, 50, 50, 0.7)";
           ctx.font = "bold 6px arial";
-          ctx.fillRect(120, 
+          
+          ctx.fillStyle = "rgb(50, 50, 255)";
+          ctx.fillRect(120, 40, canvas.width - 40, 20);
           
           // Avatar
           f.round_rect(ctx, 10, 10, 85, 85, 4, false, false);
