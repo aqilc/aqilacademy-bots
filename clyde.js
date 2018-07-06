@@ -143,7 +143,7 @@ client.on("guildMemberRemove", member => {
 const needexp = [
   {
     cat: "exp",
-    desc: "Unlocks all EXP commands except `c.stats` which anyone can use!"
+    desc: "Unlocks all EXP commands except `c.stats` which anyone can use!",
     points: 100,
     ignore: ["stats"],
     warn: `You need **100 EXP** to use any commands in the **exp** category excluding \`${prefix}stats\``,
@@ -160,6 +160,12 @@ const needexp = [
     points: 500,
     warn: "You need **500 EXP** to use any commands in the **election** category",
   },
+  {
+    cmd: "infractions",
+    desc: "Lets you view your infractions(if you have any).",
+    points: 1000,
+    warn: "You need **1000 EXP** to use the `c.infractions` command!",
+  }
 ];
 
 // All channels needed to run bot
@@ -167,31 +173,6 @@ const chnls = {
   announce: "382353531837087745",
   staff: "382530174677417984",
 }
-
-// Translates stuff
-const trans = {
-  1: "one",
-  2: "two",
-  3: "three",
-  4: "four",
-  5: "five",
-  6: "six",
-  7: "seven",
-  8: "eight",
-  9: "nine",
-  0: "zero",
-  one: 1,
-  two: 2,
-  three: 3,
-  four: 4,
-  five: 5,
-  
-  no: false,
-  yes: true,
-  false: "no",
-  true: "yes",
-  undefined: "no",
-};
 
 // All Functions
 const f = {
@@ -718,7 +699,7 @@ const cmds = {
           return msg.reply("You don't have any points!");
         if(user.points < Number(content[1]))
           return msg.reply("You do not have enough EXP!");
-        f.add_exp(msg.author.id, -Number(content[1])).add_exp(content[0].replace(/[^0-9]/g, ""), Number(content[1]));
+        f.add_exp(msg.author.id, -Number(content[1])).add_exp(f.get_id(content[0]), Number(content[1]));
         msg.channel.send("<:exp:458774880310263829> EXP Transfer complete!", new Discord.RichEmbed().setAuthor("EXP Transfer", msg.guild.iconURL).setDescription(`<@${msg.author.id}> sent **${content[1]} EXP** to <@${content[0].replace(/[^0-9]/g, "")}>`).setColor(f.color()));
       });
     },
@@ -731,7 +712,7 @@ const cmds = {
     del: true,
     do: (msg, content) => {
       //Defines variables
-      let [roles, reason, id, embed] = [undefined, content.slice(content.indexOf(" ")), f.get_id(msg, content.split(" ")[0]), new Discord.RichEmbed()];
+      let [roles, reason, id, embed] = [undefined, content.slice(content.indexOf(" ")), msg, content.split(" ")[0].replace(/[^0-9]/g, ""), new Discord.RichEmbed()];
       
       //Checks for ban
       if(msg.guild.members.get(id)) {
@@ -764,7 +745,7 @@ const cmds = {
     del: true,
     do: (msg, content) => {
       //Defines variables
-      let [roles, reason, id, embed] = [undefined, content.slice(content.indexOf(" ")), f.get_id(msg, content.split(" ")[0]), new Discord.RichEmbed()];
+      let [roles, reason, id, embed] = [undefined, content.slice(content.indexOf(" ")), content.split(" ")[0].replace(/[^0-9]/g, ""), new Discord.RichEmbed()];
       
       //Checks for ban
       if(msg.guild.members.get(id)) {
@@ -1121,13 +1102,14 @@ const cmds = {
           msg.channel.startTyping();
           
           // User stats
-          let id = f.get_id(msg, content.split(" ")[1]) || msg.author.id,
-              stats = await f.calculate_stats(id) || {};
+          let id = f.get_id(msg, content.slice(content.indexOf(" "))) || msg.author.id,
+              stats = await f.calculate_stats(id) || {},
+              user = id === msg.author.id || await client.fetchUser(id);
           
           // All images
           let { body: buffer2 } = await snekfetch.get("https://i.pinimg.com/originals/90/cd/dc/90cddc7eeddbac6b17b4e25674e9e971.jpg"),
               bg = await loadImage(buffer2),
-              { body: buffer3 } = await snekfetch.get(client.users.get(id).displayAvatarURL),
+              { body: buffer3 } = await snekfetch.get(user.displayAvatarURL),
               avatar = await loadImage(buffer3);
           
           // Background
@@ -1148,18 +1130,18 @@ const cmds = {
           ctx.clip();
           ctx.drawImage(avatar, 10, 10, 85, 85);
           
-          let { font: font, size: size } = f.autofont(client.users.get(id).tag, canvas, 20, 85, 12, { before: "bold", after: "Arial" });
+          let { font: font, size: size } = f.autofont(user.tag, canvas, 20, 85, 12, { before: "bold", after: "Arial" });
           ctx.fillStyle = "rgba(255, 255, 255, 0.5)";
           ctx.font = font;
-          f.round_rect(ctx, 85 - ctx.measureText(client.users.get(id).tag).width, 95 - size - size/4, ctx.measureText(client.users.get(id).tag).width + 10, size + size/4, { tl: 4 }, true, false);
+          f.round_rect(ctx, 85 - ctx.measureText(user.tag).width, 95 - size - size/4, ctx.measureText(user.tag).width + 10, size + size/4, { tl: 4 }, true, false);
           ctx.fillStyle = "rgb(50, 50, 50)";
-          ctx.fillText(client.users.get(id).tag, 90 - ctx.measureText(client.users.get(id).tag).width, 95 - size/4);
+          ctx.fillText(user.tag, 90 - ctx.measureText(user.tag).width, 95 - size/4);
           
           // Stops typing to show its done calculating
           msg.channel.stopTyping();
           
           // Sends the image
-          msg.channel.send(`📃 **| Here is ${id === msg.author.id ? "your" : client.users.get(id).tag + "'s"} profile**`, new Discord.Attachment(canvas.toBuffer(), "test-image.png"));
+          msg.channel.send(`📃 **| Here is ${id === msg.author.id ? "your" : user.tag + "'s"} profile**`, new Discord.Attachment(canvas.toBuffer(), "test-image.png"));
           break;
         default:
           cmds.testimage.do(msg, "hello");

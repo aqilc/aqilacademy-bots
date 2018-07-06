@@ -10,7 +10,7 @@ Makes [AqilAcademy][aa] work perfectly. Still in production!
 A bunch of random code that might come in handy!
 
 ### Command constructor
-```
+```js
 : {
     a: [],
     desc: "",
@@ -22,9 +22,36 @@ A bunch of random code that might come in handy!
     do: (msg, content) => {},
   },
 ```
+### Translation stuff
+```js
+// Translates stuff
+const trans = {
+  1: "one",
+  2: "two",
+  3: "three",
+  4: "four",
+  5: "five",
+  6: "six",
+  7: "seven",
+  8: "eight",
+  9: "nine",
+  0: "zero",
+  one: 1,
+  two: 2,
+  three: 3,
+  four: 4,
+  five: 5,
+  
+  no: false,
+  yes: true,
+  false: "no",
+  true: "yes",
+  undefined: "no",
+};
+```
 
 ### Previous voting system
-```
+```js
 // Election voting systems
 client.on("messageReactionAdd", (reaction, user) => {
   console.log(user.tag + " added " + reaction.emoji.name);
