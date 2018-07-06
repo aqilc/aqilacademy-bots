@@ -1104,7 +1104,7 @@ const cmds = {
           // User stats
           let id = f.get_id(msg, content.slice(content.indexOf(" "))) || msg.author.id,
               stats = await f.calculate_stats(id) || {},
-              user = id === msg.author.id || await client.fetchUser(id);
+              user = id === msg.author.id ? msg.author : await client.fetchUser(id);
           
           // All images
           let { body: buffer2 } = await snekfetch.get("https://i.pinimg.com/originals/90/cd/dc/90cddc7eeddbac6b17b4e25674e9e971.jpg"),
@@ -1130,6 +1130,7 @@ const cmds = {
           ctx.clip();
           ctx.drawImage(avatar, 10, 10, 85, 85);
           
+          // Labels avatar with user tag
           let { font: font, size: size } = f.autofont(user.tag, canvas, 20, 85, 12, { before: "bold", after: "Arial" });
           ctx.fillStyle = "rgba(255, 255, 255, 0.5)";
           ctx.font = font;
