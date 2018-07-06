@@ -370,8 +370,11 @@ const f = {
       return id;
     else if(text.includes("#") && text.split("#")[1].trim().length === 4)
       person = msg.guild.members.array().filter(m => m.user.tag.toLowerCase() === text.toLowerCase())[0];
-    else
-      person = msg.guild.members.array().filter(m => m.user.username.toLowerCase() === text.toLowerCase() || m.nickname === text.toLowerCase())[0];
+    else {
+      person = msg.guild.members.array().filter(m => m.user.username === text.toLowerCase() || m.nickname === text.toLowercase)
+      if(
+      person = msg.guild.members.array().filter(m => m.user.username.toLowerCase().startsWith(text.toLowerCase()) || (m.nickname ? m.nickname.toLowerCase().startsWith(text.toLowerCase()) : false))[0];
+    }
     if(person)
       return person.id;
     return false;
@@ -1108,6 +1111,8 @@ const cmds = {
           canvas = createCanvas(400, 200),
             ctx = canvas.getContext("2d");
           
+          msg.channel.startTyping();
+          
           // User stats
           let id = f.get_id(msg, content.split(" ")[1]) || msg.author.id,
               stats = await f.calculate_stats(id) || {};
@@ -1143,7 +1148,7 @@ const cmds = {
           ctx.fillStyle = "rgb(50, 50, 50)";
           ctx.fillText(client.users.get(id).tag, 90 - ctx.measureText(client.users.get(id).tag).width, 95 - size/4);
           
-          
+          msg.channel.stopTyping();
           msg.channel.send(new Discord.Attachment(canvas.toBuffer(), "test-image.png"));
           break;
         default:
