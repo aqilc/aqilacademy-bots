@@ -143,17 +143,20 @@ client.on("guildMemberRemove", member => {
 const needexp = [
   {
     cat: "exp",
+    desc: "Unlocks all EXP commands except `c.stats` which anyone can use!"
     points: 100,
     ignore: ["stats"],
     warn: `You need **100 EXP** to use any commands in the **exp** category excluding \`${prefix}stats\``,
   },
   {
     cmd: "president",
+    desc: "Lets you run in the AqilAcademy elections!",
     points: 3000,
     warn: "You need **3000 EXP** to use the **run** command!",
   },
   {
     cat: "elections",
+    desc: "Unlocks all election commands(Except `c.president`)!",
     points: 500,
     warn: "You need **500 EXP** to use any commands in the **election** category",
   },
@@ -1114,6 +1117,7 @@ const cmds = {
           canvas = createCanvas(400, 200),
             ctx = canvas.getContext("2d");
           
+          // Starts typing to indicate that its calculating something
           msg.channel.startTyping();
           
           // User stats
@@ -1151,8 +1155,11 @@ const cmds = {
           ctx.fillStyle = "rgb(50, 50, 50)";
           ctx.fillText(client.users.get(id).tag, 90 - ctx.measureText(client.users.get(id).tag).width, 95 - size/4);
           
+          // Stops typing to show its done calculating
           msg.channel.stopTyping();
-          msg.channel.send(new Discord.Attachment(canvas.toBuffer(), "test-image.png"));
+          
+          // Sends the image
+          msg.channel.send(`📃 **| Here is ${id === msg.author.id ? "your" : client.users.get(id).tag + "'s"} profile**`, new Discord.Attachment(canvas.toBuffer(), "test-image.png"));
           break;
         default:
           cmds.testimage.do(msg, "hello");
