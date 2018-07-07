@@ -1081,7 +1081,6 @@ const cmds = {
           }
           ctx.fillStyle = "#ffffff";
           ctx.fillText(msg.author.tag + "!", canvas.width/2 - ctx.measureText(msg.author.tag + "!").width/2, canvas.height/2 + 20);
-          
 
           // Says "Hello,"
           ctx.font = "20px sans-serif";
@@ -1102,9 +1101,10 @@ const cmds = {
           msg.channel.startTyping();
           
           // User stats
-          let id = f.get_id(msg, (() => {console.log(content.indexOf(" ")); return content.slice(content.indexOf(" ") + 1)})()) || msg.author.id,
+          let id = f.get_id(msg, content.slice(content.indexOf(" ") + 1)) || msg.author.id,
               stats = await f.calculate_stats(id) || {},
-              user = id === msg.author.id ? msg.author : await client.fetchUser(id);
+              user = id === msg.author.id ? msg.author : await client.fetchUser(id),
+              nextMilestone = needexp.sort((a, b) => a.points - b.points)
           
           // All images
           let { body: buffer2 } = await snekfetch.get("https://i.pinimg.com/originals/90/cd/dc/90cddc7eeddbac6b17b4e25674e9e971.jpg"),
@@ -1124,8 +1124,10 @@ const cmds = {
           ctx.fillStyle = "rgba(50, 50, 50, 0.7)";
           ctx.font = "bold 6px arial";
           
-          ctx.fillStyle = "rgb(50, 50, 255)";
-          ctx.fillRect(120, 40, canvas.width - 40, 20);
+          ctx.fillStyle = "rgba(100, 100, 100, 0.4)";
+          f.round_rect(ctx, 115, 35, canvas.width - 150, 30, 2, true, false);
+          ctx.fillStyle = "rgba(50, 50, 50, 0.4)";
+          f.round_rect(ctx, 120, 40, canvas.width - 160, 20, 2, true, false);
           
           // Avatar
           f.round_rect(ctx, 10, 10, 85, 85, 4, false, false);
