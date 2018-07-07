@@ -1110,9 +1110,9 @@ const cmds = {
               user = id === msg.author.id ? msg.author : await client.fetchUser(id),
               
               // Excludes all values except the ones that have more points than the requested user's real points
-              bar_exp = needexp.sort((a, b) => b.points - a.points).filter(p => stats.realPoints < p.points);
+              bar_exp = needexp.sort((a, b) => b.points - a.points).filter(p => stats.realpoints < p.points);
           
-          console.log(bar_exp);
+          console.log(bar_exp, stats);
           
           // Sets the next milestone(bar's max exp)
           bar_exp = bar_exp[bar_exp.length - 1] || {
@@ -1139,12 +1139,12 @@ const cmds = {
           ctx.fillStyle = "rgba(100, 100, 100, 0.4)";
           f.round_rect(ctx, 115, 35, canvas.width - 150, 30, 2, true, false);
           ctx.fillStyle = "rgba(50, 50, 50, 0.4)";
-          f.round_rect(ctx, 120, 40, (canvas.width - 160) * ((stats.points / bar_exp.points) < 1 ? (stats.points / bar_exp.points) : 1), 20, 2, true, false);
+          f.round_rect(ctx, 120, 40, (canvas.width - 160) * ((stats.realpoints / bar_exp.points) < 1 ? (stats.points / bar_exp.points) : 1), 20, 2, true, false);
           
           // Text
           ctx.fillStyle = "rgba(50, 50, 50, 0.7)";
           ctx.font = "bold 10px arial";
-          let text = stats.points + "/" + bar_exp.points;
+          let text = stats.points + "/" + bar_exp.realpoints;
           ctx.fillText(text, 120 + (canvas.width - 280) - ctx.measureText(text).width/2, 50);
           
           // Avatar
