@@ -1130,14 +1130,14 @@ const cmds = {
           ctx.drawImage(bg, 0, 0, canvas.width, canvas.height);
           
           // Boxes for stats to be put on
-          ctx.fillStyle = "rgba(255, 255, 255, 0.7)";
+          ctx.fillStyle = "rgba(255, 255, 255, 0.8)";
           f.round_rect(ctx, 20, 100, canvas.width - 40, canvas.height - 120, { tl: 4, br: 4, bl: 4 }, true, false);
           f.round_rect(ctx, 100, 20, canvas.width - 120, 80, { tl: 4, tr: 4 }, true, false);
           
           
-          let p = [110, 25, canvas.width - 150, 20, 5];
+          let p = [110, 30, canvas.width - 200, 20, 3];
           ctx.fillStyle = "rgb(255, 255, 255)";
-          ctx.strokeStyle = "rgb(100, 100, 100)";
+          ctx.strokeStyle = "rgb(150, 150, 150)";
           ctx.lineWidth = 4;
           ctx.strokeRect(p[0], p[1], p[2], p[3]);
           ctx.fillRect(p[0], p[1], p[2], p[3]);
