@@ -1100,15 +1100,27 @@ const cmds = {
           // Starts typing to indicate that its calculating something
           msg.channel.startTyping();
           
-          // User stats
+              // User ID
           let id = f.get_id(msg, content.slice(content.indexOf(" ") + 1)) || msg.author.id,
+              
+              // Gets all the exp stats from your profile
               stats = await f.calculate_stats(id) || {},
+              
+              // Gets the user so we can use the data later
               user = id === msg.author.id ? msg.author : await client.fetchUser(id),
-              nextMilestone = needexp.sort((a, b) => a.points - b.points)
+              
+              // Excludes all values except the ones that have more points than the requested user's real points
+              bar_exp = needexp.sort((a, b) => b.points - a.points).filter(p => stats.realPoints < p.points);
           
-          // All images
+          // Sets the next milestone(bar's max exp)
+          bar_exp = bar_exp[bar_exp.length - 1];
+
+          
+              // The background
           let { body: buffer2 } = await snekfetch.get("https://i.pinimg.com/originals/90/cd/dc/90cddc7eeddbac6b17b4e25674e9e971.jpg"),
               bg = await loadImage(buffer2),
+              
+              // User's Avatar
               { body: buffer3 } = await snekfetch.get(user.displayAvatarURL),
               avatar = await loadImage(buffer3);
           
