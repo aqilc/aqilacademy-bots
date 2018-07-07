@@ -1071,11 +1071,10 @@ const cmds = {
     perms: "bot admin",
     hidden: true,
     do: async (msg, content) => {
-      let canvas, ctx;
       switch(content.split(" ")[0]) {
         case "hello":
-          canvas = createCanvas(400, 100),
-            ctx = canvas.getContext("2d");
+          let canvas = createCanvas(400, 100),
+              ctx = canvas.getContext("2d");
           
           // Background
           let { body: buffer } = await snekfetch.get("https://png.pngtree.com/thumb_back/fw800/back_pic/03/70/42/7957b6808adc0e9.jpg"),
@@ -1103,8 +1102,8 @@ const cmds = {
           msg.channel.send(new Discord.Attachment(canvas.toBuffer(), "test-image.png"));
           break;
         case "profile":
-          let canvas = createCanvas(400, 200),
-              ctx = canvas.getContext("2d");
+          canvas = createCanvas(400, 200),
+            ctx = canvas.getContext("2d");
           
           // Starts typing to indicate that its calculating something
           msg.channel.startTyping();
@@ -1143,7 +1142,7 @@ const cmds = {
           f.round_rect(ctx, 20, 100, canvas.width - 40, canvas.height - 120, { tl: 4, br: 4, bl: 4 }, true, false);
           f.round_rect(ctx, 100, 20, canvas.width - 120, 80, { tl: 4, tr: 4 }, true, false);
           
-          
+          // Exp Bar
           let p = [110, 30, canvas.width - 200, 20, 3];
           ctx.fillStyle = "rgb(255, 255, 255)";
           ctx.strokeStyle = "rgb(150, 150, 150)";
