@@ -1112,8 +1112,6 @@ const cmds = {
               // Excludes all values except the ones that have more points than the requested user's real points
               bar_exp = needexp.sort((a, b) => b.points - a.points).filter(p => stats.realpoints < p.points);
           
-          console.log(bar_exp, stats);
-          
           // Sets the next milestone(bar's max exp)
           bar_exp = bar_exp[bar_exp.length - 1] || {
             points: 1
