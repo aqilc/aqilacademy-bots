@@ -600,8 +600,7 @@ const cmds = {
     cat: "bot admin",
     perms: "bot admin",
     do: async (msg, content) => {
-      let args = content.split(" "),
-          embed,
+      let args = content.split(" "), embed,
           id = f.get_id(msg, args[0]);
       if(args.length < 3)
         return msg.reply("Please fill up ALL parameters.\n**Parameters:** `[user mention or id] [category] [action]`");
@@ -1071,12 +1070,13 @@ const cmds = {
     perms: "bot admin",
     hidden: true,
     do: async (msg, content) => {
+      let canvas, ctx;
       switch(content.split(" ")[0]) {
         case "hello":
-          let canvas = createCanvas(400, 100),
-              ctx = canvas.getContext("2d");
+          canvas = createCanvas(400, 100),
+            ctx = canvas.getContext("2d");
           
-          // Background
+          /*// Background
           let { body: buffer } = await snekfetch.get("https://png.pngtree.com/thumb_back/fw800/back_pic/03/70/42/7957b6808adc0e9.jpg"),
               img = await loadImage(buffer);
           ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
@@ -1099,13 +1099,14 @@ const cmds = {
           ctx.fillStyle = "#ffffff";
           ctx.fillText("Hello,", canvas.width/2 - ctx.measureText("Hello,").width/2, 25);
 
-          msg.channel.send(new Discord.Attachment(canvas.toBuffer(), "test-image.png"));
+          msg.channel.send(new Discord.Attachment(canvas.toBuffer(), "test-image.png"));*/
           break;
+          
         case "profile":
-          canvas = createCanvas(400, 200),
+          let canvas = createCanvas(400, 200),
             ctx = canvas.getContext("2d");
           
-          // Starts typing to indicate that its calculating something
+          /*// Starts typing to indicate that its calculating something
           msg.channel.startTyping();
           
               // User ID
@@ -1175,7 +1176,7 @@ const cmds = {
           msg.channel.stopTyping();
           
           // Sends the image
-          msg.channel.send(`📃 **| Here is ${id === msg.author.id ? "your" : user.tag + "'s"} profile**`, new Discord.Attachment(canvas.toBuffer(), "test-image.png"));
+          msg.channel.send(`📃 **| Here is ${id === msg.author.id ? "your" : user.tag + "'s"} profile**`, new Discord.Attachment(canvas.toBuffer(), "profile.png"));*/
           break;
         default:
           cmds.testimage.do(msg, "hello");
