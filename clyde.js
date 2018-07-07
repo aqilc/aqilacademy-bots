@@ -1137,9 +1137,9 @@ const cmds = {
           ctx.fillStyle = "rgb(255, 255, 255)";
           ctx.strokeStyle = "rgb(100, 100, 100)";
           ctx.lineWidth = 4;
-          let params = (115, 35, canvas.width - 150, 30);
-          ctx.strokeRect(params);
-          ctx.fillRect(params);
+          let p = [115, 35, canvas.width - 150, 30];
+          ctx.strokeRect(p[0], p[1);
+          ctx.fillRect(p[0], p[1], p[2], p[3]);
           ctx.fillStyle = "rgba(50, 50, 50, 0.4)";
           ctx.fillRect(120, 40, (canvas.width - 160) * ((stats.realpoints / bar_exp.points) < 1 ? (stats.points / bar_exp.points) : 1), 20);
           
