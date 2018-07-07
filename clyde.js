@@ -1134,14 +1134,15 @@ const cmds = {
           f.round_rect(ctx, 20, 100, canvas.width - 40, canvas.height - 120, { tl: 4, br: 4, bl: 4 }, true, false);
           f.round_rect(ctx, 100, 20, canvas.width - 120, 80, { tl: 4, tr: 4 }, true, false);
           
+          
+          let p = [110, 25, canvas.width - 150, 20, 5];
           ctx.fillStyle = "rgb(255, 255, 255)";
           ctx.strokeStyle = "rgb(100, 100, 100)";
           ctx.lineWidth = 4;
-          let p = [115, 35, canvas.width - 150, 30];
-          ctx.strokeRect(p[0], p[1);
+          ctx.strokeRect(p[0], p[1], p[2], p[3]);
           ctx.fillRect(p[0], p[1], p[2], p[3]);
           ctx.fillStyle = "rgba(50, 50, 50, 0.4)";
-          ctx.fillRect(120, 40, (canvas.width - 160) * ((stats.realpoints / bar_exp.points) < 1 ? (stats.points / bar_exp.points) : 1), 20);
+          ctx.fillRect(p[0] + p[4], p[1] + p[4], (p[2] - p[4]*2) * ((stats.realpoints / bar_exp.points) < 1 ? (stats.points / bar_exp.points) : 1), p[3] - p[4] * 2);
           
           // Text
           ctx.fillStyle = "rgba(50, 50, 50, 0.7)";
