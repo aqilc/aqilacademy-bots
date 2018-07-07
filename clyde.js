@@ -1144,7 +1144,7 @@ const cmds = {
           // Text
           ctx.fillStyle = "rgba(50, 50, 50, 0.7)";
           ctx.font = "bold 10px arial";
-          let text = stats.points + "/" + bar_exp.realpoints;
+          let text = stats.realpoints + "/" + bar_exp.points;
           ctx.fillText(text, 120 + (canvas.width - 280) - ctx.measureText(text).width/2, 50);
           
           // Avatar
