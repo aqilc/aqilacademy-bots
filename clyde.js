@@ -1141,7 +1141,7 @@ const cmds = {
           ctx.lineWidth = 4;
           ctx.strokeRect(p[0], p[1], p[2], p[3]);
           ctx.fillRect(p[0], p[1], p[2], p[3]);
-          ctx.fillStyle = "rgba(50, 50, 50, 0.4)";
+          ctx.fillStyle = "rgba(0, 50, 200, 0.4)";
           ctx.fillRect(p[0] + p[4], p[1] + p[4], (p[2] - p[4]*2) * ((stats.realpoints / bar_exp.points) < 1 ? (stats.points / bar_exp.points) : 1), p[3] - p[4] * 2);
           
           // Text
