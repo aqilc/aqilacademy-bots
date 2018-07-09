@@ -1144,7 +1144,7 @@ const cmds = {
           f.round_rect(ctx, 100, 20, canvas.width - 120, 80, { tl: 4, tr: 4 }, true, false);
           
           // Exp Bar
-          let p = [110, 30, canvas.width - 200, 20, 3];
+          let p = [110, 30, canvas.width - 200, 25, 3];
           ctx.fillStyle = "rgb(255, 255, 255)";
           ctx.strokeStyle = "rgb(150, 150, 150)";
           ctx.lineWidth = 4;
@@ -1156,8 +1156,10 @@ const cmds = {
           // Text
           ctx.fillStyle = "rgba(50, 50, 50, 0.7)";
           ctx.font = "bold 10px monospace";
-          let text = [`${stats.realpoints} REAL Points`, bar_exp.points >= stats.realpoints ? "You have unlocked everything!" : `${bar_exp.points - stats.realpoints} more points to go!`];
-          ctx.fillText(text, p[0] + p[2]/2 - ctx.measureText(text).width/2, p[1] + p[3]/2 + 2);
+          let text = [`${stats.realpoints} REAL Points`, stats.realpoints >= bar_exp.points ? "You have unlocked everything!" : `${bar_exp.points - stats.realpoints} more points to go!`];
+          ctx.fillText(text[0], p[0] + p[2]/2 - ctx.measureText(text[0]).width/2, p[1] + p[3]/2 + 1);
+          ctx.font = "bold 6px arial";
+          ctx.fillText(text[1], p[0] + p[2]/2 - ctx.measureText(text[1]).width/2, p[1] + p[3]/2 + 7);          
           
           // Avatar
           f.round_rect(ctx, 10, 10, 85, 85, 4, false, false);
