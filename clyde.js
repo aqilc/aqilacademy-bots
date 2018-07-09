@@ -1123,7 +1123,7 @@ const cmds = {
           
           // Sets the next milestone(bar's max exp)
           bar_exp = bar_exp[bar_exp.length - 1] || {
-            points: stats.points,
+            points: stats.realpoints,
           };
 
           
