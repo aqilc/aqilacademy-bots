@@ -1155,9 +1155,9 @@ const cmds = {
           
           // Text
           ctx.fillStyle = "rgba(50, 50, 50, 0.7)";
-          ctx.font = "bold 10px arial";
-          let text = stats.realpoints + "/" + bar_exp.points;
-          ctx.fillText(text, p[0] + p[2]/2 - ctx.measureText(text).width/2, p[1] + p[3]/2);
+          ctx.font = "bold 10px monospace";
+          let text = [`${stats.realpoints} REAL Points`, bar_exp.points >= stats.realpoints ? "You have unlocked everything!" : `${bar_exp.points - stats.realpoints} more points to go!`];
+          ctx.fillText(text, p[0] + p[2]/2 - ctx.measureText(text).width/2, p[1] + p[3]/2 + 2);
           
           // Avatar
           f.round_rect(ctx, 10, 10, 85, 85, 4, false, false);
