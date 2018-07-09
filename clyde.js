@@ -1158,7 +1158,7 @@ const cmds = {
           ctx.font = "bold 10px monospace";
           let text = [
             `${stats.realpoints} REAL Points`,
-            stats.realpoints >= bar_exp.points ? "You have unlocked everything!" : `${bar_exp.points - stats.realpoints} more points to go!`
+            stats.realpoints >= bar_exp.points ? `${msg.author.id === id ? "You have" : "S/he has" } unlocked everything!` : `${bar_exp.points - stats.realpoints} more points to go!`
           ];
           ctx.fillText(text[0], p[0] + p[2]/2 - ctx.measureText(text[0]).width/2, p[1] + p[3]/2 + 1);
           ctx.font = "bold 6px arial";
