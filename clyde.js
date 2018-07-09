@@ -139,42 +139,8 @@ client.on("guildMemberRemove", member => {
   db.run(`DELETE * FROM users WHERE id = "${member.user.id}"`);
 });
 
-// The exp milestones you have to reach to unlock commands
-const needexp = [
-  {
-    cat: "exp",
-    desc: {
-      simple: "",
-      detailed: "Unlocks all EXP commands except `c.stats`(which you can already use) and `c.transfer`(which requires more EXP)!"
-    },
-    points: 100,
-    ignore: ["stats"],
-    warn: `You need **100 EXP** to use any commands in the **exp** category excluding \`${prefix}stats\``,
-  },
-  {
-    cmd: "president",
-    desc: "Lets you run in the AqilAcademy elections!",
-    points: 3000,
-    warn: "You need **3000 EXP** to use the **run** command!",
-  },
-  {
-    cat: "elections",
-    desc: "Unlocks all election commands(Except `c.president`)!",
-    points: 500,
-    warn: "You need **500 EXP** to use any commands in the **election** category",
-  },
-  {
-    cmd: "transfer",
-    desc: "Lets you transfer EXP to other users!",
-    points: 1000,
-    warn: "You need **1000 EXP** to use this command!",
-  },
-  {
-    cmd: "infractions",
-    desc: "Lets you view your infractions(if you have any).",
-    points: 1500,
-    warn: "You need **1000 EXP** to use the `c.infractions` command!",
-  }
+const levels = [
+  
 ];
 
 // All channels needed to run bot
@@ -279,13 +245,15 @@ const f = {
         db.get(`SELECT * FROM users WHERE id = "${message.author.id}"`, (err, res) => {
           if(perms[cmds[i].perms][0])
             return perms[cmds[i].perms][1]();
-          for(let h of needexp) {
-            if(h.cat === cmds[i].cat && (!res || res.points < h.points))
+          levels.forEach(h => {
+            if(!h.ul)
+              return;
+            if(h.ul.cat === cmds[i].cat && (!res || res.points < h.points))
               if(h.ignore && !h.ignore.includes(i))
                 return message.channel.send(new Discord.RichEmbed().setColor(f.color()).setAuthor("Not enough EXP", message.author.avatarURL).setDescription(h.warn));
             else if (h.cmd === i && (!res || res.points < h.points))
               return message.channel.send(new Discord.RichEmbed().setColor(f.color()).setAuthor("Not enough EXP", message.author.avatarURL).setDescription(h.warn));
-          }
+          });
           if(content.endsWith("-d"))
             message.delete() && content.slice(0, -2);
           cmdDone = true;
