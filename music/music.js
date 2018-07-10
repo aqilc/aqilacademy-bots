@@ -11,10 +11,6 @@ const sqlite3 = require("sqlite3").verbose();
 const db = new sqlite3.Database('./.data/sqlite.db');
 
 function run() {
-  db.serialize(() => {
-    db.run("CREATE TABLE IF NOT EXISTS history (dat INTEGER, id TEXT, com TEXT, error NOT NULL)");
-    db.run("CREATE TABLE IF NOT EXISTS queue (addedAt INTEGER, vidId TEXT, title TEXT, desc TEXT, thumb TEXT, views TEXT, user TEXT, duration INTEGER)");
-  });
 
   // Logs in
   client.login(process.env.TOKENM);
