@@ -10,14 +10,14 @@ const sqlite3 = require('sqlite3').verbose();
 const db = new sqlite3.Database('./.data/sqlite.db');
 const Discord = require("discord.js");
 const data = require("./data.json");
-const levels = require("./data/l.js");
+const levels = require("/app/data/l.js");
 
 // Prefix
 const prefix = "c.";
 
 // The Client
 const client = new Discord.Client();
-client.login(process.env.TOKEN);
+client.login(process.env.TOKENC);
 
 //Keeps app running
 app.listen(process.env.PORT);
