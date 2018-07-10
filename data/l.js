@@ -12,9 +12,25 @@ const levels = [
       cmd: "president",
     }]
   },
+  {
+    points: 1000,
+    ul: [
+      {
+        cmd: "transfer",
+      },
+      {
+        cmd: "infractions",
+      }
+    ]
+  },
+  {
+    points: 500,
+    ul: [{
+      cat: "elections",
+    }],
+  },
   [
     250,
-    500,
     800,
     1300,
     1700,
@@ -62,24 +78,13 @@ const levels = [
     50000000,
   ],
 ];
-const needexp = [
-  {
-    cat: "elections",
-    desc: "Unlocks all election commands(Except `c.president`)!",
-    points: 500,
-    warn: "You need **500 EXP** to use any commands in the **election** category",
-  },
-  {
-    cmd: "transfer",
-    desc: "Lets you transfer EXP to other users!",
-    points: 1000,
-    warn: "You need **1000 EXP** to use this command!",
-  },
-  {
-    cmd: "infractions",
-    desc: "Lets you view your infractions(if you have any).",
-    points: 1500,
-    warn: "You need **1000 EXP** to use the `c.infractions` command!",
-  }
-];
+levels[levels.length - 1].forEach((e) => {
+  if(typeof levels[levels.length - 1] === "array")
+    delete levels[levels.length - 1];
+  
+  levels.push({ points: e });
+});
+levels.sort((a, b) => b.points - a.points);
+
+// Exports the levels array specially prepared for it
 module.exports = levels;

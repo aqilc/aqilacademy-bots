@@ -119,7 +119,8 @@ const chnls = {
 }
 
 
-// All functions needed to run the
+// All functions needed to run the bot
+Array.prototype.
 const f = {
   log: (type, log) => {
     let chnl = { main: "382499510401630209", chat: "433004874930716673", announce: "382353531837087745", staff: "382530174677417984", exp: "407643635358892032" }[type];
@@ -1048,7 +1049,7 @@ const cmds = {
               user = id === msg.author.id ? msg.author : await client.fetchUser(id),
               
               // Excludes all values except the ones that have more points than the requested user's real points
-              bar_exp = needexp.sort((a, b) => b.points - a.points).filter(p => stats.realpoints < p.points);
+              bar_exp = levels.filter(l => typeof l.ul === "array").filter(p => stats.realpoints < p.points);
           
           // Sets the next milestone(bar's max exp)
           bar_exp = bar_exp[bar_exp.length - 1] || {
