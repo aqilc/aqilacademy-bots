@@ -10,6 +10,7 @@ const sqlite3 = require('sqlite3').verbose();
 const db = new sqlite3.Database('./.data/sqlite.db');
 const Discord = require("discord.js");
 const data = require("./data.json");
+const levels = require("./data/l.js");
 
 // Prefix
 const prefix = "c.";
