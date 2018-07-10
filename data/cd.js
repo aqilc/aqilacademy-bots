@@ -23,4 +23,4 @@ let data = {
     []
   ],
 };
-exports = data;
+module.exports = data;

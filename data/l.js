@@ -38,9 +38,22 @@ const levels = [
     650000,
     800000,
     1000000,
+    1250000,
+    1550000,
+    1700000,
+    2000000,
+    2400000,
+    2900000,
+    3500000,
+    4200000,
+    5000000,
+    6000000,
+    7300000,
+    8500000,
+    10000000,
   ],
 ];
-
+console.log(levels[levels.length - 1].length + 1);
 const needexp = [
   {
     cat: "exp",
@@ -77,4 +90,4 @@ const needexp = [
     warn: "You need **1000 EXP** to use the `c.infractions` command!",
   }
 ];
-exports = levels;
+module.exports = levels;
