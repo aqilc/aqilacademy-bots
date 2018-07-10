@@ -139,10 +139,6 @@ client.on("guildMemberRemove", member => {
   db.run(`DELETE * FROM users WHERE id = "${member.user.id}"`);
 });
 
-const levels = [
-  
-];
-
 // All channels needed to run bot
 const chnls = {
   announce: "382353531837087745",
