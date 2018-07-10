@@ -41,7 +41,6 @@ const levels = [
   ],
 ];
 
-console.log(levels[levels.length - 1].length + 1);
 const needexp = [
   {
     cat: "exp",
