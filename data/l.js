@@ -1,22 +1,24 @@
 const levels = [
   {
     points: 100,
-    ul: [
-      {
-        cat: "exp",
-        ignore: ["stats"],
-      }
-    ]
+    ul: [{
+      cat: "exp",
+      ignore: ["stats"],
+    }]
+  },
+  {
+    points: 3000,
+    ul: [{
+      cmd: "president",
+    }]
   },
   [
     250,
     500,
     800,
-    1000,
     1300,
     1700,
     2500,
-    3000,
     4000,
     5000,
     7500,
@@ -51,26 +53,16 @@ const levels = [
     7300000,
     8500000,
     10000000,
+    12000000,
+    15000000,
+    20000000,
+    28000000,
+    35000000,
+    45000000,
+    50000000,
   ],
 ];
-console.log(levels[levels.length - 1].length + 1);
 const needexp = [
-  {
-    cat: "exp",
-    desc: {
-      simple: "",
-      detailed: "Unlocks all EXP commands except `c.stats`(which you can already use) and `c.transfer`(which requires more EXP)!"
-    },
-    points: 100,
-    ignore: ["stats"],
-    warn: `You need **100 EXP** to use any commands in the **exp** category excluding \`stats\``,
-  },
-  {
-    cmd: "president",
-    desc: "Lets you run in the AqilAcademy elections!",
-    points: 3000,
-    warn: "You need **3000 EXP** to use the **run** command!",
-  },
   {
     cat: "elections",
     desc: "Unlocks all election commands(Except `c.president`)!",
