@@ -4,57 +4,49 @@ const Discord = require("discord.js");
 const client = new Discord.Client();
 const yt = require("ytdl-core");
 const request = require("request");
-const app = require("express")();
 const prefix = ["a."];
 
 // Database stuff
 const sqlite3 = require("sqlite3").verbose();
 const db = new sqlite3.Database('./.data/sqlite.db');
 
-db.serialize(() => {
-  db.run("CREATE TABLE IF NOT EXISTS history (dat INTEGER, id TEXT, com TEXT, error NOT NULL)");
-  db.run("CREATE TABLE IF NOT EXISTS queue (addedAt INTEGER, vidId TEXT, title TEXT, desc TEXT, thumb TEXT, views TEXT, user TEXT, duration INTEGER)");
-});
+function run() {
+  db.serialize(() => {
+    db.run("CREATE TABLE IF NOT EXISTS history (dat INTEGER, id TEXT, com TEXT, error NOT NULL)");
+    db.run("CREATE TABLE IF NOT EXISTS queue (addedAt INTEGER, vidId TEXT, title TEXT, desc TEXT, thumb TEXT, views TEXT, user TEXT, duration INTEGER)");
+  });
 
-// Keeps app up
-app.listen(process.env.PORT);
-app.get("/", (request, response) => {
-  response.sendStatus(200);
-});
-setInterval(() => {
-  http.get(`http://${process.env.PROJECT_DOMAIN}.glitch.me/`);
-}, 280000);
+  // Logs in
+  client.login(process.env.TOKENM);
 
-// Logs in
-client.login(process.env.TOKENM);
+  // Client Events
+  client.on("ready", () => console.log(`${client.user.tag} ID: ${client.user.id} logged in at ${new Date().toUTCString()}`));
+  client.on("message", message => {
 
-// Client Events
-client.on("ready", () => console.log(`${client.user.tag} ID: ${client.user.id} logged in at ${new Date().toUTCString()}`));
-client.on("message", message => {
-  
-  // Lets the admins run code through the bot
-  if(message.content.startsWith("a:")) {
-    if(!["294115380916649986"].includes(message.author.id))
-      message.reply("You don't have the permissions to run code in this bot");
-    
-    let ran;
-    try {
-      ran = eval(message.content.slice(2).trim());
-    } catch(err) {
-      ran = err;
+    // Lets the admins run code through the bot
+    if(message.content.startsWith("a:")) {
+      if(!["294115380916649986"].includes(message.author.id))
+        message.reply("You don't have the permissions to run code in this bot");
+
+      let ran;
+      try {
+        ran = eval(message.content.slice(2).trim());
+      } catch(err) {
+        ran = err;
+      }
+
+      return message.channel.send(new Discord.RichEmbed().setDescription(`**Output:**\`\`\`${eval}\`\`\``).setColor(f.r()));
     }
-    
-    return message.channel.send(new Discord.RichEmbed().setDescription(`**Output:**\`\`\`${eval}\`\`\``).setColor(f.r()));
-  }
-  
-  // Returns if the user is the bot itself
-  if(message.author.id === client.user.id)
-    return;
-  
-  // Blocks all non-admins from using the bot
-  if(!["294115380916649986"].includes(message.author.id) && prefix.includes(message.content.slice(0, 2)))
-    return message.reply("This bot is still in production. Please wait for it to be fully developed");
-});
+
+    // Returns if the user is the bot itself
+    if(message.author.id === client.user.id)
+      return;
+
+    // Blocks all non-admins from using the bot
+    if(!["294115380916649986"].includes(message.author.id) && prefix.includes(message.content.slice(0, 2)))
+      return message.reply("This bot is still in production. Please wait for it to be fully developed");
+  });
+}
 
 // Music Functions
 const m = {
@@ -121,3 +113,5 @@ const f = {
 const c = {
   
 };
+
+module.exports = run;

@@ -1,7 +1,7 @@
 {
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node clyde/clyde.js"
+    "start": "node main.js"
   },
   "dependencies": {
     "canvas": "^2.0.0-alpha.12",
