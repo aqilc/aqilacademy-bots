@@ -1,14 +1,29 @@
-let levels = [
+const levels = [
   {
     points: 100,
-    ul: {
-      [
-      cat: "exp",
-      ignore: ["stats"],
-      ]
-    }
+    ul: [
+      {
+        cat: "exp",
+        ignore: ["stats"],
+      }
+    ]
   },
+  [
+    250,
+    500,
+    1000,
+    1750,
+    2500,
+    3500,
+    4750,
+    6000,
+    8000,
+    10000,
+    1
+  ],
 ];
+
+
 const needexp = [
   {
     cat: "exp",
