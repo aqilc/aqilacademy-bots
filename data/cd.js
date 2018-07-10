@@ -1,8 +1,15 @@
 let data = {
+  
+  // Developers
   devs: ["294115380916649986", "299150484218970113"],
+  
+  // Whitelisted channels
   whitelist: ["433004874930716673", "382530174677417984"],
-  blacklist: [],
+  
+  // Channel for elections
   echnl: "410233209201229854",
+  
+  // Trivia Questions
   trivia: [
     [
       4, "science", "How hot is the center of the Earth?",

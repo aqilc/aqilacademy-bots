@@ -19,6 +19,7 @@ const client = new Discord.Client();
 client.login(process.env.TOKENC);
 
 function run() {
+  
   // Events
   client.on("message", async msg => {
     try {
