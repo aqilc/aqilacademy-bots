@@ -49,11 +49,8 @@ require("./music/music.js")();
 
 
 
-//requiring path and fs modules
 const path = require('path');
-//joining path of directory 
-const directoryPath = path.join(__dirname, 'Documents');
-//passsing directoryPath and callback function
+const directoryPath = path.join(__dirname, 'data');
 fs.readdir(directoryPath, function (err, files) {
     //handling error
     if (err) {
@@ -61,7 +58,6 @@ fs.readdir(directoryPath, function (err, files) {
     } 
     //listing all files using forEach
     files.forEach(function (file) {
-        // Do whatever you want to do with the file
         console.log(file); 
     });
 });

@@ -3,10 +3,7 @@ const sqlite3 = require('sqlite3').verbose();
 const db = new sqlite3.Database('./.data/sqlite.db');
 
 // All Functions
-const f = ( prefix, cmds, client, data ) => {
-  return {
-    
-    
+const f = {
     log: (type, log) => {
       let chnl = { main: "382499510401630209", chat: "433004874930716673", announce: "382353531837087745", staff: "382530174677417984", exp: "407643635358892032" }[type];
       if(!chnl)
@@ -289,7 +286,6 @@ const f = ( prefix, cmds, client, data ) => {
       // Returns size
       return { font: ctx.font, size: size };
     },
-  };
 };
 
 module.exports = f;
