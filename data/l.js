@@ -31,11 +31,17 @@ const levels = [
     100000,
     150000,
     225000,
-    
+    300000,
+    375000,
+    450000,
+    500000,
+    650000,
+    800000,
+    1000000,
   ],
 ];
 
-
+console.log(levels[levels.length - 1].length + 1);
 const needexp = [
   {
     cat: "exp",
