@@ -120,7 +120,17 @@ const chnls = {
 
 
 // All functions needed to run the bot
-Array.prototype.
+Array.prototype.getObj = function (num, value) {
+  (this).forEach((obj) => {
+    if(typeof obj !== "object")
+      return {};
+  });
+  
+  let arr = (this).filter(a => a[value] >= num);
+  arr = arr[arr.length - 1];
+  
+  return arr;
+};
 const f = {
   log: (type, log) => {
     let chnl = { main: "382499510401630209", chat: "433004874930716673", announce: "382353531837087745", staff: "382530174677417984", exp: "407643635358892032" }[type];

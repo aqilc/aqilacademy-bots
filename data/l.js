@@ -79,12 +79,10 @@ const levels = [
   ],
 ];
 levels[levels.length - 1].forEach((e) => {
-  if(typeof levels[levels.length - 1] === "array")
-    delete levels[levels.length - 1];
-  
   levels.push({ points: e });
 });
 levels.sort((a, b) => b.points - a.points);
 
+console.log(levels);
 // Exports the levels array specially prepared for it
 module.exports = levels;
