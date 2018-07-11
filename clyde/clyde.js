@@ -110,7 +110,7 @@ function run() {
     })
     db.run(`DELETE * FROM users WHERE id = "${member.user.id}"`);
   });
-}
+};
 
 // All channels needed to run bot
 const chnls = {
@@ -120,7 +120,7 @@ const chnls = {
 
 
 // All functions needed to run the bot
-Array.prototype.getObj = function (num, value) {
+Array.prototype.getObj = function (num, value, after) {
   (this).forEach((obj) => {
     if(typeof obj !== "object")
       return {};
