@@ -129,13 +129,13 @@ Array.prototype.getObj = function (num, value, after) {
   let arr = (this).filter(a => a[value] >= num), val;
   if(arr[0][value] <= arr[arr.length - 1][value]) {
     if(after)
-      arr = [arr[0], arr[1]];
+      arr = [this[(this).indexOf(arr[0]) - 1] || {}, arr[0] || {}];
     else
       arr = arr[0];
   }
   else {
     if(after)
-      arr = [arr[arr.length - 1], arr[arr.length - 2]];
+      arr = [this[(this).indexOf(arr[arr.length - 1]) - 1] || {}, arr[arr.length - 1] || {}];
     else
       arr = arr[arr.length - 1];
   }
@@ -1078,8 +1078,6 @@ const cmds = {
               // User's Avatar
               { body: buffer3 } = await snekfetch.get(user.displayAvatarURL),
               avatar = await loadImage(buffer3);
-          
-          console.log(bar_exp);
           
           // Background
           ctx.drawImage(bg, 0, 0, canvas.width, canvas.height);
