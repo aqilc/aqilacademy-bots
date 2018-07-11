@@ -81,7 +81,7 @@ const levels = [
 levels[levels.length - 1].forEach((e) => {
   levels.push({ points: e });
 });
-levels.sort((a, b) => b.points - a.points);
+levels.filter(a => typeof a === "object").sort((a, b) => a.points - b.points);
 
 console.log(levels);
 // Exports the levels array specially prepared for it
