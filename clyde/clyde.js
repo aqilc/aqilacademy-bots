@@ -126,11 +126,19 @@ Array.prototype.getObj = function (num, value, after) {
       return {};
   });
   
-  let arr = (this).filter(a => a[value] >= num);
-  if(arr[0][value] <= arr[arr.length - 1][value])
-    arr = arr[0];
-  else
-    arr = arr[arr.length - 1];
+  let arr = (this).filter(a => a[value] >= num), val;
+  if(arr[0][value] <= arr[arr.length - 1][value]) {
+    if(after)
+      arr = [arr[0], arr[1]];
+    else
+      arr = arr[0];
+  }
+  else {
+    if(after)
+      arr = [arr[arr.length - 1], arr[arr.length - 2]];
+    else
+      arr = arr[arr.length - 1];
+  }
   
   return arr;
 };
@@ -1061,7 +1069,7 @@ const cmds = {
               user = id === msg.author.id ? msg.author : await client.fetchUser(id),
               
               // Excludes all values except the ones that have more points than the requested user's real points
-              bar_exp = levels.getObj(stats.realpoints, "points") || { points: stats.realpoints },
+              bar_exp = levels.getObj(stats.realpoints, "points", true) || [{ points: stats.realpoints }, { points: stats.realpoints }],
           
               // The background
               { body: buffer2 } = await snekfetch.get("https://i.pinimg.com/originals/90/cd/dc/90cddc7eeddbac6b17b4e25674e9e971.jpg"),
@@ -1070,6 +1078,8 @@ const cmds = {
               // User's Avatar
               { body: buffer3 } = await snekfetch.get(user.displayAvatarURL),
               avatar = await loadImage(buffer3);
+          
+          console.log(bar_exp);
           
           // Background
           ctx.drawImage(bg, 0, 0, canvas.width, canvas.height);
@@ -1080,7 +1090,7 @@ const cmds = {
           f.round_rect(ctx, 100, 20, canvas.width - 120, 80, { tl: 4, tr: 4 }, true, false);
           
           // Exp Bar
-          let p = [180, 30, canvas.width - 210, 25, 3, (stats.realpoints / bar_exp.points) < 1 ? (stats.realpoints / bar_exp.points) : 1];
+          let p = [180, 30, canvas.width - 210, 25, 3, (stats.realpoints - bar_exp[0].points) / bar_exp[1].points < 1 ? (stats.realpoints - bar_exp[0].points) / bar_exp[1].points : 1];
           ctx.fillStyle = "rgb(255, 255, 255)";
           ctx.strokeStyle = "rgb(150, 150, 150)";
           ctx.lineWidth = 4;
@@ -1094,7 +1104,7 @@ const cmds = {
           ctx.font = "bold 10px monospace";
           let text = [
             `${stats.realpoints} REAL Points`,
-            stats.realpoints >= bar_exp.points ? `${msg.author.id === id ? "You have" : "S/he has" } achieved MAX LEVEL!` : `${bar_exp.points - stats.realpoints} more points to go!`
+            stats.realpoints >= bar_exp[1].points ? `${msg.author.id === id ? "You have" : "S/he has" } achieved MAX LEVEL!` : `${bar_exp[1].points - stats.realpoints} more points to go!`
           ];
           ctx.fillText(text[0], p[0] + p[2]/2 - ctx.measureText(text[0]).width/2, p[1] + p[3]/2 + 1);
           ctx.font = "bold 6px arial";
