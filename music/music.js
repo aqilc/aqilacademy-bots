@@ -107,7 +107,11 @@ const f = {
 
 // Commands
 const c = {
-  
+  test: {
+    f: (msg) => {
+      
+    }
+  },
 };
 
 module.exports = run;
