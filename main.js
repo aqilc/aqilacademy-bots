@@ -48,6 +48,7 @@ require("./clyde/clyde.js")();
 require("./music/music.js")();
 
 
+/* gets all files from `data` table...
 
 const path = require('path');
 const directoryPath = path.join(__dirname, 'data');
@@ -60,4 +61,4 @@ fs.readdir(directoryPath, function (err, files) {
     files.forEach(function (file) {
         console.log(file); 
     });
-});
+});*/

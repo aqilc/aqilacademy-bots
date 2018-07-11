@@ -127,7 +127,11 @@ Array.prototype.getObj = function (num, value) {
   });
   console.log(this);
   let arr = (this).filter(a => a[value] >= num);
-  arr = arr[arr.length - 1];
+  
+  if(arr[0][value] >= arr[arr.length - 1][value])
+    arr = arr[0];
+  else
+    arr = arr[arr.length - 1];
   
   return arr;
 };
@@ -1059,7 +1063,7 @@ const cmds = {
               user = id === msg.author.id ? msg.author : await client.fetchUser(id),
               
               // Excludes all values except the ones that have more points than the requested user's real points
-              bar_exp = levels.filter(l => typeof l === "object" && typeof l.ul === "array").getObj(stats.realpoints, "points") || { points: stats.realpoints },
+              bar_exp = levels.getObj(stats.realpoints, "points") || { points: stats.realpoints },
           
               // The background
               { body: buffer2 } = await snekfetch.get("https://i.pinimg.com/originals/90/cd/dc/90cddc7eeddbac6b17b4e25674e9e971.jpg"),
@@ -1068,7 +1072,7 @@ const cmds = {
               // User's Avatar
               { body: buffer3 } = await snekfetch.get(user.displayAvatarURL),
               avatar = await loadImage(buffer3);
-          
+          console.log(bar_exp);
           // Background
           ctx.drawImage(bg, 0, 0, canvas.width, canvas.height);
           
