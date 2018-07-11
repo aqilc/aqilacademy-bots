@@ -125,10 +125,9 @@ Array.prototype.getObj = function (num, value) {
     if(typeof obj !== "object")
       return {};
   });
-  console.log(this);
-  let arr = (this).filter(a => a[value] >= num);
   
-  if(arr[0][value] >= arr[arr.length - 1][value])
+  let arr = (this).filter(a => a[value] >= num);
+  if(arr[0][value] <= arr[arr.length - 1][value])
     arr = arr[0];
   else
     arr = arr[arr.length - 1];
@@ -1072,7 +1071,7 @@ const cmds = {
               // User's Avatar
               { body: buffer3 } = await snekfetch.get(user.displayAvatarURL),
               avatar = await loadImage(buffer3);
-          console.log(bar_exp);
+          
           // Background
           ctx.drawImage(bg, 0, 0, canvas.width, canvas.height);
           
@@ -1082,21 +1081,21 @@ const cmds = {
           f.round_rect(ctx, 100, 20, canvas.width - 120, 80, { tl: 4, tr: 4 }, true, false);
           
           // Exp Bar
-          let p = [110, 30, canvas.width - 200, 25, 3];
+          let p = [180, 30, canvas.width - 210, 25, 3];
           ctx.fillStyle = "rgb(255, 255, 255)";
           ctx.strokeStyle = "rgb(150, 150, 150)";
           ctx.lineWidth = 4;
           ctx.strokeRect(p[0], p[1], p[2], p[3]);
           ctx.fillRect(p[0], p[1], p[2], p[3]);
           ctx.fillStyle = "rgba(0, 100, 250, 0.4)";
-          ctx.fillRect(p[0] + p[4], p[1] + p[4], (p[2] - p[4]*2) * ((stats.realpoints / bar_exp.points) < 1 ? (stats.points / bar_exp.points) : 1), p[3] - p[4] * 2);
+          ctx.fillRect(p[0] + p[4], p[1] + p[4], (p[2] - p[4]*2) * ((stats.realpoints / bar_exp.points) < 1 ? (stats.realpoints / bar_exp.points) : 1), p[3] - p[4] * 2);
           
           // Text
           ctx.fillStyle = "rgba(50, 50, 50, 0.7)";
           ctx.font = "bold 10px monospace";
           let text = [
             `${stats.realpoints} REAL Points`,
-            stats.realpoints >= bar_exp.points ? `${msg.author.id === id ? "You have" : "S/he has" } unlocked everything!` : `${bar_exp.points - stats.realpoints} more points to go!`
+            stats.realpoints >= bar_exp.points ? `${msg.author.id === id ? "You have" : "S/he has" } achieved MAX LEVEL!` : `${bar_exp.points - stats.realpoints} more points to go!`
           ];
           ctx.fillText(text[0], p[0] + p[2]/2 - ctx.measureText(text[0]).width/2, p[1] + p[3]/2 + 1);
           ctx.font = "bold 6px arial";
