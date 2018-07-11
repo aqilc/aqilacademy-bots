@@ -1059,7 +1059,7 @@ const cmds = {
               user = id === msg.author.id ? msg.author : await client.fetchUser(id),
               
               // Excludes all values except the ones that have more points than the requested user's real points
-              bar_exp = levels.filter(l => typeof l === "object" && typeof l.ul === "array").getObj(stats.realpoints, "points").ul || { points: stats.realpoints },
+              bar_exp = levels.filter(l => typeof l === "object" && typeof l.ul === "array").getObj(stats.realpoints, "points") || { points: stats.realpoints },
           
               // The background
               { body: buffer2 } = await snekfetch.get("https://i.pinimg.com/originals/90/cd/dc/90cddc7eeddbac6b17b4e25674e9e971.jpg"),
