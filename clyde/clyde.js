@@ -1044,7 +1044,6 @@ const cmds = {
 
           msg.channel.send(new Discord.Attachment(canvas.toBuffer(), "test-image.png"));
           break;
-          
         case "profile":
           let canvas = createCanvas(400, 200),
             ctx = canvas.getContext("2d");
@@ -1081,14 +1080,14 @@ const cmds = {
           f.round_rect(ctx, 100, 20, canvas.width - 120, 80, { tl: 4, tr: 4 }, true, false);
           
           // Exp Bar
-          let p = [180, 30, canvas.width - 210, 25, 3];
+          let p = [180, 30, canvas.width - 210, 25, 3, (stats.realpoints / bar_exp.points) < 1 ? (stats.realpoints / bar_exp.points) : 1];
           ctx.fillStyle = "rgb(255, 255, 255)";
           ctx.strokeStyle = "rgb(150, 150, 150)";
           ctx.lineWidth = 4;
           ctx.strokeRect(p[0], p[1], p[2], p[3]);
           ctx.fillRect(p[0], p[1], p[2], p[3]);
           ctx.fillStyle = "rgba(0, 100, 250, 0.4)";
-          ctx.fillRect(p[0] + p[4], p[1] + p[4], (p[2] - p[4]*2) * ((stats.realpoints / bar_exp.points) < 1 ? (stats.realpoints / bar_exp.points) : 1), p[3] - p[4] * 2);
+          ctx.fillRect(p[0] + p[4], p[1] + p[4], (p[2] - p[4]*2) * (p[5]), p[3] - p[4] * 2);
           
           // Text
           ctx.fillStyle = "rgba(50, 50, 50, 0.7)";
@@ -1121,7 +1120,7 @@ const cmds = {
           msg.channel.send(`📃 **| Here is ${id === msg.author.id ? "your" : user.tag + "'s"} profile**`, new Discord.Attachment(canvas.toBuffer(), "profile.png"));
           break;
         default:
-          cmds.testimage.do(msg, "hello");
+          cmds.testimage.do(msg, "profile " + content.slice(content.indexOf(" ") + 1));
       }
     },
   },
