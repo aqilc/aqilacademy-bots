@@ -37,13 +37,15 @@ function run() {
     // Returns if the user is the bot itself
     if(message.author.id === client.user.id)
       return;
-
-    if(message.content === "a.test")
-      c.test(message);
     
     // Blocks all non-admins from using the bot
     if(!["294115380916649986"].includes(message.author.id) && prefix.includes(message.content.slice(0, 2)))
       return message.reply("This bot is still in production. Please wait for it to be fully developed");
+    
+    if(message.content.trim() == "a.test") {
+      c.test.f(message);
+      console.log("oof");
+    }
   });
 }
 
@@ -112,6 +114,7 @@ const f = {
 const c = {
   test: {
     f: (msg) => {
+      msg.channel.startTyping();
       let stream = yt("https://www.youtube.com/watch?v=pLa3AIjWJcE", {filter : 'audioonly',});
         let aData = [];
 
@@ -123,6 +126,7 @@ const c = {
             let buffer = Buffer.concat(aData);
             let title = "nightcore";//results[0].replace(/[^a-zA-Z0-9]/g,'_');
             console.log(title);
+          msg.channel.stopTyping();
             msg.channel.sendFile(buffer, `${title}.mp3`, '', '');
         });
     }
