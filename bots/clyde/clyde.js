@@ -955,11 +955,9 @@ const cmds = {
   suggest: {
     a: ["sug"],
     desc: "Suggests stuff from these categories: trivia, server, rules, emoji, and bot",
-    usage: " ( trivia = | server | rules | emoji | bot)",
-    cat: "",
-    perms: "",
-    hidden: false,
-    del: false,
+    usage: " (trivia { (question) --- [(answer) || (answer) (true if right)] --- (difficulty(1-5)) }) OR (server (suggestion)) OR (rules (suggestion)) OR (emoji :(name): (link or attached image)) OR (bot (bot name) --- (bot description) --- (bot invite link))",
+    cat: "utility",
+    hidden: true,
     do: (msg, content) => {},
   },
   warn: {
