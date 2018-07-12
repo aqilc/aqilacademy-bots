@@ -13,6 +13,7 @@ const db = new sqlite3.Database('./.data/sqlite.db');
 // Logs in
 client.login(process.env.TOKENM);
 
+// A function for the whole bot to run on
 function run() {
 
   // Client Events
@@ -38,12 +39,15 @@ function run() {
     if(message.author.id === client.user.id)
       return;
     
+    // 
+    if(!message.content.startsWith(prefix))
+      return;
+    
     // Blocks all non-admins from using the bot
-    if(!["294115380916649986"].includes(message.author.id) && prefix.includes(message.content.slice(0, 2)))
+    if(!["294115380916649986"].includes(message.author.id))
       return message.reply("This bot is still in production. Please wait for it to be fully developed");
     
-    if(message.content === "a.test")
-      c.test.f(message);
+    
   });
 }
 
@@ -111,7 +115,7 @@ const f = {
 // Commands
 const c = {
   test: {
-    f: (msg) => {
+    f: (msg, content) => {
       msg.channel.startTyping();
       let stream = yt("https://www.youtube.com/watch?v=2x_N1P6C4Wk", { filter : 'audioonly' });
       let aData = [];
@@ -124,7 +128,14 @@ const c = {
         let buffer = Buffer.concat(aData);
         let title = "nightcore";//results[0].replace(/[^a-zA-Z0-9]/g,'_');
         msg.channel.stopTyping();
-        msg.channel.sendFile(buffer, `${title}.mp3`, '', '');
+        msg.channel.send({
+          files: [
+            {
+              attachment: buffer,
+              name: `${title}.mp3`
+            }
+          ]
+        });
       });
     }
   },
