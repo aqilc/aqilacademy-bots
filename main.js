@@ -3,7 +3,8 @@ const exists = fs.existsSync('./.data/sqlite.db');
 const sqlite3 = require('sqlite3').verbose();
 const db = new sqlite3.Database('./.data/sqlite.db');
 const http = require('http');
-const app = require('express')();
+const express = require("express");
+const app = express();
 
 //Keeps app running
 app.listen(process.env.PORT);
@@ -44,9 +45,13 @@ db.serialize(function() {
 });
 
 // Runs the 2 bots
-require("./clyde/clyde.js")();
-require("./music/music.js")();
+require("./bots/clyde/clyde.js")();
+require("./bots/music/music.js")();
 
+app.use(express.static('public'));
+app.get('/', function(request, response) {
+  response.sendFile(__dirname + '/views/index.html');
+});
 
 /* gets all files from `data` table...
 
