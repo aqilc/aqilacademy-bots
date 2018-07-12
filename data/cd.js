@@ -14,10 +14,10 @@ let data = {
     [
       4, "science", "How hot is the center of the Earth?",
       [
-        ["A", "~ 9,800° Fahrenhiet"],
-        ["B", "~ 10,800° Fahrenhiet", true],
-        ["C", "~ 1,800° Fahrenhiet"],
-        ["D", "~ 18,000° Fahrenhiet"]
+        ["A", "~ 9,800° Fahrenheit"],
+        ["B", "~ 10,800° Fahrenheit", true],
+        ["C", "~ 1,800° Fahrenheit"],
+        ["D", "~ 18,000° Fahrenheit"]
       ], 10000
     ],
     [

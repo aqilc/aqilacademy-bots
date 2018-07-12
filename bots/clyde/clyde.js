@@ -952,15 +952,15 @@ const cmds = {
       });
     },
   },
-  startcontest: {
-    desc: "Starts a contest!",
-    usage: " (title) |=| ",
+  suggest: {
+    a: ["sug"],
+    desc: "Suggests stuff from these categories: trivia, server, rules, emoji, and bot",
+    usage: " ( trivia = | server | rules | emoji | bot)",
     cat: "",
     perms: "",
-    hidden: true,
-    do: (msg, content) => {
-      
-    },
+    hidden: false,
+    del: false,
+    do: (msg, content) => {},
   },
   warn: {
     desc: "Warns (adds an infraction to) a user.",
