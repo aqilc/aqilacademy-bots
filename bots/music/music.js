@@ -121,10 +121,10 @@ const c = {
       });
 
       stream.on('end', function() {
-          let buffer = Buffer.concat(aData);
-          let title = "nightcore";//results[0].replace(/[^a-zA-Z0-9]/g,'_');
+        let buffer = Buffer.concat(aData);
+        let title = "nightcore";//results[0].replace(/[^a-zA-Z0-9]/g,'_');
         msg.channel.stopTyping();
-          msg.channel.sendFile(buffer, `${title}.mp3`, '', '');
+        msg.channel.sendFile(buffer, `${title}.mp3`, '', '');
       });
     }
   },
