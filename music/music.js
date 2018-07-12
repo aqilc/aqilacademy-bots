@@ -18,7 +18,7 @@ function run() {
   // Client Events
   client.on("ready", () => console.log(`${client.user.tag} ID: ${client.user.id} logged in at ${new Date().toUTCString()}`));
   client.on("message", message => {
-
+    
     // Lets the admins run code through the bot
     if(message.content.startsWith("a:")) {
       if(!["294115380916649986"].includes(message.author.id))
@@ -42,10 +42,8 @@ function run() {
     if(!["294115380916649986"].includes(message.author.id) && prefix.includes(message.content.slice(0, 2)))
       return message.reply("This bot is still in production. Please wait for it to be fully developed");
     
-    if(message.content.trim() == "a.test") {
+    if(message.content === "a.test")
       c.test.f(message);
-      console.log("oof");
-    }
   });
 }
 
