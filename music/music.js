@@ -113,7 +113,7 @@ const c = {
   test: {
     f: (msg) => {
       msg.channel.startTyping();
-      let stream = yt("https://www.youtube.com/watch?v=pLa3AIjWJcE", {filter : 'audioonly',});
+      let stream = yt("https://www.youtube.com/watch?v=2x_N1P6C4Wk", {filter : 'audioonly',});
       let aData = [];
 
       stream.on('data', function(data) {
