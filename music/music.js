@@ -10,10 +10,10 @@ const prefix = ["a."];
 const sqlite3 = require("sqlite3").verbose();
 const db = new sqlite3.Database('./.data/sqlite.db');
 
-function run() {
+// Logs in
+client.login(process.env.TOKENM);
 
-  // Logs in
-  client.login(process.env.TOKENM);
+function run() {
 
   // Client Events
   client.on("ready", () => console.log(`${client.user.tag} ID: ${client.user.id} logged in at ${new Date().toUTCString()}`));
@@ -38,6 +38,9 @@ function run() {
     if(message.author.id === client.user.id)
       return;
 
+    if(message.content === "a.test")
+      c.test(message);
+    
     // Blocks all non-admins from using the bot
     if(!["294115380916649986"].includes(message.author.id) && prefix.includes(message.content.slice(0, 2)))
       return message.reply("This bot is still in production. Please wait for it to be fully developed");
@@ -109,7 +112,19 @@ const f = {
 const c = {
   test: {
     f: (msg) => {
-      
+      let stream = yt("https://www.youtube.com/watch?v=pLa3AIjWJcE", {filter : 'audioonly',});
+        let aData = [];
+
+        stream.on('data', function(data) {
+          aData.push(data);
+        });
+
+        stream.on('end', function() {
+            let buffer = Buffer.concat(aData);
+            let title = "nightcore";//results[0].replace(/[^a-zA-Z0-9]/g,'_');
+            console.log(title);
+            msg.channel.sendFile(buffer, `${title}.mp3`, '', '');
+        });
     }
   },
 };
