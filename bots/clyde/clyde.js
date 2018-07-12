@@ -958,7 +958,9 @@ const cmds = {
     usage: " (trivia { (question) --- [(answer) || (answer) (true if right)] --- (difficulty(1-5)) }) OR (server (suggestion)) OR (rules (suggestion)) OR (emoji :(name): (link or attached image)) OR (bot (bot name) --- (bot description) --- (bot invite link))",
     cat: "utility",
     hidden: true,
-    do: (msg, content) => {},
+    do: (msg, content) => {
+    
+    },
   },
   warn: {
     desc: "Warns (adds an infraction to) a user.",
