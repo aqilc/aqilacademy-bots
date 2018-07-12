@@ -114,19 +114,18 @@ const c = {
     f: (msg) => {
       msg.channel.startTyping();
       let stream = yt("https://www.youtube.com/watch?v=pLa3AIjWJcE", {filter : 'audioonly',});
-        let aData = [];
+      let aData = [];
 
-        stream.on('data', function(data) {
-          aData.push(data);
-        });
+      stream.on('data', function(data) {
+        aData.push(data);
+      });
 
-        stream.on('end', function() {
-            let buffer = Buffer.concat(aData);
-            let title = "nightcore";//results[0].replace(/[^a-zA-Z0-9]/g,'_');
-            console.log(title);
-          msg.channel.stopTyping();
-            msg.channel.sendFile(buffer, `${title}.mp3`, '', '');
-        });
+      stream.on('end', function() {
+          let buffer = Buffer.concat(aData);
+          let title = "nightcore";//results[0].replace(/[^a-zA-Z0-9]/g,'_');
+        msg.channel.stopTyping();
+          msg.channel.sendFile(buffer, `${title}.mp3`, '', '');
+      });
     }
   },
 };
