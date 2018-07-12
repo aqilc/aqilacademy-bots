@@ -6,10 +6,11 @@ const http = require('http');
 const express = require("express");
 const app = express();
 
-//Keeps app running
+// Keeps app and website running
 app.listen(process.env.PORT);
+app.use(express.static('public'));
 app.get("/", (request, response) => {
-  response.sendStatus(200);
+  response.sendFile(__dirname + '/views/index.html');
 });
 setInterval(() => {
   http.get(`http://${process.env.PROJECT_DOMAIN}.glitch.me/`);
@@ -48,13 +49,7 @@ db.serialize(function() {
 require("./bots/clyde/clyde.js")();
 require("./bots/music/music.js")();
 
-app.use(express.static('public'));
-app.get('/', function(request, response) {
-  response.sendFile(__dirname + '/views/index.html');
-});
-
-/* gets all files from `data` table...
-
+/*
 const path = require('path');
 const directoryPath = path.join(__dirname, 'data');
 fs.readdir(directoryPath, function (err, files) {
