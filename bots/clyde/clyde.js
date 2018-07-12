@@ -120,7 +120,7 @@ const chnls = {
 
 
 // All functions needed to run the bot
-Array.prototype.getObj = function (num, value, after) {
+Array.prototype.getObj = function (num, value, before) {
   (this).forEach((obj) => {
     if(typeof obj !== "object")
       return {};
@@ -128,13 +128,13 @@ Array.prototype.getObj = function (num, value, after) {
   
   let arr = (this).filter(a => a[value] >= num), val;
   if(arr[0][value] <= arr[arr.length - 1][value]) {
-    if(after)
+    if(before)
       arr = [this[(this).indexOf(arr[0]) - 1] || {}, arr[0] || {}];
     else
       arr = arr[0];
   }
   else {
-    if(after)
+    if(before)
       arr = [this[(this).indexOf(arr[arr.length - 1]) - 1] || {}, arr[arr.length - 1] || {}];
     else
       arr = arr[arr.length - 1];
