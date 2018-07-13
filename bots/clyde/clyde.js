@@ -1013,6 +1013,15 @@ const cmds = {
       });
     },
   },
+  bot: {
+    desc: "Displays some stats for the bot",
+    usage: "",
+    cat: "",
+    perms: "",
+    hidden: false,
+    del: false,
+    do: (msg, content) => {},
+  },
   testimage: {
     a: ['ti'],
     desc: "For testing image production",
