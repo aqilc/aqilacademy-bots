@@ -1051,7 +1051,7 @@ const cmds = {
           f.round_rect(ctx, 100, 20, canvas.width - 120, 80, { tl: 4, tr: 4 }, true, false);
           
           // Exp Bar
-          let p = [180, 30, canvas.width - 210, 25, 3, ((stats.realpoints - bar_exp[0].points) / bar_exp[1].points) <= 1 ? ((stats.realpoints - bar_exp[0].points) / bar_exp[1].points) : 1];
+          let p = [180, 30, canvas.width - 210, 25, 3, (stats.realpoints - bar_exp[0].points) / (bar_exp[1].points - bar_exp[0].points) <= 1 ? (stats.realpoints - bar_exp[0].points) / (bar_exp[1].points - bar_exp[0].points) : 1];
           ctx.fillStyle = "rgb(255, 255, 255)";
           ctx.strokeStyle = "rgb(150, 150, 150)";
           ctx.lineWidth = 4;
@@ -1064,7 +1064,7 @@ const cmds = {
           ctx.fillStyle = "rgba(50, 50, 50, 0.7)";
           ctx.font = "bold 10px monospace";
           let text = [
-            `${stats.realpoints} REAL Points`,
+            `${stats.realpoints} Points`,
             stats.realpoints >= bar_exp[1].points ? `${msg.author.id === id ? "You have" : "S/he has" } achieved MAX LEVEL!` : `${bar_exp[1].points - stats.realpoints} more points to go!`
           ];
           ctx.fillText(text[0], p[0] + p[2]/2 - ctx.measureText(text[0]).width/2, p[1] + p[3]/2 + 1);
