@@ -48,10 +48,15 @@ function run() {
       return message.reply("This bot is still in production. Please wait for it to be fully developed");
     
     // Does commands
-    let cmd = message.content.slice(prefix.length + 1).split(" ")[0];
-    for(let i in c) {
-      if(i === cmd || (c[i].a ? c[i].a : []).includes(cmd))     
-        c[cmd].f(message, message.content.slice(prefix.length + cmd.length + 1).trim());
+    try {
+      let cmd = message.content.slice(prefix.length + 1).split(" ")[0];
+      for(let i in c) {
+        if(i === cmd || (c[i].a ? c[i].a : []).includes(cmd))     
+          c[cmd].f(message, message.content.slice(prefix.length + cmd.length + 1).trim());
+      }
+    } catch(error) {
+      console.log("Music error: " + error);
+      
     }
   });
 }
@@ -85,26 +90,27 @@ const m = {
         
         // If it finds an error
         if("error" in json)
-          reject(true, [json.error.errors[0].message, json.error.errors[0].reason]);
+          reject([json.error.errors[0].message, json.error.errors[0].reason], true);
         
         // If it didn't find any videos
         else if(json.items.length === 0)
-          reject(false, "No videos found using that criteria");
+          reject("No videos found using that criteria", false);
         
         // If all goes well...
         else {
           if(info.add)
             this.add(json.items[0].id.videoId, message);
           
-          if(!info.info)
+          if(!info || !info.info)
             resolve(json.items[0].id.videoId);
           
-          yt.getInfo("https://www.youtube.com/watch?v=" + json.items[0].id.videoId, (err, data) => {
-            if(err)
-              reject(false, err);
-            console.log(data);
-            resolve(data);
-          });
+          if(info && info.info)
+            yt.getInfo("https://www.youtube.com/watch?v=" + json.items[0].id.videoId, (err, data) => {
+              if(err)
+                reject(false, err);
+              console.log(data);
+              resolve(data);
+            });
         }
       });
     });
@@ -138,6 +144,7 @@ const c = {
   test: {
     a: [],
     f: async (msg, content) => {
+      try {
       let vid;
       
       // Starts typing to indicate that its working
@@ -170,6 +177,7 @@ const c = {
           ]
         });
       });
+      }catch(err){console.log(err);};
     }
   },
 };
