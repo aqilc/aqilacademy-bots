@@ -53,7 +53,8 @@ function run() {
       if(c !== cmd && !c.a.includes(cmd))
         continue;
       
-      c[cmd].f(message, message.content.slice(prefix.length + cmd.length)
+      
+      c[cmd].f(message, message.content.slice(prefix.length + cmd.length).trim());
     }
   });
 }
@@ -70,12 +71,10 @@ const m = {
     current_queue: [],
   },
   
-  // Gets an id from a string
-  getID(string) {
-    let match = string.match(/(?:\?v=|&v=|youtu\.be\/)(.*?)(?:\?|&|$)/);
+  getId(url) {
+    if(yt.validateID(url) || yt.validateURL(url))
+      return yt.getVideoID(url);
     
-    if(match && match[1].length === 11)
-      return match[1];
     return false;
   },
   
