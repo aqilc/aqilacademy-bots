@@ -51,7 +51,7 @@ function run() {
     let cmd = message.content.slice(prefix.length + 1).split(" ")[0];
     for(let i in c) {
       if(i === cmd || (c[i].a ? c[i].a : []).includes(cmd))     
-        c[cmd].f(message, message.content.slice(prefix.length + cmd.length).trim());
+        c[cmd].f(message, message.content.slice(prefix.length + cmd.length + 1).trim());
     }
   });
 }
@@ -102,6 +102,7 @@ const m = {
           yt.getInfo("https://www.youtube.com/watch?v=" + json.items[0].id.videoId, (err, data) => {
             if(err)
               reject(false, err);
+            console.log(data);
             resolve(data);
           });
         }
