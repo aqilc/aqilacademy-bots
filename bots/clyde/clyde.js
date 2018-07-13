@@ -444,8 +444,7 @@ const cmds = {
       
       if(!client.users.get(id))
         return msg.reply("Please enter a valid ID/User Mention");
-      let stats = f.calculate_stats(id) || {};
-      console.log(stats);
+      let stats = await f.calculate_stats(id) || {};
       embed.setAuthor(client.users.get(id).tag + "'s stats", client.users.get(id).avatarURL)
         .setColor(f.color())
         .addField("<:exp:458774880310263829> EXP", `**Points:** ${stats.points}\n**Real Points:** ${stats.realpoints}\n**Last Daily at:** ${new Date(stats.lastDaily).toLocaleString('en', { timeZone: 'UTC' })}\n**Streak:** ${stats.streak}\n**Place on leaderboard:** \`${stats.leaderboard_place + (JSON.parse(JSON.stringify(stats.leaderboard_place)[JSON.stringify(stats.leaderboard_place).length - 1]) < 4 ? ["th", "st", "nd", "rd"][JSON.stringify(stats.leaderboard_place)[JSON.stringify(stats.leaderboard_place).length - 1]] : "th")}\``, true)
@@ -1026,7 +1025,7 @@ const cmds = {
           let id = f.get_id(msg, content.slice(content.indexOf(" ") + 1)) || msg.author.id,
               
               // Gets all the exp stats from your profile
-              stats = f.calculate_stats(id) || {},
+              stats = await f.calculate_stats(id) || {},
               
               // Gets the user so we can use the data later
               user = id === msg.author.id ? msg.author : await client.fetchUser(id),
@@ -1041,6 +1040,7 @@ const cmds = {
               // User's Avatar
               { body: buffer3 } = await snekfetch.get(user.displayAvatarURL),
               avatar = await loadImage(buffer3);
+          console.log(bar_exp);
           
           // Background
           ctx.drawImage(bg, 0, 0, canvas.width, canvas.height);
@@ -1051,7 +1051,7 @@ const cmds = {
           f.round_rect(ctx, 100, 20, canvas.width - 120, 80, { tl: 4, tr: 4 }, true, false);
           
           // Exp Bar
-          let p = [180, 30, canvas.width - 210, 25, 3, (stats.realpoints - bar_exp[0].points) / bar_exp[1].points < 1 ? (stats.realpoints - bar_exp[0].points) / bar_exp[1].points : 1];
+          let p = [180, 30, canvas.width - 210, 25, 3, ((stats.realpoints - bar_exp[0].points) / bar_exp[1].points) <= 1 ? ((stats.realpoints - bar_exp[0].points) / bar_exp[1].points) : 1];
           ctx.fillStyle = "rgb(255, 255, 255)";
           ctx.strokeStyle = "rgb(150, 150, 150)";
           ctx.lineWidth = 4;
