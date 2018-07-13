@@ -85,7 +85,7 @@ const m = {
     return new Promise(function (resolve, reject) {
       
       // Search for results
-      request("https://www.googleapis.com/youtube/v3/search?part=id&type=video&q=" + encodeURIComponent(search) + "&key=" + m.ytAk, (error, response, body) => {
+      request("https://www.googleapis.com/youtube/v3/search?part=id&type=video&q=" + encodeURIComponent(search) + "&key=" + m.ytAk, async (error, response, body) => {
         var json = JSON.parse(body);
         console.log(json);
         
@@ -109,12 +109,14 @@ const m = {
           
           let data = [];
           if(info && info.info) {
-            m.info("https://www.youtube.com/watch?v=" + json.items[0].id.videoId, (err, data) => {
-              if(err)
-                reject(false, err);
-              console.log(data);
-              resolve(data);
-            });
+            if(!info || info.results <= 1)
+              data = await m.info(json.items[0].id.videoId);
+            else {
+              do {
+                data.push(await m.info(json.items[0].id.videoId));
+              } while (data.length < info.results)
+            }
+            resolve(data);
           }
         }
       });
@@ -177,7 +179,7 @@ const c = {
         let buffer = Buffer.concat(aData);
         
         // Bends title so it can send the title without there being any problems
-        let title = vid.title.replace(/[^a-zA-Z0-9]/g,'_');
+        let title = vid.title.replace(/[^a-zA-Z0-9]/g, '_');
         
         // Stops typing as it sends the attachment
         msg.channel.stopTyping();
