@@ -81,12 +81,13 @@ const m = {
   },
   
   // Searches a video from YouTube and returns it... or adds it into the queue
-  search(message, search, info = { add: false, info: false }) {
+  search(message, search, info = { results: 1, add: false, info: false }) {
     return new Promise(function (resolve, reject) {
       
       // Search for results
       request("https://www.googleapis.com/youtube/v3/search?part=id&type=video&q=" + encodeURIComponent(search) + "&key=" + m.ytAk, (error, response, body) => {
         var json = JSON.parse(body);
+        console.log(json);
         
         // If it finds an error
         if("error" in json)
@@ -98,19 +99,23 @@ const m = {
         
         // If all goes well...
         else {
+          let vids = info && info.results > 1 ? json.items.splice(info.results).map(j => j.id.videoId) : json.items[0].id.videoId;
+          
           if(info.add)
-            m.add(json.items[0].id.videoId, message);
+            m.add(vids, message);
           
           if(!info || !info.info)
-            resolve(json.items[0].id.videoId);
+            resolve(vids);
           
-          if(info && info.info)
-            yt.getInfo("https://www.youtube.com/watch?v=" + json.items[0].id.videoId, (err, data) => {
+          let data = [];
+          if(info && info.info) {
+            m.info("https://www.youtube.com/watch?v=" + json.items[0].id.videoId, (err, data) => {
               if(err)
                 reject(false, err);
               console.log(data);
               resolve(data);
             });
+          }
         }
       });
     });
@@ -127,7 +132,7 @@ const m = {
   },
   
   // Adds a song to queue
-  add() {
+  add(ids, message) {
     
   },
 };
@@ -141,8 +146,9 @@ const f = {
 
 // Commands
 const c = {
-  test: {
-    a: [],
+  download: {
+    a: ["down"],
+    desc: "Downloads a song on the bot and sends the file into the channel",
     f: async (msg, content) => {
       let vid;
       
@@ -188,6 +194,7 @@ const c = {
       });
     }
   },
+  
 };
 
 module.exports = run;
