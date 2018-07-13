@@ -147,7 +147,7 @@ const c = {
       if(m.id(content))
         vid = await m.info(m.id(content));
       else
-        vid = await m.search(msg, content, { add: true });
+        vid = await m.search(msg, content, { info: true });
       console.log(vid);
       
       let stream = yt("https://www.youtube.com/watch?v=" + vid.id, { filter : 'audioonly' });
