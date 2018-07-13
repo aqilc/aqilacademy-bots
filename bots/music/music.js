@@ -48,12 +48,10 @@ function run() {
       return message.reply("This bot is still in production. Please wait for it to be fully developed");
     
     // Does commands
-    let cmd = message.content.slice(prefix.length).split(" ")[0];
+    let cmd = message.content.slice(prefix.length + 1).split(" ")[0];
     for(let i in c) {
-      if(i === cmd || (c[i].a ? c[i].a : []).includes(cmd))
-        continue;
-      
-      c[cmd].f(message, message.content.slice(prefix.length + cmd.length).trim());
+      if(i === cmd || (c[i].a ? c[i].a : []).includes(cmd))     
+        c[cmd].f(message, message.content.slice(prefix.length + cmd.length).trim());
     }
   });
 }
