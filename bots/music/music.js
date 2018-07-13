@@ -154,19 +154,29 @@ const c = {
         vid = await m.info(m.id(content));
       else
         vid = await m.search(msg, content, { info: true });
-      console.log(vid);
       
+      // Creates stream and downloads it
       let stream = yt("https://www.youtube.com/watch?v=" + vid.video_id, { filter : 'audioonly' });
+      
+      // The downloaded stream buffer data
       let aData = [];
-
       stream.on('data', function(data) {
         aData.push(data);
       });
-
+      
+      // What happens when its done downloading
       stream.on('end', function() {
+        
+        // Forms data into an attachment
         let buffer = Buffer.concat(aData);
+        
+        // Bends title so it can send the title without there being any problems
         let title = vid.title.replace(/[^a-zA-Z0-9]/g,'_');
+        
+        // Stops typing as it sends the attachment
         msg.channel.stopTyping();
+        
+        // Sends the downloaded attachment
         msg.channel.send({
           files: [
             {
