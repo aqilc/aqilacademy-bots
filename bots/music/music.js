@@ -111,7 +111,7 @@ const m = {
   },
   
   info(id) {
-    return new Promise((rs, rj) => {
+    return new Promise(function(rs, rj) {
       yt.getInfo("https://www.youtube.com/watch?v=" + id, (err, data) => {
         if(err)
           rj(err);
