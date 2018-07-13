@@ -78,7 +78,7 @@ const m = {
   },
   
   // Searches a video from YouTube and returns it... or adds it into the queue
-  search(message, search, add) {
+  search(message, search, info = { add: false, info: false }) {
     return new Promise(function (resolve, reject) {
       
       // Search for results
@@ -95,8 +95,10 @@ const m = {
         
         // If all goes well...
         else {
-          if(add)
+          if(info.add)
             this.add(json.items[0].id.videoId, message);
+          
+          if(info.info) {
           
           resolve(json.items[0].id.videoId);
         }
@@ -121,8 +123,11 @@ const f = {
 const c = {
   test: {
     f: (msg, content) => {
+      if(!m.getId(content))
+        return msg.channel.send("Not a valid URL");
+      
       msg.channel.startTyping();
-      let stream = yt("https://www.youtube.com/watch?v=2x_N1P6C4Wk", { filter : 'audioonly' });
+      let stream = yt(content, { filter : 'audioonly' });
       let aData = [];
 
       stream.on('data', function(data) {
