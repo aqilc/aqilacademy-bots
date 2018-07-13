@@ -39,7 +39,7 @@ function run() {
     if(message.author.id === client.user.id)
       return;
     
-    // 
+    // Returns if the message is obviously not a command
     if(!message.content.startsWith(prefix))
       return;
     
@@ -47,7 +47,14 @@ function run() {
     if(!["294115380916649986"].includes(message.author.id))
       return message.reply("This bot is still in production. Please wait for it to be fully developed");
     
-    
+    // Does commands
+    for(let i in c) {
+      let cmd = message.content.slice(prefix.length).split(" ")[0];
+      if(c !== cmd && !c.a.includes(cmd))
+        continue;
+      
+      c[cmd].f(message, message.content.slice(prefix.length + cmd.length)
+    }
   });
 }
 
