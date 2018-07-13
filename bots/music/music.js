@@ -53,7 +53,6 @@ function run() {
       if(c !== cmd && !c.a.includes(cmd))
         continue;
       
-      
       c[cmd].f(message, message.content.slice(prefix.length + cmd.length).trim());
     }
   });
