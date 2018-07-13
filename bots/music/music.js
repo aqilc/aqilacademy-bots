@@ -87,7 +87,6 @@ const m = {
       // Search for results
       request("https://www.googleapis.com/youtube/v3/search?part=id&type=video&q=" + encodeURIComponent(search) + "&key=" + m.ytAk, async (error, response, body) => {
         var json = JSON.parse(body);
-        console.log(json);
         
         // If it finds an error
         if("error" in json)
@@ -162,6 +161,7 @@ const c = {
         vid = await m.info(m.id(content));
       else
         vid = await m.search(msg, content, { info: true });
+      console.log(vid);
       
       // Creates stream and downloads it
       let stream = yt("https://www.youtube.com/watch?v=" + vid.video_id, { filter : 'audioonly' });
