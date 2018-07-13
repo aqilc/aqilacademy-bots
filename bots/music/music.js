@@ -85,7 +85,7 @@ const m = {
     return new Promise(function (resolve, reject) {
       
       // Search for results
-      request("https://www.googleapis.com/youtube/v3/search?part=id&type=video&q=" + encodeURIComponent(search) + "&key=" + this.ytAK, (error, response, body) => {
+      request("https://www.googleapis.com/youtube/v3/search?part=id&type=video&q=" + encodeURIComponent(search) + "&key=" + m.ytAk, (error, response, body) => {
         var json = JSON.parse(body);
         
         // If it finds an error
@@ -99,7 +99,7 @@ const m = {
         // If all goes well...
         else {
           if(info.add)
-            this.add(json.items[0].id.videoId, message);
+            m.add(json.items[0].id.videoId, message);
           
           if(!info || !info.info)
             resolve(json.items[0].id.videoId);
@@ -144,7 +144,6 @@ const c = {
   test: {
     a: [],
     f: async (msg, content) => {
-      try {
       let vid;
       
       // Starts typing to indicate that its working
@@ -157,7 +156,7 @@ const c = {
         vid = await m.search(msg, content, { info: true });
       console.log(vid);
       
-      let stream = yt("https://www.youtube.com/watch?v=" + vid.id, { filter : 'audioonly' });
+      let stream = yt("https://www.youtube.com/watch?v=" + vid.video_id, { filter : 'audioonly' });
       let aData = [];
 
       stream.on('data', function(data) {
@@ -166,7 +165,7 @@ const c = {
 
       stream.on('end', function() {
         let buffer = Buffer.concat(aData);
-        let title = "nightcore";//results[0].replace(/[^a-zA-Z0-9]/g,'_');
+        let title = vid.title.replace(/[^a-zA-Z0-9]/g,'_');
         msg.channel.stopTyping();
         msg.channel.send({
           files: [
@@ -177,7 +176,6 @@ const c = {
           ]
         });
       });
-      }catch(err){console.log(err);};
     }
   },
 };
