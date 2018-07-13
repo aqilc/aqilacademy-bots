@@ -10,6 +10,7 @@ const db = new sqlite3.Database('./.data/sqlite.db');
 const Discord = require("discord.js");
 const data = require("/app/data/cd.js");
 const levels = require("/app/data/l.js");
+const globalfunctions = require("/app/data/f.js");
 
 // Prefix
 const prefix = "c.";
@@ -326,58 +327,10 @@ const f = {
       return person.id;
     return false;
   },
-  calculate_stats: (id) => {
+  calculate_stats: async (id) => {
     if(!client.users.get(id))
       return false;
-
-    return new Promise(function(resolve, reject) {
-      let stats = {
-        elections_won: 0,
-
-        realpoints: 0,
-        points: 0,
-        messages: 0,
-        created: 0,
-        streak: 0,
-        lastDaily: 0,
-        leaderboard_place: 1,
-
-        blacklisted: false,
-
-        warns: [],
-        severity: 0,
-      };
-      db.all(`SELECT * FROM users ORDER BY points DESC`, (err, res) => {
-        if(!res.filter(r => r.id === id)[0])
-          stats.leaderboard_place = res.length + 1;
-        else {
-          for(let i = 0; i < res.length; i ++) {
-            if(res[i].id === id) {
-              stats.leaderboard_place = i + 1;
-
-              delete res[i].id;
-              for(let j in res[i])
-                stats[j] = res[i][j];
-            }
-          }
-        }
-
-        db.all(`SELECT * FROM warns WHERE user = "${id}"`, (error, warn) => {
-          if(warn)
-            warn.forEach((w) => { stats.severity += w.severity; });
-          stats.warns = warn;
-          db.get(`SELECT * FROM blacklist WHERE id = "${id}"`, (er, black) => {
-            if(black)
-              stats.blacklisted = true;
-
-            db.get(`SELECT * FROM elections WHERE winner = "${id}"`, (err, elecs) => {
-              stats.elections_won = elecs ? elecs.length : 0;
-              resolve(stats);
-            });
-          });
-        });
-      });
-    });
+    return globalfunctions.calculate_stats(id);
   },
   round_rect: (ctx, x, y, width, height, radius, fill, stroke) => {
     if (typeof stroke == 'undefined') {
@@ -491,7 +444,8 @@ const cmds = {
       
       if(!client.users.get(id))
         return msg.reply("Please enter a valid ID/User Mention");
-      let stats = await f.calculate_stats(id);
+      let stats = f.calculate_stats(id) || {};
+      console.log(stats);
       embed.setAuthor(client.users.get(id).tag + "'s stats", client.users.get(id).avatarURL)
         .setColor(f.color())
         .addField("<:exp:458774880310263829> EXP", `**Points:** ${stats.points}\n**Real Points:** ${stats.realpoints}\n**Last Daily at:** ${new Date(stats.lastDaily).toLocaleString('en', { timeZone: 'UTC' })}\n**Streak:** ${stats.streak}\n**Place on leaderboard:** \`${stats.leaderboard_place + (JSON.parse(JSON.stringify(stats.leaderboard_place)[JSON.stringify(stats.leaderboard_place).length - 1]) < 4 ? ["th", "st", "nd", "rd"][JSON.stringify(stats.leaderboard_place)[JSON.stringify(stats.leaderboard_place).length - 1]] : "th")}\``, true)
@@ -1072,7 +1026,7 @@ const cmds = {
           let id = f.get_id(msg, content.slice(content.indexOf(" ") + 1)) || msg.author.id,
               
               // Gets all the exp stats from your profile
-              stats = await f.calculate_stats(id) || {},
+              stats = f.calculate_stats(id) || {},
               
               // Gets the user so we can use the data later
               user = id === msg.author.id ? msg.author : await client.fetchUser(id),
