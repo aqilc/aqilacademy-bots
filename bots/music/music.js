@@ -70,7 +70,7 @@ const m = {
     current_queue: [],
   },
   
-  getId(url) {
+  id(url) {
     if(yt.validateID(url) || yt.validateURL(url))
       return yt.getVideoID(url);
     
@@ -111,6 +111,16 @@ const m = {
     });
   },
   
+  info(id) {
+    return new Promise((rs, rj) => {
+      yt.getInfo("https://www.youtube.com/watch?v=" + id, (err, data) => {
+        if(err)
+          rj(err);
+        rs(data);
+      });
+    });
+  },
+  
   // Adds a song to queue
   add() {
     
@@ -128,19 +138,19 @@ const f = {
 const c = {
   test: {
     f: async (msg, content) => {
-      let vId;
+      let vid;
       
       // Starts typing to indicate that its working
       msg.channel.startTyping();
       
       // Determines video ID
-      if(m.getId(content))
-        vId = { id: m.getId(content) };
+      if(m.id(content))
+        vid = await m.info(m.id(content));
       else
-        vId = await m.search(msg, content, { add: true });
-      console.log(vId);
+        vid = await m.search(msg, content, { add: true });
+      console.log(vid);
       
-      let stream = yt("https://www.youtube.com/watch?v=" + vId.id, { filter : 'audioonly' });
+      let stream = yt("https://www.youtube.com/watch?v=" + vid.id, { filter : 'audioonly' });
       let aData = [];
 
       stream.on('data', function(data) {
