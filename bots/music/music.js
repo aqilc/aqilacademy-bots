@@ -98,9 +98,14 @@ const m = {
           if(info.add)
             this.add(json.items[0].id.videoId, message);
           
-          if(info.info) {
+          if(!info.info)
+            resolve(json.items[0].id.videoId);
           
-          resolve(json.items[0].id.videoId);
+          yt.getInfo("https://www.youtube.com/watch?v=" + json.items[0].id.videoId, (err, data) => {
+            if(err)
+              reject(false, err);
+            resolve(data);
+          });
         }
       });
     });
@@ -122,12 +127,20 @@ const f = {
 // Commands
 const c = {
   test: {
-    f: (msg, content) => {
-      if(!m.getId(content))
-        return msg.channel.send("Not a valid URL");
+    f: async (msg, content) => {
+      let vId;
       
+      // Starts typing to indicate that its working
       msg.channel.startTyping();
-      let stream = yt(content, { filter : 'audioonly' });
+      
+      // Determines video ID
+      if(m.getId(content))
+        vId = { id: m.getId(content) };
+      else
+        vId = await m.search(msg, content, { add: true });
+      console.log(vId);
+      
+      let stream = yt("https://www.youtube.com/watch?v=" + vId.id, { filter : 'audioonly' });
       let aData = [];
 
       stream.on('data', function(data) {
