@@ -16,6 +16,7 @@ async function update(dT) {
     throw err;
   }
 };
+async function getQuestion(amount, cat, 
 module.exports = function() {
   
   return trivia;
