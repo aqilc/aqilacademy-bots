@@ -146,6 +146,9 @@ module.exports = {
     else
       return false;
   },
+  
+  
+  // Gets JSON from a URL
   parseURL(url) {
     return new Promise((resolve, reject) => {
       https.get(url, (res) => {
@@ -164,5 +167,9 @@ module.exports = {
         reject(error);
       });
     });
-  }
+  },
+  get_categories: async () => {
+    let data = await this.parseURL("https://opentdb.com/api_category.php");
+    return data.trivia_categories
+  },
 }
