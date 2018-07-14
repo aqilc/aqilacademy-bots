@@ -877,7 +877,7 @@ const cmds = {
     desc: "Displays some stats for the bot",
     cat: "utility",
     do: (msg, content) => {
-      msg.channel.send(new Discord.RichEmbed().setTitle("Clyde Stats", client.user.avatarURL).setDescription(`**Memory Usage:** ${(process.memoryUsage().heapUsed / 1048576).toFixed(2)} MB\n**node.js Version:** \`${process.version}\`\n**discord.js Version:** \`v${require("discord.js").version}\`\n**Uptime:** ${globalfunctions.time(client.uptime)}`).setColor(f.color()));
+      msg.channel.send(new Discord.RichEmbed().setAuthor("Clyde Stats", client.user.avatarURL).setDescription(`**Memory Usage:** ${(process.memoryUsage().heapUsed / 1048576).toFixed(2)} MB\n**node.js Version:** \`${process.version}\`\n**discord.js Version:** \`v${require("discord.js").version}\`\n**Uptime:** ${globalfunctions.time(client.uptime)}`).setColor(f.color()));
     },
   },
   testimage: {
