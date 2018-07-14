@@ -156,7 +156,7 @@ module.exports = {
         res.on("data", (chunk) => { data += chunk; });
         res.on("end", () => {
           try {
-            var json =  JSON.parse(data);
+            var json = JSON.parse(data);
             resolve(json);
           } catch(error) {
             reject(error);
@@ -171,5 +171,19 @@ module.exports = {
   get_categories: async () => {
     let data = await this.parseURL("https://opentdb.com/api_category.php");
     return data.trivia_categories
+  },
+  getQuestion: async function(cat, diff, type) {
+    let url = "https://opentdb.com/api.php?amount=1";
+
+    if(cat)
+      url += "&category=" + cat;
+    if(diff)
+      url += "&difficulty=" + ["easy", "medium", "hard"][diff];
+    if(type)
+      url += "&type=" + ["multiple", "boolean"][type];
+
+    let json = await this.parseURL(url);
+    console.log(json.results);
+    return json.results;
   },
 }
