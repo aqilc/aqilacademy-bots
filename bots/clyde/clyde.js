@@ -336,7 +336,7 @@ const cmds = {
     cat: "bot admin",
     perms: "bot admin",
     hidden: true,
-    do: (msg, content) => {
+    do: async (msg, content) => {
       let evalled;
       if((content.startsWith("```js") || content.startsWith("```")) && content.endsWith("```"))
         content.slice(3, -3);
