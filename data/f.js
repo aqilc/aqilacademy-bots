@@ -170,7 +170,7 @@ module.exports = {
   },
   get_categories: async () => {
     let data = await require("./f.js").parseURL("https://opentdb.com/api_category.php");
-    return data.trivia_categories
+    return data.trivia_categories;
   },
   get_question: async function(cat, diff, type) {
     let url = "https://opentdb.com/api.php?amount=1";
