@@ -5,12 +5,13 @@ let trivia = {
   responses: ["Success", "No results", "Invalid parameter", "Token not found", "Token empty"],
 };
 
-function update(dT) {
+async function update(dT) {
   if(dT)
     setTimeout(() => update(true), 3.6e+6);
   
   try {
-    
+    trivia.categories = await f.getCategories();
+    trivia.globalCounts = await f.parseURL("https://opentdb.com/api_count_global.php");
   } catch(err) {
     throw err;
   }
