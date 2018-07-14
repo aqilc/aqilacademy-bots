@@ -6,7 +6,14 @@ let trivia = {
 };
 
 function update(dT) {
+  if(dT)
+    setTimeout(() => update(true), 3.6e+6);
   
+  try {
+    
+  } catch(err) {
+    throw err;
+  }
 };
 module.exports = function() {
   
