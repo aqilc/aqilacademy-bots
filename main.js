@@ -3,6 +3,7 @@ const exists = fs.existsSync('./.data/sqlite.db');
 const sqlite3 = require('sqlite3').verbose();
 const db = new sqlite3.Database('./.data/sqlite.db');
 const http = require('http');
+const https = require("https");
 const express = require("express");
 const app = express();
 

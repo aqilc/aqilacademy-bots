@@ -1,5 +1,6 @@
 // Constants
 const http = require('http');
+const https = require("https");
 const Discord = require("discord.js");
 const client = new Discord.Client();
 const yt = require("ytdl-core");
@@ -32,7 +33,7 @@ function run() {
         ran = err;
       }
 
-      return message.channel.send(new Discord.RichEmbed().setDescription(`**Output:**\`\`\`${eval}\`\`\``).setColor(f.r()));
+      return message.channel.send(new Discord.RichEmbed().setDescription(`**Output:**\`\`\`${ran}\`\`\``).setColor(f.r()));
     }
 
     // Returns if the user is the bot itself

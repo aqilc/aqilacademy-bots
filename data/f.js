@@ -1,5 +1,6 @@
 const db = new (require("sqlite3").verbose()).Database('./.data/sqlite.db');
 const cdata = require("./cd.js");
+const https = require("https");
 
 module.exports = {
   calculate_stats(id) {
@@ -145,4 +146,23 @@ module.exports = {
     else
       return false;
   },
+  parseURL(url) {
+    return new Promise((resolve, reject) => {
+      https.get(url, (res) => {
+        var data = "";
+        res.on("data", (chunk) => { data += chunk; });
+        res.on("end", () => {
+          try {
+            var json =  JSON.parse(data);
+            resolve(json);
+          } catch(error) {
+            reject(error);
+            console.log(data);
+          }
+        });
+      }).on("error", (error) => {
+        reject(error);
+      });
+    });
+  }
 }
