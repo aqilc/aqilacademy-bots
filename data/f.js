@@ -173,18 +173,13 @@ module.exports = {
     return data.trivia_categories
   },
   get_question: async function(cat, diff, type) {
-    return new Promise(async function(rs, rj) {
-      try {
-        let url = "https://opentdb.com/api.php?amount=1";
-        if(cat)
-          url += "&category=" + cat;
-        if(diff)
-          url += "&difficulty=" + ["easy", "medium", "hard"][diff];
-        if(type)
-          url += "&type=" + ["multiple", "boolean"][type];
-        let results = await require("./f.js").parseURL(url).results;
-        rs(results);
-      } catch(err) { rj(err); }
-    });
+    let url = "https://opentdb.com/api.php?amount=1";
+    if(cat)
+      url += "&category=" + cat;
+    if(diff)
+      url += "&difficulty=" + ["easy", "medium", "hard"][diff];
+    if(type)
+      url += "&type=" + ["multiple", "boolean"][type];
+    return require("./f.js").parseURL(url);
   },
 }
