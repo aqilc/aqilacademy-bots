@@ -250,25 +250,9 @@ const f = {
     }
     return cmdDone;
   },// Does a command
-  evalclean: (string) => {
-    if (typeof(string) === "string")
-      return string.replace(/`/g, "`" + String.fromCharCode(8203)).replace(/@/g, "@" + String.fromCharCode(8203));
-    else
-      return string;
-  },// Cleans "evalled"
-  color: () => {
-    return Math.round(Math.random() * 16777215);
-  },// Random color
-  page_maker: (array, num = 10, page = 0, func) => {
-    if(func && typeof func === "function") {
-      for(var i = 0; i < array.slice(page*num, page*num + num).length; i ++) {
-        func(i + page*num, array.slice(page*num, page*num + num)[i]);
-      }
-      return f;
-    }
-    else
-      return array;
-  },// Makes pages for all the things we need pages for :P
+  evalclean: globalfunctions.eclean,// Cleans "evalled"
+  color: globalfunctions.ecol,// Random color
+  page_maker: globalfunctions.page_maker,// Makes pages for all the things we need pages for :P
   add_exp: globalfunctions.add_exp,// Adds EXP to a person
   add_message: (id) => {
     let xp = f.random(10, 20, true);

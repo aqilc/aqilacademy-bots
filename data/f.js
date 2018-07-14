@@ -146,6 +146,25 @@ module.exports = {
     else
       return false;
   },
+  ecol() {
+    return Math.round(Math.random() * 16777215);
+  },
+  eclean(string) {
+    if (typeof(string) === "string")
+      return string.replace(/`/g, "`" + String.fromCharCode(8203)).replace(/@/g, "@" + String.fromCharCode(8203));
+    else
+      return string;
+  },
+  page_maker(array, num = 10, page = 0, func) {
+    if(func && typeof func === "function") {
+      for(var i = 0; i < array.slice(page*num, page*num + num).length; i ++) {
+        func(i + page*num, array.slice(page*num, page*num + num)[i]);
+      }
+      return this;
+    }
+    else
+      return array;
+  },
   
   
   // Gets JSON from a URL
@@ -175,10 +194,10 @@ module.exports = {
   get_question: async function(cat, diff, type) {
     let url = "https://opentdb.com/api.php?amount=1";
     if(cat && cat < 32 && cat > 0)
-      url += "&category=" + require("./trivia.js").get_category(cat);
-    if(diff)
+      url += "&category=" + ~~ cat;
+    if([0, 1, 2].includes(diff))
       url += "&difficulty=" + ["easy", "medium", "hard"][diff];
-    if(type)
+    if([0, 1].includes(type))
       url += "&type=" + ["multiple", "boolean"][type];
     return require("./f.js").parseURL(url);
   },

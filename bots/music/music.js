@@ -6,6 +6,7 @@ const client = new Discord.Client();
 const yt = require("ytdl-core");
 const request = require("request");
 const prefix = ["a."];
+const gFuncs = require("/app/data/f.js");
 
 // Database stuff
 const sqlite3 = require("sqlite3").verbose();
@@ -139,13 +140,6 @@ const m = {
   },
 };
 
-// Non-music functions
-const f = {
-  r: () => {
-    return Math.round(Math.random() * 16777215);
-  }
-};
-
 // Commands
 const c = {
   download: {
@@ -167,7 +161,7 @@ const c = {
       let stream = yt(vid.video_url, { filter : 'audioonly' });
       
       // Sends a message to indicate that the video is being downloaded
-      msg.channel.send(new Discord.RichEmbed().setAuthor(vid.title, msg.author.avatarURL, vid.video_url).setDescription(`Length: ${vid.length_seconds}`));
+      msg.channel.send(new Discord.RichEmbed().setAuthor(vid.title, msg.author.avatarURL, vid.video_url).setDescription(`Length: ${vid.length_seconds}`).setColor(gFuncs.ecol()).setThumbnail(vid.thumbnail_url));
       
       // The downloaded stream buffer data
       let aData = [];
