@@ -164,7 +164,7 @@ const c = {
       console.log(vid);
       
       // Creates stream and downloads it
-      let stream = yt("https://www.youtube.com/watch?v=" + vid.video_id, { filter : 'audioonly' });
+      let stream = yt(vid.video_url, { filter : 'audioonly' });
       
       // The downloaded stream buffer data
       let aData = [];
