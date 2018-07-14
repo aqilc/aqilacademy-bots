@@ -34,7 +34,7 @@ function run() {
         ran = err;
       }
 
-      return message.channel.send(new Discord.RichEmbed().setDescription(`**Output:**\`\`\`${ran}\`\`\``).setColor(f.r()));
+      return message.channel.send(new Discord.RichEmbed().setDescription(`**Output:**\`\`\`${ran}\`\`\``).setColor(gFuncs.ecol()));
     }
 
     // Returns if the user is the bot itself
