@@ -161,10 +161,12 @@ const c = {
         vid = await m.info(m.id(content));
       else
         vid = await m.search(msg, content, { info: true });
-      console.log(vid);
       
       // Creates stream and downloads it
       let stream = yt(vid.video_url, { filter : 'audioonly' });
+      
+      // Sends a message to indicate that the video is being downloaded
+      msg.channel.send(new Discord.RichEmbed().setAuthor(vid.title, msg.author.avatarURL, vid.video_url).setDescription(`Length: ${vid.length_seconds}`));
       
       // The downloaded stream buffer data
       let aData = [];
