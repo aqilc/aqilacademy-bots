@@ -165,6 +165,32 @@ module.exports = {
     else
       return array;
   },
+  time(milliseconds) {
+    let x = milliseconds / 1000;
+    let s = Math.floor(x % 60);
+    x /= 60;
+    let m = Math.floor(x % 60);
+    x /= 60;
+    let h = Math.floor(x % 24);
+    x /= 24;
+    let d = Math.floor(x);
+
+    //Shortens the time message by clearing unnecessary things
+    let timeStuff = "";
+    if (d > 0){
+      timeStuff += `${d} day${(d > 1 ? "s" : "") + ((h > 0 || m > 0 || s > 0) ? ", " : "")}, `;
+    }
+    if (h > 0){
+      timeStuff += `${h} hour${(h > 1 ? "s" : "") + ((m > 0 || s > 0) ? ", " : "")}`;
+    }
+    if (m > 0){
+      timeStuff += `${m} minute${(m > 1 ? "s" : "")  + (s > 0 ? ", " : "")}`;
+    }
+    if (s > 0) {
+      timeStuff += `${(d > 0 || h > 0 || m > 0) ? "and " : ""}${s} second${s > 1 ? "s" : ""}`;
+    }
+    return timeStuff;
+  },
   
   
   // Gets JSON from a URL

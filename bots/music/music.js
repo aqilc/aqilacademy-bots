@@ -161,7 +161,7 @@ const c = {
       let stream = yt(vid.video_url, { filter : 'audioonly' });
       
       // Sends a message to indicate that the video is being downloaded
-      msg.channel.send(new Discord.RichEmbed().setAuthor(vid.title, msg.author.avatarURL, vid.video_url).setDescription(`Length: ${vid.length_seconds}`).setColor(gFuncs.ecol()).setThumbnail(vid.thumbnail_url));
+      msg.channel.send(new Discord.RichEmbed().setAuthor(vid.title, msg.author.avatarURL, vid.video_url).setDescription(`Length: ${vid.length_seconds} seconds(${gFuncs.time(vid.length_seconds * 1000)})`).setColor(gFuncs.ecol()).setThumbnail(vid.thumbnail_url));
       
       // The downloaded stream buffer data
       let aData = [];
