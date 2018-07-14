@@ -108,7 +108,7 @@ const m = {
           
           let data = [];
           if(info && info.info) {
-            if(!info || info.results <= 1)
+            if(!info || ~~ info.results <= 1)
               data = await m.info(json.items[0].id.videoId);
             else {
               do {
