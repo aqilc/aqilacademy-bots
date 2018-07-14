@@ -175,10 +175,6 @@ const c = {
         // Forms data into an attachment
         let buffer = Buffer.concat(aData);
         
-        // Bends title so it can send the title without there being any problems
-        let title = vid.title.replace(/[^a-zA-Z0-9-_() ]/g, '_');
-        console.log(title);
-        
         // Stops typing as it sends the attachment
         msg.channel.stopTyping();
         
@@ -187,7 +183,7 @@ const c = {
           files: [
             {
               attachment: buffer,
-              name: `${title}.mp3`
+              name: `${vid.title}.mp3`
             }
           ]
         });
