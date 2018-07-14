@@ -106,7 +106,7 @@ const trivia = {
   add_question: (question) => {
     trivia.questions.push(question[0]);
   },
-  get_categories: (id) => {
+  get_category: (id) => {
     trivia.update();
     if(!id || id < 0 || id > 32)
       return trivia.categories;

@@ -174,8 +174,8 @@ module.exports = {
   },
   get_question: async function(cat, diff, type) {
     let url = "https://opentdb.com/api.php?amount=1";
-    if(cat)
-      url += "&category=" + cat;
+    if(cat && cat < 32 && cat > 0)
+      url += "&category=" + require("./trivia.js").get_category(cat);
     if(diff)
       url += "&difficulty=" + ["easy", "medium", "hard"][diff];
     if(type)
