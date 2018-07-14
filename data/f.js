@@ -169,10 +169,10 @@ module.exports = {
     });
   },
   get_categories: async () => {
-    let data = await this.parseURL("https://opentdb.com/api_category.php");
+    let data = await require("./f.js").parseURL("https://opentdb.com/api_category.php");
     return data.trivia_categories
   },
-  getQuestion: async function(cat, diff, type) {
+  get_question: async function(cat, diff, type) {
     let url = "https://opentdb.com/api.php?amount=1";
 
     if(cat)
