@@ -176,7 +176,8 @@ const c = {
         let buffer = Buffer.concat(aData);
         
         // Bends title so it can send the title without there being any problems
-        let title = vid.title.replace(/[^a-zA-Z0-9_. ()-]/g, '_');
+        let title = vid.title.replace(/[^a-zA-Z0-9-_() ]/g, '_');
+        console.log(title);
         
         // Stops typing as it sends the attachment
         msg.channel.stopTyping();
