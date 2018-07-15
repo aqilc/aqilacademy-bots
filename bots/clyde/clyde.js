@@ -893,11 +893,22 @@ const cmds = {
   },
   blacklist: {
     a: ["bl"],
-    desc: "Blocks someone from using Clyde.",
-    usage: " (user name, id, or mention)",
+    desc: "Blocks/unblocks someone from using Clyde.",
+    usage: " [user name, id, or mention] [reason] (T:[time])",
     cat: "bot admin",
     perms: "bot admin",
-    do: (msg, content) => {},
+    do: (msg, content) => {
+      if(content.split(" ").length < 2)
+        return msg.reply("Please fill in all the parameters!");
+      let reason = content.slice(content.indexOf(" ") + 1),
+          user = f.get_id(msg, content.split(" ")[0]);
+      if(!client.users.get(
+      db.get(`SELECT * FROM blacklist WHERE user = "${id}"`, (err, black) => {
+        if(!black) {
+          db.run(`INSERT INTO blacklist (user, reason, by, date, time) VALUES ("${msg.author.id}", b
+        }
+      });
+    },
   },
   
   // For testing purposes
