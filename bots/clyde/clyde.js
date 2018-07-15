@@ -915,8 +915,6 @@ const cmds = {
     perms: "bot admin",
     hidden: true,
     do: async (msg, content) => {
-      // Turns the envirnment restrictive
-      'use strict';
       let canvas, ctx;
       switch(content.split(" ")[0]) {
         case "hello":
@@ -1004,18 +1002,25 @@ const cmds = {
           ctx.font = "bold 6px arial";
           ctx.fillText(text[1], p[0] + p[2]/2 - ctx.measureText(text[1]).width/2, p[1] + p[3]/2 + 7);
           
+          // Level text
+          let text2 = "Level " + levels.indexOf(bar_exp[0]) + 1;
+          let { font: font1, size: size1 } = f.autofont(text2, canvas, 105, 175, 15, { before: "bold", after: "Arial" });
+          ctx.font = font1;
+          ctx.fillText(
+          
           // Avatar
+          ctx.save();
           f.round_rect(ctx, 10, 10, 85, 85, 4, false, false);
           ctx.clip();
           ctx.drawImage(avatar, 10, 10, 85, 85);
           
           // Labels avatar with user tag
-          let { font: font, size: size } = f.autofont(user.tag, canvas, 20, 85, 12, { before: "bold", after: "Arial" });
+          let { font: font2, size: size2 } = f.autofont(user.tag, canvas, 20, 85, 12, { before: "bold", after: "Arial" });
           ctx.fillStyle = "rgba(255, 255, 255, 0.5)";
-          ctx.font = font;
-          f.round_rect(ctx, 85 - ctx.measureText(user.tag).width, 95 - size - size/4, ctx.measureText(user.tag).width + 10, size + size/4, { tl: 4 }, true, false);
+          ctx.font = font2;
+          f.round_rect(ctx, 85 - ctx.measureText(user.tag).width, 95 - size2 - size2/4, ctx.measureText(user.tag).width + 10, size2 + size2/4, { tl: 4 }, true, false);
           ctx.fillStyle = "rgb(50, 50, 50)";
-          ctx.fillText(user.tag, 90 - ctx.measureText(user.tag).width, 95 - size/4);
+          ctx.fillText(user.tag, 90 - ctx.measureText(user.tag).width, 95 - size2/4);
           
           // Stops typing to show its done calculating
           msg.channel.stopTyping();
