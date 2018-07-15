@@ -58,7 +58,6 @@ function run() {
       }
     } catch(error) {
       console.log("Music error: " + error);
-      
     }
   });
 }

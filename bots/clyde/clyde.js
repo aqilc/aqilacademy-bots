@@ -882,6 +882,15 @@ const cmds = {
       msg.channel.send(new Discord.RichEmbed().setAuthor("Clyde Stats", client.user.avatarURL).setDescription(`**Memory Usage:** ${(process.memoryUsage().heapUsed / 1048576).toFixed(2)} MB\n**node.js Version:** \`${process.version}\`\n**discord.js Version:** \`v${require("discord.js").version}\`\n**Uptime:** ${globalfunctions.time(client.uptime)}`).setColor(f.color()));
     },
   },
+  testtrivia: {
+    a: ["tt"],
+    desc: "Mimics a trivia question(for testing purposes)",
+    cat: "utility",
+    perms: "",
+    hidden: false,
+    del: false,
+    do: (msg, content) => {},
+  },
   testimage: {
     a: ['ti'],
     desc: "For testing image production",
