@@ -891,10 +891,20 @@ const cmds = {
       msg.channel.send(new Discord.RichEmbed().setAuthor("Clyde Stats", client.user.avatarURL).setDescription(`**Memory Usage:** ${(process.memoryUsage().heapUsed / 1048576).toFixed(2)} MB\n**node.js Version:** \`${process.version}\`\n**discord.js Version:** \`v${require("discord.js").version}\`\n**Uptime:** ${globalfunctions.time(client.uptime)}`).setColor(f.color()));
     },
   },
+  blacklist: {
+    a: ["bl"],
+    desc: "Blocks someone from using Clyde.",
+    usage: " (user name, id, or mention)",
+    cat: "bot admin",
+    perms: "bot admin",
+    do: (msg, content) => {},
+  },
+  
+  // For testing purposes
   testtrivia: {
     a: ["tt"],
     desc: "Mimics a trivia question(for testing purposes)",
-    cat: "utility",
+    cat: "bot admin",
     perms: "bot admin",
     hidden: true,
     do: async (msg, content) => {
@@ -911,7 +921,7 @@ const cmds = {
     a: ['ti'],
     desc: "For testing image production",
     usage: " [type] (parameters)",
-    cat: "utility",
+    cat: "bot admin",
     perms: "bot admin",
     hidden: true,
     do: async (msg, content) => {
