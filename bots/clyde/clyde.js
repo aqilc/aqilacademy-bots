@@ -972,7 +972,6 @@ const cmds = {
               // User's Avatar
               { body: buffer3 } = await snekfetch.get(user.displayAvatarURL),
               avatar = await loadImage(buffer3);
-          console.log(bar_exp);
           
           // Background
           ctx.drawImage(bg, 0, 0, canvas.width, canvas.height);
@@ -1001,7 +1000,7 @@ const cmds = {
           ];
           ctx.fillText(text[0], p[0] + p[2]/2 - ctx.measureText(text[0]).width/2, p[1] + p[3]/2 + 1);
           ctx.font = "bold 6px arial";
-          ctx.fillText(text[1], p[0] + p[2]/2 - ctx.measureText(text[1]).width/2, p[1] + p[3]/2 + 7);          
+          ctx.fillText(text[1], p[0] + p[2]/2 - ctx.measureText(text[1]).width/2, p[1] + p[3]/2 + 7);
           
           // Avatar
           f.round_rect(ctx, 10, 10, 85, 85, 4, false, false);
