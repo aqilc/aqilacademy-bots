@@ -896,7 +896,7 @@ const cmds = {
     desc: "Mimics a trivia question(for testing purposes)",
     cat: "utility",
     perms: "bot admin",
-    hidden: false,
+    hidden: true,
     do: async (msg, content) => {
       let question = (await globalfunctions.get_question(32, 0, 0)).results[0];
       let answers = [question.correct_answer].concat(question.incorrect_answers), string = "";
