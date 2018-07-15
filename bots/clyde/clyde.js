@@ -143,6 +143,13 @@ Array.prototype.getObj = function (num, value, before) {
   
   return arr;
 };
+Array.prototype.shuffle = function () {
+  let arr = this, narr = [];
+  do {
+    let array = f.random(0, arr.length
+    arr.
+  } while(arr.length >
+};
 const f = {
   log: (type, log) => {
     let chnl = { main: "382499510401630209", chat: "433004874930716673", announce: "382353531837087745", staff: "382530174677417984", exp: "407643635358892032" }[type];
@@ -886,10 +893,14 @@ const cmds = {
     a: ["tt"],
     desc: "Mimics a trivia question(for testing purposes)",
     cat: "utility",
-    perms: "",
+    perms: "bot admin",
     hidden: false,
-    del: false,
-    do: (msg, content) => {},
+    do: async (msg, content) => {
+      let question = globalfunctions.get_question(32, 0, 0);
+      let answers = [question.correct_answer].concat(questions.incorrect_answers);
+      answers.
+      msg.channel.send(new Discord.RichEmbed().setAuthor(question.question, msg.author.avatarURL).setDescription(`**Answers:**\n 
+    },
   },
   testimage: {
     a: ['ti'],
