@@ -904,7 +904,7 @@ const cmds = {
       for(let i = 0; i < answers.length; i ++)
         string += `  **${i + 1}.** ${answers[i]}\n`;
       
-      msg.channel.send(new Discord.RichEmbed().setAuthor(question.question.replace(/&quot;/g, '"').replace(/&#039;/g, "'"), msg.author.avatarURL).setDescription(`**Answers:**\n${string}`).setColor(f.color()));
+      msg.channel.send(new Discord.RichEmbed().setAuthor(question.question.replace(/&quot;/g, '"').replace(/&#039;/g, "'"), msg.author.avatarURL).setDescription(`**Answers:**\n${string}`).setColor(f.color()).addField("Stats", `**Difficulty:);
     },
   },
   testimage: {
