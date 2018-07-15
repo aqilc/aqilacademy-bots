@@ -915,6 +915,8 @@ const cmds = {
     perms: "bot admin",
     hidden: true,
     do: async (msg, content) => {
+      // Turns the envirnment restrictive
+      'use strict';
       let canvas, ctx;
       switch(content.split(" ")[0]) {
         case "hello":
