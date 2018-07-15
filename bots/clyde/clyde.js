@@ -144,11 +144,14 @@ Array.prototype.getObj = function (num, value, before) {
   return arr;
 };
 Array.prototype.shuffle = function () {
+  console.log(this);
   let arr = this, narr = [];
-  do {
-    let array = f.random(0, arr.length
-    arr.
-  } while(arr.length >
+  while(arr.length > 0) {
+    let num = f.random(0, arr.length - 1, true);
+    arr.splice(num, 1);
+    narr.push(arr[num]);
+  }
+  return narr;
 };
 const f = {
   log: (type, log) => {
@@ -896,10 +899,13 @@ const cmds = {
     perms: "bot admin",
     hidden: false,
     do: async (msg, content) => {
-      let question = globalfunctions.get_question(32, 0, 0);
-      let answers = [question.correct_answer].concat(questions.incorrect_answers);
-      answers.
-      msg.channel.send(new Discord.RichEmbed().setAuthor(question.question, msg.author.avatarURL).setDescription(`**Answers:**\n 
+      let question = (await globalfunctions.get_question(32, 0, 0)).results[0];
+      let answers = [question.correct_answer].concat(question.incorrect_answers), string = "";
+      answers = answers.shuffle();
+      for(let i = 0; i < answers.length; i++)
+        string += ` **${i + 1}.** ${answers[i]}\n`;
+      
+      msg.channel.send(new Discord.RichEmbed().setAuthor(question.question.replace(/&quot;/g, '"').replace(/&#039;/g, "'"), msg.author.avatarURL).setDescription(`**Answers:**\n${string}`));
     },
   },
   testimage: {
