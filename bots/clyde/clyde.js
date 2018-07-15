@@ -1003,10 +1003,10 @@ const cmds = {
           ctx.fillText(text[1], p[0] + p[2]/2 - ctx.measureText(text[1]).width/2, p[1] + p[3]/2 + 7);
           
           // Level text
-          let text2 = "Level " + levels.indexOf(bar_exp[0]) + 1;
-          let { font: font1, size: size1 } = f.autofont(text2, canvas, 105, 175, 15, { before: "bold", after: "Arial" });
+          let text2 = "Level " + levels.indexOf(bar_exp[0]);
+          let { font: font1, size: size1 } = f.autofont(text2, canvas, 105, 185, 30, { before: "bold", after: "Arial" });
           ctx.font = font1;
-          ctx.fillText(
+          ctx.fillText(text2, 105, 30 + size1);
           
           // Avatar
           ctx.save();
