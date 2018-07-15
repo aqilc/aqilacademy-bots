@@ -255,17 +255,17 @@ const f = {
   page_maker: globalfunctions.page_maker,// Makes pages for all the things we need pages for :P
   add_exp: globalfunctions.add_exp,// Adds EXP to a person
   add_message: (id) => {
-    let xp = f.random(10, 20, true);
+    let xp = f.random(10, 20, true), jackpot = 0;
     if(Math.random() >= 0.999) {
-      xp = f.random(500, 50000, true) * 10;
+      jackpot = f.random(500, 50000, true) * 10;
       client.users.get(id).send(new Discord.RichEmbed().setAuthor("YOU JUST WON A JACKPOT!", client.users.get(id).avatarURL).setDescription(`You have earned **${xp} EXP**!\nGreat job, keep talking to earn more prizes like these.`).setColor(f.color()));
     }
     if([0, 6].includes(new Date().getDay()))
       xp *= 2;
     db.get(`SELECT * FROM users WHERE id = "${id}"`, (err, res) => {
       if(!res)
-        return db.run(`INSERT INTO users (id, points, realpoints, messages, created) VALUES (?, ?, ?, ?, ?)`, [id, xp, 0, 1, new Date().valueOf()]) && console.log("Created user: " + id);
-      db.run(`UPDATE users SET messages = ${res.messages + 1}, points = ${res.points + xp}, realpoints = ${res.realpoints + xp} WHERE id = "${id}"`);
+        return db.run(`INSERT INTO users (id, points, realpoints, messages, created) VALUES (?, ?, ?, ?, ?)`, [id, xp + jackpot, xp, 1, new Date().valueOf()]) && console.log("Created user: " + id);
+      db.run(`UPDATE users SET messages = ${res.messages + 1}, points = ${res.points + xp + jackpot}, realpoints = ${res.realpoints + xp} WHERE id = "${id}"`);
     });
     return f;
   },// Adds a "message"'s amount of stuff to a person
