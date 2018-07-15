@@ -183,7 +183,7 @@ const c = {
           files: [
             {
               attachment: buffer,
-              name: `${vid.title.replace(/\/\\/g, "_")}.mp3`
+              name: `${vid.title.replace(/\W[^ .()-]/g, "_")}.mp3`
             }
           ]
         });
