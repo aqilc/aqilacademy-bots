@@ -902,9 +902,9 @@ const cmds = {
       let answers = [question.correct_answer].concat(question.incorrect_answers), string = "";
       answers = answers.shuffle();
       for(let i = 0; i < answers.length; i ++)
-        string += `  **${i + 1}.** ${answers[i]}\n`;
+        string += `    **${i + 1}.** ${answers[i]}\n`;
       
-      msg.channel.send(new Discord.RichEmbed().setAuthor(question.question.replace(/&quot;/g, '"').replace(/&#039;/g, "'"), msg.author.avatarURL).setDescription(`**Answers:**\n${string}`).setColor(f.color()).addField("Stats", `**Difficulty:);
+      msg.channel.send(new Discord.RichEmbed().setAuthor(question.question.replace(/&quot;/g, '"').replace(/&#039;/g, "'"), msg.author.avatarURL).setDescription(`**Answers:**\n${string}`).setColor(f.color()).addField("Stats", `**Difficulty:** ${question.difficulty}\n**Category:** ${question.category}`, true));
     },
   },
   testimage: {
