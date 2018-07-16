@@ -899,13 +899,15 @@ const cmds = {
     perms: "bot admin",
     do: async (msg, content) => {
       let reason = content.slice(content.indexOf(" ") + 1) || "",
-          time = content.slice(content.indexOf("T:") + 1) || void 0,
+          time = Number(content.slice(content.indexOf("T:") + 1)),
           user = await client.fetchUser(f.get_id(msg, content.split(" ")[0]));
+      if(isNaN(time))
+        time = void 0;
       if(!user)
         return msg.reply("Specified user does not exist!");
       db.get(`SELECT * FROM blacklist WHERE user = "${user.id}"`, (err, black) => {
         if(!black) {
-          db.run(`INSERT INTO blacklist (user, reason, by, date, time) VALUES ("${user.id}", ${reason === "" ? "No Reason" : reason}, "${msg.author.id}", ${new Date().valueOf()}, ${time || 0})`);
+          db.run(`INSERT INTO blacklist (user, reason, by, date, time) VALUES (?, ?, ?, ?, ?)`, [user.id, reason === "" ? "No Reason" : reason, msg.author.id, new Date().valueOf(), time || 0]);
           msg.channel.send(new Discord.RichEmbed().setAuthor(`${user.tag} has been blacklisted!`, user.avatarURL).setDescription(`**Reason:** ${reason + (time ? `\n**For:** ${globalfunctions.time(time * 60000)}` : "")}`));
         } else {
           db.run(`DELETE FROM blacklist WHERE user = "${user.id}"`);
