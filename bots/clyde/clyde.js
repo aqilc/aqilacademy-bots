@@ -305,15 +305,22 @@ const f = {
     };
     for (var i in cmds) {
       if((cmds[i].a && cmds[i].a.includes(message.content.slice(prefix.length).split(" ")[0])) || message.content.slice(prefix.length).split(" ")[0] === i) {
-        db.get(`SELECT * FROM users WHERE id = "${message.author.id}"`, (err, res) => {
-          if(perms[cmds[i].perms][0])
-            return perms[cmds[i].perms][1]();
-          if(content.endsWith("-d"))
-            message.delete() && content.slice(0, -2);
-          cmdDone = true;
-          if(cmds[i].del === true)
-            message.delete();
-          cmds[i].do(message, content.includes(" ") ? content.slice(message.content.indexOf(" ")).trim() : "");
+        db.get(`SELECT * FROM blacklist WHERE user = "${message.author.id}"`, (err, black) => {
+          if(black)
+            return message.reply("You are blacklisted from the bot! You cannot use any of its commands").then(m => {
+              m.delete(5000);
+              message.delete(5000);
+            }).catch(console.log);
+          db.get(`SELECT * FROM users WHERE id = "${message.author.id}"`, (err, res) => {
+            if(perms[cmds[i].perms][0])
+              return perms[cmds[i].perms][1]();
+            if(content.endsWith("-d"))
+              message.delete() && content.slice(0, -2);
+            cmdDone = true;
+            if(cmds[i].del === true)
+              message.delete();
+            cmds[i].do(message, content.includes(" ") ? content.slice(message.content.indexOf(" ")).trim() : "");
+          });
         });
         break;
       }
