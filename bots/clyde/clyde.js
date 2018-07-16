@@ -17,6 +17,9 @@ const querystring = require("querystring");
 // Prefix
 const prefix = "c.";
 
+// Cooldowns
+const cooldowns = {};
+
 // The Client
 const client = new Discord.Client();
 client.login(process.env.TOKENC);
