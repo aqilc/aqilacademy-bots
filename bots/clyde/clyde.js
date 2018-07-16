@@ -44,8 +44,8 @@ function run() {
                     db.run(`DELETE FROM waiting WHERE for = "${id}"`);
                     msg.channel.send(`Thanks! You and <@${id}> have been entered into the election!`);
                     client.users.get(id).send(`<@${msg.author.id}> has approved your request to be your Vice President! You both have been put into the Election.`);
-                    msg.guild.members.get(id).addRole(msg.guild.roles.find("name", "Candidate").id, "Elections")
-                    msg.member.addRole(msg.guild.roles.find("name", "Candidate").id, "Elections")
+                    client.guilds.get("294115797326888961").members.get(id).addRole(client.guilds.get("294115797326888961").roles.find("name", "Candidate").id, "Elections")
+                    client.guilds.get("294115797326888961").members.get(msg.author.id).addRole(client.guilds.get("294115797326888961").roles.find("name", "Candidate").id, "Elections")
                   } else if (msg.content === "no") {
                     db.run(`DELETE FROM waiting WHERE id = "${msg.author.id}"`);
                     msg.channel.send(`Thanks! <@${id}> has been informed about your rejection immediately.`);
@@ -693,7 +693,7 @@ const cmds = {
         db.run(`DELETE FROM waiting WHERE id = 0`);
         db.run("DELETE FROM election");
         msg.guild.channels.get(data.echnl).overwritePermissions(msg.guild.roles.get("294115797326888961"), { READ_MESSAGES: false });
-        client.channels.get(data.echnl).send(new Discord.RichEmbed().setAuthor("Election has officially stopped by " + msg.author.tag, msg.author.avatarURL).setDescription("There might have been technical problems so please don't be angry"));
+        client.channels.get(data.echnl).send(new Discord.RichEmbed().setAuthor("Election has officially stopped by " + msg.author.tag, msg.author.avatarURL).setDescription("There might have been technical problems so please don't be angry").setColor(f.color()));
         msg.reply("Ended Election #" + res[res.length-1].num)
       });
     },
