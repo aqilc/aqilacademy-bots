@@ -982,13 +982,17 @@ const cmds = {
         randomcat: {
           a: ["rc"],
           i: "Sends a random cat picture!",
-          f: async function() {
-            let { body: catpic } = await snekfetch.get('https://aws.random.cat/meow');
-            msg.channel.send("**Here is your random cat:**", catpic.file)
+          f: async function(mess) {
+            const { body } = await snekfetch.get('https://aws.random.cat/meow');
+            msg.channel.send(body.file);
           }
         }
       };
-      
+      for(let i in tags) {
+        if(content.split(" ")[0] == i || (i.a && i.a.includes(content.split(" ")[0])))
+           return tags[content.split(" ")[0]].f(content.slice(content.indexOf(" ") + 1));
+      }
+      msg.reply("Tag doesn't exist!");
     },
   },
   
