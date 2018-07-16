@@ -24,6 +24,7 @@ const cooldowns = {};
 const client = new Discord.Client();
 client.login(process.env.TOKENC);
 
+// Runs the bot
 function run() {
   
   // Events
