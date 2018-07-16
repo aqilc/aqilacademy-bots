@@ -894,19 +894,24 @@ const cmds = {
   blacklist: {
     a: ["bl"],
     desc: "Blocks/unblocks someone from using Clyde.",
-    usage: " [user name, id, or mention] [reason] (T:[time])",
+    usage: " [user name, id, or mention] (reason) (T:[time])",
     cat: "bot admin",
     perms: "bot admin",
-    do: (msg, content) => {
-      if(content.split(" ").length < 2)
+    do: async (msg, content) => {
+      if(content.split(" ").length < 1)
         return msg.reply("Please fill in all the parameters!");
       let reason = content.slice(content.indexOf(" ") + 1),
-          user = f.get_id(msg, content.split(" ")[0]);
-      if(!client.users.get(
-      db.get(`SELECT * FROM blacklist WHERE user = "${id}"`, (err, black) => {
+          time = content.slice(content.indexOf("T:") + 1) || void 0,
+          user = await client.fetchUser(f.get_id(msg, content.split(" ")[0]));
+      if(!user)
+        return msg.reply("Specified user does not exist!");
+      db.get(`SELECT * FROM blacklist WHERE user = "${user.id}"`, (err, black) => {
         if(!black) {
-          db.run(`INSERT INTO blacklist (user, reason, by, date, time) VALUES ("${msg.author.id}", b
-        }
+          db.run(`INSERT INTO blacklist (user, reason, by, date, time) VALUES ("${user.id}", "${reason === "" ? "No Reason" : reason}", "${msg.author.id}", ${new Date().valueOf()}, ${time || 0})`);
+          msg.channel.send(new Discord.RichEmbed().setAuthor(`${user.tag} has been blacklisted!`, user.avatarURL).setDescription(`**Reason:** ${reason + (time ? `\n**For:** ${f.time(time * 60000)}` : "")}`));
+        } else {
+          db.run(`DELETE FROM blacklist WHERE user = "${user.id}"`);
+          msg.channel.send(new Discord.RichEmbed().setAuthor(`${user.tag} has been removed from the blacklist!`, user.avatarURL).setDescription(`**Reason:** ${reason + (time ? `\n**For:** ${f.time(time * 60000)}` : "")}`));
       });
     },
   },
