@@ -111,6 +111,92 @@ function run() {
     })
     db.run(`DELETE * FROM users WHERE id = "${member.user.id}"`);
   });
+  
+  // Election voting systems
+  client.on("messageReactionAdd", (reaction, user) => {
+    console.log(user.tag + " added " + reaction.emoji.name);
+    if(reaction.emoji.name !== "👍")
+      return;
+    if(reaction.message.channel.id !== data.echnl)
+      return;
+    db.get("SELECT * FROM elections ORDER BY end DESC", (err, row) => {
+      if(!row)
+        return;
+
+      if(row.end < new Date().valueOf())
+        return;
+
+      db.get(`SELECT * FROM election WHERE msgId = "${reaction.message.id}"`, (err, res) => {
+        if(!res)
+          return;
+        if(user.id === res.id || user.id === res.vId)
+          user.send("You can only vote for someone other than you or your vice president!").catch(console.log) && reaction.remove(user);
+
+        db.get(`SELECT * FROM users WHERE id = "${user.id}"`, (err, ur) => {
+          if(err)
+            return console.log(err);
+          if(!ur || (ur.realpoints > ur.points && ur.realpoints < 1000) || ur.points < 1000)
+            user.send("You need **1000 EXP** to vote in the AqilAcademy Elections!").catch(console.log) && reaction.remove(user);
+          db.get(`SELECT * FROM voters WHERE id = "${user.id}"`, (err, voter) => {
+            if(err)
+              return console.log(err);
+            if(voter)
+              user.send("You have already voted!").catch(console.log) && reaction.remove(user);
+            db.run(`INSERT INTO voters (id, for, date, election) VALUES (?, ?, ?, ?)`, [ user.id, res.id, new Date().valueOf(), row.num ]);
+            db.run(`UPDATE election SET votes = ${reaction.count - 1} WHERE id = "${res.id}"`);
+            user.send(`Your vote for <@${reaction.message.author.id}> has been recorded!`);
+          });
+        });
+      });
+    });
+  });
+  client.on("messageReactionRemove", (reaction, user) => {
+    console.log(user.tag + " removed " + reaction.emoji.name);
+    if(reaction.emoji.name !== "👍")
+      return;
+    if(reaction.message.channel.id !== data.echnl)
+      return;
+    db.get("SELECT * FROM elections ORDER BY end DESC", (err, row) => {
+      if(!row)
+        return;
+
+      if(row.end < new Date().valueOf())
+        return;
+
+      db.get(`SELECT * FROM election WHERE msgId = "${reaction.message.id}"`, (err, res) => {
+        if(!res)
+          return user.send(`No one running under this message`);
+        user.send(`Successfully removed your vote for <@${res.id}>`);
+
+        db.run(`DELETE FROM voters WHERE id = "${user.id}"`);
+        db.run(`UPDATE election SET votes = ${reaction.count - 1} WHERE id = "${res.id}"`);
+      });
+    });
+  });
+  client.on('raw', async event => {
+    const events = {
+      MESSAGE_REACTION_ADD: 'messageReactionAdd',
+      MESSAGE_REACTION_REMOVE: 'messageReactionRemove',
+    };
+    if (!events.hasOwnProperty(event.t)) return;
+
+    const { d: data } = event;
+    const user = client.users.get(data.user_id);
+    const channel = client.channels.get(data.channel_id) || await user.createDM();
+
+    if (channel.messages.has(data.message_id)) return;
+
+    const message = await channel.fetchMessage(data.message_id);
+    const emojiKey = (data.emoji.id) ? `${data.emoji.name}:${data.emoji.id}` : data.emoji.name;
+    let reaction = message.reactions.get(emojiKey);
+
+    if (!reaction) {
+      const emoji = new Discord.Emoji(client.guilds.get(data.guild_id), data.emoji);
+      reaction = new Discord.MessageReaction(message, emoji, 1, data.user_id === client.user.id);
+    }
+
+    client.emit(events[event.t], reaction, user);
+  });
 };
 
 // All channels needed to run bot
@@ -165,37 +251,7 @@ const f = {
     db.get("SELECT * FROM elections ORDER BY end DESC", (err, elec) => {
       if(!elec || elec.end < new Date().valueOf())
         return;
-
-      setInterval(async () => {
-        db.all("SELECT * FROM election", async (err, cands) => {
-          if(!cands) 
-            return;
-
-          let cids = cands.map(c => c.id).concat(cands.map(c => c.vId));
-          console.log(cids);
-          for(let i of cands) {
-            let mess = await client.channels.get(data.echnl).fetchMessage(i.msgId);
-            if(!mess.reactions.array().filter(r => r.emoji.name === "👍")[0])
-              return;
-            for(let h of mess.reactions.array().filter(r => r.emoji.name === "👍")[0].users.array()) {
-              if(cids.includes(h.id)) {
-                let sent = await h.send(`Your vote for <@${i.id === h.id ? i.id : (i.vId === h.id ? i.id : "noone")}> has been removed because you cannot vote for yourself or your VP`).catch(console.log);
-                return mess.reactions.array().filter(r => r.emoji.name === "👍")[0].remove(h);
-              }
-            }
-            db.run(`UPDATE election SET votes = ${mess.reactions.array().filter(r => r.emoji.name === "👍")[0].count - 1} WHERE msgId = "${i.msgId}"`);
-            db.all("SELECT * FROM voters", (err, voters) => {
-              for(let h of mess.reactions.array().filter(r => r.emoji.name === "👍")[0].users.array()) {
-                for(let j of voters) {
-                  if(j.id === h.id && j.for === i.id)
-                    return;
-                  //db.run(`INSERT INTO voters (id, for, election, date) VALUES ("${h.id}", "${i.id}", ${elec.num}, ${new Date().valueOf()})`);
-                }
-              }
-            });
-          }
-        });
-      }, 60000);
+      
       setTimeout(() => {
         db.run("SELECT * FROM election ORDER BY votes", (err, res) => {
           let winner = "";
