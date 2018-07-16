@@ -915,7 +915,7 @@ const cmds = {
         severity = isNaN(Number(content.split("S:")[1])) || Number(content.split("S:")[1]) < 1 ? 1 : Number(content.split("S:")[1]);
       else
         reason = content;
-      
+      msg.channel.send(new Discord.RichEmbed().setAuthor(`Warned ${client.users.get(id) || id}`, client.users.get(id).avatarURL || msg.author.avatarURL).setDescription(`**For:** ${reason}`));
       f.warn(msg.author.id, id, reason, severity);
     },
   },
