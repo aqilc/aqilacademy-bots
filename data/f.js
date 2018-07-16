@@ -213,13 +213,15 @@ module.exports = {
       });
     });
   },
+  
+  // Trivia Functions
   get_categories: async () => {
     let data = await require("./f.js").parseURL("https://opentdb.com/api_category.php");
     return data.trivia_categories;
   },
   get_question: async function(cat, diff, type) {
     let url = "https://opentdb.com/api.php?amount=1";
-    if(cat && cat < 32 && cat > 0)
+    if(cat && cat <= 32 && cat >= 9)
       url += "&category=" + ~~ cat;
     if([0, 1, 2].includes(diff))
       url += "&difficulty=" + ["easy", "medium", "hard"][diff];
