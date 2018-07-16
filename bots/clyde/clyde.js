@@ -998,7 +998,7 @@ const cmds = {
         }
       };
       for(let i in tags) {
-        if(content.split(" ")[0] == i || (i.a && i.a.includes(content.split(" ")[0])))
+        if(content.split(" ")[0] == i || (tags[i].a && tags[i].a.includes(content.split(" ")[0])))
            return tags[content.split(" ")[0]].f(content.slice(content.indexOf(" ") + 1));
       }
       msg.reply("Tag doesn't exist!");
