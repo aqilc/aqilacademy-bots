@@ -172,7 +172,10 @@ const c = {
       stream.on('end', function() {
         
         // Forms data into an attachment
-        let buffer = Buffer.concat(aData);
+        let buffer = Buffer.concat(aData),
+            
+        // Transforms the title into a file name
+            title = vid.title.replace(/\W/g, "_")
         
         // Stops typing as it sends the attachment
         msg.channel.stopTyping();
@@ -182,7 +185,7 @@ const c = {
           files: [
             {
               attachment: buffer,
-              name: `${vid.title.replace(/\W[^ .()-]/g, "_")}.mp3`
+              name: `${title}.mp3`
             }
           ]
         });
