@@ -983,8 +983,13 @@ const cmds = {
           a: ["rc"],
           i: "Sends a random cat picture!",
           f: async function(mess) {
-            const { body } = await snekfetch.get('https://aws.random.cat/meow');
-            msg.channel.send(body.file);
+            try {
+              let { body } = await snekfetch.get('https://aws.random.cat/meow');
+              msg.channel.send("🐱 **Here is your random cat:**", new Discord.RichEmbed().setImage(body.file).setColor(f.color()));
+            } catch (err) {
+              msg.channel.send("Sorry, we are experiencing technical difficulties... Try again later");
+              console.log(`Cat Error: ${err}`);
+            }
           }
         }
       };
