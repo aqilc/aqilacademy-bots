@@ -908,10 +908,10 @@ const cmds = {
       db.get(`SELECT * FROM blacklist WHERE user = "${user.id}"`, (err, black) => {
         if(!black) {
           db.run(`INSERT INTO blacklist (user, reason, by, date, time) VALUES (?, ?, ?, ?, ?)`, [user.id, reason === "" ? "No Reason" : reason, msg.author.id, new Date().valueOf(), time || 0]);
-          msg.channel.send(new Discord.RichEmbed().setAuthor(`${user.tag} has been blacklisted!`, user.avatarURL).setDescription(`**Reason:** ${reason + (time ? `\n**For:** ${globalfunctions.time(time * 60000)}` : "")}`));
+          msg.channel.send(new Discord.RichEmbed().setAuthor(`${user.tag} has been blacklisted!`, user.avatarURL).setDescription(`**Reason:** ${reason + (time ? `\n**For:** ${globalfunctions.time(time * 60000)}` : "")}`).setColor(f.color()));
         } else {
           db.run(`DELETE FROM blacklist WHERE user = "${user.id}"`);
-          msg.channel.send(new Discord.RichEmbed().setAuthor(`${user.tag} has been removed from the blacklist!`, user.avatarURL).setDescription(`**Had been blacklisted for:** ${new Date().valueOf() - black.date}`));
+          msg.channel.send(new Discord.RichEmbed().setAuthor(`${user.tag} has been removed from the blacklist!`, user.avatarURL).setDescription(`**Had been blacklisted for:** ${globalfunctions.time(new Date().valueOf() - black.date)}`).setColor(f.color()));
         }
       });
     },
