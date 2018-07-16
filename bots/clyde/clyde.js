@@ -905,7 +905,7 @@ const cmds = {
         return msg.reply("Specified user does not exist!");
       db.get(`SELECT * FROM blacklist WHERE user = "${user.id}"`, (err, black) => {
         if(!black) {
-          db.run(`INSERT INTO blacklist (user, reason, by, date, time) VALUES ("${user.id}", "${reason === "" ? "No Reason" : reason}", "${msg.author.id}", ${new Date().valueOf()}, ${time || 0})`);
+          db.run(`INSERT INTO blacklist (user, reason, by, date, time) VALUES ("${user.id}", ${reason === "" ? "No Reason" : reason}, "${msg.author.id}", ${new Date().valueOf()}, ${time || 0})`);
           msg.channel.send(new Discord.RichEmbed().setAuthor(`${user.tag} has been blacklisted!`, user.avatarURL).setDescription(`**Reason:** ${reason + (time ? `\n**For:** ${globalfunctions.time(time * 60000)}` : "")}`));
         } else {
           db.run(`DELETE FROM blacklist WHERE user = "${user.id}"`);
