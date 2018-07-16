@@ -885,7 +885,7 @@ const cmds = {
     usage: " (trivia { (question) --- [(answer) || (answer) (true if right)] --- (difficulty(1-5)) }) OR (server (suggestion)) OR (rules (suggestion)) OR (emoji :(name): (link or attached image)) OR (bot (bot name) --- (bot description) --- (bot invite link))",
     cat: "utility",
     hidden: true,
-    do: (msg, content) => {
+    do(msg, content) {
     
     },
   },
@@ -894,7 +894,7 @@ const cmds = {
     usage: " [user id or mention] [reason] (S:[severity])",
     cat: "utility",
     perms: "mod",
-    do: (msg, content) => {
+    do(msg, content) {
       let id,
           reason,
           severity;
@@ -919,7 +919,7 @@ const cmds = {
     a: ["warns"],
     desc: "Shows you your warns/infractions",
     cat: "utility",
-    do: (msg, content) => {
+    do(msg, content) {
       let id = f.get_id(msg, content.split(" ")[0]) || msg.author.id,
           txt = "";
       
@@ -943,7 +943,7 @@ const cmds = {
   bot: {
     desc: "Displays some stats for the bot",
     cat: "utility",
-    do: (msg, content) => {
+    do(msg, content) {
       msg.channel.send(new Discord.RichEmbed().setAuthor("Clyde Stats", client.user.avatarURL).setDescription(`**Memory Usage:** ${(process.memoryUsage().heapUsed / 1048576).toFixed(2)} MB\n**node.js Version:** \`${process.version}\`\n**discord.js Version:** \`v${require("discord.js").version}\`\n**Uptime:** ${globalfunctions.time(client.uptime)}`).setColor(f.color()));
     },
   },
@@ -970,6 +970,25 @@ const cmds = {
           msg.channel.send(new Discord.RichEmbed().setAuthor(`${user.tag} has been removed from the blacklist!`, user.avatarURL).setDescription(`**Had been blacklisted for:** ${globalfunctions.time(new Date().valueOf() - black.date)}`).setColor(f.color()));
         }
       });
+    },
+  },
+  tag: {
+    a: ["t"],
+    desc: "Like another set of commands... made only for fun!",
+    usage: " (tag name) (args)",
+    cat: "fun",
+    do: async (msg, content) => {
+      let tags = {
+        randomcat: {
+          a: ["rc"],
+          i: "Sends a random cat picture!",
+          f: async function() {
+            let { body: catpic } = await snekfetch.get('https://aws.random.cat/meow');
+            msg.channel.send("**Here is your random cat:**", catpic.file)
+          }
+        }
+      };
+      
     },
   },
   

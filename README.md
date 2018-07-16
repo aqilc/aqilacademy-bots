@@ -19,8 +19,17 @@ A bunch of random code that might come in handy!
     perms: "",
     hidden: false,
     del: false,
-    do: (msg, content) => {},
+    do(msg, content) {},
   },
+```
+### Tag Constructor
+```js
+: {
+          a: [],
+          u: "",
+          i: "",
+          f() {},
+        }
 ```
 ### Translation stuff
 ```js
