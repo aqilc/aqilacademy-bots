@@ -1,4 +1,3 @@
-
 // All requires and dependencies
 const { createCanvas, loadImage, Image } = require("canvas");
 const snekfetch = require("snekfetch");
