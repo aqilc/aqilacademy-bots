@@ -392,35 +392,6 @@ const cmds = {
       msg.channel.send(embed);
     },
   },
-  run: {
-    a: ["eval"],
-    desc: "Runs code through Clyde",
-    usage: " [code]",
-    cat: "bot admin",
-    perms: "bot admin",
-    hidden: true,
-    do: async (msg, content) => {
-      let evalled;
-      if((content.startsWith("```js") || content.startsWith("```")) && content.endsWith("```"))
-        content.slice(3, -3);
-      if(!content || content === "")
-        return msg.reply("Please enter some code to run");
-      
-      try {
-        evalled = f.evalclean(eval(content));
-      } catch(err) {
-        evalled = `ERROR: ${f.evalclean(err)}`;
-      }
-      let embed = new Discord.RichEmbed()
-        .setColor(f.color())
-        .setTimestamp()
-        .setAuthor("Run", client.user.avatarURL)
-        .setDescription(`**Input:** \`\`\`js\n${content}\`\`\`**Output:** \`\`\`xl\n${evalled}\`\`\``)
-        .setFooter(`Input length: ${content.length}`, msg.author.avatarURL);
-      msg.channel.send(embed);
-      console.log("Input: " + content);
-    },
-  },
   stats: {
     desc: "Shows someone's EXP stats.",
     usage: " (user)",
@@ -1044,6 +1015,35 @@ const cmds = {
   },
   
   // For testing purposes
+  run: {
+    a: ["eval"],
+    desc: "Runs code through Clyde",
+    usage: " [code]",
+    cat: "bot admin",
+    perms: "bot admin",
+    hidden: true,
+    do: async (msg, content) => {
+      let evalled;
+      if((content.startsWith("```js") || content.startsWith("```")) && content.endsWith("```"))
+        content.slice(3, -3);
+      if(!content || content === "")
+        return msg.reply("Please enter some code to run");
+      
+      try {
+        evalled = f.evalclean(eval(content));
+      } catch(err) {
+        evalled = `ERROR: ${f.evalclean(err)}`;
+      }
+      let embed = new Discord.RichEmbed()
+        .setColor(f.color())
+        .setTimestamp()
+        .setAuthor("Run", client.user.avatarURL)
+        .setDescription(`**Input:** \`\`\`js\n${content}\`\`\`**Output:** \`\`\`xl\n${evalled}\`\`\``)
+        .setFooter(`Input length: ${content.length}`, msg.author.avatarURL);
+      msg.channel.send(embed);
+      console.log("Input: " + content);
+    },
+  },
   testtrivia: {
     a: ["tt"],
     desc: "Mimics a trivia question(for testing purposes)",
