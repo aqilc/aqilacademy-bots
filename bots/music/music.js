@@ -6,6 +6,7 @@ const client = new Discord.Client();
 const yt = require("ytdl-core");
 const request = require("request");
 const prefix = ["a."];
+const data = require("/app/data/d.js");
 const gFuncs = require("/app/data/f.js");
 
 // Database stuff
