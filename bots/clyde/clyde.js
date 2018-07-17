@@ -810,7 +810,7 @@ const cmds = {
         },
         daily: {
           i: "Does a fake daily for you",
-          f: cmds.daily(
+          f: () => cmds.daily(msg, content, true),
         }
       };
       for(let i in tags) {
