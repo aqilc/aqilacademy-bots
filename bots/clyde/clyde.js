@@ -442,13 +442,18 @@ const cmds = {
   daily: {
     desc: "Gives you free EXP every day! The amount itself is based on your number of REAL points.",
     cat: "exp",
-    do: (msg, content) => {
+    do: (msg, content, nodaily) => {
       db.get(`SELECT * FROM users WHERE id = "${msg.author.id}"`, (err, res) => {
         if(!res)
           return msg.reply("Please talk in <#433004874930716673> to get registered into the **EXP** database!\n**Reminder:** <#433004874930716673> is the only place you earn **EXP** by talking");
+        
+        // Fake Daily
+        let exp = f.random(res.realpoints/20, res.realpoints/10, true);
+        if(nodaily)
+          return msg.channel.send(new Discord.RichEmbed().setAuthor("Daily Recieved", msg.author.avatarURL).setColor(f.color()).setDescription(`You have recieved **${exp}** points`));
+        
         if(new Date().getDate() === new Date(res.lastDaily).getDate() && new Date().getFullYear() === new Date(res.lastDaily).getFullYear() && new Date().getMonth() === new Date(res.lastDaily).getMonth())
           return msg.channel.send(new Discord.RichEmbed().setAuthor("Please wait till tomorrow to recieve your daily", msg.author.avatarURL).setColor(f.color()).setFooter("You can get it anytime tomorrow or after"));
-        let exp = f.random(res.realpoints/20, res.realpoints/10, true);
         db.run(`UPDATE users SET points = ${res.points + exp}, lastDaily = ${new Date().valueOf()} WHERE id = "${msg.author.id}"`);
         msg.channel.send(new Discord.RichEmbed().setAuthor("Daily Recieved", msg.author.avatarURL).setColor(f.color()).setDescription(`You have recieved **${exp}** points`));
       });
@@ -802,6 +807,10 @@ const cmds = {
               searchMessage.edit('No results found!');
             });
           }
+        },
+        daily: {
+          i: "Does a fake daily for you",
+          f: cmds.daily(
         }
       };
       for(let i in tags) {
