@@ -25,7 +25,7 @@ function run() {
     
     // Lets the admins run code through the bot
     if(message.content.startsWith("a:")) {
-      if(!["294115380916649986"].includes(message.author.id))
+      if(!data.devs.includes(message.author.id))
         message.reply("You don't have the permissions to run code in this bot");
 
       let ran;
@@ -47,7 +47,7 @@ function run() {
       return;
     
     // Blocks all non-admins from using the bot
-    if(!["294115380916649986"].includes(message.author.id))
+    if(!data.devs.includes(message.author.id))
       return message.reply("This bot is still in production. Please wait for it to be fully developed");
     
     // Does commands
@@ -75,6 +75,7 @@ const m = {
     current_queue: [],
   },
   
+  // Transforms a url into a video ID
   id(url) {
     if(yt.validateID(url) || yt.validateURL(url))
       return yt.getVideoID(url);
@@ -124,6 +125,7 @@ const m = {
     });
   },
   
+  // Gets some info on a video
   info(id) {
     return new Promise(function(rs, rj) {
       yt.getInfo("https://www.youtube.com/watch?v=" + id, (err, data) => {
@@ -193,7 +195,7 @@ const c = {
       });
     }
   },
-  
 };
 
+// Exports the bot so we can run it outside the file
 module.exports = run;

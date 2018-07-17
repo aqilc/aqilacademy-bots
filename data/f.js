@@ -192,7 +192,6 @@ module.exports = {
     return timeStuff;
   },
   
-  
   // Gets JSON from a URL
   parseURL(url) {
     return new Promise((resolve, reject) => {
