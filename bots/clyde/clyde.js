@@ -335,7 +335,7 @@ const f = {
     let xp = f.random(10, 20, true), jackpot = 0;
     if(Math.random() >= 0.999) {
       jackpot = f.random(500, 50000, true) * 10;
-      client.users.get(id).send(new Discord.RichEmbed().setAuthor("YOU JUST WON A JACKPOT!", client.users.get(id).avatarURL).setDescription(`You have earned **${xp} EXP**!\nGreat job, keep talking to earn more prizes like these.`).setColor(f.color()));
+      client.users.get(id).send(new Discord.RichEmbed().setAuthor("YOU JUST WON A JACKPOT!", client.users.get(id).avatarURL).setDescription(`You have earned **${jackpot} EXP**!\nGreat job, keep talking to earn more prizes like these.`).setColor(f.color()));
     }
     if([0, 6].includes(new Date().getDay()))
       xp *= 2;
