@@ -665,84 +665,6 @@ const cmds = {
       msg.channel.send(embed);
     },
   },
-  startelection: {
-    desc: "Starts an AqilAcademy Election.",
-    usage: " (title)",
-    cat: "election",
-    perms: "bot admin",
-    del: true,
-    do: (msg, content) => {
-      db.get(`SELECT * FROM elections ORDER BY end DESC`, (err, res) => {
-        console.log(res);
-        if(res && (res !== {} || res !== []) && res.end > new Date().valueOf())
-          return msg.reply("An election is already in progress!");
-        let embed = new Discord.RichEmbed()
-          .setAuthor("A New Election has started!", client.user.avatarURL)
-          .setColor(f.color())
-          .addField("How to run", `To run, use the \`${prefix}president\` command. To learn more about the command, do \`${prefix}help president\`.\n**Requirnments:**\`\`\`md\n1. Your should have a 1000 REAL EXP\n2. You need to be a member for AqilAcademy for over 2 weeks\`\`\``)
-          .addField("How to vote", "There is **1** reaction, a :thumbsup:. This is your personal voting button. You can vote for anyone but yourself. You technically have unlimited votes untill Aqil finds a fix for that :P")
-          .addField("Election Rules", "Here are the current election rules. They can also be found in <#382676611205693441>")
-          .setImage("https://cdn.glitch.com/87717c00-94ec-4ab4-96ea-8f031a709af4%2FCapture.PNG?1525539358951");
-        setTimeout(() => {
-          f.checkelections();
-        }, 2000);
-        db.run(`INSERT INTO elections (end, start, title) VALUES (${new Date().valueOf() + 172800000}, ${new Date().valueOf()}, "${content === "" || !content ? "" : content}")`);
-        msg.guild.channels.get(data.echnl).overwritePermissions(msg.guild.roles.get("294115797326888961"), { READ_MESSAGES: true });
-        client.channels.get(data.echnl).send(embed);
-      });
-    },
-  },
-  endelection: {
-    desc: "Ends the ongoing election",
-    cat: "election",
-    perms: "bot admin",
-    del: true,
-    do: (msg, content) => {
-      db.all(`SELECT * FROM elections`, (err, res) => {
-        if(res[res.length-1].end < new Date().valueOf())
-          return msg.reply("No ongoing election.");
-        db.run(`UPDATE elections SET end = ${new Date().valueOf()} WHERE num = ${res[res.length-1].num}`);
-        db.run(`DELETE FROM waiting WHERE id = 0`);
-        db.run("DELETE FROM election");
-        msg.guild.channels.get(data.echnl).overwritePermissions(msg.guild.roles.get("294115797326888961"), { READ_MESSAGES: false });
-        msg.guild.members.array().forEach(m => {
-          if(m.roles.get(msg.guild.find("name", "Candidate").id))
-            m.removeRole(msg.find("name", "Candidate").id);
-        });
-        client.channels.get(data.echnl).send(new Discord.RichEmbed().setAuthor("Election has officially stopped by " + msg.author.tag, msg.author.avatarURL).setDescription("There might have been technical problems so please don't be angry").setColor(f.color()));
-        msg.reply("Ended Election #" + res[res.length-1].num)
-      });
-    },
-  },
-  elections: {
-    desc: "Shows some elections from AqilAcademy's history",
-    cat: "election",
-    usage: " (page)",
-    hidden: false,
-    del: false,
-    do: (msg, content) => {
-      let embed = new Discord.RichEmbed()
-        .setColor(f.color())
-        .setAuthor("AqilAcademy Elections in the past", client.user.avatarURL);
-      
-      let page = 0;
-      if(content && !isNaN(Number(content)) && Number(content) > 0)
-        page = Number(content)-1;
-      
-      db.all("SELECT * FROM elections ORDER BY end", (err, rows) => {
-        embed.setFooter(`Page ${page + 1} | 10 per page | Total Elections: ${rows.length}`);
-        
-        if(rows.length < page * 10)
-          return msg.channel.send(embed.setDescription(`**Error:**\`\`\`md\nPage does not exist!\n> Total elections: ${rows.length}\`\`\``));
-        
-        rows.reverse();
-        f.page_maker(rows, 10, page, (i, row) => {
-          embed.addField(row.title ? `${row.title} (#${row.num})` : `Election #${row.num}`, `**Start:** ${new Date(row.start).toUTCString()}\n${row.end < new Date().valueOf() ? `**End:** ${new Date(row.end).toUTCString()}` : "Ongoing"}\n**Winner:** ${client.users.get(row.winner) ? client.users.get(row.winner).tag : row.winner} (VP: ${client.users.get(row.vp) ? client.users.get(row.vp).tag : row.vp})`);
-        });
-        msg.channel.send(embed);
-      });
-    },
-  },
   gamble: {
     desc: "50/50 chance to recieve or lose a part of the entered EXP",
     usage: " [exp amount or \"all\"(all your exp)]",
@@ -770,128 +692,6 @@ const cmds = {
           msg.channel.send(`You have gained **${eygb} EXP**. Congrats!`);
         else
           msg.channel.send(`You have lost **${-eygb} EXP**.`);
-      });
-    },
-  },
-  president: {
-    a: ["pres", "electme"],
-    desc: "Run for president in the AqilAcademy elections!",
-    usage: " [vice president mention or id(has to be inside the server)] |=| [slogan] |=| [description of term]",
-    cat: "elections",
-    do: (msg, content) => {
-      let args = content.split("|=|").map(a => a.trim());
-      let vp = f.get_id(msg, args[0]);
-      
-      if(!args[2])
-        return msg.reply("Please fill in all required parameters.\n**Required Parameters:** ` [Vice President mention or id] |=| [slogan] |=| [description of term]`");
-      if(!msg.guild.members.get(vp))
-        return msg.reply("Please enter a valid member of AqilAcademy for your Vice President");
-      if(msg.author.id === vp)
-        return msg.reply("Your Vice President cannot be yourself :face_palm:");
-      if(client.users.get(vp).bot)
-        return msg.reply("Your Vice President has to be a human user");
-      if(args[1] === "" || args[2] === "")
-        return msg.reply("No empty parameters allowed");
-      db.get("SELECT * FROM elections ORDER BY end DESC", (err, res) => {
-        if(!res || res.end < new Date().valueOf())
-          return msg.reply("There isn't an election going on yet!");
-        db.get(`SELECT * FROM election WHERE id = "${msg.author.id}"`, (err, row) => {
-          if(row)
-            return msg.reply("You are already in the election!");
-          db.get(`SELECT * FROM waiting WHERE for = "${msg.author.id}" AND id = 0`, (err, w) => {
-            if(w)
-              return msg.reply("You are already waiting for a Vice President!");
-            
-            db.run(`INSERT INTO waiting (user, id, start, time, for, data) VALUES ("${vp}", 0, ${new Date().valueOf()}, ${res.end - new Date().valueOf()}, "${msg.author.id}", "${args[1] + "|=|" + args[2]}")`);
-            msg.channel.send(new Discord.RichEmbed().setAuthor("Wait for your VP to approve then you will be put in!", msg.author.avatarURL).setColor(f.color()));
-            client.users.get(vp).send(`<@${msg.author.id}> has asked you to be his Vice President! Put a \`yes\` if you agree and \`no\` if you don't.\n**Note:** You CAN be multiple people's Vice President`);
-          });
-        });
-      });
-    },
-  },
-  withdraw: {
-    desc: "Withdraws you from the AqilAcademy Election",
-    cat: "election",
-    del: true,
-    do: (msg, content) => {
-      db.get("SELECT * FROM elections ORDER BY end DESC", (err, res) => {
-        if(!res || res.end < new Date().valueOf())
-          return msg.reply("There isn't an election going on yet!");
-        db.get(`SELECT * FROM waiting WHERE for = "${msg.author.id}" AND id = 0`, (err, w) => {
-          if(w) {
-            db.run(`DELETE FROM waiting WHERE for = "${w.for}" AND id = 0`);
-            msg.channel.send(`You and <@${w.user}> have been taken off the waiting list to put you both in the elections`);
-            client.users.get(w.user).send("Sorry, you have been taken off the waiting list for Vice President because your President withdrew");
-            return;
-          }
-          db.get(`SELECT * FROM election WHERE id = "${msg.author.id}"`, async (err, row) => {
-            if(!row)
-              return msg.reply("You are not waiting for a Vice President to confirm AND you are not in the election.");
-            
-            client.users.get(row.vId).send(`Your President(<@${row.id}>) has withdrawn from the elections! You are not his Vice President anymore`);
-            msg.channel.send(`You and <@${row.vId}> have been taken out of the election`);
-            let mess = await client.channels.get(data.echnl).fetchMessage(row.msgId);
-            mess.delete();
-          });
-        });
-      });
-    },
-  },
-  election: {
-    desc: "Shows you some stats for elections",
-    usage: " [candidates or voters] (page num)",
-    cat: "election",
-    do: (msg, content) => {
-      db.get("SELECT * FROM elections ORDER BY end DESC", (err, elec) => {
-        if(!elec || elec.end < new Date().valueOf())
-          return msg.reply("An election isn't running");
-        let type = content.split(" ")[0] || "candidates",
-            page = !isNaN(Number(content.split(" ")[1])) && Number(content.split(" ")[1]) > 0 ? Number(content.split(" ")[1]) - 1 : 0;
-        switch (type) {
-          case "presidents":
-          case "pres":
-          case "cands":
-          case "candidate":
-          case "candidates":
-            db.all("SELECT * FROM election", (err, res) => {
-              let embed = new Discord.RichEmbed()
-                .setAuthor("Candidates " + (res.length <= 10 ? "(All)" : `(Page: ${page + 1})`), msg.guild.iconURL)
-                .setColor(f.color())
-                .setFooter(`Check #elections for more info | 10 candidates per page | ${res.length} candidates`);
-              
-              if(res.length === 0)
-                embed.setDescription("No candidates (yet)!")
-              else
-                f.page_maker(res, 10, res.length <= 10 ? 0 : 1, (i, row) => {
-                  embed.addField(`${row.num}. ${client.users.get(row.id).tag}`, `**Vice:** ${client.users.get(row.vId).tag} (ID: \`${row.vId}\`)\n**Votes:** ${row.votes} votes`);
-                });
-              
-              msg.channel.send(embed);
-            });
-            break;
-          case "v":
-          case "vote":
-          case "voters":
-            db.all("SELECT * FROM voters WHERE election = " + elec.num, (err, res) => {
-              let embed = new Discord.RichEmbed()
-                .setAuthor("Voters " + (res.length <= 10 ? "(All)" : `(Page: ${page + 1})`), msg.guild.iconURL)
-                .setColor(f.color())
-                .setFooter(`Check #elections for more info | 10 voters per page | ${res.length} voters`);
-              
-              if(res.length === 0)
-                embed.setDescription("No voters (yet)!")
-              else
-                f.page_maker(res, 10, res.length <= 10 ? 0 : 1, (i, row) => {
-                  embed.addField(client.users.get(row.id).tag, `**For:** ${client.users.get(row.for).tag}\n**When:** ${new Date(row.date).toUTCString()}`);
-                });
-              
-              msg.channel.send(embed);
-            });
-            break;
-          default:
-            return msg.reply("The first parameter has to be either `candidates` or `voters`")
-        }
       });
     },
   },
@@ -1038,6 +838,208 @@ const cmds = {
           return tags[i].f(content.slice(content.indexOf(" ") + 1));
       }
       msg.reply("Tag doesn't exist!");
+    },
+  },
+  
+  // Election commands
+  startelection: {
+    desc: "Starts an AqilAcademy Election.",
+    usage: " (title)",
+    cat: "election",
+    perms: "bot admin",
+    del: true,
+    do: (msg, content) => {
+      db.get(`SELECT * FROM elections ORDER BY end DESC`, (err, res) => {
+        console.log(res);
+        if(res && (res !== {} || res !== []) && res.end > new Date().valueOf())
+          return msg.reply("An election is already in progress!");
+        let embed = new Discord.RichEmbed()
+          .setAuthor("A New Election has started!", client.user.avatarURL)
+          .setColor(f.color())
+          .addField("How to run", `To run, use the \`${prefix}president\` command. To learn more about the command, do \`${prefix}help president\`.\n**Requirnments:**\`\`\`md\n1. Your should have a 1000 REAL EXP\n2. You need to be a member for AqilAcademy for over 2 weeks\`\`\``)
+          .addField("How to vote", "There is **1** reaction, a :thumbsup:. This is your personal voting button. You can vote for anyone but yourself. You technically have unlimited votes untill Aqil finds a fix for that :P")
+          .addField("Election Rules", "Here are the current election rules. They can also be found in <#382676611205693441>")
+          .setImage("https://cdn.glitch.com/87717c00-94ec-4ab4-96ea-8f031a709af4%2FCapture.PNG?1525539358951");
+        setTimeout(() => {
+          f.checkelections();
+        }, 2000);
+        db.run(`INSERT INTO elections (end, start, title) VALUES (${new Date().valueOf() + 172800000}, ${new Date().valueOf()}, "${content === "" || !content ? "" : content}")`);
+        msg.guild.channels.get(data.echnl).overwritePermissions(msg.guild.roles.get("294115797326888961"), { READ_MESSAGES: true });
+        client.channels.get(data.echnl).send(embed);
+      });
+    },
+  },
+  endelection: {
+    desc: "Ends the ongoing election",
+    cat: "election",
+    perms: "bot admin",
+    del: true,
+    do: (msg, content) => {
+      db.all(`SELECT * FROM elections`, (err, res) => {
+        if(res[res.length-1].end < new Date().valueOf())
+          return msg.reply("No ongoing election.");
+        db.run(`UPDATE elections SET end = ${new Date().valueOf()} WHERE num = ${res[res.length-1].num}`);
+        db.run(`DELETE FROM waiting WHERE id = 0`);
+        db.run("DELETE FROM election");
+        msg.guild.channels.get(data.echnl).overwritePermissions(msg.guild.roles.get("294115797326888961"), { READ_MESSAGES: false });
+        msg.guild.members.array().forEach(m => {
+          if(m.roles.get(msg.guild.find("name", "Candidate").id))
+            m.removeRole(msg.find("name", "Candidate").id);
+        });
+        client.channels.get(data.echnl).send(new Discord.RichEmbed().setAuthor("Election has officially stopped by " + msg.author.tag, msg.author.avatarURL).setDescription("There might have been technical problems so please don't be angry").setColor(f.color()));
+        msg.reply("Ended Election #" + res[res.length-1].num)
+      });
+    },
+  },
+  elections: {
+    desc: "Shows some elections from AqilAcademy's history",
+    cat: "election",
+    usage: " (page)",
+    hidden: false,
+    del: false,
+    do: (msg, content) => {
+      let embed = new Discord.RichEmbed()
+        .setColor(f.color())
+        .setAuthor("AqilAcademy Elections in the past", client.user.avatarURL);
+      
+      let page = 0;
+      if(content && !isNaN(Number(content)) && Number(content) > 0)
+        page = Number(content)-1;
+      
+      db.all("SELECT * FROM elections ORDER BY end", (err, rows) => {
+        embed.setFooter(`Page ${page + 1} | 10 per page | Total Elections: ${rows.length}`);
+        
+        if(rows.length < page * 10)
+          return msg.channel.send(embed.setDescription(`**Error:**\`\`\`md\nPage does not exist!\n> Total elections: ${rows.length}\`\`\``));
+        
+        rows.reverse();
+        f.page_maker(rows, 10, page, (i, row) => {
+          embed.addField(row.title ? `${row.title} (#${row.num})` : `Election #${row.num}`, `**Start:** ${new Date(row.start).toUTCString()}\n${row.end < new Date().valueOf() ? `**End:** ${new Date(row.end).toUTCString()}` : "Ongoing"}\n**Winner:** ${client.users.get(row.winner) ? client.users.get(row.winner).tag : row.winner} (VP: ${client.users.get(row.vp) ? client.users.get(row.vp).tag : row.vp})`);
+        });
+        msg.channel.send(embed);
+      });
+    },
+  },
+  president: {
+    a: ["pres", "electme"],
+    desc: "Run for president in the AqilAcademy elections!",
+    usage: " [vice president mention or id(has to be inside the server)] |=| [slogan] |=| [description of term]",
+    cat: "elections",
+    do: (msg, content) => {
+      let args = content.split("|=|").map(a => a.trim());
+      let vp = f.get_id(msg, args[0]);
+      
+      if(!args[2])
+        return msg.reply("Please fill in all required parameters.\n**Required Parameters:** ` [Vice President mention or id] |=| [slogan] |=| [description of term]`");
+      if(!msg.guild.members.get(vp))
+        return msg.reply("Please enter a valid member of AqilAcademy for your Vice President");
+      if(msg.author.id === vp)
+        return msg.reply("Your Vice President cannot be yourself :face_palm:");
+      if(client.users.get(vp).bot)
+        return msg.reply("Your Vice President has to be a human user");
+      if(args[1] === "" || args[2] === "")
+        return msg.reply("No empty parameters allowed");
+      db.get("SELECT * FROM elections ORDER BY end DESC", (err, res) => {
+        if(!res || res.end < new Date().valueOf())
+          return msg.reply("There isn't an election going on yet!");
+        db.get(`SELECT * FROM election WHERE id = "${msg.author.id}"`, (err, row) => {
+          if(row)
+            return msg.reply("You are already in the election!");
+          db.get(`SELECT * FROM waiting WHERE for = "${msg.author.id}" AND id = 0`, (err, w) => {
+            if(w)
+              return msg.reply("You are already waiting for a Vice President!");
+            
+            db.run(`INSERT INTO waiting (user, id, start, time, for, data) VALUES ("${vp}", 0, ${new Date().valueOf()}, ${res.end - new Date().valueOf()}, "${msg.author.id}", "${args[1] + "|=|" + args[2]}")`);
+            msg.channel.send(new Discord.RichEmbed().setAuthor("Wait for your VP to approve then you will be put in!", msg.author.avatarURL).setColor(f.color()));
+            client.users.get(vp).send(`<@${msg.author.id}> has asked you to be his Vice President! Put a \`yes\` if you agree and \`no\` if you don't.\n**Note:** You CAN be multiple people's Vice President`);
+          });
+        });
+      });
+    },
+  },
+  withdraw: {
+    desc: "Withdraws you from the AqilAcademy Election",
+    cat: "election",
+    del: true,
+    do: (msg, content) => {
+      db.get("SELECT * FROM elections ORDER BY end DESC", (err, res) => {
+        if(!res || res.end < new Date().valueOf())
+          return msg.reply("There isn't an election going on yet!");
+        db.get(`SELECT * FROM waiting WHERE for = "${msg.author.id}" AND id = 0`, (err, w) => {
+          if(w) {
+            db.run(`DELETE FROM waiting WHERE for = "${w.for}" AND id = 0`);
+            msg.channel.send(`You and <@${w.user}> have been taken off the waiting list to put you both in the elections`);
+            client.users.get(w.user).send("Sorry, you have been taken off the waiting list for Vice President because your President withdrew");
+            return;
+          }
+          db.get(`SELECT * FROM election WHERE id = "${msg.author.id}"`, async (err, row) => {
+            if(!row)
+              return msg.reply("You are not waiting for a Vice President to confirm AND you are not in the election.");
+            
+            client.users.get(row.vId).send(`Your President(<@${row.id}>) has withdrawn from the elections! You are not his Vice President anymore`);
+            msg.channel.send(`You and <@${row.vId}> have been taken out of the election`);
+            let mess = await client.channels.get(data.echnl).fetchMessage(row.msgId);
+            mess.delete();
+          });
+        });
+      });
+    },
+  },
+  election: {
+    desc: "Shows you some stats for elections",
+    usage: " [candidates or voters] (page num)",
+    cat: "election",
+    do: (msg, content) => {
+      db.get("SELECT * FROM elections ORDER BY end DESC", (err, elec) => {
+        if(!elec || elec.end < new Date().valueOf())
+          return msg.reply("An election isn't running");
+        let type = content.split(" ")[0] || "candidates",
+            page = !isNaN(Number(content.split(" ")[1])) && Number(content.split(" ")[1]) > 0 ? Number(content.split(" ")[1]) - 1 : 0;
+        switch (type) {
+          case "presidents":
+          case "pres":
+          case "cands":
+          case "candidate":
+          case "candidates":
+            db.all("SELECT * FROM election", (err, res) => {
+              let embed = new Discord.RichEmbed()
+                .setAuthor("Candidates " + (res.length <= 10 ? "(All)" : `(Page: ${page + 1})`), msg.guild.iconURL)
+                .setColor(f.color())
+                .setFooter(`Check #elections for more info | 10 candidates per page | ${res.length} candidates`);
+              
+              if(res.length === 0)
+                embed.setDescription("No candidates (yet)!")
+              else
+                f.page_maker(res, 10, res.length <= 10 ? 0 : 1, (i, row) => {
+                  embed.addField(`${row.num}. ${client.users.get(row.id).tag}`, `**Vice:** ${client.users.get(row.vId).tag} (ID: \`${row.vId}\`)\n**Votes:** ${row.votes} votes`);
+                });
+              
+              msg.channel.send(embed);
+            });
+            break;
+          case "v":
+          case "vote":
+          case "voters":
+            db.all("SELECT * FROM voters WHERE election = " + elec.num, (err, res) => {
+              let embed = new Discord.RichEmbed()
+                .setAuthor("Voters " + (res.length <= 10 ? "(All)" : `(Page: ${page + 1})`), msg.guild.iconURL)
+                .setColor(f.color())
+                .setFooter(`Check #elections for more info | 10 voters per page | ${res.length} voters`);
+              
+              if(res.length === 0)
+                embed.setDescription("No voters (yet)!")
+              else
+                f.page_maker(res, 10, res.length <= 10 ? 0 : 1, (i, row) => {
+                  embed.addField(client.users.get(row.id).tag, `**For:** ${client.users.get(row.for).tag}\n**When:** ${new Date(row.date).toUTCString()}`);
+                });
+              
+              msg.channel.send(embed);
+            });
+            break;
+          default:
+            return msg.reply("The first parameter has to be either `candidates` or `voters`")
+        }
+      });
     },
   },
   
