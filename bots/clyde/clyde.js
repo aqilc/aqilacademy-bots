@@ -1155,7 +1155,7 @@ const cmds = {
           
           // Level text
           let text2 = "Level " + levels.indexOf(bar_exp[0]);
-          let { font: font1, size: size1 } = f.autofont(text2, canvas, 105, 185, 30, { before: "bold", after: "Arial" });
+          let { font: font1, size: size1 } = f.autofont(text2, canvas, 105, 175, 30, { before: "bold", after: "Arial" });
           ctx.font = font1;
           ctx.fillText(text2, 105, 30 + size1);
           
