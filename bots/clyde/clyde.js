@@ -854,8 +854,8 @@ const cmds = {
         db.run("DELETE FROM election");
         msg.guild.channels.get(data.echnl).overwritePermissions(msg.guild.roles.get("294115797326888961"), { READ_MESSAGES: false });
         msg.guild.members.array().forEach(m => {
-          if(m.roles.get(msg.guild.find("name", "Candidate").id))
-            m.removeRole(msg.find("name", "Candidate").id);
+          if(m.roles.get(msg.guild.roles.find("name", "Candidate").id))
+            m.removeRole(msg.guild.roles.find("name", "Candidate").id);
         });
         client.channels.get(data.echnl).send(new Discord.RichEmbed().setAuthor("Election has officially stopped by " + msg.author.tag, msg.author.avatarURL).setDescription("There might have been technical problems so please don't be angry").setColor(f.color()));
         msg.reply("Ended Election #" + res[res.length-1].num)
