@@ -1055,7 +1055,11 @@ const cmds = {
             if(timer > 999)
               mess.edit(embed.setFooter(`You have ${timer/1000} seconds left`))
             else {
-              if!
+              if(!correct)
+                mess.edit(embed.setDescription(string + `\nBTW, ${answers.indexOf(question.correct_answer.replace(/&quot;/g, '"').replace(/&#039;/g, "'")) + 1} was the right one`).setFooter(""));
+              else
+                mess.edit(embed.setDescription("Great Job, you got it right!").setFooter(""));
+              clearInterval(int);
             }
             
           }, 1000);
@@ -1071,12 +1075,19 @@ const cmds = {
             answered = answers[i];
           }
         }
+        // Deterines if 
         correct = answered === question.correct_answer;
         
+        // If correct, send a message that you got it right, and edit the embed
         if(correct)
-          return msg.reply("You got it right!");
+          return msg.reply("You got it right!") && mess.edit(embed.setDescription("Great Job, you got it right!").setFooter(""));
+        
+        // If wrong, send a message that you got it wrong, then edit the embed
         else
-          return msg.reply("You got it wrong :P");
+          return msg.reply("You got it wrong :P") && mess.edit(embed.setDescription(string + `\nBTW, ${answers.indexOf(question.correct_answer.replace(/&quot;/g, '"').replace(/&#039;/g, "'")) + 1} was the right one`).setFooter(""));
+        
+        // Destroys the interval so the bot is spared
+        clearInterval(int);
       })
       
       // If the person ran out of time
