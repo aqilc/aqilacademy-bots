@@ -1032,21 +1032,31 @@ const cmds = {
     cat: "bot admin",
     perms: "bot admin",
     hidden: true,
-    do: async (msg, content) => {
-      let question = (await globalfunctions.get_question(31, f.random(0, 3, true), 0)).results[0], correct;
-      let answers = [question.correct_answer].concat(question.incorrect_answers), string = "", answered;
+    async do (msg, content) {
+      
+          // Question related variables
+      let question = (await globalfunctions.get_question(31, f.random(0, 3, true), 0)).results[0], correct,
+      
+          // Answer-related variables
+          answers = [question.correct_answer].concat(question.incorrect_answers), string = "", answered;
+      
+      // Shuffles the answer in with the incorrect so it isn't always the first choice
       answers = answers.shuffle();
+      
+      // Makes a string we can use for showing the answers
       for(let i = 0; i < answers.length; i ++)
         string += `    **${i + 1}.** ${answers[i].replace(/&quot;/g, '"').replace(/&#039;/g, "'")}\n`;
       
+      // Created an embed for us to use later
       let embed = new Discord.RichEmbed().setAuthor(question.question.replace(/&quot;/g, '"').replace(/&#039;/g, "'"), msg.author.avatarURL)
         .setDescription(`**Answers:**\n${string}`)
         .setColor(f.color())
         .addField("Stats", `**Difficulty:** ${question.difficulty}\n**Category:** ${question.category}`, true)
       
+      // Sends the message and stores it so we can edit it later
       let mess = await msg.channel.send(embed.setFooter("You have 15 seconds left")),
           
-          
+          // Max time we get to answer the question
           timer = 15000,
           
           // Edits the message each second showing how much time we have.
@@ -1056,7 +1066,7 @@ const cmds = {
               mess.edit(embed.setFooter(`You have ${timer/1000} seconds left`))
             else {
               if(!correct)
-                mess.edit(embed.setDescription(string + `\nBTW, ${answers.indexOf(question.correct_answer.replace(/&quot;/g, '"').replace(/&#039;/g, "'")) + 1} was the right one`).setFooter(""));
+                mess.edit(embed.setDescription("_  _" + string + `\nBTW, ${answers.indexOf(question.correct_answer.replace(/&quot;/g, '"').replace(/&#039;/g, "'")) + 1} was the right one`).setFooter(""));
               else
                 mess.edit(embed.setDescription("Great Job, you got it right!").setFooter(""));
               clearInterval(int);
@@ -1065,17 +1075,20 @@ const cmds = {
           }, 1000);
       
       // Creates a message collector so we can get the next message the person sends immediately
-      let collect = msg.channel.createMessageCollector(m => ["1", "2", "3", "4", "one", "two", "three", "four"].includes(m.content.toLowerCase()), { maxMatches: 1, time: timer });
+      let collect = msg.channel.createMessageCollector(m => ["1", "2", "3", "4", "one", "two", "three", "four"].includes(m.content.toLowerCase()) && m.author.id == msg.author.id, { maxMatches: 1, time: timer });
       
       // When it collects the answer
       collect.on("collect", m => {
+        
+        // Determines your answer
         answered = [["1", "one"], ["2", "two"], ["3", "three"], ["4", "four"]];
         for(var i = 0; i < answered.length; i++) {
           if(answered[i].includes(m.content.toLowerCase())) {
             answered = answers[i];
           }
         }
-        // Deterines if 
+        
+        // Deterines if you got it right or wrong
         correct = answered === question.correct_answer;
         
         // If correct, send a message that you got it right, and edit the embed
@@ -1084,7 +1097,7 @@ const cmds = {
         
         // If wrong, send a message that you got it wrong, then edit the embed
         else
-          return msg.reply("You got it wrong :P") && mess.edit(embed.setDescription(string + `\nBTW, ${answers.indexOf(question.correct_answer.replace(/&quot;/g, '"').replace(/&#039;/g, "'")) + 1} was the right one`).setFooter(""));
+          return msg.reply("You got it wrong :P") && mess.edit(embed.setDescription("_  _" + string + `\nBTW, ${answers.indexOf(question.correct_answer.replace(/&quot;/g, '"').replace(/&#039;/g, "'")) + 1} was the right one`).setFooter(""));
         
         // Destroys the interval so the bot is spared
         clearInterval(int);
