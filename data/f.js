@@ -2,6 +2,12 @@ const db = new (require("sqlite3").verbose()).Database('./.data/sqlite.db');
 const cdata = require("./d.js");
 const https = require("https");
 
+class Funcs {
+  constructor(client) {
+    this.client = client;
+  }
+}
+
 module.exports = {
   calculate_stats(id) {
     return new Promise(function(resolve, reject) {
