@@ -138,7 +138,9 @@ const m = {
   
   // Adds a song to queue
   add(ids, message) {
-    
+    if(typeof ids !== "object")
+      ids = [ids];
+    ids.forEach(i => typeof i === "string" || (() => { throw new Error("m.add: Not all imputted IDs are strings") })());
   },
 };
 
