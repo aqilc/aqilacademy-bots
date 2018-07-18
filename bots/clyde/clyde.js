@@ -1041,9 +1041,11 @@ const cmds = {
       
       let mess = await msg.channel.send(new Discord.RichEmbed().setAuthor(question.question.replace(/&quot;/g, '"').replace(/&#039;/g, "'"), msg.author.avatarURL).setDescription(`**Answers:**\n${string}`).setColor(f.color()).addField("Stats", `**Difficulty:** ${question.difficulty}\n**Category:** ${question.category}`, true));
       
-      mess.createMessageCollector(m => m.content.length === 1, { time: 10000 })
-        .on("collect", m => {});
-        .on("end", (
+      mess.createMessageCollector(m => ["1", "2", "3", "4", "one", "two", "three", "four"].includes(m.content), { maxMatches: 1, time: 10000 }).on("collect", m => {
+        
+      }).on("end", c => {
+        
+      });
     },
   },
   testimage: {
