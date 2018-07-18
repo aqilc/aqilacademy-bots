@@ -3,7 +3,6 @@ dependencies:
   cheerio: 0.22.0
   discord.js: 11.3.2
   express: 4.16.3
-  query-string: 6.1.0
   request: 2.87.0
   snekfetch: 4.0.4
   sqlite3: 4.0.2
@@ -252,12 +251,6 @@ packages:
     dev: false
     resolution:
       integrity: sha512-bC7ElrdJaJnPbAP+1EotYvqZsb3ecl5wi6Bfi6BJTUcNowp6cvspg0jXznRTKDjm/E7AdgFBVeAPVMNcKGsHMA==
-  /decode-uri-component/0.2.0:
-    dev: false
-    engines:
-      node: '>=0.10'
-    resolution:
-      integrity: sha1-6zkTMzRYd1y4TNGh+uBiEGu4dUU=
   /deep-extend/0.6.0:
     dev: false
     engines:
@@ -1005,15 +998,6 @@ packages:
       node: '>=0.6'
     resolution:
       integrity: sha512-N5ZAX4/LxJmF+7wN74pUD6qAh9/wnvdQcjq9TZjevvXzSUo7bfmw91saqMjzGS2xq91/odN2dW/WOl7qQHNDGA==
-  /query-string/6.1.0:
-    dependencies:
-      decode-uri-component: 0.2.0
-      strict-uri-encode: 2.0.0
-    dev: false
-    engines:
-      node: '>=6'
-    resolution:
-      integrity: sha512-pNB/Gr8SA8ff8KpUFM36o/WFAlthgaThka5bV19AD9PNTH20Pwq5Zxodif2YyHwrctp6SkL4GqlOot0qR/wGaw==
   /range-parser/1.2.0:
     dev: false
     engines:
@@ -1196,12 +1180,6 @@ packages:
       node: '>= 0.6'
     resolution:
       integrity: sha512-zhSCtt8v2NDrRlPQpCNtw/heZLtfUDqxBM1udqikb/Hbk52LK4nQSwr10u77iopCW5LsyHpuXS0GnEc48mLeew==
-  /strict-uri-encode/2.0.0:
-    dev: false
-    engines:
-      node: '>=4'
-    resolution:
-      integrity: sha1-ucczDHBChi9rFC3CdLvMWGbONUY=
   /string-width/1.0.2:
     dependencies:
       code-point-at: 1.1.0
@@ -1372,7 +1350,6 @@ specifiers:
   cheerio: ^0.22.0
   discord.js: ^11.3.2
   express: ^4.16.3
-  query-string: ^6.1.0
   request: ^2.87.0
   snekfetch: ^4.0.4
   sqlite3: ^4.0.2

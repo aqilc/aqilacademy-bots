@@ -1038,7 +1038,9 @@ const cmds = {
       let question = (await globalfunctions.get_question(31, f.random(0, 3, true), 0)).results[0], correct,
       
           // Answer-related variables
-          answers = [question.correct_answer].concat(question.incorrect_answers), string = "", answered;
+          answers = [question.correct_answer].concat(question.incorrect_answers), string = "", answered,
+      
+          exp = [1000, 2500, 10000][["easy", "medium", "hard"].indexOf(question.difficulty)];
       
       // Shuffles the answer in with the incorrect so it isn't always the first choice
       answers = answers.shuffle();
