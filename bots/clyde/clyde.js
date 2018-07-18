@@ -1084,7 +1084,7 @@ const cmds = {
         
         // Determines your answer
         answered = [["1", "one"], ["2", "two"], ["3", "three"], ["4", "four"]];
-        for(var i = 0; i < answered.length; i++) {
+        for(var i = 0; i < answered.length; i ++) {
           if(answered[i].includes(m.content.toLowerCase())) {
             answered = answers[i];
           }
