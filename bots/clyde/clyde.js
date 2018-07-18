@@ -1033,17 +1033,39 @@ const cmds = {
     perms: "bot admin",
     hidden: true,
     do: async (msg, content) => {
-      let question = (await globalfunctions.get_question(32, f.random(0, 3, true), 0)).results[0], correct;
-      let answers = [question.correct_answer].concat(question.incorrect_answers), string = "";
+      let question = (await globalfunctions.get_question(31, f.random(0, 3, true), 0)).results[0], correct;
+      let answers = [question.correct_answer].concat(question.incorrect_answers), string = "", answered;
       answers = answers.shuffle();
       for(let i = 0; i < answers.length; i ++)
         string += `    **${i + 1}.** ${answers[i].replace(/&quot;/g, '"').replace(/&#039;/g, "'")}\n`;
       
-      msg.channel.send(new Discord.RichEmbed().setAuthor(question.question.replace(/&quot;/g, '"').replace(/&#039;/g, "'"), msg.author.avatarURL).setDescription(`**Answers:**\n${string}`).setColor(f.color()).addField("Stats", `**Difficulty:** ${question.difficulty}\n**Category:** ${question.category}`, true));
+      let embed = new Discord.RichEmbed().setAuthor(question.question.replace(/&quot;/g, '"').replace(/&#039;/g, "'"), msg.author.avatarURL)
+        .setDescription(`**Answers:**\n${string}`)
+        .setColor(f.color())
+        .addField("Stats", `**Difficulty:** ${question.difficulty}\n**Category:** ${question.category}`, true)
       
-      let collect = msg.channel.createMessageCollector(m => ["1", "2", "3", "4", "one", "two", "three", "four"].includes(m.content.toLowerCase()), { maxMatches: 1, time: 10000 });
+      let mess = await msg.channel.send(embed.setFooter("You have 15 seconds left")),
+          
+          
+          timer = 15000,
+          
+          // Edits the message each second showing how much time we have.
+          int = setInterval(() => {
+            timer -= 1000;
+            if(timer > 999)
+              mess.edit(embed.setFooter(`You have ${timer/1000} seconds left`))
+            else {
+              if!
+            }
+            
+          }, 1000);
+      
+      // Creates a message collector so we can get the next message the person sends immediately
+      let collect = msg.channel.createMessageCollector(m => ["1", "2", "3", "4", "one", "two", "three", "four"].includes(m.content.toLowerCase()), { maxMatches: 1, time: timer });
+      
+      // When it collects the answer
       collect.on("collect", m => {
-        let answered = [["1", "one"], ["2", "two"], ["3", "three"], ["4", "four"]];
+        answered = [["1", "one"], ["2", "two"], ["3", "three"], ["4", "four"]];
         for(var i = 0; i < answered.length; i++) {
           if(answered[i].includes(m.content.toLowerCase())) {
             answered = answers[i];
@@ -1054,10 +1076,13 @@ const cmds = {
         if(correct)
           return msg.reply("You got it right!");
         else
-          return msg.reply("You either got it wrong, or you ran out of time... :P");
+          return msg.reply("You got it wrong :P");
       })
+      
+      // If the person ran out of time
       collect.on("end", c => {
-        msg.reply("You ran out of time... :P");
+        if(!answered)
+          msg.reply("You ran out of time... :P");
       });
     },
   },
