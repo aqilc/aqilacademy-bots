@@ -228,4 +228,4 @@ module.exports = {
       url += "&type=" + ["multiple", "boolean"][type];
     return require("./f.js").parseURL(url);
   },
-}
+};
