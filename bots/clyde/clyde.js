@@ -10,8 +10,6 @@ const Discord = require("discord.js");
 const data = require("/app/data/d.js");
 const levels = require("/app/data/l.js");
 const globalfunctions = require("/app/data/f.js");
-const cheerio = require("cheerio");
-const querystring = require("querystring");
 
 // Prefix
 const prefix = "c.";
@@ -781,30 +779,6 @@ const cmds = {
               msg.channel.send("Sorry, we are experiencing technical difficulties... Try again later");
               console.log(`Cat Error: ${err}`);
             }
-          }
-        },
-        google: {
-          i: "Googles something and returns the result",
-          f: async function(mess) {
-            let searchMessage = await msg.reply('Searching... Sec.');
-            let searchUrl = `https://www.google.com/search?q=${encodeURIComponent(msg.content)}`;
-            return snekfetch.get(searchUrl).then((result) => {
-
-              // Cheerio lets us parse the HTML on our google result to grab the URL.
-              let $ = cheerio.load(result.text);
-
-              // This is allowing us to grab the URL from within the instance of the page (HTML)
-              let googleData = $('.r').first().find('a').first().attr('href');
-
-              // Now that we have our data from Google, we can send it to the channel.
-              googleData = querystring.parse(googleData.replace('/url?', ''));
-              searchMessage.edit(`Result found!\n${googleData.q}`);
-
-            // If no results are found, we catch it and return 'No results are found!'
-            }).catch((err) => {
-              console.log(err);
-              searchMessage.edit('No results found!');
-            });
           }
         },
         daily: {
