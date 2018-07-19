@@ -803,8 +803,11 @@ const cmds = {
     cd: 20000,
     async do (msg, content) {
       
-          // Question related variables
-      let question = (await globalfunctions.get_question(0, f.random(0, 3, true), 0)).results[0], correct,
+          // Difficulty
+      let diff = ["easy", "medium", "hard"].indexOf(content),
+          
+         // Question related variables
+          question = (await globalfunctions.get_question(0, diff, 0)).results[0], correct,
       
           // Answer-related variables
           answers = [question.correct_answer].concat(question.incorrect_answers), string = "", answered,
@@ -852,7 +855,7 @@ const cmds = {
         
         // Determines your answer
         answered = [["1", "one"], ["2", "two"], ["3", "three"], ["4", "four"]];
-        for(var i = 0; i < answered.length; i ++) {
+        for(let i = 0; i < answered.length; i ++) {
           if(answered[i].includes(m.content.toLowerCase())) {
             answered = answers[i];
           }
