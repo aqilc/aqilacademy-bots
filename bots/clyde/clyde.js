@@ -302,6 +302,8 @@ const f = {
     };
     for (var i in cmds) {
       if((cmds[i].a && cmds[i].a.includes(message.content.slice(prefix.length).split(" ")[0])) || message.content.slice(prefix.length).split(" ")[0] === i) {
+        if(cooldowns[i] && cooldowns[i])
+          return message.reply("You are using this command too fast, slow down!");
         db.get(`SELECT * FROM blacklist WHERE user = "${message.author.id}"`, (err, black) => {
           if(black)
             return message.reply("You are blacklisted from the bot! You cannot use any of its commands").then(m => {
@@ -309,12 +311,16 @@ const f = {
               message.delete(5000);
             }).catch(console.log);
           db.get(`SELECT * FROM users WHERE id = "${message.author.id}"`, (err, res) => {
-            if(perms[cmds[i].perms][0])
+            if(perms[cmds[i].perms][0] && !data.devs.includes(message.author.id))
               return perms[cmds[i].perms][1]();
             if(content.endsWith("-d"))
               message.delete() && content.slice(0, -2);
             if(cmds[i].del === true)
               message.delete();
+            if(cmds[i].cd) {
+              cooldowns[i] = (cooldowns[i] || []).push(message.author.id);
+              setTimeout(() => delete cooldowns[i], cmds[i].cd);
+            }
             cmds[i].do(message, content.includes(" ") ? content.slice(message.content.indexOf(" ")).trim() : "");
           });
         });
