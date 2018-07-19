@@ -302,7 +302,7 @@ const f = {
     };
     for (var i in cmds) {
       if((cmds[i].a && cmds[i].a.includes(message.content.slice(prefix.length).split(" ")[0])) || message.content.slice(prefix.length).split(" ")[0] === i) {
-        if(cooldowns[i] && cooldowns[i])
+        if(cooldowns[i] && cooldowns[i].includes(message.author.id))
           return message.reply("You are using this command too fast, slow down!");
         db.get(`SELECT * FROM blacklist WHERE user = "${message.author.id}"`, (err, black) => {
           if(black)
@@ -317,7 +317,7 @@ const f = {
               message.delete() && content.slice(0, -2);
             if(cmds[i].del === true)
               message.delete();
-            if(cmds[i].cd) {
+            if(typeof cmds[i].cd === "number") {
               cooldowns[i] = (cooldowns[i] || []).push(message.author.id);
               setTimeout(() => delete cooldowns[i], cmds[i].cd);
             }
@@ -461,7 +461,6 @@ const cmds = {
     },
   },
   edit: {
-    a: [],
     desc: "Edits a user's stats.\n**Three categories:**```md\n1. Warns(Actions: remove [IPK], reset)\n2. Items(Actions: add [ID], remove [IPK])\n3. EXP(Actions: delete, add [EXP amount], sub [EXP amount], set [EXP amount])```",
     usage: " [user mention or id] [category] [action] (a number of some sort)",
     cat: "bot admin",
@@ -787,7 +786,7 @@ const cmds = {
         },
         daily: {
           i: "Does a fake daily for you",
-          f: () => cmds.daily(msg, content, true),
+          f: () => cmds.daily.do(msg, content, true),
         }
       };
       for(let i in tags) {
