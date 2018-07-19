@@ -801,7 +801,6 @@ const cmds = {
     a: ["tri"],
     desc: "Trivia for you to earn some extra exp ~~and lose some too~~.",
     cat: "fun",
-    perms: "bot admin",
     cd: 20000,
     async do (msg, content) {
       
@@ -812,7 +811,7 @@ const cmds = {
           answers = [question.correct_answer].concat(question.incorrect_answers), string = "", answered,
           
           // Determines the amount of exp you get
-          exp = Math.round([1e3, 2500, 1e5][["easy", "medium", "hard"].indexOf(question.difficulty)] * (f.random(-0.5, 0.5) + 1));
+          exp = Math.round([1e3, 2500, 1e4][["easy", "medium", "hard"].indexOf(question.difficulty)] * (f.random(-0.5, 0.5) + 1));
       
       // Shuffles the answer in with the incorrect so it isn't always the first choice
       answers = answers.shuffle();
@@ -871,7 +870,7 @@ const cmds = {
         
         // If wrong, send a message that you got it wrong, then edit the embed
         else
-          return msg.reply("You got it wrong :P") && mess.edit(embed.setDescription("_  _" + string + `\nBTW, ${answers.indexOf(question.correct_answer.replace(/&quot;/g, '"').replace(/&#039;/g, "'")) + 1} was the right one`).setFooter("")) && f.add_exp(msg.author.id, -exp/2);
+          return msg.reply("You got it wrong. You lose: `) && mess.edit(embed.setDescription("_  _" + string + `\nBTW, ${answers.indexOf(question.correct_answer.replace(/&quot;/g, '"').replace(/&#039;/g, "'")) + 1} was the right one`).setFooter("")) && f.add_exp(msg.author.id, -exp/2);
       })
       
       // If the person ran out of time
