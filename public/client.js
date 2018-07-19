@@ -1,7 +1,7 @@
 // Makes unnecessary distractions go away XD
 /* global
  * Envirnment
-  createCanvas, windowWidth, windowHeight, width, height, mouseX, mouseY, 
+  createCanvas, windowWidth, windowHeight, width, height, mouseX, mouseY, frameRate,
  * Events
   mouseIsPressed, 
  * Modes/Aligns
@@ -16,12 +16,14 @@
 
 function setup() {
   createCanvas(windowWidth - 20, windowHeight - 20);
+  frameRate(1000);
 }
 function draw() {
   background(255);
   rectMode(CENTER);
   fill(0);
   ellipse(mouseX, mouseY, 200, 200);
+  co
   
   push();
   noFill();

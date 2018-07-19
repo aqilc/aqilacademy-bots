@@ -810,7 +810,7 @@ const cmds = {
           answers = [question.correct_answer].concat(question.incorrect_answers), string = "", answered,
           
           // Determines the amount of exp you get
-          exp = Math.round([1e3, 2500, 1e4][["easy", "medium", "hard"].indexOf(question.difficulty)] * (f.random(-0.25, 0.25) + 1));
+          exp = Math.round([100, 250, 1e3][["easy", "medium", "hard"].indexOf(question.difficulty)] * (f.random(-0.25, 0.25) + 1)) * 10;
       
       // Shuffles the answer in with the incorrect so it isn't always the first choice
       answers = answers.shuffle();
@@ -820,7 +820,8 @@ const cmds = {
         string += `    **${i + 1}.** ${answers[i].replace(/&quot;/g, '"').replace(/&#039;/g, "'")}\n`;
       
       // Created an embed for us to use later
-      let embed = new Discord.RichEmbed().setAuthor(question.question.replace(/&quot;/g, '"').replace(/&#039;/g, "'"), msg.author.avatarURL)
+      let embed = new Discord.RichEmbed()
+        .setAuthor(question.question.replace(/&quot;/g, '"').replace(/&#039;/g, "'"), msg.author.avatarURL)
         .setDescription(`**Answers:**\n${string}`)
         .setColor(f.color())
         .addField("Stats", `**Difficulty:** ${question.difficulty}\n**Category:** ${question.category}`, true)
