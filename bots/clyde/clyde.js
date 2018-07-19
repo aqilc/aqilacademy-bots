@@ -1039,8 +1039,9 @@ const cmds = {
       
           // Answer-related variables
           answers = [question.correct_answer].concat(question.incorrect_answers), string = "", answered,
-      
-          exp = [1000, 2500, 10000][["easy", "medium", "hard"].indexOf(question.difficulty)];
+          
+          // Determines the amount of exp you get
+          exp = [1000, 2500, 10000][["easy", "medium", "hard"].indexOf(question.difficulty)] * f.random(0.5, 0.5) + ;
       
       // Shuffles the answer in with the incorrect so it isn't always the first choice
       answers = answers.shuffle();
@@ -1067,13 +1068,9 @@ const cmds = {
             if(timer > 999)
               mess.edit(embed.setFooter(`You have ${timer/1000} seconds left`))
             else {
-              if(!correct)
-                mess.edit(embed.setDescription("_  _" + string + `\nBTW, ${answers.indexOf(question.correct_answer.replace(/&quot;/g, '"').replace(/&#039;/g, "'")) + 1} was the right one`).setFooter(""));
-              else
-                mess.edit(embed.setDescription("Great Job, you got it right!").setFooter(""));
+              mess.edit(embed.setDescription("_  _" + string + `\nBTW, ${answers.indexOf(question.correct_answer.replace(/&quot;/g, '"').replace(/&#039;/g, "'")) + 1} was the right one`).setFooter(""));
               clearInterval(int);
             }
-            
           }, 1000);
       
       // Creates a message collector so we can get the next message the person sends immediately
