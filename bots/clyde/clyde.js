@@ -866,11 +866,11 @@ const cmds = {
         
         // If correct, send a message that you got it right, and edit the embed
         if(correct)
-          return msg.reply("You got it right!") && mess.edit(embed.setDescription("Great Job, you got it right!").setFooter("")) && f.add_exp(msg.author.id, exp);
+          return msg.reply(`You got it right! You get ${exp} Points!`) && mess.edit(embed.setDescription("Great Job, you got it right!").setFooter("")) && f.add_exp(msg.author.id, exp);
         
         // If wrong, send a message that you got it wrong, then edit the embed
         else
-          return msg.reply("You got it wrong. You lose: `) && mess.edit(embed.setDescription("_  _" + string + `\nBTW, ${answers.indexOf(question.correct_answer.replace(/&quot;/g, '"').replace(/&#039;/g, "'")) + 1} was the right one`).setFooter("")) && f.add_exp(msg.author.id, -exp/2);
+          return msg.reply(`You got it wrong. You lose: ${exp} Points`) && mess.edit(embed.setDescription("_  _" + string + `\nBTW, ${answers.indexOf(question.correct_answer.replace(/&quot;/g, '"').replace(/&#039;/g, "'")) + 1} was the right one`).setFooter("")) && f.add_exp(msg.author.id, -exp/2);
       })
       
       // If the person ran out of time
