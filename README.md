@@ -13,6 +13,7 @@ A bunch of random code that might come in handy!
 ```js
 : {
     a: [],
+    cd: 0,
     desc: "",
     usage: "",
     cat: "",

@@ -283,7 +283,7 @@ const f = {
     return f;
   },// Checks and console.logs all sql
   check_and_do_cmd: (message) => {
-    let [content, cmdDone] = [message.content, false];
+    let content = message.content;
     let perms = {
       undefined: [false, () => {}],
       "": [false, () => {}],
@@ -313,7 +313,6 @@ const f = {
               return perms[cmds[i].perms][1]();
             if(content.endsWith("-d"))
               message.delete() && content.slice(0, -2);
-            cmdDone = true;
             if(cmds[i].del === true)
               message.delete();
             cmds[i].do(message, content.includes(" ") ? content.slice(message.content.indexOf(" ")).trim() : "");
@@ -322,7 +321,6 @@ const f = {
         break;
       }
     }
-    return cmdDone;
   },// Does a command
   evalclean: globalfunctions.eclean,// Cleans "evalled"
   color: globalfunctions.ecol,// Random color
