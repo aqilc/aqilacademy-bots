@@ -11,6 +11,8 @@ const functions = require("./data/f.js");
 // Keeps app and website running
 app.listen(process.env.PORT);
 app.use(express.static('public'));
+app.use(express.static('node_modules/p5/lib'));
+app.use(express.static('node_modules/p5/lib/addons'));
 app.get("/", (request, response) => {
   response.sendFile(__dirname + '/views/index.html');
 });
