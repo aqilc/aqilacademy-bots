@@ -810,7 +810,7 @@ const cmds = {
           answers = [question.correct_answer].concat(question.incorrect_answers), string = "", answered,
           
           // Determines the amount of exp you get
-          exp = Math.round([1e3, 2500, 1e4][["easy", "medium", "hard"].indexOf(question.difficulty)] * (f.random(-0.5, 0.5) + 1));
+          exp = Math.round([1e3, 2500, 1e4][["easy", "medium", "hard"].indexOf(question.difficulty)] * (f.random(-0.25, 0.25) + 1));
       
       // Shuffles the answer in with the incorrect so it isn't always the first choice
       answers = answers.shuffle();
