@@ -23,7 +23,7 @@ function draw() {
   rectMode(CENTER);
   fill(0);
   ellipse(mouseX, mouseY, 200, 200);
-  co
+  print(JSON.stringify(frameRate));
   
   push();
   noFill();
