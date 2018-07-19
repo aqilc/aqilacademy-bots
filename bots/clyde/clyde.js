@@ -1153,7 +1153,7 @@ const cmds = {
           break;
         case "profile":
           let canvas = createCanvas(400, 200),
-            ctx = canvas.getContext("2d");
+                ctx = canvas.getContext("2d");
           
           // Starts typing to indicate that its calculating something
           msg.channel.startTyping();
@@ -1211,7 +1211,7 @@ const cmds = {
           let text2 = "Level " + levels.indexOf(bar_exp[0]);
           let { font: font1, size: size1 } = f.autofont(text2, canvas, 105, 175, 30, { before: "bold", after: "Arial" });
           ctx.font = font1;
-          ctx.fillText(text2, 140 - ctx.measureText(text2).width/2, 43 + size1/2);
+          ctx.fillText(text2, 140 - ctx.measureText(text2).width/2, 42 + size1/2);
           
           // Avatar
           ctx.save();
