@@ -1198,14 +1198,9 @@ const cmds = {
           
           // Text
           ctx.fillStyle = "rgba(50, 50, 50, 0.7)";
-          ctx.font = "bold 10px monospace";
-          let text = [
-            `${stats.realpoints} Points`,
-            stats.realpoints >= bar_exp[1].points ? `${msg.author.id === id ? "You have" : "S/he has" } achieved MAX LEVEL!` : `${bar_exp[1].points - stats.realpoints} more points to go!`
-          ];
-          ctx.fillText(text[0], p[0] + p[2]/2 - ctx.measureText(text[0]).width/2, p[1] + p[3]/2 + 1);
-          ctx.font = "bold 6px arial";
-          ctx.fillText(text[1], p[0] + p[2]/2 - ctx.measureText(text[1]).width/2, p[1] + p[3]/2 + 7);
+          ctx.font = "bold 12px monospace";
+          let text = `${stats.realpoints} Points`;
+          ctx.fillText(text, p[0] + p[2]/2 - ctx.measureText(text).width/2, p[1] + p[3]/2 + 4);
           
           // Level text
           let text2 = "Level " + levels.indexOf(bar_exp[0]);
