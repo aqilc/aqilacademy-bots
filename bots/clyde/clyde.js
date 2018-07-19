@@ -1041,7 +1041,7 @@ const cmds = {
           answers = [question.correct_answer].concat(question.incorrect_answers), string = "", answered,
           
           // Determines the amount of exp you get
-          exp = [1000, 2500, 10000][["easy", "medium", "hard"].indexOf(question.difficulty)] * f.random(0.5, 0.5) + ;
+          exp = Math.round([1e3, 2500, 1e5][["easy", "medium", "hard"].indexOf(question.difficulty)] * (f.random(-0.5, 0.5) + 1));
       
       // Shuffles the answer in with the incorrect so it isn't always the first choice
       answers = answers.shuffle();
@@ -1055,6 +1055,7 @@ const cmds = {
         .setDescription(`**Answers:**\n${string}`)
         .setColor(f.color())
         .addField("Stats", `**Difficulty:** ${question.difficulty}\n**Category:** ${question.category}`, true)
+        .addField("Prizes", `**Correct:** ${exp}\n**Incorrect:** - ${exp/2}\n**No Answer:** - ${exp}`);
       
       // Sends the message and stores it so we can edit it later
       let mess = await msg.channel.send(embed.setFooter("You have 15 seconds left")),
@@ -1090,6 +1091,9 @@ const cmds = {
         // Deterines if you got it right or wrong
         correct = answered === question.correct_answer;
         
+        // Destroys the interval so the bot is spared
+        clearInterval(int);
+        
         // If correct, send a message that you got it right, and edit the embed
         if(correct)
           return msg.reply("You got it right!") && mess.edit(embed.setDescription("Great Job, you got it right!").setFooter(""));
@@ -1097,9 +1101,6 @@ const cmds = {
         // If wrong, send a message that you got it wrong, then edit the embed
         else
           return msg.reply("You got it wrong :P") && mess.edit(embed.setDescription("_  _" + string + `\nBTW, ${answers.indexOf(question.correct_answer.replace(/&quot;/g, '"').replace(/&#039;/g, "'")) + 1} was the right one`).setFooter(""));
-        
-        // Destroys the interval so the bot is spared
-        clearInterval(int);
       })
       
       // If the person ran out of time
