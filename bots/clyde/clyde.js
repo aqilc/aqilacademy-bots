@@ -90,6 +90,8 @@ function run() {
   client.on("ready", () => {
     console.log(client.user.tag + " has started. Ready for action");
     f.checkelections()//.checksql();
+    
+    setTimeout(f.reset_streaks, new Date().setHours(0).valueOf() - (new Date()).valueOf());
   });
   client.on("guildMemberRemove", member => {
     db.all(`SELECT * FROM election WHERE id = "${member.user.id}", vId = "${member.user.id}"`, (err, res) => {
@@ -358,11 +360,12 @@ const f = {
   qclean: globalfunctions.qclean,
   reset_streaks: (ddo) => {
     if(!ddo)
-      setInterval(f.reset_streaks, 4.32e4);
+      setTimeout(f.reset_streaks, 4.32e7);
     
-    db.all("SELECT lastDaily, streak FROM users", (err, res) => {
+    db.all("SELECT id, lastDaily, streak FROM users", (err, res) => {
       for(let i = 0; i < res.length; i ++) {
-        if
+        if(res[i].lastDaily + 8.64e7 < new Date().valueOf())
+          db.run(`UPDATE users SET streak = 0 WHERE id = "${res[i].id}"`);
       }
     });
   }
