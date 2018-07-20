@@ -361,7 +361,9 @@ const f = {
       setInterval(f.reset_streaks, 4.32e4);
     
     db.all("SELECT lastDaily, streak FROM users", (err, res) => {
-      console.log(res);
+      for(let i = 0; i < res.length; i ++) {
+        if
+      }
     });
   }
 };
