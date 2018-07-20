@@ -356,6 +356,7 @@ const f = {
   round_rect: globalfunctions.round_rect,
   autofont: globalfunctions.autofont,
   qclean: globalfunctions.qclean,
+  reset_streaks: async () => {}
 };
 
 // Commands
