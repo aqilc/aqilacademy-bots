@@ -310,7 +310,7 @@ const f = {
             if(cmds[i].del === true)
               message.delete();
             if(typeof cmds[i].cd === "number") {
-              cooldowns[i] = (cooldowns[i] || []).push(message.author.id);
+              cooldowns[i] = (typeof cooldowns[i] === "object" ? cooldowns[i] : []).push(message.author.id);
               setTimeout(() => {
                 delete cooldowns[i]
               }, cmds[i].cd);
