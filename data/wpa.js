@@ -4,7 +4,16 @@ let players = [
     price: 10000,
     pa: [
       [
-        
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
       ],
       [],
       [],
@@ -14,3 +23,8 @@ let players = [
     ]
   }
 ];
+
+module.exports = {
+  p: players,
+  pa: players.map(p => p.pa),
+};

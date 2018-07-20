@@ -14,10 +14,18 @@
   ellipse, rect
  */
 
+class Player {
+  constructor(colors) {
+    
+  }
+}
+
+
 function setup() {
   createCanvas(windowWidth - 20, windowHeight - 20);
   frameRate(1000);
 }
+
 function draw() {
   background(255);
   rectMode(CENTER);
