@@ -356,7 +356,14 @@ const f = {
   round_rect: globalfunctions.round_rect,
   autofont: globalfunctions.autofont,
   qclean: globalfunctions.qclean,
-  reset_streaks: async () => {}
+  reset_streaks: (ddo) => {
+    if(!ddo)
+      setInterval(f.reset_streaks, 4.32e4);
+    
+    db.all("SELECT lastDaily, streak FROM users", (err, res) => {
+      console.log(res);
+    });
+  }
 };
 
 // Commands
