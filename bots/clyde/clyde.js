@@ -91,7 +91,8 @@ function run() {
     console.log(client.user.tag + " has started. Ready for action");
     f.checkelections()//.checksql();
     
-    setTimeout(f.reset_streaks, new Date().setHours(0).valueOf() - (new Date()).valueOf());
+    // Resets streaks of those who haven't collected today
+    setTimeout(f.reset_streaks, new Date().setHours(11, 59, 59).valueOf() - new Date().valueOf());
   });
   client.on("guildMemberRemove", member => {
     db.all(`SELECT * FROM election WHERE id = "${member.user.id}", vId = "${member.user.id}"`, (err, res) => {
@@ -463,7 +464,7 @@ const cmds = {
         
         if(new Date().getDate() === new Date(res.lastDaily).getDate() && new Date().getFullYear() === new Date(res.lastDaily).getFullYear() && new Date().getMonth() === new Date(res.lastDaily).getMonth())
           return msg.channel.send(new Discord.RichEmbed().setAuthor("Please wait till tomorrow to recieve your daily", msg.author.avatarURL).setColor(f.color()).setFooter("You can get it anytime tomorrow or after"));
-        db.run(`UPDATE users SET points = ${res.points + exp}, lastDaily = ${new Date().valueOf()} WHERE id = "${msg.author.id}"`);
+        db.run(`UPDATE users SET points = ${res.points + exp}, streak = ${(res.streak || 0) + 1}, lastDaily = ${new Date().valueOf()} WHERE id = "${msg.author.id}"`);
         msg.channel.send(new Discord.RichEmbed().setAuthor("Daily Recieved", msg.author.avatarURL).setColor(f.color()).setDescription(`You have recieved **${exp}** points`));
       });
     },
