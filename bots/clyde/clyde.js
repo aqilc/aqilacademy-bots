@@ -355,6 +355,7 @@ const f = {
   },
   round_rect: globalfunctions.round_rect,
   autofont: globalfunctions.autofont,
+  qclean: globalfunctions.qclean,
 };
 
 // Commands
@@ -814,11 +815,11 @@ const cmds = {
       
       // Makes a string we can use for showing the answers
       for(let i = 0; i < answers.length; i ++)
-        string += `    **${i + 1}.** ${answers[i].replace(/&quot;/g, '"').replace(/&#039;/g, "'").replace(/&eacute;/g, "é")}\n`;
+        string += `    **${i + 1}.** ${f.qclean(answers[i])}\n`;
       
       // Created an embed for us to use later
       let embed = new Discord.RichEmbed()
-        .setAuthor(question.question.replace(/&quot;/g, '"').replace(/&#039;/g, "'"), msg.author.avatarURL)
+        .setAuthor(f.qclean(question.question), msg.author.avatarURL)
         .setDescription(`**Answers:**\n${string}`)
         .setColor(f.color())
         .addField("Stats", `**Difficulty:** ${question.difficulty}\n**Category:** ${question.category}`, true)
@@ -836,7 +837,7 @@ const cmds = {
             if(timer > 999)
               mess.edit(embed.setFooter(`You have ${timer/1000} seconds left`))
             else {
-              mess.edit(embed.setDescription("_  _" + string + `\nBTW, ${answers.indexOf(question.correct_answer.replace(/&quot;/g, '"').replace(/&#039;/g, "'")) + 1} was the right one`).setFooter(""));
+              mess.edit(embed.setDescription("_  _" + string + `\nBTW, ${answers.indexOf(f.qclean(question.correct_answer)) + 1} was the right one`).setFooter(""));
               clearInterval(int);
             }
           }, 1000);
@@ -868,7 +869,7 @@ const cmds = {
         
         // If wrong, send a message that you got it wrong, then edit the embed
         else
-          return msg.reply(`You got it wrong. You lose: ${exp/2} Points`) && mess.edit(embed.setDescription("_  _" + string + `\nBTW, ${answers.indexOf(question.correct_answer.replace(/&quot;/g, '"').replace(/&#039;/g, "'")) + 1} was the right one`).setFooter("")) && f.add_exp(msg.author.id, -exp/2);
+          return msg.reply(`You got it wrong. You lose: ${exp/2} Points`) && mess.edit(embed.setDescription("_  _" + string + `\nBTW, ${answers.indexOf(f.qclean(question.correct_answer)) + 1} was the right one`).setFooter("")) && f.add_exp(msg.author.id, -exp/2);
       })
       
       // If the person ran out of time
