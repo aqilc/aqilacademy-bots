@@ -814,7 +814,7 @@ const cmds = {
       
       // Makes a string we can use for showing the answers
       for(let i = 0; i < answers.length; i ++)
-        string += `    **${i + 1}.** ${answers[i].replace(/&quot;/g, '"').replace(/&#039;/g, "'")}\n`;
+        string += `    **${i + 1}.** ${answers[i].replace(/&quot;/g, '"').replace(/&#039;/g, "'").replace(/&eacute;/g, "é")}\n`;
       
       // Created an embed for us to use later
       let embed = new Discord.RichEmbed()

@@ -214,6 +214,9 @@ module.exports = {
   },
   
   // Trivia Functions
+  qclean(text) {
+    return text.replace(/&quot;/g, '"').replace(/&#039;/g, "'").replace(/&eacute;/g, "é");
+  },
   async get_categories() {
     let data = await require("./f.js").parseURL("https://opentdb.com/api_category.php");
     return data.trivia_categories;

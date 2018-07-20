@@ -22,7 +22,10 @@ let players = [
         [],
         []
       ],
-      running: [],
+      running: [
+        [],
+        
+      ],
     }
   }
 ];
