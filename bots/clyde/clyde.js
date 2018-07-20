@@ -285,24 +285,16 @@ const f = {
   check_and_do_cmd: (message) => {
     let content = message.content;
     let perms = {
-      undefined: [false, () => {}],
-      "": [false, () => {}],
-      mod: [!message.member.permissions.has(["MANAGE_MESSAGES", "MANAGE_ROLES"], true) || !f.has_roles(message.member, "Moderator"), () => {
-        message.reply("You need the `Moderator` role to use this command!");
-      }],
-      admin: [!message.member.permissions.has(["MANAGE_MESSAGES", "MANAGE_ROLES", "MANAGE_GUILD", "BAN_MEMBERS", "KICK_MEMBERS"], true) || !f.has_roles(message.member, "Administrator"), () => {
-        message.reply("You need the `Administrator` role to use this command!");
-      }],
-      admin_perm: [!message.member.permissions.has(["ADMINISTRATOR"], true), () => {
-        message.reply("You need the `ADMINISTRATOR` permission to use this command!");
-      }],
-      "bot admin": [!data.devs.includes(message.author.id), () => {
-        message.reply("You need to be a Clyde Admin to use this command!");
-      }],
+      undefined: [false, ""],
+      "": [false, ""],
+      mod: [!message.member.permissions.has(["MANAGE_MESSAGES", "MANAGE_ROLES"], true) || !f.has_roles(message.member, "Moderator"), "You need the `Moderator` role to use this command!"],
+      admin: [!message.member.permissions.has(["MANAGE_MESSAGES", "MANAGE_ROLES", "MANAGE_GUILD", "BAN_MEMBERS", "KICK_MEMBERS"], true) || !f.has_roles(message.member, "Administrator"), "You need the `Administrator` role to use this command!"],
+      admin_perm: [!message.member.permissions.has(["ADMINISTRATOR"], true), "You need the `ADMINISTRATOR` permission to use this command!"],
+      "bot admin": [!data.devs.includes(message.author.id), "You need to be a Clyde Admin to use this command!"],
     };
     for (var i in cmds) {
       if((cmds[i].a && cmds[i].a.includes(message.content.slice(prefix.length).split(" ")[0])) || message.content.slice(prefix.length).split(" ")[0] === i) {
-        if(cooldowns[i] && cooldowns[i].includes(message.author.id))
+        if(typeof cooldowns[i] === "object" && cooldowns[i].includes(message.author.id))
           return message.reply("You are using this command too fast, slow down!");
         db.get(`SELECT * FROM blacklist WHERE user = "${message.author.id}"`, (err, black) => {
           if(black)
@@ -312,14 +304,16 @@ const f = {
             }).catch(console.log);
           db.get(`SELECT * FROM users WHERE id = "${message.author.id}"`, (err, res) => {
             if(perms[cmds[i].perms][0] && !data.devs.includes(message.author.id))
-              return perms[cmds[i].perms][1]();
+              return message.reply(perms[cmds[i].perms][1]);
             if(content.endsWith("-d"))
               message.delete() && content.slice(0, -2);
             if(cmds[i].del === true)
               message.delete();
             if(typeof cmds[i].cd === "number") {
               cooldowns[i] = (cooldowns[i] || []).push(message.author.id);
-              setTimeout(() => delete cooldowns[i], cmds[i].cd);
+              setTimeout(() => {
+                delete cooldowns[i]
+              }, cmds[i].cd);
             }
             cmds[i].do(message, content.includes(" ") ? content.slice(message.content.indexOf(" ")).trim() : "");
           });
