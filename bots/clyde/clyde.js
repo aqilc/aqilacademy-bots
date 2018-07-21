@@ -28,7 +28,7 @@ function run() {
   client.on("message", async msg => {
     try {
       //What happens when DMed
-      if(msg.channel.type !== "text" && msg.author.id === client.user.id) {
+      if(msg.channel.type !== "text" && msg.author.id !== client.user.id) {
         f.log("main", `**${msg.author.tag}**(ID: ${msg.author.id}) said:\`\`\`${msg.content}\`\`\``);
         db.get("SELECT * FROM elections ORDER BY end DESC", (err, res) => {
           db.all("SELECT * FROM election", (err, rows) => {
