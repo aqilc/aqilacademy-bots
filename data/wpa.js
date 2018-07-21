@@ -124,7 +124,7 @@ const font = {
   "\\": "",
   "|": "",
 };
-Object.keys(font).forEach(a => font[a].split(" "));
+Object.keys(font).forEach(a => font[a] = font[a].split(" "));
 
 module.exports = {
   p: players,
