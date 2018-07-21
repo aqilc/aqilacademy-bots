@@ -1035,7 +1035,7 @@ const cmds = {
       });
     },
   },
-  election: {
+  electinfo: {
     desc: "Shows you some stats for elections",
     usage: " [candidates or voters] (page num)",
     cat: "election",
