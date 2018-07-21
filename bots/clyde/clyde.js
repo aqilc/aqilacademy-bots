@@ -796,6 +796,11 @@ const cmds = {
         daily: {
           i: "Does a fake daily for you",
           f: () => cmds.daily.do(msg, content, true),
+        },
+        googleit: {
+          a: ["gi"],
+          i: "Sends a \"google it\" picture :P",
+          f: () => msg.channel.send("<:hyperthonk:418591918411350036>", new Discord.RichEmbed().setImage("https://cdn.discordapp.com/attachments/348260146708742149/468921448124383233/Capture.PNG").setColor(f.color())),
         }
       };
       for(let i in tags) {
