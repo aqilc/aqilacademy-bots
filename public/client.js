@@ -7,7 +7,7 @@
  * Modes/Aligns
   rectMode, ellipseMode, CENTER, CORNER, TOP, BOTTOM, LEFT, RIGHT
  * Color
-  fill, stroke, strokeWeight, noFill, background, 
+  fill, stroke, noStroke, strokeWeight, noFill, background, 
  * Transformations
   push, pop,
  * Shapes
@@ -22,10 +22,16 @@ function setup() {
 
 function draw() {
   background(255);
+  noStroke();
   rectMode(CENTER);
-  fill(0);
+  fill(250);
   ellipse(mouseX, mouseY, 200, 200);
   print(JSON.stringify(frameRate));
+  
+  fill(0, 1);
+  for(let i = 0; i < 255; i += 2) {
+    rect(width/2, height - i/2, width, i);
+  }
   
   push();
   noFill();
