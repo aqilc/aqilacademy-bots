@@ -1,3 +1,5 @@
+const pa = require(
+
 // Makes unnecessary distractions go away XD
 /* global
  * Envirnment
@@ -14,7 +16,9 @@
   ellipse, rect
  */
 
-
+function Text() {
+  
+}
 function setup() {
   createCanvas(windowWidth - 20, 2000);
   frameRate(1000);

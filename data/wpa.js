@@ -30,7 +30,7 @@ let players = [
   }
 ];
 const font = {
-  a: "",
+  a: "  1111 1 1-11 1111",
   A: "",
   b: "",
   B: "",
@@ -123,9 +123,8 @@ const font = {
   "/": "",
   "\\": "",
   "|": "",
-  
 };
-
+Object.keys(font).forEach(a => font[a].split(" "));
 
 module.exports = {
   p: players,
