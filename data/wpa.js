@@ -129,4 +129,5 @@ Object.keys(font).forEach(a => font[a].split(" "));
 module.exports = {
   p: players,
   pa: players.map(p => p.pa),
+  font: font,
 };

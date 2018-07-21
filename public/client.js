@@ -1,4 +1,4 @@
-const pa = require(
+const pf = require("/app/data/wpa.js").font;
 
 // Makes unnecessary distractions go away XD
 /* global
@@ -33,8 +33,15 @@ function draw() {
   print(JSON.stringify(frameRate));
   
   fill(0, 1);
-  for(let i = 0; i < 255; i += 2) {
+  for(let i = 0; i < 255; i += 2)
     rect(width/2, height - i/2, width, i);
+  
+  fill(0);
+  for(let i = 0; i < pf.a.length; i ++) {
+    for(let j = 0; j < pf.a[i].length; j ++) {
+      if(pf.a[i][j] == 1)
+        rect(i*2, j*2, 2, 2);
+    }
   }
   
   push();
