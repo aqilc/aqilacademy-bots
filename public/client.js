@@ -21,7 +21,7 @@ function Text() {
 }
 function setup() {
   createCanvas(windowWidth - 20, 2000);
-  frameRate(1000);
+  frameRate(100);
 }
 
 function draw() {
@@ -32,15 +32,16 @@ function draw() {
   ellipse(mouseX, mouseY, 200, 200);
   
   fill(0, 1);
-  for(let i = 0; i < 255; i += 2)
+  for(let i = 0; i < 255; i += 2) {
     rect(width/2, height - i/2, width, i);
+  }
   
   fill(0);
   noStroke();
   for(let i = 0; i < font.a.length; i ++) {
     for(let j = 0; j < font.a[i].length; j ++) {
       if(font.a[i][j] === "1") {
-        rect(100 + j*5, 100 + i*5, 5, 5);
+        rect(j*5, i*5, 5, 5);
       }
     }
   }
