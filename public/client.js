@@ -1,5 +1,3 @@
-Object.keys(font).forEach(a => { font[a] = font[a].split(" ") });
-
 // Makes unnecessary distractions go away XD
 /* global
  * Imported Variables
@@ -19,6 +17,7 @@ Object.keys(font).forEach(a => { font[a] = font[a].split(" ") });
  */
 
 function setup() {
+  Object.keys(font).forEach(a => { font[a] = font[a].split(" ") });
   createCanvas(windowWidth - 20, 2000);
   frameRate(100);
 }
@@ -39,7 +38,7 @@ function draw() {
   for(let i = 0; i < font.a.length; i ++) {
     for(let j = 0; j < font.a[i].length; j ++) {
       if(font.a[i][j] === "1") {
-        rect(j*5, i*5, 5, 5);
+        rect(100 + j*5, i*5, 5, 5);
       }
     }
   }
@@ -53,3 +52,130 @@ function draw() {
   }
   pop();
 }
+
+let players = [
+  {
+    name: "Joe",
+    price: 10000,
+    pa: {
+      standing: [
+        [
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+        ],
+        [],
+        [],
+        [],
+        [],
+        []
+      ],
+      running: [
+        [],
+        
+      ],
+    }
+  }
+];
+const font = {
+  a: "  1111 1 1-11 1111",
+  A: "",
+  b: "",
+  B: "",
+  c: "",
+  C: "",
+  d: "",
+  D: "",
+  e: "",
+  E: "",
+  f: "",
+  F: "",
+  g: "",
+  G: "",
+  h: "",
+  H: "",
+  i: "",
+  I: "",
+  j: "",
+  J: "",
+  k: "",
+  K: "",
+  l: "",
+  L: "",
+  m: "",
+  M: "",
+  n: "",
+  N: "",
+  o: "",
+  O: "",
+  p: "",
+  P: "",
+  q: "",
+  Q: "",
+  r: "",
+  R: "",
+  s: "",
+  S: "",
+  t: "",
+  T: "",
+  u: "",
+  U: "",
+  v: "",
+  V: "",
+  w: "",
+  W: "",
+  x: "",
+  X: "",
+  y: "",
+  Y: "",
+  z: "",
+  Z: "",
+  
+  1: "",
+  2: "",
+  3: "",
+  4: "",
+  5: "",
+  6: "",
+  7: "",
+  8: "",
+  9: "",
+  
+  $: "",
+  "^": "",
+  "%": "",
+  "&": "",
+  "(": "",
+  ")": "",
+  "*": "",
+  "#": "",
+  "@": "",
+  "!": "",
+  "-": "",
+  "_": "",
+  "=": "",
+  "+": "",
+  "`": "",
+  "~": "",
+  "[": "",
+  "]": "",
+  "{": "",
+  "}": "",
+  ":": "",
+  ";": "",
+  ",": "",
+  ".": "",
+  "<": "",
+  ">": "",
+  "?": "",
+  "/": "",
+  "\\": "",
+  "|": "",
+};
