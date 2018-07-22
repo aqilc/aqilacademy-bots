@@ -35,12 +35,16 @@ function draw() {
   }
   
   fill(0);
+  strokeWeight(0.1);
+  stroke(0);
+  for(let h in fonts[0]) {
   for(let i = 0; i < fonts[0].a.length; i ++) {
     for(let j = 0; j < fonts[0].a[i].length; j ++) {
       if(fonts[0].a[i][j] === "1") {
         rect(100 + j*5, i*5, 5, 5);
       }
     }
+  }
   }
   
   push();
@@ -86,12 +90,12 @@ let players = [
 ];
 const fonts = [
   {
-    a: "",
-    A: "",
-    b: "",
-    B: "",
-    c: "",
-    C: "",
+    a: "  .111 1..1 1..1 .111",
+    A: " .11. 1..1 1111 1..1 1..1",
+    b: " 1 111 1..1 1..1 111",
+    B: " 111 1..1 111 1..1 111",
+    c: "  .11 1 1 .11",
+    C: " .11 1 1 1 .11",
     d: "",
     D: "",
     e: "",
