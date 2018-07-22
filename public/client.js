@@ -42,6 +42,7 @@ function draw() {
   }
   
   fill(0);
+  noStroke();
   let x = 0;
   for(let h in fonts[0]) {
     for(let i = 0; i < fonts[0][h].length; i ++) {
@@ -69,23 +70,12 @@ let players = [
     price: 10000,
     pa: {
       standing: [
-        [
-          "",
-          "",
-          "",
-          "",
-          "",
-          "",
-          "",
-          "",
-          "",
-          "",
-        ],
-        [],
-        [],
-        [],
-        [],
-        []
+        "",
+        "",
+        "",
+        "",
+        "",
+        ""
       ],
       running: [
         [],
