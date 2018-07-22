@@ -872,6 +872,7 @@ const cmds = {
             answered = answers[i];
           }
         }
+        console.log(answered);
         
         // Deterines if you got it right or wrong
         correct = answered === question.correct_answer;
