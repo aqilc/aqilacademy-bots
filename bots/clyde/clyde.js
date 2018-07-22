@@ -831,7 +831,7 @@ const cmds = {
       
       // Makes a string we can use for showing the answers
       for(let i = 0; i < answers.length; i ++)
-        string += `    **${i + 1}.** ${f.qclean(answers[i])}\n`;
+        string += `_    _**${i + 1}.** ${f.qclean(answers[i])}\n`;
       
       // Created an embed for us to use later
       let embed = new Discord.RichEmbed()
@@ -885,7 +885,7 @@ const cmds = {
         
         // If wrong, send a message that you got it wrong, then edit the embed
         else
-          return msg.reply(`You got it wrong. You lose: ${exp/2} Points`) && mess.edit(embed.setDescription("_  _" + string + `\nBTW, ${answers.indexOf(f.qclean(question.correct_answer)) + 1} was the right one`).setFooter("")) && f.add_exp(msg.author.id, -exp/2);
+          return msg.reply(`You got it wrong. You lose: ${exp/2} Points`) && mess.edit(embed.setDescription(string + `\nBTW, ${answers.indexOf(f.qclean(question.correct_answer)) + 1} was the right one`).setFooter("")) && f.add_exp(msg.author.id, -exp/2);
       })
       
       // If the person ran out of time
