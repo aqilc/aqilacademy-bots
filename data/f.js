@@ -132,6 +132,8 @@ module.exports = {
     db.get(`SELECT * FROM users WHERE id = "${id}"`, (err, res) => {
       if(!res)
         return console.log("Created user: " + id) && db.run(`INSERT INTO users (id, points, realpoints, messages, created) VALUES ("${id}", 0, 0, 0, ${new Date().valueOf()})`);
+      if(exp < 0 && res.points + exp < 0)
+        exp = - res.points;
       db.run(`UPDATE users SET points = ${res.points + exp} WHERE id = "${id}"`);
     });
     return this;
