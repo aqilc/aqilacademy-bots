@@ -1,4 +1,5 @@
 const { font: font } = require("/app/data/wpa.js");
+Object.keys(font).forEach(a => { font[a] = font[a].split(" ") });
 
 // Makes unnecessary distractions go away XD
 /* global
@@ -36,7 +37,7 @@ function draw() {
     rect(width/2, height - i/2, width, i);
   }
   
-  /*fill(0);
+  fill(0);
   noStroke();
   for(let i = 0; i < font.a.length; i ++) {
     for(let j = 0; j < font.a[i].length; j ++) {
@@ -44,7 +45,7 @@ function draw() {
         rect(j*5, i*5, 5, 5);
       }
     }
-  }*/
+  }
   
   push();
   noFill();
