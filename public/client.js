@@ -15,6 +15,15 @@
  * Shapes
   ellipse, rect
  */
+Array.prototype.width = function () {
+  let w = 1;
+  for(let i = 0; i < this.length; i ++) {
+    if(this[i].length > w)
+      w = this[i].length;
+  }
+  return w;
+};
+
 
 function setup() {
   Object.keys(fonts[0]).forEach(a => { fonts[0][a] = fonts[0][a].split(" ") });
@@ -26,8 +35,8 @@ function draw() {
   background(255);
   noStroke();
   rectMode(CENTER);
-  fill(200);
-  ellipse(mouseX, mouseY, 200, 200);
+  fill(0);
+  ellipse(mouseX, mouseY, 20, 20);
   
   fill(0, 1);
   for(let i = 0; i < 255; i += 2) {
@@ -35,16 +44,16 @@ function draw() {
   }
   
   fill(0);
-  strokeWeight(0.1);
-  stroke(0);
+  let x = 0;
   for(let h in fonts[0]) {
-  for(let i = 0; i < fonts[0].a.length; i ++) {
-    for(let j = 0; j < fonts[0].a[i].length; j ++) {
-      if(fonts[0].a[i][j] === "1") {
-        rect(100 + j*5, i*5, 5, 5);
+    for(let i = 0; i < fonts[0][h].length; i ++) {
+      for(let j = 0; j < fonts[0][h][i].length; j ++) {
+        if(fonts[0][h][i][j] === "1") {
+          rect(x + j*5, i*5 + 20, 5, 5, 0);
+        }
       }
     }
-  }
+    x += fonts[0][h].width() * 5 + 5;
   }
   
   push();
@@ -96,12 +105,12 @@ const fonts = [
     B: " 111 1..1 111 1..1 111",
     c: "  .11 1 1 .11",
     C: " .11 1 1 1 .11",
-    d: "",
-    D: "",
-    e: "",
-    E: "",
-    f: "",
-    F: "",
+    d: " ...1 .111 1..1 1..1 .111",
+    D: " 111 1..1 1..1 1..1 111",
+    e: "  .11 1.11 11 .11",
+    E: " 111 1 11 1 111",
+    f: " .11 .1 111 .1 .1",
+    F: " ",
     g: "",
     G: "",
     h: "",
