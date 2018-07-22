@@ -3,7 +3,7 @@ Object.keys(font).forEach(a => { font[a] = font[a].split(" ") });
 
 // Makes unnecessary distractions go away XD
 /* global
- * Envirnment
+ * Environment
   createCanvas, windowWidth, windowHeight, width, height, mouseX, mouseY, frameRate,
  * Events
   mouseIsPressed, 
@@ -17,9 +17,6 @@ Object.keys(font).forEach(a => { font[a] = font[a].split(" ") });
   ellipse, rect
  */
 
-function Text() {
-  
-}
 function setup() {
   createCanvas(windowWidth - 20, 2000);
   frameRate(100);
