@@ -13,6 +13,7 @@ app.listen(process.env.PORT);
 app.use(express.static('public'));
 app.use(express.static('node_modules/p5/lib'));
 app.use(express.static('node_modules/p5/lib/addons'));
+app.use(express.static('data'));
 app.get("/", (request, response) => {
   response.sendFile(__dirname + '/views/index.html');
 });

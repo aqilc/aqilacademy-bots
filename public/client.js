@@ -1,8 +1,9 @@
-const { font: font } = require("/app/data/wpa.js");
 Object.keys(font).forEach(a => { font[a] = font[a].split(" ") });
 
 // Makes unnecessary distractions go away XD
 /* global
+ * Imported Variables
+ font,
  * Environment
   createCanvas, windowWidth, windowHeight, width, height, mouseX, mouseY, frameRate,
  * Events
@@ -35,14 +36,13 @@ function draw() {
   }
   
   fill(0);
-  noStroke();
-  /*for(let i = 0; i < font.a.length; i ++) {
+  for(let i = 0; i < font.a.length; i ++) {
     for(let j = 0; j < font.a[i].length; j ++) {
       if(font.a[i][j] === "1") {
         rect(j*5, i*5, 5, 5);
       }
     }
-  }*/
+  }
   
   push();
   noFill();
