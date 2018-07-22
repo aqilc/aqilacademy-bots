@@ -801,6 +801,10 @@ const cmds = {
           a: ["gi"],
           i: "Sends a \"google it\" picture :P",
           f: () => msg.channel.send("<:hyperthonk:418591918411350036>", new Discord.RichEmbed().setImage("https://cdn.discordapp.com/attachments/348260146708742149/468921448124383233/Capture.PNG").setColor(f.color())),
+        },
+        list: {
+          i: "Lists all tags",
+          f: () => msg.channel.send(new Discord.RichEmbed().setAuthor("All Tags", client.user.avatarURL).setDescription(Object.keys(tags).join(", ")).setColor(f.color())),
         }
       };
       for(let i in tags) {
