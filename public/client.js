@@ -36,13 +36,13 @@ function draw() {
   
   fill(0);
   noStroke();
-  for(let i = 0; i < font.a.length; i ++) {
+  /*for(let i = 0; i < font.a.length; i ++) {
     for(let j = 0; j < font.a[i].length; j ++) {
       if(font.a[i][j] === "1") {
         rect(j*5, i*5, 5, 5);
       }
     }
-  }
+  }*/
   
   push();
   noFill();
