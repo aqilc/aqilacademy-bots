@@ -853,7 +853,7 @@ const cmds = {
             if(timer > 999)
               mess.edit(embed.setFooter(`You have ${timer/1000} seconds left`))
             else {
-              mess.edit(embed.setDescription("_  _" + string + `\nBTW, ${answers.indexOf(f.qclean(question.correct_answer)) + 1} was the right one`).setFooter(""));
+              mess.edit(embed.setDescription(string + `BTW, ${answers.indexOf(f.qclean(question.correct_answer)) + 1} was the right one`).setFooter(""));
               clearInterval(int);
             }
           }, 1000);
@@ -886,7 +886,7 @@ const cmds = {
         
         // If wrong, send a message that you got it wrong, then edit the embed
         else
-          return msg.reply(`You got it wrong. You lose: ${exp/2} Points`) && mess.edit(embed.setDescription(string + `\nBTW, ${answers.indexOf(f.qclean(question.correct_answer)) + 1} was the right one`).setFooter("")) && f.add_exp(msg.author.id, -exp/2);
+          return msg.reply(`You got it wrong. You lose: ${exp/2} Points`) && mess.edit(embed.setDescription(string + `BTW, ${answers.indexOf(question.correct_answer) + 1} was the right one`).setFooter("")) && f.add_exp(msg.author.id, -exp/2);
       })
       
       // If the person ran out of time
