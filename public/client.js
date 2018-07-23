@@ -41,17 +41,16 @@ function draw() {
     rect(width/2, height - i/2, width, i);
   }
   
-  fill(0);
-  noStroke();
+  fill(200);
   let x = 0;
   for(let h in fonts[0]) {
     for(let i = 0; i < fonts[0][h].length; i ++) {
       for(let j = 0; j < fonts[0][h][i].length; j ++) {
         if(fonts[0][h][i][j] === "1")
-          rect(x + j*1, i*1 + 20, 1, 1);
+          rect(x + j*2, i*2 + 20, 2, 2);
       }
     }
-    x += fonts[0][h].width() +1;
+    x += fonts[0][h].width() * 2 + 2;
   }
   
   push();
@@ -116,12 +115,12 @@ const fonts = [
     N: " 1..1 11.1 1.11 1..1 1..1",
     o: "  .11 1..1 1..1 .11",
     O: " .11 1..1 1..1 1..1 .11",
-    p: "",
-    P: "",
-    q: "",
-    Q: "",
-    r: "",
-    R: "",
+    p: "  111 1..1 1..1 111 1 1",
+    P: " 111 1..1 111 1 1",
+    q: "  .111 1..1 1..1 .111 ...1 ...1",
+    Q: " .11 1..1 1..1 1..1 .11 ...1",
+    r: "  1.1 11 1 1",
+    R: " 111 1..1 1..1",
     s: "",
     S: "",
     t: "",
