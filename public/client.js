@@ -3,7 +3,7 @@
  * Imported Variables
  font,
  * Environment
-  createCanvas, windowWidth, windowHeight, width, height, mouseX, mouseY, frameRate,
+  createCanvas, windowWidth, windowHeight, width, height, mouseX, mouseY, pmouseX, pmouseY, frameRate,
  * Events
   mouseIsPressed, 
  * Modes/Aligns
@@ -26,7 +26,7 @@ Array.prototype.width = function () {
 function setup() {
   Object.keys(fonts[0]).forEach(a => { fonts[0][a] = fonts[0][a].split(" ") });
   createCanvas(windowWidth - 20, 2000);
-  frameRate(100);
+  frameRate(500);
 }
 
 function draw() {
@@ -34,7 +34,7 @@ function draw() {
   noStroke();
   rectMode(CENTER);
   fill(0);
-  ellipse(mouseX, mouseY, 20, 20);
+  ellipse(pmouseX, pmouseY, 20, 20);
   
   fill(0, 1);
   for(let i = 0; i < 255; i += 2) {
@@ -173,10 +173,10 @@ const fonts = [
     "]": " 11 .1 .1 .1 .1 11",
     "{": ".11 .1 .1 1 .1 .1 .11",
     "}": "11 .1 .1 ..1 .1 .1 11",
-    ":": "",
-    ";": "",
-    ",": "",
-    ".": "",
+    ":": "   1  1",
+    ";": "   .1  .1 1",
+    ",": "     .1 1",
+    ".": "     1",
     "<": "",
     ">": "",
     "?": "",
