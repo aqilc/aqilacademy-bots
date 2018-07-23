@@ -24,9 +24,19 @@ Array.prototype.width = function () {
   return w;
 };
 
-function Text(txt, x, y, w, h, type = 1) {
-  let font = fonts[type];
-  for(let i = 0; i < txt.length 
+function Text(txt, x, y, s = 3, w, h, type = 1) {
+  let font = fonts[type], tx = x, ty = y;
+  for(let i = 0; i < txt.length; i ++) {
+    if(!font[i])
+      continue;
+    for(let j = 0; j < font[i].length; j ++) {
+      for(let h = 0; h < font[i][j].length; h ++) {
+        if(font[h][i][] === "1")
+          rect(tx + h * s, ty + i * s, s, s);
+      }
+    }
+    tx += font[i].width * s + s;
+  }
 }
 function setup() {
   Object.keys(fonts[0]).forEach(a => { fonts[0][a] = fonts[0][a].split(" ") });
@@ -52,7 +62,7 @@ function draw() {
     }
     x += fonts[0][h].width() * 2 + 2;
   }
-  text(this.frameRate().toFixed(1), 100, 100);
+  Text(this.frameRate().toFixed(1), 100, 100);
   
   push();
   noFill();
