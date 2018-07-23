@@ -23,10 +23,15 @@ Array.prototype.width = function () {
   }
   return w;
 };
+
+function Text(txt, x, y, w, h, type = 1) {
+  let font = fonts[type];
+  for(let i = 0; i < txt.length 
+}
 function setup() {
   Object.keys(fonts[0]).forEach(a => { fonts[0][a] = fonts[0][a].split(" ") });
   createCanvas(windowWidth - 20, 2000);
-  frameRate(500);
+  frameRate(100);
 }
 
 function draw() {
@@ -35,11 +40,6 @@ function draw() {
   rectMode(CENTER);
   fill(0);
   ellipse(pmouseX, pmouseY, 20, 20);
-  
-  fill(0, 1);
-  for(let i = 0; i < 255; i += 2) {
-    rect(width/2, height - i/2, width, i);
-  }
   
   fill(100);
   let x = 20;
