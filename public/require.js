@@ -1,155 +1,155 @@
 
-      (function() {
-        "use strict";
+(function() {
+  "use strict";
 
-        var cache, config;
-        cache = Object.create(null);
-        config = (self.TarpConfig && self.TarpConfig.require) || new Object();
-        config.paths = config.paths || ["./node_modules/"];
+  var cache, config;
+  cache = Object.create(null);
+  config = (self.TarpConfig && self.TarpConfig.require) || new Object();
+  config.paths = config.paths || ["./node_modules/"];
 
-        function load(id, pwd, asyn) {
-          var matches, href, cached, request;
-          // NOTE resolve href from id.
-          matches = id.match(/^((\.)?.*\/|)(.[^.]*|)(\..*|)$/);
-          href = (new URL(
-            matches[1] + matches[3] + (matches[3] && (matches[4] || ".js")),
-            pwd
-          )).href;
-          // NOTE create cache item if required.
-          cached = cache[href] = cache[href] || {
-            e: undefined, // error
-            m: undefined, // module
-            p: undefined, // promise
-            r: undefined, // request
-            s: undefined, // source
-            t: undefined, // type
-            u: href, // url
-          };
-          if (!cached.p) {
-            cached.p = new Promise(function(res, rej) {
-              request = cached.r = new XMLHttpRequest();
-              request.onload = request.onerror = request.ontimeout = function() {
-                var tmp, done, pattern, match, loading = 0, pwd2;
-                  // `request` might have been changed by line 54.
-                if (request = cached.r) {
-                  cached.r = null;
-                  if ((request.status > 99) && ((href = request.responseURL) != cached.u)) {
-                    if (cache[href]) {
-                      cached = cache[cached.u] = cache[href];
-                      cached.p.then(res, rej);
-                      // NOTE Replace pending request of actual module with the already completed request and abort the
-                      //      pending request.
-                      if (cached.r) {
-                        tmp = cached.r;
-                        cached.r = request;
-                        tmp.abort();
-                        tmp.onload();
-                      }
-                      return;
-                    }
-                    else {
-                      cached.u = href;
-                      cache[href] = cached;
-                    }
-                  }
-                  if ((request.status > 99) && (request.status < 400)) {
-                    cached.s = request.responseText;
-                    cached.t = request.getResponseHeader("Content-Type");
-                    done = function() { if (--loading < 0) res(cached); };
-                    // NOTE Pre-load submodules if the request is asynchronous (timeout > 0).
-                    if (request.timeout) {
-                      // TODO Write a real parser that returns all modules that are preloadable.
-                      pattern = /require\s*(?:\.\s*resolve\s*(?:\.\s*paths\s*)?)?\(\s*(?:"((?:[^"\\]|\\.)+)"|'((?:[^'\\]|\\.)+)')\s*\)/g;
-                      while((match = pattern.exec(cached.s)) !== null) {
-                        // NOTE Only add modules to the loading-queue that are still pending.
-                        pwd2 = (new URL((match[1]||match[2])[0] == "." ? href : config.paths[0], location.href)).href;
-                        if ((tmp = load(match[1]||match[2], pwd2, true)).r) {
-                          loading++;
-                          tmp.p.then(done, done);
-                        }
-                      }
-                    }
-                    done();
-                  }
-                  else {
-                    rej(cached.e = new Error(href + " " + request.status));
+  function load(id, pwd, asyn) {
+    var matches, href, cached, request;
+    // NOTE resolve href from id.
+    matches = id.match(/^((\.)?.*\/|)(.[^.]*|)(\..*|)$/);
+    href = (new URL(
+      matches[1] + matches[3] + (matches[3] && (matches[4] || ".js")),
+      pwd
+    )).href;
+    // NOTE create cache item if required.
+    cached = cache[href] = cache[href] || {
+      e: undefined, // error
+      m: undefined, // module
+      p: undefined, // promise
+      r: undefined, // request
+      s: undefined, // source
+      t: undefined, // type
+      u: href, // url
+    };
+    if (!cached.p) {
+      cached.p = new Promise(function(res, rej) {
+        request = cached.r = new XMLHttpRequest();
+        request.onload = request.onerror = request.ontimeout = function() {
+          var tmp, done, pattern, match, loading = 0, pwd2;
+            // `request` might have been changed by line 54.
+          if (request = cached.r) {
+            cached.r = null;
+            if ((request.status > 99) && ((href = request.responseURL) != cached.u)) {
+              if (cache[href]) {
+                cached = cache[cached.u] = cache[href];
+                cached.p.then(res, rej);
+                // NOTE Replace pending request of actual module with the already completed request and abort the
+                //      pending request.
+                if (cached.r) {
+                  tmp = cached.r;
+                  cached.r = request;
+                  tmp.abort();
+                  tmp.onload();
+                }
+                return;
+              }
+              else {
+                cached.u = href;
+                cache[href] = cached;
+              }
+            }
+            if ((request.status > 99) && (request.status < 400)) {
+              cached.s = request.responseText;
+              cached.t = request.getResponseHeader("Content-Type");
+              done = function() { if (--loading < 0) res(cached); };
+              // NOTE Pre-load submodules if the request is asynchronous (timeout > 0).
+              if (request.timeout) {
+                // TODO Write a real parser that returns all modules that are preloadable.
+                pattern = /require\s*(?:\.\s*resolve\s*(?:\.\s*paths\s*)?)?\(\s*(?:"((?:[^"\\]|\\.)+)"|'((?:[^'\\]|\\.)+)')\s*\)/g;
+                while((match = pattern.exec(cached.s)) !== null) {
+                  // NOTE Only add modules to the loading-queue that are still pending.
+                  pwd2 = (new URL((match[1]||match[2])[0] == "." ? href : config.paths[0], location.href)).href;
+                  if ((tmp = load(match[1]||match[2], pwd2, true)).r) {
+                    loading++;
+                    tmp.p.then(done, done);
                   }
                 }
-              };
-            });
-          }
-          // NOTE `request` is only defined if the module is requested for the first time.
-          if (request = request || (!asyn && cached.r)) {
-            try {
-              request.abort();
-              request.timeout = asyn ? 10000 : 0;
-              request.open("GET", href, asyn);
-              request.send();
-            }
-            catch (e) {
-              request.onerror();
-            }
-          }
-          if (cached.e)
-            throw cached.e;
-          return cached;
-        }
-
-        function evaluate(cached, parent) {
-          var module;
-          if (!cached.m) {
-            module = cached.m = {
-              children: new Array(),
-              exports: Object.create(null),
-              filename: cached.u,
-              id: cached.u,
-              loaded: false,
-              parent: parent,
-              paths: config.paths.slice(),
-              require: undefined,
-              uri: cached.u
-            },
-            module.require = factory(module);
-            parent && parent.children.push(module);
-            if (cached.t == "application/json")
-              module.exports = JSON.parse(cached.s);
-            else
-              (new Function(
-                "exports,require,module,__filename,__dirname",
-                cached.s + "\n//# sourceURL=" + module.uri
-              ))(module.exports, module.require, module, module.uri, module.uri.match(/.*\//)[0]);
-            module.loaded = true;
-          }
-          return cached.m;
-        }
-
-        function factory(parent) {
-          function requireEngine(mode, id, asyn) {
-            function afterLoad(cached) {
-              var regex = /package\.json$/;
-              if (regex.test(cached.u) && !regex.test(id)) {
-                parent = evaluate(cached, parent);
-                return requireEngine(mode, parent.exports.main, asyn);
               }
-              else if (mode == 1)
-                return cached.u;
-              else if (mode == 2)
-                return [pwd.match(/.*\//)[0]];
-              else
-                return evaluate(cached, parent).exports;
+              done();
             }
-
-            var pwd = (new URL(id[0] == "." ? (parent ? parent.uri : location.href) : config.paths[0], location.href)).href;
-            return asyn ?
-              new Promise(function(res, rej) { load(id, pwd, asyn).p.then(afterLoad).then(res, rej); }):
-              afterLoad(load(id, pwd, asyn));
+            else {
+              rej(cached.e = new Error(href + " " + request.status));
+            }
           }
+        };
+      });
+    }
+    // NOTE `request` is only defined if the module is requested for the first time.
+    if (request = request || (!asyn && cached.r)) {
+      try {
+        request.abort();
+        request.timeout = asyn ? 10000 : 0;
+        request.open("GET", href, asyn);
+        request.send();
+      }
+      catch (e) {
+        request.onerror();
+      }
+    }
+    if (cached.e)
+      throw cached.e;
+    return cached;
+  }
 
-          var require = requireEngine.bind(undefined, 0);
-          require.resolve = requireEngine.bind(require, 1);
-          require.resolve.paths = requireEngine.bind(require.resolve, 2);
-          return require;
+  function evaluate(cached, parent) {
+    var module;
+    if (!cached.m) {
+      module = cached.m = {
+        children: new Array(),
+        exports: Object.create(null),
+        filename: cached.u,
+        id: cached.u,
+        loaded: false,
+        parent: parent,
+        paths: config.paths.slice(),
+        require: undefined,
+        uri: cached.u
+      },
+      module.require = factory(module);
+      parent && parent.children.push(module);
+      if (cached.t == "application/json")
+        module.exports = JSON.parse(cached.s);
+      else
+        (new Function(
+          "exports,require,module,__filename,__dirname",
+          cached.s + "\n//# sourceURL=" + module.uri
+        ))(module.exports, module.require, module, module.uri, module.uri.match(/.*\//)[0]);
+      module.loaded = true;
+    }
+    return cached.m;
+  }
+
+  function factory(parent) {
+    function requireEngine(mode, id, asyn) {
+      function afterLoad(cached) {
+        var regex = /package\.json$/;
+        if (regex.test(cached.u) && !regex.test(id)) {
+          parent = evaluate(cached, parent);
+          return requireEngine(mode, parent.exports.main, asyn);
         }
+        else if (mode == 1)
+          return cached.u;
+        else if (mode == 2)
+          return [pwd.match(/.*\//)[0]];
+        else
+          return evaluate(cached, parent).exports;
+      }
 
-        (self.Tarp = self.Tarp || {}).require = factory(null);
-      })();
+      var pwd = (new URL(id[0] == "." ? (parent ? parent.uri : location.href) : config.paths[0], location.href)).href;
+      return asyn ?
+        new Promise(function(res, rej) { load(id, pwd, asyn).p.then(afterLoad).then(res, rej); }):
+        afterLoad(load(id, pwd, asyn));
+    }
+
+    var require = requireEngine.bind(undefined, 0);
+    require.resolve = requireEngine.bind(require, 1);
+    require.resolve.paths = requireEngine.bind(require.resolve, 2);
+    return require;
+  }
+
+  (self.Tarp = self.Tarp || {}).require = factory(null);
+})();
