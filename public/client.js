@@ -1,3 +1,5 @@
+//let levels = require("/app/data/l.js");
+
 // Makes unnecessary distractions go away XD
 /* global
  * Imported Variables
