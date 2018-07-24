@@ -1,4 +1,4 @@
-let levels = require("/app/data/l.js");
+//let levels = require("/app/data/l.js");
 
 // Makes unnecessary distractions go away XD
 /* global
@@ -26,7 +26,7 @@ Array.prototype.width = function () {
   return w;
 };
 
-function Text(txt, x, y, s = 3, w, h, type = 1) {
+function Text(txt, x, y, s = 3, w = x - width, h, type = 1) {
   let font = fonts[type], tx = x, ty = y;
   for(let i = 0; i < txt.length; i ++) {
     i = txt[i];
@@ -65,7 +65,7 @@ function draw() {
     }
     x += fonts[0][h].width() * 2 + 2;
   }*/
-  Text(this.frameRate().toFixed(1), 100, 100);
+  Text(this.frameRate().toFixed(1), 100, 100, 10, );
   
   push();
   noFill();
