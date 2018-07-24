@@ -1,5 +1,3 @@
-//let levels = require("/app/data/l.js");
-
 // Makes unnecessary distractions go away XD
 /* global
  * Imported Variables
@@ -28,8 +26,7 @@ Array.prototype.width = function () {
 
 function Text(txt, x, y, s = 3, w = x - width, h, type = 1) {
   let font = fonts[type], tx = x, ty = y;
-  for(let i = 0; i < txt.length; i ++) {
-    i = txt[i];
+  for(let i in txt.split("")) {
     if(!font[i])
       continue;
     for(let j = 0; j < font[i].length; j ++) {
@@ -55,7 +52,7 @@ function draw() {
   ellipse(pmouseX, pmouseY, 20, 20);
   
   fill(100);
-  /*let x = 20;
+  let x = 20;
   for(let h in fonts[0]) {
     for(let i = 0; i < fonts[0][h].length; i ++) {
       for(let j = 0; j < fonts[0][h][i].length; j ++) {
@@ -64,8 +61,8 @@ function draw() {
       }
     }
     x += fonts[0][h].width() * 2 + 2;
-  }*/
-  Text(this.frameRate().toFixed(1), 100, 100, 10, );
+  }
+  Text("Hi!", 100, 100);
   
   push();
   noFill();
