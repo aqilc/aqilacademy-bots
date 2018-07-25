@@ -24,32 +24,10 @@ Array.prototype.width = function () {
   return w;
 };
 
-function pxr(arr, i, j, rad) {
-  let r = [0, 0, 0, 0], sides = [];
+function Text(txt, x, y, s = 3, w, h, type = 0) {
+  if(typeof txt !== "string")
+    txt = JSON.stringify(txt);
   
-  sides[0] = arr[i][j - 1] != 1;
-  sides[4] = arr[i][j + 1] != 1;
-  if(arr[i + 1]) {
-    sides[5] = arr[i + 1][j + 1] != 1;
-    sides[6] = arr[i + 1][j] != 1;
-    sides[7] = arr[i + 1][j - 1] != 1;
-  }
-  if(arr[i - 1]) {
-    sides[1] = arr[i - 1][j - 1] != 1;
-    sides[2] = arr[i - 1][j] != 1;
-    sides[3] = arr[i - 1][j + 1] != 1;
-  }
-  if(sides[0] && sides[1] && sides[2])
-    r[0] = rad;
-  if(sides[2] && sides[3] && sides[4])
-    r[1] = rad;
-  if(sides[4] && sides[5] && sides[6])
-    r[2] = rad;
-  if(sides[6] && sides[7] && sides[0])
-    r[3] = rad;
-  return r;
-}
-function Text(txt, x, y, s = 30, w, h, type = 0) {
   let font = fonts[type], tx = x, ty = y;
   for(let g = 0; g < txt.length; g ++) {
     let i = txt[g];
@@ -57,10 +35,8 @@ function Text(txt, x, y, s = 30, w, h, type = 0) {
       continue;
     for(let j = 0; j < font[i].length; j ++) {
       for(let h = 0; h < font[i][j].length; h ++) {
-        let r = pxr(font[i], j, h, s);
-        
         if(font[i][j][h] === "1")
-          rect(tx + h * s, ty + j * s, s, s, r[0], r[1], r[2], r[3]);
+          rect(tx + h * s, ty + j * s, s, s);
       }
     }
     tx += font[i].width() * s + s;
@@ -76,10 +52,9 @@ function draw() {
   background(255);
   noStroke();
   rectMode(CENTER);
-  fill(0);
-  ellipse(pmouseX, pmouseY, 20, 20);
   
   fill(100);
+  noStroke();
   let x = 20;
   for(let h in fonts[0]) {
     for(let i = 0; i < fonts[0][h].length; i ++) {
@@ -90,14 +65,5 @@ function draw() {
     }
     x += fonts[0][h].width() * 2 + 2;
   }
-  Text("Hi!", 100, 100);
-  
-  push();
-  noFill();
-  strokeWeight(3);
-  for(let i = 0; i < 5; i ++) {
-    stroke(255, ((5 - i)/5) * 255);
-    rect(width/2, height/2, width - i, height - i, (i/5) * 5);
-  }
-  pop();
+  Text(this.frameRate(), 100, 100, 4);
 }
