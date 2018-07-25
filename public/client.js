@@ -28,7 +28,28 @@ function round(arr, i, j, rad) {
   let r = [0, 0, 0, 0, 0, 0, 0, 0],
       rd = [0, 0, 0, 0];
   
-  
+  if(["2", "3"].includes(levels[you.level - 1][i][j])) {
+					sides[0] = levels[you.level - 1][i][j - 1] == 1;
+					sides[2] = levels[you.level - 1][i - 1] && levels[you.level - 1][i - 1][j] == 1;
+					sides[4] = levels[you.level - 1][i][j + 1] == 1;
+					sides[6] = levels[you.level - 1][i + 1] && levels[you.level - 1][i + 1][j] == 1;
+					if(levels[you.level - 1][i - 1]) {
+						sides[1] = levels[you.level - 1][i - 1][j - 1] == 1;// top-left
+						sides[3] = levels[you.level - 1][i - 1][j + 1] == 1;// top-right
+					}
+					if(levels[you.level - 1][i + 1]) {
+						sides[7] = levels[you.level - 1][i + 1][j - 1] === 1;// bottom-left
+						sides[5] = levels[you.level - 1][i + 1][j + 1] === 1;// bottom-right
+					}
+				}
+				if(sides[0] && sides[1] && sides[2])
+					r[0] = 3;
+				if(sides[2] && sides[3] && sides[4])
+					r[1] = 3;
+				if(sides[4] && sides[5] && sides[6])
+					r[2] = 3;
+				if(sides[6] && sides[7] && sides[0])
+					r[3] = 3;
 }
 function Text(txt, x, y, s = 30, w, h, type = 0) {
   let font = fonts[type], tx = x, ty = y;
