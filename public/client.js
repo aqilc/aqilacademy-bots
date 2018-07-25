@@ -44,7 +44,7 @@ function Text(txt, x, y, s = 3, w, h, type = 0) {
 }
 function setup() {
   Object.keys(fonts[0]).forEach(a => { fonts[0][a] = fonts[0][a].split(" ") });
-  createCanvas(windowWidth - 20, 2000);
+  createCanvas(windowWidth - 35, 2000);
   frameRate(100);
 }
 
@@ -65,5 +65,5 @@ function draw() {
     }
     x += fonts[0][h].width() * 2 + 2;
   }
-  Text(this.frameRate(), 100, 100, 4);
+  Text(Math.round(this.frameRate()/10)*10, 100, 100, 4);
 }
