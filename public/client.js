@@ -27,19 +27,17 @@ Array.prototype.width = function () {
 function pxr(arr, i, j, rad) {
   let r = [0, 0, 0, 0], sides = [];
   
-  if(arr[i][j] == 1) {
-    sides[0] = arr[i][j - 1] == 1;
-    sides[2] = arr[i - 1] && arr[i - 1][j] == 1;
-    sides[4] = arr[i][j + 1] == 1;
-    sides[6] = arr[i + 1] && arr[i + 1][j] == 1;
-    if([i - 1]) {
-      sides[1] = arr[i - 1][j - 1] == 1;// top-left
-      sides[3] = arr[i - 1][j + 1] == 1;// top-right
-    }
-    if(arr[i + 1]) {
-      sides[7] = arr[i + 1][j - 1] === 1;// bottom-left
-      sides[5] = arr[i + 1][j + 1] === 1;// bottom-right
-    }
+  sides[0] = arr[i][j - 1] != 1;
+  sides[4] = arr[i][j + 1] != 1;
+  if(arr[i + 1]) {
+    sides[5] = arr[i + 1][j + 1] != 1;
+    sides[6] = arr[i + 1][j] != 1;
+    sides[7] = arr[i + 1][j - 1] != 1;
+  }
+  if(arr[i - 1]) {
+    sides[1] = arr[i - 1][j - 1] != 1;
+    sides[2] = arr[i - 1][j] != 1;
+    sides[3] = arr[i - 1][j + 1] != 1;
   }
   if(sides[0] && sides[1] && sides[2])
     r[0] = rad;
@@ -59,7 +57,7 @@ function Text(txt, x, y, s = 30, w, h, type = 0) {
       continue;
     for(let j = 0; j < font[i].length; j ++) {
       for(let h = 0; h < font[i][j].length; h ++) {
-        let r = pxr(font[i], j, h);
+        let r = pxr(font[i], j, h, s);
         
         if(font[i][j][h] === "1")
           rect(tx + h * s, ty + j * s, s, s, r[0], r[1], r[2], r[3]);
