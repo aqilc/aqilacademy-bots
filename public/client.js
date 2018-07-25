@@ -27,15 +27,17 @@ Array.prototype.width = function () {
 function Text(txt, x, y, s = 3, w = x - width, h, type = 1) {
   let font = fonts[type], tx = x, ty = y;
   for(let i in txt.split("")) {
+    console.log(i);
     if(!font[i])
       continue;
+    console.log(i);
     for(let j = 0; j < font[i].length; j ++) {
       for(let h = 0; h < font[i][j].length; h ++) {
         if(font[i][j][h] === "1")
           rect(tx + h * s, ty + i * s, s, s);
       }
     }
-    tx += font[i].width * s + s;
+    tx += font[i].width() * s + s;
   }
 }
 function setup() {
