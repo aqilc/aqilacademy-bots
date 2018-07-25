@@ -42,6 +42,7 @@ function Text(txt, x, y, s = 3, w, h, type = 0) {
     tx += font[i].width() * s + s;
   }
 }
+
 function setup() {
   Object.keys(fonts[0]).forEach(a => { fonts[0][a] = fonts[0][a].split(" ") });
   createCanvas(windowWidth - 35, 2000);
