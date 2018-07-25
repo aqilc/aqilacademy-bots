@@ -24,32 +24,32 @@ Array.prototype.width = function () {
   return w;
 };
 
-function round(arr, i, j, rad) {
-  let r = [0, 0, 0, 0, 0, 0, 0, 0],
-      rd = [0, 0, 0, 0];
+function pxr(arr, i, j, rad) {
+  let r = [0, 0, 0, 0], sides = [];
   
-  if(["2", "3"].includes(levels[you.level - 1][i][j])) {
-					sides[0] = levels[you.level - 1][i][j - 1] == 1;
-					sides[2] = levels[you.level - 1][i - 1] && levels[you.level - 1][i - 1][j] == 1;
-					sides[4] = levels[you.level - 1][i][j + 1] == 1;
-					sides[6] = levels[you.level - 1][i + 1] && levels[you.level - 1][i + 1][j] == 1;
-					if(levels[you.level - 1][i - 1]) {
-						sides[1] = levels[you.level - 1][i - 1][j - 1] == 1;// top-left
-						sides[3] = levels[you.level - 1][i - 1][j + 1] == 1;// top-right
-					}
-					if(levels[you.level - 1][i + 1]) {
-						sides[7] = levels[you.level - 1][i + 1][j - 1] === 1;// bottom-left
-						sides[5] = levels[you.level - 1][i + 1][j + 1] === 1;// bottom-right
-					}
-				}
-				if(sides[0] && sides[1] && sides[2])
-					r[0] = 3;
-				if(sides[2] && sides[3] && sides[4])
-					r[1] = 3;
-				if(sides[4] && sides[5] && sides[6])
-					r[2] = 3;
-				if(sides[6] && sides[7] && sides[0])
-					r[3] = 3;
+  if(arr[i][j] == 1) {
+    sides[0] = arr[i][j - 1] == 1;
+    sides[2] = arr[i - 1] && arr[i - 1][j] == 1;
+    sides[4] = arr[i][j + 1] == 1;
+    sides[6] = arr[i + 1] && arr[i + 1][j] == 1;
+    if([i - 1]) {
+      sides[1] = arr[i - 1][j - 1] == 1;// top-left
+      sides[3] = arr[i - 1][j + 1] == 1;// top-right
+    }
+    if(arr[i + 1]) {
+      sides[7] = arr[i + 1][j - 1] === 1;// bottom-left
+      sides[5] = arr[i + 1][j + 1] === 1;// bottom-right
+    }
+  }
+  if(sides[0] && sides[1] && sides[2])
+    r[0] = rad;
+  if(sides[2] && sides[3] && sides[4])
+    r[1] = rad;
+  if(sides[4] && sides[5] && sides[6])
+    r[2] = rad;
+  if(sides[6] && sides[7] && sides[0])
+    r[3] = rad;
+  return r;
 }
 function Text(txt, x, y, s = 30, w, h, type = 0) {
   let font = fonts[type], tx = x, ty = y;
@@ -59,10 +59,10 @@ function Text(txt, x, y, s = 30, w, h, type = 0) {
       continue;
     for(let j = 0; j < font[i].length; j ++) {
       for(let h = 0; h < font[i][j].length; h ++) {
-        
+        let r = pxr(font[i], j, h);
         
         if(font[i][j][h] === "1")
-          rect(tx + h * s, ty + j * s, s, s);
+          rect(tx + h * s, ty + j * s, s, s, r[0], r[1], r[2], r[3]);
       }
     }
     tx += font[i].width() * s + s;
