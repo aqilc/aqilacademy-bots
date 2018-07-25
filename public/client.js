@@ -24,17 +24,24 @@ Array.prototype.width = function () {
   return w;
 };
 
-function Text(txt, x, y, s = 3, w = x - width, h, type = 1) {
+function round(arr, i, j, rad) {
+  let r = [0, 0, 0, 0, 0, 0, 0, 0],
+      rd = [0, 0, 0, 0];
+  
+  
+}
+function Text(txt, x, y, s = 30, w, h, type = 0) {
   let font = fonts[type], tx = x, ty = y;
-  for(let i in txt.split("")) {
-    console.log(i);
+  for(let g = 0; g < txt.length; g ++) {
+    let i = txt[g];
     if(!font[i])
       continue;
-    console.log(i);
     for(let j = 0; j < font[i].length; j ++) {
       for(let h = 0; h < font[i][j].length; h ++) {
+        
+        
         if(font[i][j][h] === "1")
-          rect(tx + h * s, ty + i * s, s, s);
+          rect(tx + h * s, ty + j * s, s, s);
       }
     }
     tx += font[i].width() * s + s;
