@@ -15,18 +15,14 @@
  * Shapes
   ellipse, rect
  */
-Array.prototype.width = function () {
-  let w = 1;
+Array.prototype.width = function (arr) {
+  let w = arr ? [] : 1;
   for(let i = 0; i < this.length; i ++) {
-    if(this[i].length > w)
-      w = this[i].length;
+    if(this[i].length > (arr ? w.length : w))
+      w = arr ? this[i] : this[i].length;
   }
   return w;
 };
-Array.prototype.widest = function () {
-  let arr = [];
-  for(let i 
-}
 
 function Text(txt, x, y, s = 3, w, h, type = 0) {
   if(typeof txt !== "string")
@@ -35,9 +31,15 @@ function Text(txt, x, y, s = 3, w, h, type = 0) {
   let font = fonts[type], tx = x, ty = y;
   if(textAlign().horizontal === "center") {
     let tw = 0;
-    txt.split("\n")
+    txt.split("\n").width(true).split("").forEach(c => {
+      if(!font[c])
+        return;
+      tw += font[c].width() * s + s;
+    });
     tx -= tw/2;
   }
+  if(textAlign().vertical === "center")
+    tx -= txt.split("\n").length * s * 3.5;
   for(let g = 0; g < txt.length; g ++) {
     let i = txt[g];
     if(i === "\n") {
@@ -66,9 +68,9 @@ function draw() {
   background(255);
   noStroke();
   rectMode(CENTER);
-  textAlign(CENTER);
+  textAlign(CENTER, CENTER);
   
   fill(100);
   noStroke();
-  Text("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890\nhi", 10, 100, 4);
+  Text("Hi", width/2, height/5, 50);
 }
