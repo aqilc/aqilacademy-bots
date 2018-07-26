@@ -1,13 +1,13 @@
 // Makes unnecessary distractions go away XD
 /* global
  * Imported Variables
- font,
+ fonts,
  * Environment
   createCanvas, windowWidth, windowHeight, width, height, mouseX, mouseY, pmouseX, pmouseY, frameRate,
  * Events
   mouseIsPressed, 
  * Modes/Aligns
-  rectMode, ellipseMode, CENTER, CORNER, TOP, BOTTOM, LEFT, RIGHT
+  rectMode, textAlign, ellipseMode, CENTER, CORNER, TOP, BOTTOM, LEFT, RIGHT
  * Color
   fill, stroke, noStroke, strokeWeight, noFill, background, 
  * Transformations
@@ -23,14 +23,21 @@ Array.prototype.width = function () {
   }
   return w;
 };
+Array.prototype.widest = function () {
+  let arr = [];
+  for(let i 
+}
 
 function Text(txt, x, y, s = 3, w, h, type = 0) {
   if(typeof txt !== "string")
     txt = JSON.stringify(txt);
   
-  let font = fonts[type], tx = x, ty = y, tw = txt.split("\n").width() * s;
-  if(textAlign().horizontal === "center")
+  let font = fonts[type], tx = x, ty = y;
+  if(textAlign().horizontal === "center") {
+    let tw = 0;
+    txt.split("\n")
     tx -= tw/2;
+  }
   for(let g = 0; g < txt.length; g ++) {
     let i = txt[g];
     if(i === "\n") {
