@@ -31,6 +31,10 @@ function Text(txt, x, y, s = 3, w, h, type = 0) {
   let font = fonts[type], tx = x, ty = y;
   for(let g = 0; g < txt.length; g ++) {
     let i = txt[g];
+    if(i === "\n") {
+      tx = x, ty += s * 7;
+      continue;
+    }
     if(!font[i])
       continue;
     for(let j = 0; j < font[i].length; j ++) {
@@ -56,15 +60,5 @@ function draw() {
   
   fill(100);
   noStroke();
-  let x = 20;
-  for(let h in fonts[0]) {
-    for(let i = 0; i < fonts[0][h].length; i ++) {
-      for(let j = 0; j < fonts[0][h][i].length; j ++) {
-        if(fonts[0][h][i][j] === "1")
-          rect(x + j*2, i*2 + 20, 2, 2);
-      }
-    }
-    x += fonts[0][h].width() * 2 + 2;
-  }
-  Text(Math.round(this.frameRate()/10)*10, 100, 100, 4);
+  Text("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890\nhi", 10, 100, 4);
 }
