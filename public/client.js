@@ -28,7 +28,9 @@ function Text(txt, x, y, s = 3, w, h, type = 0) {
   if(typeof txt !== "string")
     txt = JSON.stringify(txt);
   
-  let font = fonts[type], tx = x, ty = y;
+  let font = fonts[type], tx = x, ty = y, tw = txt.split("\n").width() * s;
+  if(textAlign().horizontal === "center")
+    tx -= tw/2;
   for(let g = 0; g < txt.length; g ++) {
     let i = txt[g];
     if(i === "\n") {
@@ -57,6 +59,7 @@ function draw() {
   background(255);
   noStroke();
   rectMode(CENTER);
+  textAlign(CENTER);
   
   fill(100);
   noStroke();
