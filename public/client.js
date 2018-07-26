@@ -30,11 +30,11 @@ function Text(txt, x, y, s = 3, w, h, type = 0) {
   
   let font = fonts[type], tx = x, ty = y;
   if(textAlign().horizontal === "center") {
-    let tw = 0;
+    let tw = txt.split(" ").length * s;
     txt.split("\n").width(true).split("").forEach(c => {
       if(!font[c])
         return;
-      tw += font[c].width() * s + s;
+      tw += font[c].width() * s;
     });
     tx -= tw/2;
   }
