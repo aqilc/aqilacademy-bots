@@ -39,7 +39,7 @@ function Text(txt, x, y, s = 3, w, h, type = 0) {
     tx -= tw/2;
   }
   if(textAlign().vertical === "center")
-    tx -= txt.split("\n").length * s * 3.5;
+    ty -= txt.split("\n").length * s * 3.5;
   for(let g = 0; g < txt.length; g ++) {
     let i = txt[g];
     if(i === "\n") {
@@ -51,7 +51,7 @@ function Text(txt, x, y, s = 3, w, h, type = 0) {
     for(let j = 0; j < font[i].length; j ++) {
       for(let h = 0; h < font[i][j].length; h ++) {
         if(font[i][j][h] === "1")
-          rect(tx + h * s, ty + j * s, s, s);
+          rect(tx + h * s - h, ty + j * s, s, s);
       }
     }
     tx += font[i].width() * s + s;
@@ -72,5 +72,5 @@ function draw() {
   
   fill(100);
   noStroke();
-  Text("Hi", width/2, height/5, 50);
+  Text("Hi", width/2, height/5, 100);
 }
