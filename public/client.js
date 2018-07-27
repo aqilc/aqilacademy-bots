@@ -68,9 +68,8 @@ function draw() {
   background(255);
   noStroke();
   rectMode(CENTER);
-  textAlign(CENTER, CENTER);
   
   fill(100);
   noStroke();
-  Text("Hi", width/2, height/5, 100);
+  Text(this.frameRate().toFixed(1), width/2, height/5, 10);
 }
