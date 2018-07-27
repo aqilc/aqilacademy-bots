@@ -1173,7 +1173,7 @@ const cmds = {
           msg.channel.send(new Discord.Attachment(canvas.toBuffer(), "test-image.png"));
           break;
         case "profile":
-          let canvas = createCanvas(400, 200),
+          let canvas = createCanvas(400, 100),
                 ctx = canvas.getContext("2d");
           
           // Starts typing to indicate that its calculating something
@@ -1200,11 +1200,10 @@ const cmds = {
               avatar = await loadImage(buffer3);
           
           // Background
-          ctx.drawImage(bg, 0, 0, canvas.width, canvas.height);
+          ctx.drawImage(bg, 0, 0, canvas.width, 200);
           
           // Boxes for stats to be put on
           ctx.fillStyle = "rgba(255, 255, 255, 0.8)";
-          f.round_rect(ctx, 20, 100, canvas.width - 40, canvas.height - 120, { tl: 4, br: 4, bl: 4 }, true, false);
           f.round_rect(ctx, 100, 20, canvas.width - 120, 80, { tl: 4, tr: 4 }, true, false);
           
           // Exp Bar
