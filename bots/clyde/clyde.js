@@ -357,6 +357,7 @@ const f = {
     return globalfunctions.calculate_stats(id);
   },
   round_rect: globalfunctions.round_rect,
+  circle: globalfunctions.circle,
   autofont: globalfunctions.autofont,
   qclean: globalfunctions.qclean,
   reset_streaks: (ddo) => {

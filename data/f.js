@@ -86,6 +86,12 @@ module.exports = {
       ctx.stroke();
     }
   },
+  circle(ctx, x, y, radius, color) {
+    ctx.beginPath();
+    ctx.arc(x, y, radius, 0, Math.PI*2, true);
+    ctx.closePath();
+    ctx.fill();
+  },
   autofont(msg, canvas, x, mX, size = 70, addons) {
     let ctx = canvas.getContext("2d");
 
