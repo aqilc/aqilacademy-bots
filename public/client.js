@@ -15,6 +15,11 @@
  * Shapes
   ellipse, rect
  */
+
+const db = new XMLHttpRequest();
+db.onload = () => {};
+db.open("get", "/db");
+
 Array.prototype.width = function (arr) {
   let w = arr ? [] : 1;
   for(let i = 0; i < this.length; i ++) {
