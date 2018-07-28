@@ -25,11 +25,11 @@ Array.prototype.width = function (arr) {
   return w;
 };
 
-function Text(txt, x, y, s = 3, w, h, type = 0) {
+function Text(txt, x, y, s = 6, w, h, type = 0) {
   if(typeof txt !== "string")
     txt = JSON.stringify(txt);
   
-  let font = fonts[type], tx = x, ty = y;
+  let font = fonts[type || 0], tx = x, ty = y;
   if(textAlign().horizontal === "center") {
     let tw = txt.split(" ").length * s;
     txt.split("\n").width(true).split("").forEach(c => {
@@ -61,7 +61,7 @@ function Text(txt, x, y, s = 3, w, h, type = 0) {
 
 function setup() {
   Object.keys(fonts[0]).forEach(a => { fonts[0][a] = fonts[0][a].split(" ") });
-  createCanvas(windowWidth - 35, 2000);
+  createCanvas(windowWidth - 35, 200);
   frameRate(100);
 }
 
