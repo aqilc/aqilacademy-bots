@@ -103,10 +103,10 @@ const trivia = {
       setInterval(() => trivia.update(true), 3.6e+7);
     this.categories = await require("./f.js").get_categories();
   },
-  add_question: (question) => {
+  add_question(question) {
     trivia.questions.push(question[0]);
   },
-  get_category: (id) => {
+  get_category(id) {
     trivia.update();
     if(!id || id < 0 || id > 32)
       return trivia.categories;
