@@ -25,6 +25,19 @@ Array.prototype.width = function (arr) {
   return w;
 };
 
+const hr = {
+  edituser(obj) {
+    let validParams = [id"points", "realpoints"], dbrun = "UPDATE users";
+    for(let i in obj) {
+      if(!validParams.includes(i))
+        throw new Error("Invalid User Database Change");
+      
+      
+    }
+    
+  },
+};
+
 function Text(txt, x, y, s = 6, w, h, type = 0) {
   if(typeof txt !== "string")
     txt = JSON.stringify(txt);
@@ -61,7 +74,7 @@ function Text(txt, x, y, s = 6, w, h, type = 0) {
 
 function setup() {
   Object.keys(fonts[0]).forEach(a => { fonts[0][a] = fonts[0][a].split(" ") });
-  createCanvas(windowWidth - 35, 200);
+  createCanvas(windowWidth - 35, 2000);
   frameRate(100);
 }
 
