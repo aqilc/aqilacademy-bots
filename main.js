@@ -18,7 +18,6 @@ app.get("/", (request, response) => {
   response.sendFile(__dirname + '/views/index.html');
 });
 app.get("/db", function (req, res) {
-  console.log(req, res);
   let tabs = tables.map(t => t.split(" ")[0]), response = {};
   tabs.forEach(r => {
     response[r] = [];
