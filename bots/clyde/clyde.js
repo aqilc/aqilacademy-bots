@@ -1208,19 +1208,15 @@ const cmds = {
           f.round_rect(ctx, 100, 20, canvas.width - 120, 80, { tl: 4, tr: 4 }, true, false);
           
           // Exp Bar
-          let p = [180, 30, canvas.width - 210, 25, 3, (stats.realpoints - bar_exp[0].points) / (bar_exp[1].points - bar_exp[0].points) <= 1 ? (stats.realpoints - bar_exp[0].points) / (bar_exp[1].points - bar_exp[0].points) : 1];
-          ctx.fillStyle = "rgb(255, 255, 255)";
-          ctx.strokeStyle = "rgb(150, 150, 150)";
-          ctx.lineWidth = 4;
-          ctx.strokeRect(p[0], p[1], p[2], p[3]);
-          ctx.fillRect(p[0], p[1], p[2], p[3]);
-          ctx.fillStyle = "rgba(0, 100, 250, 0.4)";
-          ctx.fillRect(p[0] + p[4], p[1] + p[4], (p[2] - p[4]*2) * (p[5]), p[3] - p[4] * 2);
+          let p = [180, 30, canvas.width - 210, 25, 5, (stats.realpoints - bar_exp[0].points) / (bar_exp[1].points - bar_exp[0].points) <= 1 ? (stats.realpoints - bar_exp[0].points) / (bar_exp[1].points - bar_exp[0].points) : 1];
+          f.round_rect(ctx, p[0], p[1], p[2], p[3], p[4], true, false);
+          ctx.fillStyle = "rgb(100, 150, 255)";
+          f.round_rect(ctx, p[0] + 2, p[1] + 2, p[2] * p[5], p[3], p[4], true, false);
           
           // Text
           ctx.fillStyle = "rgba(50, 50, 50, 0.7)";
           ctx.font = "bold 12px monospace";
-          let text = `${stats.realpoints} Points`;
+          let text = `Points: ${stats.realpoints} / ${bar_exp[1].points}`;
           ctx.fillText(text, p[0] + p[2]/2 - ctx.measureText(text).width/2, p[1] + p[3]/2 + 4);
           
           // Level text
