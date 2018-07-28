@@ -18,10 +18,12 @@
 
 const db = new XMLHttpRequest(), dbs = {};
 db.onload = function() {
-  dbs = this.responseText;
+  dbs = JSON.parse(this.responseText);
+  console.log(dbs);
 };
-db.open("get", "/db");
-db.send();
+db.open("GET", "/db");
+db.send()
+setInterval(() => db.send(), 60000);
 
 Array.prototype.width = function (arr) {
   let w = arr ? [] : 1;
