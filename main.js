@@ -17,6 +17,19 @@ app.use(express.static('data'));
 app.get("/", (request, response) => {
   response.sendFile(__dirname + '/views/index.html');
 });
+app.get("/db", function (req, res) {
+  let tabs = tables.map(t => t.split(" ")[0]), response = {};
+  tabs.forEach(r => {
+    response[r] = [];
+    db.all(`SELECT * FROM ${r}`, (err, res) => response[r] = res);
+  });
+  let int = setInterval(() => {
+    let all = true;
+    for(let i in response) {
+      
+    }
+  }, 10);
+});
 setInterval(() => {
   http.get(`http://${process.env.PROJECT_DOMAIN}.glitch.me/`);
 }, 280000);

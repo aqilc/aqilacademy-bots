@@ -19,6 +19,7 @@
 const db = new XMLHttpRequest();
 db.onload = () => {};
 db.open("get", "/db");
+db.send();
 
 Array.prototype.width = function (arr) {
   let w = arr ? [] : 1;
