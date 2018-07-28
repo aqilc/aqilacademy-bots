@@ -16,14 +16,15 @@
   ellipse, rect
  */
 
-const db = new XMLHttpRequest()
-var dbs = {};
-db.onload = function() {
-  dbs = JSON.parse(this.responseText);
-  console.log(dbs);
+const dbs = new XMLHttpRequest()
+dbs.open("GET", "/db");
+
+var db;
+dbs.onload = function() {
+  db = JSON.parse(this.responseText);
+  console.log(db);
 };
-db.open("GET", "/db");
-db.send();
+dbs.send();
 
 Array.prototype.width = function (arr) {
   let w = arr ? [] : 1;
