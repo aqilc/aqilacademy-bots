@@ -1,5 +1,6 @@
 const db = new (require("sqlite3").verbose()).Database('./.data/sqlite.db');
 const cdata = require("./d.js");
+const fs = require("fs");
 const https = require("https");
 
 module.exports = {
