@@ -16,8 +16,10 @@
   ellipse, rect
  */
 
-const db = new XMLHttpRequest();
-db.onload = () => {};
+const db = new XMLHttpRequest(), dbs = {};
+db.onload = function() {
+  dbs = this.responseText;
+};
 db.open("get", "/db");
 db.send();
 

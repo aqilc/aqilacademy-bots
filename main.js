@@ -21,13 +21,16 @@ app.get("/db", function (req, res) {
   let tabs = tables.map(t => t.split(" ")[0]), response = {};
   tabs.forEach(r => {
     response[r] = [];
-    db.all(`SELECT * FROM ${r}`, (err, res) => response[r] = res);
+    db.all(`SELECT * FROM ${r}`, (err, res) => response[r] = res || []);
   });
   let int = setInterval(() => {
     let all = true;
     for(let i in response) {
-      
+      if(response[i] === [])
+        all = false;
     }
+    if(all)
+      res.send(JSON.stringify(response));
   }, 10);
 });
 setInterval(() => {
