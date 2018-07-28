@@ -29,8 +29,8 @@ app.get("/db", function (req, res) {
       if(response[i] === [])
         all = false;
     }
-    if(all)
-      res.send(JSON.stringify(response));
+    if(all);
+      //res.send(JSON.stringify(response));
   }, 10);
 });
 setInterval(() => {
