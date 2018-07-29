@@ -43,7 +43,12 @@ const hr = {
         req.open("GET", "/db/get/users/" + id);
         req.send();
       });
-    }
+    },
+    allusers() {
+      return new Promise(function (res, rej) {
+        let req = new XMLHttpRequest
+      });
+    },
   },
   create: {},
   delete: {},
