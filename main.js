@@ -55,11 +55,11 @@ require("./bots/clyde/clyde.js")();
 require("./bots/music/music.js")();
 
 // API Responses
-app.get("/db/get/users", (req, res) => {
+app.get("/db/get/users/:id", (req, res) => {
   
 });
 app.put("/db/run/users/:id", (req, res) => {
-  console.log("db/run/users: " + JSON.stringify(req.query));
+  console.log("db/run/users: ID: " + JSON.stringify(req.query));
   
   let q = req.query;
   if(!req.params.id)
