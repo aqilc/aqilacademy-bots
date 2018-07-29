@@ -28,8 +28,20 @@ const hr = {
   },
   get: {
     user(id) {
-      return new Promise(function (res, err) {
+      if(!id || typeof id !== "string" || id.length !== 18)
+        throw new Error("Invalid ID Input");
+      
+      return new Promise(function (res, rej) {
+        let req = new XMLHttpRequest();
         
+        req.responseType = "json";
+        req.onreadystatechange = function () {
+          if (req.readyState === XMLHttpRequest.DONE)
+            res(this.response);
+        };
+        
+        res.open("GET", "/db/get/users/" + id);
+        res.send();
       });
     }
   },
