@@ -7,13 +7,21 @@ const https = require("https");
 const express = require("express");
 const app = express();
 const functions = require("./data/f.js");
+const bodyParser = require("body-parser");
 
 // Keeps app and website running
 app.listen(process.env.PORT);
+
+// The Site add-ons, middleware, etc
 app.use(express.static('public'));
 app.use(express.static('node_modules/p5/lib'));
 app.use(express.static('node_modules/p5/lib/addons'));
+app.use(express.static('node_modules/sqlite3'));
 app.use(express.static('data'));
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({	extended: true }));
+
+//
 app.get("/", (request, response) => {
   response.sendFile(__dirname + '/views/index.html');
 });
@@ -83,7 +91,7 @@ app.put("/db/set/users/:id", (req, res) => {
     params.push(`${i} = ${typeof q !== "string" ? q : `"${q}"`}`);
   }
   db.run(`UPDATE users SET ${params.join(" ")} WHERE id = "${id}"`);
-  res.send("Successfully changed user");
+  res.redirect("/");
 });
 
 /*

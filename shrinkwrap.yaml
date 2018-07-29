@@ -1,4 +1,5 @@
 dependencies:
+  body-parser: 1.18.3
   canvas: 2.0.0-alpha.12
   cheerio: 0.22.0
   discord.js: 11.3.2
@@ -9,7 +10,7 @@ dependencies:
   snekfetch: 4.0.4
   socket.io: 2.1.1
   sqlite3: 4.0.2
-  ytdl-core: 0.21.0
+  ytdl-core: 0.21.1
 packages:
   /abbrev/1.1.1:
     dev: false
@@ -157,6 +158,23 @@ packages:
       node: '>= 0.8'
     resolution:
       integrity: sha1-h2eKGdhLR9hZuDGZvVm84iKxBFQ=
+  /body-parser/1.18.3:
+    dependencies:
+      bytes: 3.0.0
+      content-type: 1.0.4
+      debug: 2.6.9
+      depd: 1.1.2
+      http-errors: 1.6.3
+      iconv-lite: 0.4.23
+      on-finished: 2.3.0
+      qs: 6.5.2
+      raw-body: 2.3.3
+      type-is: 1.6.16
+    dev: false
+    engines:
+      node: '>= 0.8'
+    resolution:
+      integrity: sha1-WykhmP/dVTs6DyDe0FkrlWlVyLQ=
   /boolbase/1.0.0:
     dev: false
     resolution:
@@ -804,6 +822,17 @@ packages:
       node: '>= 0.6'
     resolution:
       integrity: sha1-CgAsyFcHGSp+eUbO7cERVfYOxzY=
+  /http-errors/1.6.3:
+    dependencies:
+      depd: 1.1.2
+      inherits: 2.0.3
+      setprototypeof: 1.1.0
+      statuses: 1.5.0
+    dev: false
+    engines:
+      node: '>= 0.6'
+    resolution:
+      integrity: sha1-i1VoC7S+KDoLW/TqLjhYC+HZMg0=
   /http-signature/1.2.0:
     dependencies:
       assert-plus: 1.0.0
@@ -1400,6 +1429,17 @@ packages:
       node: '>= 0.8'
     resolution:
       integrity: sha1-vNYMd9Prk83gBQKVw/N5OJvIj4k=
+  /raw-body/2.3.3:
+    dependencies:
+      bytes: 3.0.0
+      http-errors: 1.6.3
+      iconv-lite: 0.4.23
+      unpipe: 1.0.0
+    dev: false
+    engines:
+      node: '>= 0.8'
+    resolution:
+      integrity: sha512-9esiElv1BrZoI3rCDuOuKCBRbuApGGaDPQfjSflGxdy4oyzqghxu6klEkkVIvBje+FF0BX9coEv8KqW6X/7njw==
   /rc/1.2.8:
     dependencies:
       deep-extend: 0.6.0
@@ -1631,6 +1671,12 @@ packages:
       node: '>= 0.6'
     resolution:
       integrity: sha512-zhSCtt8v2NDrRlPQpCNtw/heZLtfUDqxBM1udqikb/Hbk52LK4nQSwr10u77iopCW5LsyHpuXS0GnEc48mLeew==
+  /statuses/1.5.0:
+    dev: false
+    engines:
+      node: '>= 0.6'
+    resolution:
+      integrity: sha1-Fhx9rBd2Wf2YEfQ3cfqZOBR4Yow=
   /string-width/1.0.2:
     dependencies:
       code-point-at: 1.1.0
@@ -1845,7 +1891,7 @@ packages:
     dev: false
     resolution:
       integrity: sha1-AI4G2AlDIMNy28L47XagymyKxBk=
-  /ytdl-core/0.21.0:
+  /ytdl-core/0.21.1:
     dependencies:
       html-entities: 1.2.1
       m3u8stream: 0.3.0
@@ -1855,19 +1901,20 @@ packages:
     engines:
       node: '>=4'
     resolution:
-      integrity: sha512-mepGR5WpuT+vFm7EqoFzh+a1C801IZeH/rCpIk7nHKq6OyXp2UTRrhh2CN5b/aOvzCck3x/6ZnHSEu8bBv5XVQ==
+      integrity: sha512-K6ysXuHW0X3MgeLpO4IHvHp5gdF2DDrgFPP7kQODBSpeaq4+/y8lvWy6ZpxtJdQGE0+GUaBZ2H1/kYcP327UdQ==
 registry: 'https://registry.npmjs.org/'
 shrinkwrapMinorVersion: 8
 shrinkwrapVersion: 3
 specifiers:
+  body-parser: ^1.18.3
   canvas: ^2.0.0-alpha.12
   cheerio: ^0.22.0
   discord.js: ^11.3.2
   express: ^4.16.3
   node-opus: ^0.3.0
-  p5: '*'
+  p5: ^0.6.1
   request: ^2.87.0
   snekfetch: ^4.0.4
   socket.io: ^2.1.1
   sqlite3: ^4.0.2
-  ytdl-core: ^0.21.0
+  ytdl-core: ^0.21.1
