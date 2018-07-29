@@ -18,8 +18,7 @@ app.get("/", (request, response) => {
   response.sendFile(__dirname + '/views/index.html');
 });
 app.post("/db/run/users", (req, res) => {
-  res.send("Running database statement");
-  console.log("Running on db: " + req.param);
+  console.log("db/run/users: " + req.query);
 });
 setInterval(() => {
   http.get(`http://${process.env.PROJECT_DOMAIN}.glitch.me/`);
