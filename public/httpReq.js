@@ -40,8 +40,8 @@ const hr = {
             res(this.response);
         };
         
-        res.open("GET", "/db/get/users/" + id);
-        res.send();
+        req.open("GET", "/db/get/users/" + id);
+        req.send();
       });
     }
   },
