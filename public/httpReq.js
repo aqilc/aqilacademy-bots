@@ -46,7 +46,16 @@ const hr = {
     },
     allusers() {
       return new Promise(function (res, rej) {
-        let req = new XMLHttpRequest
+        let req = new XMLHttpRequest();
+        
+        req.responseType = "json";
+        req.onreadystatechange = function () {
+          if (req.readyState === XMLHttpRequest.DONE)
+            res(this.response);
+        };
+        
+        req.open("GET", "/db/get/users/all");
+        req.send();
       });
     },
   },
