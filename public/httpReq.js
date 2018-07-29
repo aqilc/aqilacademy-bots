@@ -44,7 +44,7 @@ const hr = {
         req.send();
       });
     },
-    allusers() {
+    ausers() {
       return new Promise(function (res, rej) {
         let req = new XMLHttpRequest();
         

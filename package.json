@@ -1,4 +1,5 @@
 {
+  "version": "3.4.2",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node main.js"
@@ -19,5 +20,17 @@
   },
   "engines": {
     "node": "10.x"
-  }
+  },
+  "keywords": [
+    "clyde",
+    "aqilacademy",
+    
+    "discord",
+    "bot",
+    "sqlite",
+    "sqlite3",
+    "website",
+    "custom font",
+    "discord.js"
+  ]
 }
