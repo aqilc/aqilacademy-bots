@@ -35,7 +35,8 @@ const hr = {
       throw new Error("ID not provided when changing the 'users' database");
     
     if(obj === {})
-      t
+      throw new Error("Nothing to edit");
+    
     for(let i in obj) {
       if(!validParams.includes(i))
         throw new Error("Invalid User Database Change");
@@ -45,7 +46,7 @@ const hr = {
     dbrun += ` WHERE id = "${id}"`;
     
     let req = new XMLHttpRequest();
-    req.open("POST", "/dbrun");
+    req.open("POST", "/db/run");
     req.send(dbrun);
   },
 };
