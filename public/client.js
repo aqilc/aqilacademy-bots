@@ -27,14 +27,26 @@ Array.prototype.width = function (arr) {
 
 const hr = {
   edituser(obj) {
-    let validParams = [id"points", "realpoints"], dbrun = "UPDATE users";
+    let validParams = ["id", "points", "realpoints"], dbrun = "UPDATE users", id = "";
+    if(obj.id) {
+      id = obj.id;
+      delete obj.id;
+    } else
+      throw new Error("ID not provided when changing the 'users' database");
+    
+    if(obj === {})
+      t
     for(let i in obj) {
       if(!validParams.includes(i))
         throw new Error("Invalid User Database Change");
       
-      
+      dbrun += ` ${i} = ${obj[i]}`;
     }
+    dbrun += ` WHERE id = "${id}"`;
     
+    let req = new XMLHttpRequest();
+    req.open("POST", "/dbrun");
+    req.send(dbrun);
   },
 };
 
