@@ -757,7 +757,7 @@ const cmds = {
     cat: "bot admin",
     perms: "bot admin",
     do: async (msg, content) => {
-      let reason = content.slice(content.indexOf(" ") + 1) || "",
+      let reason = content.indexOf(" ") !== -1 ? content.slice(content.indexOf(" ") + 1) : "",
           time = Number(content.slice(content.indexOf("T:") + 1)),
           user = await client.fetchUser(f.get_id(msg, content.split(" ")[0]));
       if(isNaN(time))
