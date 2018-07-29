@@ -75,6 +75,9 @@ app.get("/db/get/users/:id", async (req, res) => {
   let stats = await functions.calculate_stats(req.params.id);
   res.json(stats);
 });
+app.get("/db/get/black/", (req, res) => {
+  
+});
 app.put("/db/set/users/:id", (req, res) => {
   console.log("db/set/users: ID: " + req.params.id, JSON.stringify(req.query));
   

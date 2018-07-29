@@ -58,6 +58,21 @@ const hr = {
         req.send();
       });
     },
+    blacklist() {
+      return new Promise(function (res, rej) {
+        let req = new XMLHttpRequest();
+        
+        req.responseType = "json";
+        req.onreadystatechange = function () {
+          if (req.readyState === XMLHttpRequest.DONE)
+            res(this.response);
+        };
+        
+        req.open("GET", "/db/get/black");
+        req.send();
+        
+      });
+    },
   },
   create: {},
   delete: {},
