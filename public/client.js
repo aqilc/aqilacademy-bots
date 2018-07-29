@@ -27,7 +27,7 @@ Array.prototype.width = function (arr) {
 
 const hr = {
   edituser(obj) {
-    let validParams = ["id", "points", "realpoints"], dbrun = "UPDATE users", id = "";
+    let validParams = ["id", "points", "realpoints"], params = "", id = "";
     if(obj.id) {
       id = obj.id;
       delete obj.id;
@@ -46,7 +46,7 @@ const hr = {
     dbrun += ` WHERE id = "${id}"`;
     
     let req = new XMLHttpRequest();
-    req.open("POST", "/db/run");
+    req.open("POST", "/db/run/users");
     req.send(dbrun);
   },
 };
