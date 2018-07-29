@@ -13,17 +13,16 @@ const hr = {
 
       if(obj === {})
         throw new Error("Nothing to edit");
-
-      params += `id=${id}`;
+      
       for(let i in obj) {
         if(!validParams.includes(i))
           throw new Error("Invalid User Database Change");
 
-        params += `&${i}=${obj[i]}`;
+        params.push(`${i}=${obj[i]}`);
       }
 
       let req = new XMLHttpRequest();
-      req.open("PUT", "/db/run/users?" + params);
+      req.open("PUT", `/db/run/users/${id}?` + params.join("&"));
       req.send();
     },
   },

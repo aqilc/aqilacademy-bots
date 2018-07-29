@@ -58,14 +58,13 @@ require("./bots/music/music.js")();
 app.get("/db/get/users", (req, res) => {
   
 });
-app.put("/db/run/users", (req, res) => {
+app.put("/db/run/users/:id", (req, res) => {
   console.log("db/run/users: " + JSON.stringify(req.query));
   
   let q = req.query;
-  if(!q.id)
+  if(!req.params.id)
     res.status(400).send("No ID to edit");
-  let id = q.id;
-  delete q.id;
+  let id = req.params.id;
   
   if(q === {})
     res.status(400).send(`Nothing to edit ${id} with`);
