@@ -17,9 +17,9 @@ app.use(express.static('data'));
 app.get("/", (request, response) => {
   response.sendFile(__dirname + '/views/index.html');
 });
-app.post("/db/run/users/", (req, res) => {
+app.post("/db/run/users", (req, res) => {
   res.send("Running database statement");
-  console.log("Running on db: " + req.body);
+  console.log("Running on db: " + req.param);
 });
 setInterval(() => {
   http.get(`http://${process.env.PROJECT_DOMAIN}.glitch.me/`);

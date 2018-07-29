@@ -27,6 +27,9 @@ Array.prototype.width = function (arr) {
 
 const hr = {
   edituser(obj) {
+    if(!obj)
+      throw new Error("No editing parameters specified");
+    
     let validParams = ["id", "points", "realpoints"], params = "", id = "";
     if(obj.id) {
       id = obj.id;
@@ -37,17 +40,17 @@ const hr = {
     if(obj === {})
       throw new Error("Nothing to edit");
     
+    params += `id=${id}`;
     for(let i in obj) {
       if(!validParams.includes(i))
         throw new Error("Invalid User Database Change");
       
-      dbrun += ` ${i} = ${obj[i]}`;
+      params += `&${i}=${obj[i]}`;
     }
-    dbrun += ` WHERE id = "${id}"`;
     
     let req = new XMLHttpRequest();
-    req.open("POST", "/db/run/users");
-    req.send(dbrun);
+    req.open("POST", "/db/run/users?" + params);
+    req.send();
   },
 };
 
