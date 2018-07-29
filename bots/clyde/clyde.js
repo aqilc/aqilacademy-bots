@@ -27,8 +27,6 @@ function run() {
   // Events
   client.on("message", async msg => {
     try {
-      if(msg.author.id === "328641116884959235")
-        msg.react(":blobcookie:419269410738405376");
       
       //What happens when DMed
       if(msg.channel.type !== "text" && msg.author.id !== client.user.id) {
