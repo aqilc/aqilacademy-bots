@@ -22,7 +22,7 @@ const hr = {
       }
 
       let req = new XMLHttpRequest();
-      req.open("PUT", `/db/run/users/${id}?` + params.join("&"));
+      req.open("PUT", `/db/set/users/${id}?` + params.join("&"));
       req.send();
     },
   },
