@@ -97,7 +97,7 @@ app.put("/db/set/users/:id", (req, res) => {
   
   let params = [];
   for(let i in q) {
-    params.push(`${i} = ${typeof q !== "string" ? q : `"${q}"`}`);
+    params.push(`${i} = ${q[i]}`);
   }
   db.run(`UPDATE users SET ${params.join(" ")} WHERE id = "${id}"`);
   res.redirect("/");

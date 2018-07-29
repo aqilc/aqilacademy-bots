@@ -5,7 +5,7 @@ const hr = {
       if(!obj)
         throw new Error("No editing parameters specified");
 
-      let validParams = ["id", "points", "realpoints"], params = "", id = "";
+      let validParams = ["id", "points", "realpoints"], params = [], id = "";
       if(obj.id) {
         id = obj.id;
         delete obj.id;
@@ -43,49 +43,16 @@ const hr = {
   },
   get: {
     user(id) {
-      if(!id || typeof id !== "string" || id.length !== 18)
+      if(!id || typeof id !== "string" || (id !== "all" && id.length !== 18))
         throw new Error("Invalid ID Input");
       
-      return new Promise(function (res, rej) {
-        let req = new XMLHttpRequest();
-        
-        req.responseType = "json";
-        req.onreadystatechange = function () {
-          if (req.readyState === XMLHttpRequest.DONE)
-            res(this.response);
-        };
-        
-        req.open("GET", "/db/get/users/" + id);
-        req.send();
-      });
+      return hr.GET("/db/get/users/" + id);
     },
     ausers() {
-      return new Promise(function (res, rej) {
-        let req = new XMLHttpRequest();
-        
-        req.responseType = "json";
-        req.onreadystatechange = function () {
-          if (req.readyState === XMLHttpRequest.DONE)
-            res(this.response);
-        };
-        
-        req.open("GET", "/db/get/users/all");
-        req.send();
-      });
+      return hr.GET("/db/get/users/all");
     },
     blacklist() {
-      return new Promise(function (res, rej) {
-        let req = new XMLHttpRequest();
-        
-        req.responseType = "json";
-        req.onreadystatechange = function () {
-          if (req.readyState === XMLHttpRequest.DONE)
-            res(this.response);
-        };
-        
-        req.open("GET", "/db/get/black");
-        req.send();
-      });
+      return hr.GET("/db/get/black/");
     },
   },
   create: {},
