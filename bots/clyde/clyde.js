@@ -872,13 +872,11 @@ const cmds = {
         
         // Determines your answer
         answered = [["1", "one"], ["2", "two"], ["3", "three"], ["4", "four"]];
-        console.log(answered);
         for(let i = 0; i < answered.length; i ++) {
           if(answered[i].includes(m.content.toLowerCase())) {
             answered = answers[i];
           }
         }
-        console.log(answered);
         
         // Deterines if you got it right or wrong
         correct = answered === question.correct_answer;

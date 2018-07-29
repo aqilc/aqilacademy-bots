@@ -17,25 +17,6 @@ app.use(express.static('data'));
 app.get("/", (request, response) => {
   response.sendFile(__dirname + '/views/index.html');
 });
-app.put("/db/run/users", (req, res) => {
-  console.log("db/run/users: " + req.query);
-  
-  let q = req.query;
-  if(!q.id)
-    res.status(400).send("No ID to edit");
-  let id = q.id;
-  delete q.id;
-  
-  if(q === {})
-    res.status(400).send(`Nothing to edit ${id} with`);
-  
-  let params = [];
-  for(let i in q) {
-    params.push(`${i} = ${typeof q !== "string" ? q : `"${q}"`}`);
-  }
-  db.run(`UPDATE users SET ${params.join(" ")} WHERE id = "${id}"`);
-  res.send("Successfully changed user");
-});
 setInterval(() => {
   http.get(`http://${process.env.PROJECT_DOMAIN}.glitch.me/`);
 }, 280000);
@@ -72,6 +53,30 @@ db.serialize(function() {
 // Runs the 2 bots
 require("./bots/clyde/clyde.js")();
 require("./bots/music/music.js")();
+
+// API Responses
+app.get("/db/get/users", (req, res) => {
+  
+});
+app.put("/db/run/users", (req, res) => {
+  console.log("db/run/users: " + JSON.stringify(req.query));
+  
+  let q = req.query;
+  if(!q.id)
+    res.status(400).send("No ID to edit");
+  let id = q.id;
+  delete q.id;
+  
+  if(q === {})
+    res.status(400).send(`Nothing to edit ${id} with`);
+  
+  let params = [];
+  for(let i in q) {
+    params.push(`${i} = ${typeof q !== "string" ? q : `"${q}"`}`);
+  }
+  db.run(`UPDATE users SET ${params.join(" ")} WHERE id = "${id}"`);
+  res.send("Successfully changed user");
+});
 
 /*
 const path = require('path');
