@@ -869,28 +869,32 @@ const cmds = {
       
       // When it collects the answer
       collect.on("collect", m => {
-        
-        // Determines your answer
-        answered = [["1", "one"], ["2", "two"], ["3", "three"], ["4", "four"]];
-        for(let i = 0; i < answered.length; i ++) {
-          if(answered[i].includes(m.content.toLowerCase())) {
-            answered = answers[i];
+        try {
+          // Determines your answer
+          answered = [["1", "one"], ["2", "two"], ["3", "three"], ["4", "four"]];
+          for(let i = 0; i < answered.length; i ++) {
+            if(answered[i].includes(m.content.toLowerCase())) {
+              answered = answers[i];
+            }
           }
+
+          // Deterines if you got it right or wrong
+          correct = answered === question.correct_answer;
+
+          // Destroys the interval so the bot is spared
+          clearInterval(int);
+
+          // If correct, send a message that you got it right, and edit the embed
+          if(correct)
+            return msg.reply(`You got it right! You get ${exp} Points!`) && mess.edit(embed.setDescription("Great Job, you got it right!").setFooter("")) && f.add_exp(msg.author.id, exp);
+
+          // If wrong, send a message that you got it wrong, then edit the embed
+          else
+            return msg.reply(`You got it wrong. You lose: ${exp/2} Points`) && mess.edit(embed.setDescription(string + `BTW, ${answers.indexOf(question.correct_answer) + 1} was the right one`).setFooter("")) && f.add_exp(msg.author.id, -exp/2);
+        } catch(err) {
+          console.log(err);
+          collect.emit("collect", m);
         }
-        
-        // Deterines if you got it right or wrong
-        correct = answered === question.correct_answer;
-        
-        // Destroys the interval so the bot is spared
-        clearInterval(int);
-        
-        // If correct, send a message that you got it right, and edit the embed
-        if(correct)
-          return msg.reply(`You got it right! You get ${exp} Points!`) && mess.edit(embed.setDescription("Great Job, you got it right!").setFooter("")) && f.add_exp(msg.author.id, exp);
-        
-        // If wrong, send a message that you got it wrong, then edit the embed
-        else
-          return msg.reply(`You got it wrong. You lose: ${exp/2} Points`) && mess.edit(embed.setDescription(string + `BTW, ${answers.indexOf(question.correct_answer) + 1} was the right one`).setFooter("")) && f.add_exp(msg.author.id, -exp/2);
       })
       
       // If the person ran out of time
