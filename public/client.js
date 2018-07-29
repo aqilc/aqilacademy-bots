@@ -72,5 +72,5 @@ function draw() {
   
   fill(100);
   noStroke();
-  Text(this.frameRate().toFixed(1), width/2, height/5, 10);
+  Text("FPS: " + this.frameRate().toFixed(1), width/2 - width/4, height/5, 10);
 }

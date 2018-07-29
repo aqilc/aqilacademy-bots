@@ -301,7 +301,7 @@ const f = {
         if(typeof cooldowns[i] === "object" && cooldowns[i].includes(message.author.id))
           return message.reply("You are using this command too fast, slow down!");
         db.get(`SELECT * FROM blacklist WHERE user = "${message.author.id}"`, (err, black) => {
-          if(black && !data.devs.includes()
+          if(black && !data.devs.includes(message.author.id))
             return message.reply("You are blacklisted from the bot! You cannot use any of its commands").then(m => {
               m.delete(5000);
               message.delete(5000);
