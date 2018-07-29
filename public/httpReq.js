@@ -1,3 +1,4 @@
+
 const hr = {
   set: {
     user(obj) {
@@ -25,6 +26,20 @@ const hr = {
       req.open("PUT", `/db/set/users/${id}?` + params.join("&"));
       req.send();
     },
+  },
+  GET(url) {
+    return new Promise(function (res, rej) {
+      let req = new XMLHttpRequest();
+
+      req.responseType = "json";
+      req.onreadystatechange = function () {
+        if (req.readyState === XMLHttpRequest.DONE)
+          res(this.response);
+      };
+
+      req.open("GET", url);
+      req.send();
+    });
   },
   get: {
     user(id) {
@@ -70,7 +85,6 @@ const hr = {
         
         req.open("GET", "/db/get/black");
         req.send();
-        
       });
     },
   },
