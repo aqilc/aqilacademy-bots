@@ -43,13 +43,7 @@ const hr = {
   },
   get: {
     user(id) {
-      if(!id || typeof id !== "string" || (id !== "all" && id.length !== 18))
-        throw new Error("Invalid ID Input");
-      
-      return hr.GET("/db/get/users/" + id);
-    },
-    ausers() {
-      return hr.GET("/db/get/users/all");
+      return hr.GET("/db/get/users/" + (id || "all"));
     },
     blacklist() {
       return hr.GET("/db/get/black/");
