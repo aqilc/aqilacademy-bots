@@ -5,3 +5,8 @@ h1 {
 body {
   background-color: brown;
 }
+canvas {
+  position: absolute;
+  left: 0px;
+  top: 0px;
+}

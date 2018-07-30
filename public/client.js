@@ -61,7 +61,7 @@ function Text(txt, x, y, s = 6, w, h, type = 0) {
 
 function setup() {
   Object.keys(fonts[0]).forEach(a => { fonts[0][a] = fonts[0][a].split(" ") });
-  createCanvas(windowWidth - 35, 2000);
+  createCanvas(windowWidth - 17, 2000);
   frameRate(100);
 }
 
