@@ -31,7 +31,7 @@ function Text(txt, x, y, s = 6, w, h, type = 0) {
   
   let font = fonts[type || 0], tx = x, ty = y;
   if(textAlign().horizontal === "center") {
-    let tw = (txt.split(" ").length - 1) * s;
+    let tw = (txt.split("").length - 1) * s;
     txt.split("\n").width(true).split("").forEach(c => {
       if(!font[c])
         return;
