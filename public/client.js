@@ -7,13 +7,13 @@
  * Events
   mouseIsPressed, 
  * Modes/Aligns
-  rectMode, textAlign, ellipseMode, CENTER, CORNER, TOP, BOTTOM, LEFT, RIGHT
+  rectMode, textAlign, textFont, ellipseMode, CENTER, CORNER, TOP, BOTTOM, LEFT, RIGHT
  * Color
   fill, stroke, noStroke, strokeWeight, noFill, background, 
  * Transformations
   push, pop,
  * Shapes
-  ellipse, rect
+  ellipse, rect, text
  */
 
 Array.prototype.width = function (arr) {
