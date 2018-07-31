@@ -1,4 +1,3 @@
-
 const hr = {
   set: {
     user(obj) {
