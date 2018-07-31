@@ -26,7 +26,6 @@ Array.prototype.width = function (arr) {
 };
 
 function setup() {
-  Object.keys(fonts[0]).forEach(a => { fonts[0][a] = fonts[0][a].split(" ") });
   createCanvas(windowWidth - 17, 2000);
   frameRate(100);
 }
