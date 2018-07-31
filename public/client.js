@@ -1,7 +1,7 @@
 // Makes unnecessary distractions go away XD
 /* global
  * Imported Variables
- fonts,
+ fonts, WebFont
  * Environment
   createCanvas, windowWidth, windowHeight, width, height, mouseX, mouseY, pmouseX, pmouseY, frameRate,
  * Events
@@ -38,5 +38,6 @@ function draw() {
   textAlign(CENTER, CENTER);
   
   fill(100);
-  Text("FPS: " + this.frameRate().toFixed(1), width/2, height/5, 10);
+  textFont("pixels", 100);
+  text("FPS: " + this.frameRate().toFixed(1), width/2, height/5);
 }

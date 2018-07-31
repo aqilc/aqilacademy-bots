@@ -1,3 +1,7 @@
+@font-face {
+    font-family: "pixels";
+    src: url(https://cdn.glitch.com/f4b5d0ed-1dd1-4a33-8445-bcc712fa6bd1%2FTinyUnicode.ttf?1532999321899) format("truetype");
+}
 h1 {
   text-decoration: none;
   font-family: arial;
