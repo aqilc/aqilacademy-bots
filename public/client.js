@@ -38,6 +38,6 @@ function draw() {
   textAlign(CENTER, CENTER);
   
   fill(100);
-  textFont("pixels", 100);
+  textFont("pixels", 200);
   text("FPS: " + this.frameRate().toFixed(1), width/2, height/5);
 }
