@@ -16,6 +16,8 @@ module.exports = {
         streak: 0,
         lastDaily: 0,
         leaderboard_place: 1,
+        items: [],
+        quests: [],
 
         blacklisted: false,
 
@@ -29,8 +31,9 @@ module.exports = {
           for(let i = 0; i < res.length; i ++) {
             if(res[i].id === id) {
               stats.leaderboard_place = i + 1;
-
-              delete res[i].id;
+              
+              stats[j].items = res[i].items
+              delete res[i].id, res[i].items, res[i].quests;
               for(let j in res[i])
                 stats[j] = res[i][j];
             }

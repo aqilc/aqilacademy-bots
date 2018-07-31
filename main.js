@@ -51,7 +51,7 @@ const tables = [
   
 ];
 db.serialize(function() {
-  for(var i of tables) {
+  for(let i of tables) {
     db.run("CREATE TABLE IF NOT EXISTS " + i);
   }
 });
