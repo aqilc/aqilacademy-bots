@@ -26,7 +26,7 @@ Array.prototype.width = function (arr) {
 };
 
 function setup() {
-  createCanvas(windowWidth - 17, 2000);
+  createCanvas(windowWidth - (windowHeight > 2000 ? 0 : 17), 2000);
   frameRate(100);
 }
 

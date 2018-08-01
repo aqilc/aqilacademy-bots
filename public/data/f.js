@@ -24,11 +24,11 @@ class Button {
     
     // Makes the border as thick as it should be
     if(opt.border > 1) {
-      for(let i = 0; i < opt.border; i ++) {
+      for(let i = 0; i < opt.border - 1; i ++) {
         this.pxart[i + 1] = [];
-        this.pxart[h/opt.px - i - 1] = [];
+        this.pxart[h/opt.px - i - 2] = [];
         for(let j = 0; j < w/opt.px; j ++)
-          this.pxart[i + 1].push("1"), this.pxart[h/opt.px - i - 1].push("1");
+          this.pxart[i + 1].push("1"), this.pxart[h/opt.px - i - 2].push("1");
       }
     }
     
@@ -41,7 +41,12 @@ class Button {
     }
   }
   draw(txt, x, y) {
-    
+    for(let i = 0; i < this.pxart.length; i ++) {
+      for(let j = 0; j < this.pxart[i].length; j ++) {
+        if(["1", "2"].includes(this.pxart[i][j])) {
+          
+        }
+      }
+    }
   }
-  
 }
