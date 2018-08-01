@@ -25,7 +25,6 @@ Array.prototype.width = function (arr) {
   return w;
 };
 
-let button = new Button(100, 50);
 function setup() {
   createCanvas(windowWidth - (windowHeight > 2000 ? 0 : 17), 2000);
   frameRate(100);
@@ -39,6 +38,5 @@ function draw() {
   
   fill(100);
   textFont("pixels", 200);
-  text("FPS: " + this.frameRate().toFixed(1), width/2, height/5);
-  button.draw("hi", 500, 500);
+  Text("FPS: " + this.frameRate().toFixed(1), width/2, height/5, 5);
 }

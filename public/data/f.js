@@ -69,7 +69,6 @@ function Text(txt, x, y, s = 6, w, h, type = 0) {
       tx = x, ty += s * 7;
       continue;
     }
-  }
     if(!font[i])
       continue;
     for(let j = 0; j < font[i].length; j ++) {
