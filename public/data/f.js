@@ -60,7 +60,7 @@ function Text(txt, x, y, s, w, h, type = 0) {
     txt = JSON.stringify(txt);
   
   s = s || ~~ textSize() / 8;
-  let font = fonts[type || 0], tx = x, ty = y;
+  let font = fonts[type || 0], tx = x, ty = y, tw;
   if(textAlign().horizontal === "center") {
     let tw = (txt.split("").length - 1) * s;
     txt.split("\n").width(true).split("").forEach(c => {
@@ -72,20 +72,24 @@ function Text(txt, x, y, s, w, h, type = 0) {
   }
   if(textAlign().vertical === "center")
     ty -= txt.split("\n").length * s * 3.5;
-  for(let g = 0; g < txt.length; g ++) {
-    let i = txt[g];
-    if(i === "\n") {
-      tx = x, ty += s * 7;
-      continue;
-    }
-    if(!font[i])
-      continue;
-    for(let j = 0; j < font[i].length; j ++) {
-      for(let h = 0; h < font[i][j].length; h ++) {
-        if(font[i][j][h] === "1")
-          rect(tx + h * s - h, ty + j * s, s, s);
+  txt = txt.split("\n");
+  for(let l = 0; l < txt.length; l ++) {
+    
+    for(let g = 0; g < txt[l].length; g ++) {
+      let i = txt[l][g];
+      if(i === "\n") {
+        tx = x, ty += s * 7;
+        continue;
       }
+      if(!font[i])
+        continue;
+      for(let j = 0; j < font[i].length; j ++) {
+        for(let h = 0; h < font[i][j].length; h ++) {
+          if(font[i][j][h] === "1")
+            rect(tx + h * s - h, ty + j * s - j, s, s);
+        }
+      }
+      tx += font[i].width() * s + s;
     }
-    tx += font[i].width() * s + s;
   }
 }

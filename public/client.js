@@ -30,5 +30,5 @@ function draw() {
   
   fill(100);
   textSize(200);
-  Text("FPS: " + this.frameRate().toFixed(1), width/2, height/5);
+  Text("hi\nFPS: " + this.frameRate().toFixed(1), width/2, height/5);
 }
