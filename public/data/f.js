@@ -70,13 +70,6 @@ function Text(txt, x, y, s = 6, w, h, type = 0) {
       continue;
     }
   }
-  draw(txt, x, y) {
-    for(let i = 0; i < this.pxart.length; i ++) {
-      for(let j = 0; j < this.pxart[i].length; j ++) {
-        if(this.pxart[i][j] === "1") {
-          fill(this.cols[1]);
-          rect(x + j * this.opt.px, y + i * this.opt.px, this.opt.px, this.opt.px);
-        }
     if(!font[i])
       continue;
     for(let j = 0; j < font[i].length; j ++) {
