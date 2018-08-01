@@ -30,5 +30,5 @@ function draw() {
   
   fill(100);
   textSize(24);
-  Text("hi\nI am aqil\nFPS: " + this.frameRate().toFixed(1), width/2, height/5);
+  Text("hi\nI am aqil\nhakdhkshfkjahjklbnkgjbkdfbgkdng,s\nfhiahihbghrvgjbkjfhgkruisghsbvjfnhjfdgsdhshgdfgdfgdfgsgdfgdg\ngsgsegrsergvfdvdfbvfbsdfgfagwreerawefsdfasgafgfgadgasfds\neawhfpouahopfaeriphvguophhrilhkflhrdifhgieoaghrigfrauiogioehjorhjihskd\nsdhioahfsijhfiowjehfiobhdiobghkdbfivhaifhsfhuiohfeiuohfiabhgdihdbgklfjklm\nFPS: " + this.frameRate().toFixed(1), width/2, height/5);
 }
