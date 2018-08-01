@@ -1,6 +1,14 @@
 /* global
 fill, blue, red, green, hue, color, saturation, brightness, stroke, noStroke, strokeWeight, noFill, background, rect */
 
+Array.prototype.width = function (arr) {
+  let w = arr ? [] : 1;
+  for(let i = 0; i < this.length; i ++) {
+    if(this[i].length > (arr ? w.length : w))
+      w = arr ? this[i] : this[i].length;
+  }
+  return w;
+};
 class Button {
   constructor(w, h, cols = [255, 0], opt = { border: 2, px: 2 }) {
     w = Math.round(w / opt.px) * opt.px;

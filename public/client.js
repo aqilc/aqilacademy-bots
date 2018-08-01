@@ -16,15 +16,6 @@
   ellipse, rect, text
  */
 
-Array.prototype.width = function (arr) {
-  let w = arr ? [] : 1;
-  for(let i = 0; i < this.length; i ++) {
-    if(this[i].length > (arr ? w.length : w))
-      w = arr ? this[i] : this[i].length;
-  }
-  return w;
-};
-
 function setup() {
   createCanvas(windowWidth - (windowHeight > 2000 ? 0 : 17), 2000);
   frameRate(100);
@@ -37,6 +28,6 @@ function draw() {
   textAlign(CENTER, CENTER);
   
   fill(100);
-  textFont("Press Start 2P", 200);
-  text("FPS: " + this.frameRate().toFixed(1), width/2, height/5);
+  textFont("pixels", 200);
+  Text("FPS: " + this.frameRate().toFixed(1), width/2, height/5);
 }
