@@ -16,17 +16,21 @@ class Button {
     this.opt = opt;
     
     this.pxart = [];
-    for(let i = 0; i < w/opt.px; i ++) {
+    for(let i = 1; i < w/opt.px - 1; i ++) {
       this.pxart[0].push("1");
       this.pxart[h/opt.px].push("1");
     }
-    for(let i = 1; i < h/opt.px - 1; i ++) {
+    if(opt.border > 1) {
+      
+    }
+    for(let i = opt.border; i < h/opt.px - opt.border; i ++) {
       this.pxart[i] = ["1"];
-      for(let j = 1; j < w/opt.px - 1; j ++) {
+      for(let j = opt.border; j < w/opt.px - opt.border; j ++) {
         this.pxart[i].push("2")
       }
       this.pxart[i].push("1");
     }
+    
   }
   draw(txt, x, y) {
     
