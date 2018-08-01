@@ -16,11 +16,11 @@ class Button {
     this.opt = opt;
     
     this.pxart = [[""]];
-    this.pxart[h/opt.px] = [""];
+    this.pxart[h/opt.px - 1] = [""];
     
     // Makes the edge of the border
     for(let i = 1; i < w/opt.px - 1; i ++)
-      this.pxart[0].push("1"), this.pxart[h/opt.px].push("1");
+      this.pxart[0].push("1"), this.pxart[h/opt.px - 1].push("1");
     
     // Makes the border as thick as it should be
     if(opt.border > 1) {
@@ -31,6 +31,7 @@ class Button {
           this.pxart[i + 1].push("1"), this.pxart[h/opt.px - i - 1].push("1");
       }
     }
+    
     // Makes the content of the button
     for(let i = opt.border; i < h/opt.px - opt.border; i ++) {
       this.pxart[i] = "1".repeat(opt.border).split("");
@@ -38,7 +39,6 @@ class Button {
         this.pxart[i].push("2");
       "1".repeat(opt.border).split("").forEach(v => this.pxart[i].push(v));
     }
-    
   }
   draw(txt, x, y) {
     
