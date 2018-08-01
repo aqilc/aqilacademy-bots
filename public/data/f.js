@@ -60,27 +60,22 @@ function Text(txt, x, y, s, w, h, type = 0) {
     txt = JSON.stringify(txt);
   
   s = s || ~~ textSize() / 8;
-  let font = fonts[type || 0], tx = x, ty = y, tw;
-  if(textAlign().horizontal === "center") {
-    let tw = (txt.split("").length - 1) * s;
-    txt.split("\n").width(true).split("").forEach(c => {
-      if(!font[c])
-        return;
-      tw += font[c].width() * s;
-    });
-    tx -= tw/2;
-  }
+  let font = fonts[type || 0], tx = x, ty = y, tw = 0;
   if(textAlign().vertical === "center")
     ty -= txt.split("\n").length * s * 3.5;
   txt = txt.split("\n");
   for(let l = 0; l < txt.length; l ++) {
-    
+		if (textAlign().horizontal === "center") {
+      tw = 0;
+			txt[l].split("").forEach(c => {
+				if (!font[c])
+					return;
+				tw += font[c].width() * s + s;
+			});
+      tx -= tw/2;
+		}
     for(let g = 0; g < txt[l].length; g ++) {
       let i = txt[l][g];
-      if(i === "\n") {
-        tx = x, ty += s * 7;
-        continue;
-      }
       if(!font[i])
         continue;
       for(let j = 0; j < font[i].length; j ++) {
@@ -91,5 +86,6 @@ function Text(txt, x, y, s, w, h, type = 0) {
       }
       tx += font[i].width() * s + s;
     }
+    tx = x, ty += s * 7;
   }
 }
