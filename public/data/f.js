@@ -1,5 +1,5 @@
 /* global
-fill, blue, red, green, hue, color, saturation, brightness, stroke, noStroke, strokeWeight, noFill, background, rect */
+fonts, fill, blue, red, green, hue, color, saturation, brightness, stroke, noStroke, strokeWeight, noFill, background, rect, textSize, textAlign */
 
 Array.prototype.width = function (arr) {
   let w = arr ? [] : 1;
@@ -55,10 +55,11 @@ class Button {
     }
   }
 }
-function Text(txt, x, y, s = 6, w, h, type = 0) {
+function Text(txt, x, y, s, w, h, type = 0) {
   if(typeof txt !== "string")
     txt = JSON.stringify(txt);
   
+  s = s || ~~ textSize() / 8;
   let font = fonts[type || 0], tx = x, ty = y;
   if(textAlign().horizontal === "center") {
     let tw = (txt.split("").length - 1) * s;

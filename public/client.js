@@ -7,7 +7,7 @@
  * Events
   mouseIsPressed, 
  * Modes/Aligns
-  rectMode, textAlign, textFont, ellipseMode, CENTER, CORNER, TOP, BOTTOM, LEFT, RIGHT
+  rectMode, textAlign, textFont, textSize, ellipseMode, CENTER, CORNER, TOP, BOTTOM, LEFT, RIGHT
  * Color
   fill, blue, red, green, hue, color, saturation, brightness, stroke, noStroke, strokeWeight, noFill, background, 
  * Transformations
@@ -18,6 +18,7 @@
 
 function setup() {
   createCanvas(windowWidth - (windowHeight > 2000 ? 0 : 17), 2000);
+  Object.keys(fonts[0]).forEach(a => fonts[0][a] = fonts[0][a].split(" "));
   frameRate(100);
 }
 
@@ -28,6 +29,6 @@ function draw() {
   textAlign(CENTER, CENTER);
   
   fill(100);
-  textFont("pixels", 200);
+  textSize(200);
   Text("FPS: " + this.frameRate().toFixed(1), width/2, height/5);
 }
