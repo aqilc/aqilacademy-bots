@@ -1,14 +1,10 @@
 /* global
-fill, blue, red, green, hue, color, saturation, brightness, stroke, noStroke, strokeWeight, noFill, background, */
+fill, blue, red, green, hue, color, saturation, brightness, stroke, noStroke, strokeWeight, noFill, background, rect */
 
 class Button {
   constructor(w, h, cols = [255, 0], opt = { border: 2, px: 2 }) {
     w = Math.round(w / opt.px) * opt.px;
     h = Math.round(h / opt.px) * opt.px;
-    cols.forEach(c => {
-      if(!brightness(c))
-        color(c);
-    });
     
     this.w = w;
     this.h = h;
@@ -43,8 +39,9 @@ class Button {
   draw(txt, x, y) {
     for(let i = 0; i < this.pxart.length; i ++) {
       for(let j = 0; j < this.pxart[i].length; j ++) {
-        if(["1", "2"].includes(this.pxart[i][j])) {
-          
+        if(this.pxart[i][j] === "1") {
+          fill(this.cols[1]);
+          rect(x + j * this.opt.px, y + i * this.opt.px, this.opt.px, this.opt.px);
         }
       }
     }
