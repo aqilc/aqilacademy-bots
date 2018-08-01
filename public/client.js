@@ -9,7 +9,7 @@
  * Modes/Aligns
   rectMode, textAlign, textFont, ellipseMode, CENTER, CORNER, TOP, BOTTOM, LEFT, RIGHT
  * Color
-  fill, stroke, noStroke, strokeWeight, noFill, background, 
+  fill, blue, red, green, hue, color, saturation, brightness, stroke, noStroke, strokeWeight, noFill, background, 
  * Transformations
   push, pop,
  * Shapes

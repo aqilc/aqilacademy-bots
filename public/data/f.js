@@ -1,7 +1,14 @@
+/* global
+fill, blue, red, green, hue, color, saturation, brightness, stroke, noStroke, strokeWeight, noFill, background, */
+
 class Button {
-  constructor(w, h, cols, opt = { border: 2, px: 2 }) {
+  constructor(w, h, cols = [255, 0], opt = { border: 2, px: 2 }) {
     w = Math.round(w / opt.px) * opt.px;
     h = Math.round(h / opt.px) * opt.px;
+    cols.forEach(c => {
+      if(!blue(c))
+        color(c);
+    });
     
     this.w = w;
     this.h = h;
