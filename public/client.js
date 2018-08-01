@@ -37,6 +37,6 @@ function draw() {
   textAlign(CENTER, CENTER);
   
   fill(100);
-  textFont("pixels", 200);
-  Text("FPS: " + this.frameRate().toFixed(1), width/2, height/5, 5);
+  textFont("Press Start 2P", 200);
+  text("FPS: " + this.frameRate().toFixed(1), width/2, height/5);
 }
