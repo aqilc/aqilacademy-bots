@@ -20,8 +20,10 @@
         top: 0px;
         color: rgb(150, 0, 0);
       }
-      div #id {
+      div {
         background-color: brown;
+        margin: 50px;
+        padding: 20px;
       }
     </style>
   </head>
@@ -39,8 +41,14 @@
           lb = document.getElementById("lb"),
           users = [];
       
-      if(users === [])
-        lb.appendChild(document.createElement("p").innerHTML("Loading"));
+      function add(val, element, html) {
+        let adding = document.createElement(element);
+            adding.innerHTML = html;
+        val.appendChild(adding);
+      }
+      
+      if(users === [] || users.length === 0)
+        add(lb, "p", "Loading");
     </script>
   </body>
 </html>
