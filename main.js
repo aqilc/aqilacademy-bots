@@ -25,6 +25,9 @@ app.use(bodyParser.urlencoded({	extended: true }));
 app.get("/", (request, response) => {
   response.sendFile(__dirname + '/views/index.html');
 });
+app.get("/lb", (req, res) => {
+  res.sendFile(__dirname + "/views/lb.html");
+});
 setInterval(() => {
   http.get(`http://${process.env.PROJECT_DOMAIN}.glitch.me/`);
 }, 280000);
