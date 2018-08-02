@@ -21,7 +21,7 @@ app.use(express.static('data'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({	extended: true }));
 
-//
+// Keeps website and app up
 app.get("/", (request, response) => {
   response.sendFile(__dirname + '/views/index.html');
 });
