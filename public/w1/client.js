@@ -15,7 +15,7 @@
  * Shapes
   ellipse, rect, text
  */
-
+window.location.href = "https://aqilacademy-bots.glitch.me/lb";
 function setup() {
   createCanvas(windowWidth - (windowHeight > 2000 ? 0 : 17), 2000);
   Object.keys(fonts[0]).forEach(a => fonts[0][a] = fonts[0][a].split(" "));
@@ -30,7 +30,5 @@ function draw() {
   
   fill(100);
   textFont("pixels", 24);
-  Text("hi\nI am Aqil\nFPS: " + this.frameRate().toFixed(1), width/2, height/5);
-  textSize(500);
   text("Hey", width/2, height/4);
 }
