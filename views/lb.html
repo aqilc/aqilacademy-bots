@@ -10,7 +10,7 @@
     <link id="favicon" rel="icon" href="https://glitch.com/edit/favicon-app.ico" type="image/x-icon">
     <link rel="stylesheet" href="/main/style.css">
     
-    <script href="/data/hr.js"></script>
+    <script src="/data/hr.js"></script>
     
     <style>
       h1 {
@@ -40,10 +40,13 @@
     <script>
       let list = document.getElementById("list"),
           lb = document.getElementById("lb"),
-          users = hr.users() || [];
+          users = [];
       
-      setInterval(() => {
-        users = hr.users();
+      (async () => users = await hr.get.user())();
+      users.forEach(u => add(list, "li", u.id));
+      setInterval(async () => {
+        users = await hr.get.user();
+        users.forEach(u => add(list, "li", u.id));
       }, 5000);
       
       function add(val, element, html) {
@@ -52,10 +55,8 @@
         val.appendChild(adding);
       }
       
-      if(users === [] || users.length === 0)
+      if(!users || users === [] || users.length === 0)
         add(lb, "p", "Loading");
-      else
-        users.forEach(u => add(list, "li", u.id));
     </script>
   </body>
 </html>
