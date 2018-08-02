@@ -19,6 +19,7 @@
         right: 50px;
         top: 0px;
         color: rgb(150, 0, 0);
+        
       }
       div {
         background-color: brown;
@@ -39,7 +40,11 @@
     <script>
       let list = document.getElementById("list"),
           lb = document.getElementById("lb"),
-          users = [];
+          users = hr.users() || [];
+      
+      setInterval(() => {
+        users = hr.users();
+      }, 5000);
       
       function add(val, element, html) {
         let adding = document.createElement(element);
@@ -49,6 +54,8 @@
       
       if(users === [] || users.length === 0)
         add(lb, "p", "Loading");
+      else
+        users.forEach(u => add(list, "li", u.id));
     </script>
   </body>
 </html>
