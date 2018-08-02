@@ -9,11 +9,38 @@
     
     <link id="favicon" rel="icon" href="https://glitch.com/edit/favicon-app.ico" type="image/x-icon">
     <link rel="stylesheet" href="/main/style.css">
-    <link rel="stylesheet" href="/w2/style.css">
+    
+    <script href="/data/hr.js"></script>
+    
+    <style>
+      h1 {
+        font-size: 100px;
+        margin-top: 0px;
+        right: 50px;
+        top: 0px;
+        color: rgb(150, 0, 0);
+      }
+      div #id {
+        background-color: brown;
+      }
+    </style>
   </head>
   <body>
     <h1>
       User Leaderboard
     </h1>
+    
+    <div id="lb">
+      <ol id="list"></ol>
+    </div>
+    
+    <script>
+      let list = document.getElementById("list"),
+          lb = document.getElementById("lb"),
+          users = [];
+      
+      if(users === [])
+        lb.appendChild(document.createElement("p").innerHTML("Loading"));
+    </script>
   </body>
 </html>
