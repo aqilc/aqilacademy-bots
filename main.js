@@ -70,9 +70,9 @@ app.get("/db/get/users/:id", async (req, res) => {
   
   if(req.params.id === "all")
     return db.all("SELECT * FROM users", (err, users) => {
-      users.forEach(u => {
-        users.tag = client.users.get(u.id) || u.id;
-      });
+      for(let i = 0; i < users.length; i ++) {
+        users[i].tag = client.users.get(users[i].id).tag || users[i].id;
+      }
       res.json(users);
     });
   

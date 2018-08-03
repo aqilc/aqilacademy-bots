@@ -51,13 +51,11 @@
       (async () => users = await hr.get.user())();
       users.forEach(u => add(list, "li", u.id));
       setInterval(async () => {
-        list.innerHTML = "";
         users = await hr.get.user();
-        users.forEach(u => add(list, "li", u.tag));
+        let html = "";
+        users.forEach(u => html += `<li>${u.tag}</li>`);
+        list.innerHTML = html;
       }, 5000);
-      
-      if(!users || users === [] || users.length === 0)
-        add(lb, "p", "Loading");
     </script>
   </body>
 </html>
