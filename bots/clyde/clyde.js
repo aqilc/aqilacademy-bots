@@ -204,6 +204,8 @@ function run() {
 
     client.emit(events[event.t], reaction, user);
   });
+  
+  return client;
 };
 
 // All channels needed to run bot
@@ -1256,4 +1258,5 @@ const cmds = {
 };
 
 // Exports a function that runs Clyde
+run.client = client;
 module.exports = run;

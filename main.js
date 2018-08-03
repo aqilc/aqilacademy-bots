@@ -60,7 +60,7 @@ db.serialize(function() {
 });
 
 // Runs the 2 bots
-require("./bots/clyde/clyde.js")();
+let client = require("./bots/clyde/clyde.js")();
 require("./bots/music/music.js")();
 
 // API Responses
@@ -72,6 +72,9 @@ app.get("/db/get/users/:id", async (req, res) => {
   
   if(req.params.id === "all")
     return db.all("SELECT * FROM users", (err, users) => {
+      users.forEach(u => {
+        users.tag = client.users.get(u.id) || u.id;
+      });
       res.json(users);
     });
   
