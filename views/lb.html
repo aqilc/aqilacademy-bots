@@ -53,7 +53,7 @@
       setInterval(async () => {
         list.innerHTML = "";
         users = await hr.get.user();
-        users.forEach(u => add(list, "li", u.id));
+        users.forEach(u => add(list, "li", u.tag));
       }, 5000);
       
       if(!users || users === [] || users.length === 0)

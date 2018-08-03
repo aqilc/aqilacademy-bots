@@ -65,8 +65,6 @@ require("./bots/music/music.js")();
 
 // API Responses
 app.get("/db/get/users/:id", async (req, res) => {
-  console.log("db/get/users/:id called", "ID: " + req.params.id);
-  
   if(!req.params.id || (req.params.id !== "all" && req.params.id.length !== 18))
     res.status(400).send("No ID provided");
   
@@ -82,15 +80,11 @@ app.get("/db/get/users/:id", async (req, res) => {
   res.json(stats);
 });
 app.get("/db/get/black/", (req, res) => {
-  console.log("db/get/black/ called");
-  
   db.all("SELECT * FROM blacklist", (err, b) => {
     res.json(b);
   });
 });
 app.put("/db/set/users/:id", (req, res) => {
-  console.log("db/set/users: ID: " + req.params.id, JSON.stringify(req.query));
-  
   let q = req.query;
   if(!req.params.id)
     res.status(400).send("No ID to edit");
