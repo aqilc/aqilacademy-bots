@@ -42,18 +42,19 @@
           lb = document.getElementById("lb"),
           users = [];
       
-      (async () => users = await hr.get.user())();
-      users.forEach(u => add(list, "li", u.id));
-      setInterval(async () => {
-        users = await hr.get.user();
-        users.forEach(u => add(list, "li", u.id));
-      }, 5000);
-      
       function add(val, element, html) {
         let adding = document.createElement(element);
             adding.innerHTML = html;
         val.appendChild(adding);
       }
+      
+      (async () => users = await hr.get.user())();
+      users.forEach(u => add(list, "li", u.id));
+      setInterval(async () => {
+        list.innerHTML = "";
+        users = await hr.get.user();
+        users.forEach(u => add(list, "li", u.id));
+      }, 5000);
       
       if(!users || users === [] || users.length === 0)
         add(lb, "p", "Loading");
