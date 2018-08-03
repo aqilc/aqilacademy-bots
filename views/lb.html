@@ -26,6 +26,9 @@
         margin: 50px;
         padding: 20px;
       }
+      #list {
+        width: 100%;
+      }
     </style>
   </head>
   <body>
@@ -34,7 +37,12 @@
     </h1>
     
     <div id="lb">
-      <ol id="list"></ol>
+      <table id="list">
+        <tr>
+          <th>User Tag</th>
+          <th>Points</th>
+        </tr>
+      </table>
     </div>
     
     <script>
@@ -52,8 +60,8 @@
       users.forEach(u => add(list, "li", u.id));
       setInterval(async () => {
         users = await hr.get.user();
-        let html = "";
-        users.forEach(u => html += `<li>${u.tag}</li>`);
+        let html = "<tr> <th>User Tag</th> <th>Points</th> </tr>";
+        users.sort((a, b) => b.points - a.points).forEach(u => html += `<tr><td>${u.tag}</td> <td>${u.points}</td></tr>`);
         list.innerHTML = html;
       }, 5000);
     </script>
