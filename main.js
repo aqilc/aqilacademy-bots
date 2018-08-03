@@ -69,9 +69,10 @@ app.get("/db/get/users/:id", async (req, res) => {
     res.status(400).send("No ID provided");
   
   if(req.params.id === "all")
-    return db.all("SELECT * FROM users", (err, users) => {
+    return db.all("SELECT * FROM users", async (err, users) => {
       for(let i = 0; i < users.length; i ++) {
-        users[i].tag = client.users.get(users[i].id).tag || users[i].id;
+        let user = client.users.get(users[i].id);
+        users[i].tag = user ? user.tag : (await client.fetchUser(users[i].id)).tag;
       }
       res.json(users);
     });
