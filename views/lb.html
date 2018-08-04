@@ -29,7 +29,7 @@
         margin: 50px;
         padding: 20px;
       }
-      #list {
+      #lb table {
         width: 100%;
       }
       td {
@@ -71,13 +71,15 @@
             adding.innerHTML = html;
         val.appendChild(adding);
       }
-      setInterval((() => {
+      async function updatelb() {
         users = await hr.get.user();
-        let html = "<tr> <th>User Tag</th> <th>Points</th> </tr>";
-        users.sort((a, b) => b.points - a.points).forEach(u => html += `<tr><td>${u.tag}</td> <td>${u.points}</td></tr>`);
-        list.innerHTML = html;
-        return update;
-      })(), 5000);
+        let html = "<table><tr> <th>User Tag</th> <th>Points</th> </tr>";
+        users.sort((a, b) => b.points - a.points).forEach(u => html += `<tr><td>${u.tag}</td> <td>${u.points} Points</td></tr>`);
+        html += "</table>";
+        lb.innerHTML = html;
+      }
+      updatelb();
+      setInterval(updatelb, 5000);
     </script>
   </body>
 </html>
