@@ -15,7 +15,7 @@
  * Shapes
   ellipse, rect, text
  */
-window.location.href = "https://" + window.location.hostname + "/lb";
+window.location.href = window.location.href + "lb";
 
 function setup() {
   createCanvas(windowWidth - (windowHeight > 2000 ? 0 : 17), 2000);

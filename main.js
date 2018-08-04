@@ -28,6 +28,7 @@ app.get("/", (request, response) => {
 app.get("/lb", (req, res) => {
   res.sendFile(__dirname + "/views/lb.html");
 });
+app.get("/user/:id", (req, res) => {});
 setInterval(() => {
   http.get(`http://${process.env.PROJECT_DOMAIN}.glitch.me/`);
 }, 280000);
