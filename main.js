@@ -75,7 +75,7 @@ app.get("/db/get/users/:id", async (req, res) => {
     return db.all("SELECT * FROM users", async (err, users) => {
       for(let i = 0; i < users.length; i ++) {
         let user = client.users.get(users[i].id);
-        users[i].tag = user ? user.tag : (await client.fetchUser(users[i].id)).tag;
+        users[i].user = user || await client.fetchUser(users[i].id);
       }
       res.json(users);
     });
