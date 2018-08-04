@@ -74,7 +74,7 @@
       async function updatelb() {
         users = await hr.get.user();
         let html = "<table><tr> <th>User Tag</th> <th>Points</th> </tr>";
-        users.sort((a, b) => b.points - a.points).forEach(u => html += `<tr><td>${u.tag}</td> <td>${u.points} Points</td></tr>`);
+        users.sort((a, b) => b.points - a.points).forEach(u => html += `<a href="${process.env.DOMAIN + "/user/" + u.id}"><tr><td>${u.tag}</td> <td>${u.points} Points</td></tr></a>`);
         html += "</table>";
         lb.innerHTML = html;
       }
