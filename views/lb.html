@@ -24,13 +24,16 @@
         color: rgb(150, 0, 0);
       }
       #lb {
+        border-radius: 5px;
         background-color: rgb(100, 200, 255);
         margin: 50px;
         padding: 20px;
       }
       #list {
         width: 100%;
-        font-size: 30px;
+      }
+      td {
+        font-size: 20px;
       }
       td:last-child {
         text-align: right;
@@ -53,12 +56,9 @@
     </h1>
     
     <div id="lb">
-      <table id="list">
-        <tr>
-          <th>User Tag</th>
-          <th>Points</th>
-        </tr>
-      </table>
+      <p>
+        Loading...
+      </p>
     </div>
     
     <script>
@@ -71,15 +71,13 @@
             adding.innerHTML = html;
         val.appendChild(adding);
       }
-      
-      (async () => users = await hr.get.user())();
-      users.forEach(u => add(list, "li", u.id));
-      setInterval(async () => {
+      setInterval((() => {
         users = await hr.get.user();
         let html = "<tr> <th>User Tag</th> <th>Points</th> </tr>";
         users.sort((a, b) => b.points - a.points).forEach(u => html += `<tr><td>${u.tag}</td> <td>${u.points}</td></tr>`);
         list.innerHTML = html;
-      }, 5000);
+        return update;
+      })(), 5000);
     </script>
   </body>
 </html>
