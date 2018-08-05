@@ -39,7 +39,7 @@ setInterval(() => {
 const tables = [
   
   // Universal
-  "users (id TEXT, points INTEGER, lastDaily INTEGER, messages INTEGER, realpoints INTEGER, created INTEGER, streak INTEGER)",
+  "users (id TEXT, points INTEGER, lastDaily INTEGER, messages INTEGER, realpoints INTEGER, created INTEGER, streak INTEGER, items TEXT, quests TEXT)",
   "blacklist (user TEXT, reason TEXT, by TEXT, date INTEGER, time INTEGER)",
 
   // Clyde
