@@ -10,7 +10,7 @@ dependencies:
   snekfetch: 4.0.4
   socket.io: 2.1.1
   sqlite3: 4.0.2
-  ytdl-core: 0.23.0
+  ytdl-core: 0.24.0
 packages:
   /abbrev/1.1.1:
     dev: false
@@ -1891,7 +1891,7 @@ packages:
     dev: false
     resolution:
       integrity: sha1-AI4G2AlDIMNy28L47XagymyKxBk=
-  /ytdl-core/0.23.0:
+  /ytdl-core/0.24.0:
     dependencies:
       html-entities: 1.2.1
       m3u8stream: 0.3.0
@@ -1901,7 +1901,7 @@ packages:
     engines:
       node: '>=4'
     resolution:
-      integrity: sha512-OxTTmqyVLQNDKGQsKeF1SjtfZz3SHyBTRJTRgYQSYK/k6V0F7dQbTiKfjWxzRIj+zDgxwH8rJ3xwpgjfbJVwkQ==
+      integrity: sha512-VwCe+uhKz2M1cH0UEnNxVQyLwGK8DIJgbUPF9svEh0zxUl2DP7LORCDIloLqDUxR6JnC3s01GU0YPxiOmjcqVA==
 registry: 'https://registry.npmjs.org/'
 shrinkwrapMinorVersion: 8
 shrinkwrapVersion: 3
@@ -1917,4 +1917,4 @@ specifiers:
   snekfetch: ^4.0.4
   socket.io: ^2.1.1
   sqlite3: ^4.0.2
-  ytdl-core: ^0.23.0
+  ytdl-core: ^0.24.0

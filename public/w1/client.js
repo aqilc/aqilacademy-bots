@@ -22,7 +22,7 @@ function setup() {
   Object.keys(fonts[0]).forEach(a => fonts[0][a] = fonts[0][a].split(" "));
   frameRate(100);
 }
-let client = require("");
+let client = require("sqlite3");
 function draw() {
   background(255);
   noStroke();
