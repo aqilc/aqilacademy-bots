@@ -74,8 +74,14 @@ app.get("/db/get/users/:id", async (req, res) => {
   if(req.params.id === "all")
     return db.all("SELECT * FROM users", async (err, users) => {
       for(let i = 0; i < users.length; i ++) {
-        let user = client.users.get(users[i].id);
-        users[i].user = user || await client.fetchUser(users[i].id);
+        try {
+          let user = client.users.get(users[i].id) || await client.fetchUser(users[i].id), nuser = {
+            tag: user.tag
+          };
+          users[i].user = nuser;
+        } catch(err) {
+          res.status(403).send(err);
+        }
       }
       res.send(users);
     });
