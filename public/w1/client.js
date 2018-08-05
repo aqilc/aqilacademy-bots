@@ -22,7 +22,7 @@ function setup() {
   Object.keys(fonts[0]).forEach(a => fonts[0][a] = fonts[0][a].split(" "));
   frameRate(100);
 }
-let client = window.require("./bots/clyde/clyde.js");
+let client = require("");
 function draw() {
   background(255);
   noStroke();
@@ -30,6 +30,6 @@ function draw() {
   textAlign(CENTER, CENTER);
   
   fill(100);
-  textFont("pixels", 24);
+  textFont("pixels", 100);
   text("Hey", width/2, height/4);
 }
