@@ -25,6 +25,34 @@
         color: rgb(150, 0, 0);
         text-align: center;
       }
+      
+      /* Navigation bar */
+      #nav ul {
+        list-style-type: none;
+        margin: 0px;
+        padding: 0px;
+        background-color: #333;
+        position: fixed;
+        top: 0px;
+        width: 100%;
+        overflow: hidden;
+      }
+      #nav li {
+        float: left;
+      }
+      #nav li a {
+        display: block;
+        color: white;
+        text-align: center;
+        padding: 14px 16px;
+        text-decoration: none;
+      }
+      #nav li a:hover {
+        background-color: #111;
+      }
+
+      
+      /* Leaderboard styling */
       #lb {
         border-style: ridge;
         border-color: rgb(200, 100, 0);
@@ -64,6 +92,12 @@
     <h1>
       User Leaderboard
     </h1>
+    
+    <div id="nav">
+      <ul>
+        <li><a href="/"></a></li>
+      </ul>
+    </div>
     
     <div id="lb">
       <p>
