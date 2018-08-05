@@ -77,7 +77,7 @@ app.get("/db/get/users/:id", async (req, res) => {
         let user = client.users.get(users[i].id);
         users[i].user = user || await client.fetchUser(users[i].id);
       }
-      res.json(users);
+      res.send(users);
     });
   
   let stats = await functions.calculate_stats(req.params.id);
