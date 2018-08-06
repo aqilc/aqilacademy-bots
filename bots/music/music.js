@@ -26,7 +26,7 @@ function run() {
     // Lets the admins run code through the bot
     if(message.content.startsWith("a:")) {
       if(!data.devs.includes(message.author.id))
-        message.reply("You don't have the permissions to run code in this bot");
+        return message.reply("You don't have the permissions to run code in this bot");
 
       let ran;
       try {
