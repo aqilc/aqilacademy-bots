@@ -16,7 +16,6 @@
   ellipse, rect, text
  */
 window.location.href = window.location.href + "lb";
-
 function setup() {
   createCanvas(windowWidth - (windowHeight > 2000 ? 0 : 17), 2000);
   Object.keys(fonts[0]).forEach(a => fonts[0][a] = fonts[0][a].split(" "));
