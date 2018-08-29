@@ -151,8 +151,8 @@ const c = {
   download: {
     a: ["down"],
     desc: "Downloads a song on the bot and sends the file into the channel",
-    f: async (msg, content) => {
-      let vid, m, embed = Discord.RichEmbed().setAuthor(`Downloading ${vid.title}`, client.user.avatarURL, vid.url), downloaded, desc = d => `**File Size:** \`${vid.size} bytes\`\n**Length:** ${vid.length_seconds} seconds\n**Completed:** \`${d}%\``;
+    async f(msg, content) {
+      let vid, m, embed = Discord.RichEmbed().setAuthor(`Downloading ${vid.title}`, client.user.avatarURL, vid.url), downloaded, desc = d => `**File Size:** \`${vid.size} bytes\`\n**Length:** ${vid.length_seconds} seconds(${gFuncs.time(vid.length_seconds * 1000)})\n**Completed:** \`${d || 0}%\``;
       
       // Starts typing to indicate that its working
       msg.channel.startTyping();
@@ -166,8 +166,10 @@ const c = {
       let video = download(vid.url, ["-f mp3"]);
       video.on("info", async (err, info) => {
         vid.size = info.size;
-        m = await msg.channel.send(new Discord.RichEmbed().setAuthor(`Downloading ${vid.title}`, client.user.avatarURL, vid.url).setDescription(desc(0)).setThumbnail(vid.thumbnail_url));
+        
+        m = await msg.channel.send(new Discord.RichEmbed().setAuthor(`Downloading ${vid.title}`, client.user.avatarURL, vid.url).setDescription(desc()).setThumbnail(vid.thumbnail_url));
       });
+      
       video.pipe(fs.createWriteStream("./audio.mp3"));
       
       /*
