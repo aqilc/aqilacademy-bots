@@ -152,7 +152,7 @@ const c = {
     a: ["down"],
     desc: "Downloads a song on the bot and sends the file into the channel",
     async f(msg, content) {
-      let vid, m, embed = Discord.RichEmbed().setAuthor(`Downloading ${vid.title}`, client.user.avatarURL, vid.url), downloaded, desc = d => `**File Size:** \`${vid.size} bytes\`\n**Length:** ${vid.length_seconds} seconds(${gFuncs.time(vid.length_seconds * 1000)})\n**Completed:** \`${d || 0}%\``;
+      let vid, m, embed = Discord.RichEmbed().setAuthor(`Downloading ${vid.title}`, client.user.avatarURL, vid.url).setThumbnail(vid.thumbnail_url), downloaded, desc = d => `**File Size:** \`${vid.size} bytes\`\n**Length:** ${vid.length_seconds} seconds(${gFuncs.time(vid.length_seconds * 1000)})\n**Completed:** \`${d || 0}%\``;
       
       // Starts typing to indicate that its working
       msg.channel.startTyping();
@@ -164,13 +164,23 @@ const c = {
         vid = await m.search(msg, content, { info: true });
       
       let video = download(vid.url, ["-f mp3"]);
-      video.on("info", async (err, info) => {
-        vid.size = info.size;
-        
-        m = await msg.channel.send(new Discord.RichEmbed().setAuthor(`Downloading ${vid.title}`, client.user.avatarURL, vid.url).setDescription(desc()).setThumbnail(vid.thumbnail_url));
-      });
       
-      video.pipe(fs.createWriteStream("./audio.mp3"));
+      try {
+        video.on("info", async (err, info) => {
+          vid.size = info.size;
+          if(info.size > 8) {
+            msg.reply(`Not sendable(Discord only lets me send files under 8MBs).`);
+            throw new Error("size is too big");
+          }
+
+          m = await msg.channel.send(embed.setDescription(desc()));
+          setInterval(() => m.edit(embed.setDescription(desc(fs.statSync("./audio.mp3").size))), 2000);
+        });
+        video.pipe(fs.createWriteStream("./audio.mp3"));
+        video.on("end", () => {
+          
+        });
+      } catch(err) { console.log(err); }
       
       /*
       // Creates stream and downloads it
