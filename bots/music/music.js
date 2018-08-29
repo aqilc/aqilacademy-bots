@@ -152,7 +152,7 @@ const c = {
     a: ["down"],
     desc: "Downloads a song on the bot and sends the file into the channel",
     f: async (msg, content) => {
-      let vid;
+      let vid, m;
       
       // Starts typing to indicate that its working
       msg.channel.startTyping();
@@ -163,11 +163,15 @@ const c = {
       else
         vid = await m.search(msg, content, { info: true });
       
-      let video = download(vid.url);
+      let video = download(vid.url, ["-f mp3"]);
       
       video.on("info", (err, info) => {
-        VIF
+        vid.size = info.size;
+        m = await msg.channel.send(new Discord.RichEmbed().setAuthor(`Downloading ${vid.title}`, client.user.avatarURL, vid.url).setDescription(`File Size: 
       });
+      
+      video.pipe(fs.createWriteStream("./audio.mp3"));
+      
       /*
       // Creates stream and downloads it
       let stream = yt(vid.video_url, { filter : 'audioonly' });
