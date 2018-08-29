@@ -152,7 +152,7 @@ const c = {
     a: ["down"],
     desc: "Downloads a song on the bot and sends the file into the channel",
     async f(msg, content) {
-      let vid, m, embed = new Discord.RichEmbed(), downloaded, desc = d => `**File Size:** \`${vid.size} bytes\`\n**Length:** ${vid.length_seconds} seconds(${gFuncs.time(vid.length_seconds * 1000)})\n**Completed:** \`${d || 0}%\``, i;
+      let vid, ms, embed = new Discord.RichEmbed(), downloaded, desc = d => `**File Size:** \`${vid.size} bytes\`\n**Length:** ${vid.length_seconds} seconds(${gFuncs.time(vid.length_seconds * 1000)})\n**Completed:** \`${d || 0}%\``, i;
       
       // Starts typing to indicate that its working
       msg.channel.startTyping();
@@ -164,7 +164,7 @@ const c = {
         vid = await m.search(msg, content, { info: true });
       
       embed.setAuthor(`Downloading ${vid.title}`, client.user.avatarURL, vid.url).setThumbnail(vid.thumbnail_url)
-      let video = download(vid.url, ["-f mp3"]);
+      let video = download(vid.video_url, ["--format=mp3"]);
       
       try {
         video.on("info", async (err, info) => {
@@ -174,8 +174,8 @@ const c = {
             throw new Error("size is too big");
           }
 
-          m = await msg.channel.send(embed.setDescription(desc()));
-          i = setInterval(() => m.edit(embed.setDescription(desc(fs.statSync("./audio.mp3").size/info.size))), 2000);
+          ms = await msg.channel.send(embed.setDescription(desc()));
+          i = setInterval(() => ms.edit(embed.setDescription(desc(fs.statSync("./audio.mp3").size/info.size))), 2000);
         });
         video.pipe(fs.createWriteStream("./audio.mp3"));
         video.on("end", () => {
