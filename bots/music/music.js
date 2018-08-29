@@ -152,7 +152,7 @@ const c = {
     a: ["down"],
     desc: "Downloads a song on the bot and sends the file into the channel",
     async f(msg, content) {
-      let vid, m, embed = Discord.RichEmbed().setAuthor(`Downloading ${vid.title}`, client.user.avatarURL, vid.url).setThumbnail(vid.thumbnail_url), downloaded, desc = d => `**File Size:** \`${vid.size} bytes\`\n**Length:** ${vid.length_seconds} seconds(${gFuncs.time(vid.length_seconds * 1000)})\n**Completed:** \`${d || 0}%\``;
+      let vid, m, embed = Discord.RichEmbed().setAuthor(`Downloading ${vid.title}`, client.user.avatarURL, vid.url).setThumbnail(vid.thumbnail_url), downloaded, desc = d => `**File Size:** \`${vid.size} bytes\`\n**Length:** ${vid.length_seconds} seconds(${gFuncs.time(vid.length_seconds * 1000)})\n**Completed:** \`${d || 0}%\``, i;
       
       // Starts typing to indicate that its working
       msg.channel.startTyping();
@@ -174,11 +174,20 @@ const c = {
           }
 
           m = await msg.channel.send(embed.setDescription(desc()));
-          setInterval(() => m.edit(embed.setDescription(desc(fs.statSync("./audio.mp3").size))), 2000);
+          i = setInterval(() => m.edit(embed.setDescription(desc(fs.statSync("./audio.mp3").size/info.size))), 2000);
         });
         video.pipe(fs.createWriteStream("./audio.mp3"));
         video.on("end", () => {
-          
+          // Sends the downloaded attachment
+          msg.channel.send({
+            files: [
+              {
+                attachment: "./audio.mp3",
+                name: `${vid.title.replace(/\W/g, "_")}.mp3`
+              }
+            ]
+          });
+          clearInterval(i);
         });
       } catch(err) { console.log(err); }
       
