@@ -4,6 +4,7 @@ const https = require("https");
 const Discord = require("discord.js");
 const client = new Discord.Client();
 const yt = require("ytdl-core");
+const dyt = require("youtube-dl");
 const request = require("request");
 const prefix = ["a."];
 const data = require("/app/data/d.js");
@@ -161,6 +162,9 @@ const c = {
       else
         vid = await m.search(msg, content, { info: true });
       
+      let mp3 = 
+      
+      /*
       // Creates stream and downloads it
       let stream = yt(vid.video_url, { filter : 'audioonly' });
       
@@ -195,6 +199,7 @@ const c = {
           ]
         });
       });
+      */
     }
   },
 };

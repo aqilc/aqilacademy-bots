@@ -10,6 +10,7 @@ dependencies:
   snekfetch: 4.0.4
   socket.io: 2.1.1
   sqlite3: 4.0.2
+  youtube-dl: 1.12.2
   ytdl-core: 0.24.0
 packages:
   /abbrev/1.1.1:
@@ -693,6 +694,18 @@ packages:
     dev: false
     resolution:
       integrity: sha1-4Ob+aijPUROIVeCG0Wkedx3iqLk=
+  /hashish/0.0.4:
+    dependencies:
+      traverse: 0.6.6
+    dev: false
+    resolution:
+      integrity: sha1-bWC8b/r3Ebav1g5CbQd5iAFOZVQ=
+  /hh-mm-ss/1.2.0:
+    dependencies:
+      zero-fill: 2.2.3
+    dev: false
+    resolution:
+      integrity: sha512-f4I9Hz1dLpX/3mrEs7yq30+FiuO3tt5NWAqAGeBTaoeoBfB8vhcQ3BphuDc5DjZb/K809agqrAaFlP0jhEU/8w==
   /html-entities/1.2.1:
     dev: false
     engines:
@@ -995,6 +1008,7 @@ packages:
     hasBin: true
     resolution:
       integrity: sha1-MAV0OOrGz3+MR2fzhkjWaX11yQM=
+      tarball: 'http://registry.npmjs.org/mkdirp/-/mkdirp-0.5.1.tgz'
   /ms/2.0.0:
     dev: false
     resolution:
@@ -1523,6 +1537,14 @@ packages:
       node: '>= 0.6'
     resolution:
       integrity: sha1-Fhx9rBd2Wf2YEfQ3cfqZOBR4Yow=
+  /streamify/0.2.9:
+    dependencies:
+      hashish: 0.0.4
+    dev: false
+    engines:
+      node: '>=0.12'
+    resolution:
+      integrity: sha512-8pUxeLEef9UO1FxtTt5iikAiyzGI4SZRnGuJ3sz8axZ5Xk+/7ezEV5kuJQsMEFxw7AKYw3xp0Ow+20mmSaJbQQ==
   /string-width/1.0.2:
     dependencies:
       code-point-at: 1.1.0
@@ -1605,6 +1627,10 @@ packages:
       node: '>=0.8'
     resolution:
       integrity: sha512-Q5srk/4vDM54WJsJio3XNn6K2sCG+CQ8G5Wz6bZhRZoAe/+TxjWB/GlFAnYEbkYVlON9FMk/fE3h2RLpPXo4lQ==
+  /traverse/0.6.6:
+    dev: false
+    resolution:
+      integrity: sha1-y99WD9e5r2MlAv7UD5GMFX6pcTc=
   /tunnel-agent/0.6.0:
     dependencies:
       safe-buffer: 5.1.2
@@ -1709,6 +1735,16 @@ packages:
     dev: false
     resolution:
       integrity: sha1-AI4G2AlDIMNy28L47XagymyKxBk=
+  /youtube-dl/1.12.2:
+    dependencies:
+      hh-mm-ss: 1.2.0
+      mkdirp: 0.5.1
+      request: 2.88.0
+      streamify: 0.2.9
+    dev: false
+    requiresBuild: true
+    resolution:
+      integrity: sha512-TDGmUxzEsQCp1Ux3IEkEhJ2LfRlUjBo5AaaGmW5Hqm8uX8jd2sB+Rq37S9vy505qnFhpy05uUSQsBtpvBuQBYA==
   /ytdl-core/0.24.0:
     dependencies:
       html-entities: 1.2.1
@@ -1720,6 +1756,10 @@ packages:
       node: '>=4'
     resolution:
       integrity: sha512-VwCe+uhKz2M1cH0UEnNxVQyLwGK8DIJgbUPF9svEh0zxUl2DP7LORCDIloLqDUxR6JnC3s01GU0YPxiOmjcqVA==
+  /zero-fill/2.2.3:
+    dev: false
+    resolution:
+      integrity: sha1-o97wa6XjmuZEhQu0yirUEStIVek=
 registry: 'https://registry.npmjs.org/'
 shrinkwrapMinorVersion: 8
 shrinkwrapVersion: 3
@@ -1735,4 +1775,5 @@ specifiers:
   snekfetch: ^4.0.4
   socket.io: ^2.1.1
   sqlite3: ^4.0.2
+  youtube-dl: ^1.12.2
   ytdl-core: ^0.24.0

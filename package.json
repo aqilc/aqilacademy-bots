@@ -16,7 +16,8 @@
     "p5": "^0.7.1",
     "node-opus": "^0.3.0",
     "socket.io": "^2.1.1",
-    "body-parser": "^1.18.3"
+    "body-parser": "^1.18.3",
+    "youtube-dl": "^1.12.2"
   },
   "engines": {
     "node": "8.x"
