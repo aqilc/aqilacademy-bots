@@ -72,6 +72,7 @@ const m = {
   
   // Settings for the quild
   settings: {
+    autojoin: true,
     loop: false,
     handler: undefined,
     current_queue: [],
@@ -209,6 +210,9 @@ const c = {
       });
     },
   },
+  play: {
+    
+  }
 };
 
 // Exports the bot so we can run it outside the file
