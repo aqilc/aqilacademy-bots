@@ -130,14 +130,23 @@ const m = {
   
   // Gets some info on a video
   info(id) {
-    return yt.getInfo("https://www.youtube.com/watch?v=" + id);
+    return new Promise(function(rs, rj) {
+      yt.getInfo("https://www.youtube.com/watch?v=" + id, (err, data) => {
+        if(err)
+          rj(err);
+        rs(data);
+      });
+    });
   },
   
   // Adds a song to queue
   add(ids, message) {
     if(typeof ids !== "object")
       ids = [ids];
-    ids.forEach(i => typeof i === "string" || (() => { throw new Error("m.add: Not all imputted IDs are strings") })());
+    if(!ids.every(i => typeof i === "string"))
+      throw new Error("Every imputted ID must be a string");
+    
+    
   },
 };
 
@@ -161,7 +170,7 @@ const c = {
         vid = await m.search(msg, content, { info: true });
       
       // Alerts that someone is downloading something
-      console.log("downloading", vid.video_url);
+      console.log("downloading", vid.video_url, vid);
       
       // Starts an embed
       embed.setAuthor(`Downloading ${vid.title}`, client.user.avatarURL, vid.video_url).setThumbnail(vid.thumbnail_url)
@@ -170,7 +179,7 @@ const c = {
       let stream = yt(vid.video_url, { filter : 'audioonly' });
       
       // Sends a message to indicate that the video is being downloaded then edits it every 3 seconds
-      ms = msg.channel.send(embed.setDescription(desc()));
+      ms = await msg.channel.send(embed.setDescription(desc()));
       i = setInterval(() => ms.edit(embed.setDescription(desc())), 2000);
       
       // Video Information recieved when starting to download
