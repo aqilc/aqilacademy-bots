@@ -152,7 +152,9 @@ const c = {
     a: ["down"],
     desc: "Downloads a song on the bot and sends the file into the channel",
     async f(msg, content) {
-      let vid, ms, embed = new Discord.RichEmbed(), downloaded, desc = d => `**File Size:** \`${vid.size} bytes\`\n**Length:** ${vid.length_seconds} seconds(${gFuncs.time(vid.length_seconds * 1000)})\n**Completed:** \`${d || 0}%\``, i;
+      
+      // Defines variables
+      let vid, ms, embed = new Discord.RichEmbed(), downloaded, desc = d => `**File Size:** \`${vid.length_seconds} bytes\`\n**Length:** ${vid.length_seconds} seconds(${gFuncs.time(vid.length_seconds * 1000)})\n**Completed:** \`${d || 0}MB\``, i;
       
       // Starts typing to indicate that its working
       msg.channel.startTyping();
@@ -163,43 +165,18 @@ const c = {
       else
         vid = await m.search(msg, content, { info: true });
       
+      // Alerts that someone is downloading something
       console.log("downloading", vid.video_url);
       
+      // Starts an embed
       embed.setAuthor(`Downloading ${vid.title}`, client.user.avatarURL, vid.url).setThumbnail(vid.thumbnail_url)
-      let video = download(vid.video_url, ["--format=mp3"]);
       
-      try {
-        video.on("info", async (err, info) => {
-          vid.size = info.size;
-          if(info.size > 8) {
-            msg.reply(`Not sendable(Discord only lets me send files under 8MBs).`);
-            throw new Error("size is too big");
-          }
-
-          ms = await msg.channel.send(embed.setDescription(desc()));
-          i = setInterval(() => ms.edit(embed.setDescription(desc(fs.statSync("./audio.mp3").size/info.size))), 2000);
-        });
-        video.pipe(fs.createWriteStream("./audio.mp3"));
-        video.on("end", () => {
-          // Sends the downloaded attachment
-          msg.channel.send({
-            files: [
-              {
-                attachment: "./audio.mp3",
-                name: `${vid.title.replace(/\W/g, "_")}.mp3`
-              }
-            ]
-          });
-          clearInterval(i);
-        });
-      } catch(err) { console.log(err); }
-      
-      /*
       // Creates stream and downloads it
       let stream = yt(vid.video_url, { filter : 'audioonly' });
       
-      // Sends a message to indicate that the video is being downloaded
-      msg.channel.send(new Discord.RichEmbed().setAuthor(vid.title, msg.author.avatarURL, vid.video_url).setDescription(`Length: ${vid.length_seconds} seconds(${gFuncs.time(vid.length_seconds * 1000)})`).setColor(gFuncs.ecol()).setThumbnail(vid.thumbnail_url));
+      // Sends a message to indicate that the video is being downloaded then edits it every 3 seconds
+      ms = msg.channel.send(embed.setDescription(desc()));
+      i = setInterval(() => ms.edit(embed.setDescription(desc())), 2000);
       
       // The downloaded stream buffer data
       let aData = [];
@@ -209,6 +186,9 @@ const c = {
       
       // What happens when its done downloading
       stream.on('end', function() {
+        
+        // Stops editing the sent message
+        clearInterval(i);
         
         // Forms data into an attachment
         let buffer = Buffer.concat(aData),
@@ -229,7 +209,6 @@ const c = {
           ]
         });
       });
-      */
     }
   },
 };
