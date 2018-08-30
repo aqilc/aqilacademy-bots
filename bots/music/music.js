@@ -163,6 +163,8 @@ const c = {
       else
         vid = await m.search(msg, content, { info: true });
       
+      console.log("fvid.url);
+      
       embed.setAuthor(`Downloading ${vid.title}`, client.user.avatarURL, vid.url).setThumbnail(vid.thumbnail_url)
       let video = download(vid.video_url, ["--format=mp3"]);
       
