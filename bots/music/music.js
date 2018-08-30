@@ -103,7 +103,7 @@ const m = {
         
         // If all goes well...
         else {
-          let vids = info && info.results > 1 ? json.items.splice(info.results).map(j => j.id.videoId) : json.items[0].id.videoId;
+          let vids = info && info.results > 1 ? json.items.slice(0, info.results).map(j => j.id.videoId) : json.items[0].id.videoId;
           
           if(info.add)
             m.add(vids, message);
@@ -113,7 +113,7 @@ const m = {
           
           let data = [];
           if(info && info.info) {
-            if(!info || ~~ info.results <= 1)
+            if(!info || info.results <= 1)
               data = await m.info(json.items[0].id.videoId);
             else {
               do {
@@ -129,13 +129,11 @@ const m = {
   
   // Gets some info on a video
   info(id) {
-    return new Promise(function(rs, rj) {
-      yt.getInfo("https://www.youtube.com/watch?v=" + id, (err, data) => {
-        if(err)
-          rj(err);
-        rs(data);
-      });
-    });
+    if(!this.id(id))
+      return false;
+    
+    
+    return yt.getInfo("https://www.youtube.com/watch?v=" + id);
   },
   
   // Adds a song to queue
@@ -209,7 +207,7 @@ const c = {
           ]
         });
       });
-    }
+    },
   },
 };
 
