@@ -130,10 +130,6 @@ const m = {
   
   // Gets some info on a video
   info(id) {
-    if(!this.id(id))
-      return false;
-    
-    
     return yt.getInfo("https://www.youtube.com/watch?v=" + id);
   },
   
