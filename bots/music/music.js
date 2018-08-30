@@ -168,7 +168,7 @@ const c = {
       console.log("downloading", vid.video_url);
       
       // Starts an embed
-      embed.setAuthor(`Downloading ${vid.title}`, client.user.avatarURL, vid.url).setThumbnail(vid.thumbnail_url)
+      embed.setAuthor(`Downloading ${vid.title}`, client.user.avatarURL, vid.video_url).setThumbnail(vid.thumbnail_url)
       
       // Creates stream and downloads it
       let stream = yt(vid.video_url, { filter : 'audioonly' });
@@ -177,6 +177,11 @@ const c = {
       ms = msg.channel.send(embed.setDescription(desc()));
       i = setInterval(() => ms.edit(embed.setDescription(desc())), 2000);
       
+      // Video Information recieved when starting to download
+      stream.on('info', function(data1, data2, data3) {
+        console.log(data1, data2, data3);
+      })
+      return;
       // The downloaded stream buffer data
       let aData = [];
       stream.on('data', function(data) {
