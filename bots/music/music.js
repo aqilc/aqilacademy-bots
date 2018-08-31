@@ -134,7 +134,9 @@ const m = {
     if(options && options.options)
       options.options.options = options.carryoptions ? options.options : null;
     
-    let vid = await this.info(this.settings.queue[id].id), next = this.settings.queue[id + 1] ? id + 1 : this.settings.queue.length > 1 ? 0 : undefined, handler = this.settings.connection
+    let vid = await this.info(this.settings.queue[id].id),
+        next = this.settings.queue[id + 1] ? id + 1 : this.settings.queue.length > 1 ? 0 : undefined,
+        handler = this.settings.connection
       .playStream(yt("https://www.youtube.com/watch?v=" + this.settings.queue[id].id, { filter: "audioonly" }), { seek: options ? options.seek || 0 : 0 })
       .once("end", reason => {
         if(reason)
@@ -200,8 +202,7 @@ const m = {
   
   // Gets some info on a video
   info(id) {
-    return new Promise(function(rs, rj) {
-      yt.getInfo("https://www.youtube.com/watch?v=" + id, (err, data) => {
+    return yt.getInfo("https://www.youtube.com/watch?v=" + id, (err, data) => {
         if(err)
           rj(err);
         rs(data);
@@ -216,7 +217,7 @@ const m = {
     if(!ids.every(i => typeof i === "string"))
       throw new Error("Every imputted ID must be a string");
     
-    
+    this.settings.queue.concat(ids.map(i => { id: i }));
   },
   
   // Joins a voice channel
