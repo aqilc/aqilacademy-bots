@@ -72,9 +72,16 @@ function run() {
     // Does commands
     try {
       for(let i in c) {
-        if(i === cmd || (c[i].a ? c[i].a : []).includes(cmd)) {
+        if(i === cmd || (c[i].a || []).includes(cmd)) {
           
-          c[cmd in c ? c].f(msg, msg.content.slice(prefix.length + cmd.length + 1).trim());
+          // Command Cooldowns
+          if(c[i].cd) {
+            let push = { id: msg.author.id, d: { e: Date.now() + c[i].cd, s: Date.now() } };
+            cd.push(push);
+            setTimeout(() => cd.splice(cd.findIndex(cdu => cdu === push), 1), c[i].cd);
+          }
+          
+          c[i].f(msg, msg.content.slice(prefix.length + cmd.length + 1).trim());
         }
       }
     } catch(error) {
@@ -166,6 +173,12 @@ const m = {
     
     
   },
+  
+  // Joins a voice channel
+  join(channel, member) {
+    if(member.voiceChannel)
+      return false;
+  },
 };
 
 // Commands
@@ -237,6 +250,7 @@ const c = {
     },
   },
   play: {
+    cd: 1000,
     
   }
 };
