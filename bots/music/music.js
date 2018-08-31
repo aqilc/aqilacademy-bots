@@ -158,7 +158,7 @@ const c = {
     async f(msg, content) {
       
       // Defines variables
-      let vid, ms, embed = new Discord.RichEmbed(), downloaded, start = performance.now(), desc = d => `**File Size:** \`${vid.size || 0} bytes(${gFuncs.bytes(vid.size || 0)})\`\n**Length:** ${vid.length_seconds} seconds(${gFuncs.time(vid.length_seconds * 1000)})\n**Completed:** \`${d || 0} bytes(${gFuncs.bytes(d || 0)})\`\n**Time Taken:** ${performance.now() - start} ms(`, i;
+      let vid, ms, downloaded, start = Date.now(), desc = d => `**File Size:** \`${vid.size || 0} bytes(${gFuncs.bytes(vid.size || 0)})\`\n**Length:** ${vid.length_seconds} seconds(${gFuncs.time(vid.length_seconds * 1000)})\n**Completed:** \`${d || 0} bytes(${gFuncs.bytes(d || 0)})\`\n**Time Taken:** ${Date.now() - start} ms(${gFuncs.time(Date.now() - start)})`, i;
       
       // Starts typing to indicate that its working
       msg.channel.startTyping();
@@ -172,15 +172,12 @@ const c = {
       // Alerts that someone is downloading something
       console.log("downloading", vid.video_url);
       
-      // Starts an embed
-      embed.setTitle(`<:loadinggif:406945578967367680> Downloading [${vid.title}](${vid.video_url})`).setThumbnail(vid.thumbnail_url)
-      
       // Creates stream and downloads it
       let stream = yt(vid.video_url, { filter : 'audioonly' });
       
       // Sends a message to indicate that the video is being downloaded then edits it every 3 seconds
-      ms = await msg.channel.send(embed.setDescription(desc()));
-      i = setInterval(() => ms.edit(embed.setDescription(desc(vid.downloaded))), 3000);
+      ms = await msg.channel.send(new Discord.RichEmbed().addField(`<:loadinggif:406945578967367680> Downloading [${vid.title}](${vid.video_url})`, desc(vid.downloaded)).setThumbnail(vid.thumbnail_url))
+      i = setInterval(() => ms.edit(new Discord.RichEmbed().addField(`<:loadinggif:406945578967367680> Downloading [${vid.title}](${vid.video_url})`, desc(vid.downloaded)).setThumbnail(vid.thumbnail_url)), 3000);
       
       // Video Information recieved when downloading
       stream.on('progress', function(chunk, down, total) {
