@@ -104,7 +104,7 @@ const m = {
         
         // If all goes well...
         else {
-          let vids = info && info.results > 1 ? json.items.slice(0, info.results).map(j => j.id.videoId) : json.items[0].id.videoId;
+          let vids = info && info.results > 1 ? json.items.splice(info.results).map(j => j.id.videoId) : json.items[0].id.videoId;
           
           if(info.add)
             m.add(vids, message);
@@ -114,7 +114,7 @@ const m = {
           
           let data = [];
           if(info && info.info) {
-            if(!info || info.results <= 1)
+            if(!info || ~~ info.results <= 1)
               data = await m.info(json.items[0].id.videoId);
             else {
               do {
@@ -170,7 +170,7 @@ const c = {
         vid = await m.search(msg, content, { info: true });
       
       // Alerts that someone is downloading something
-      console.log("downloading", vid.video_url, vid);
+      console.log("downloading", vid.video_url);
       
       // Starts an embed
       embed.setAuthor(`Downloading ${vid.title}`, client.user.avatarURL, vid.video_url).setThumbnail(vid.thumbnail_url)
@@ -186,7 +186,7 @@ const c = {
       stream.on('info', function(data1, data2, data3) {
         console.log(data1, data2, data3);
       })
-      return;
+      
       // The downloaded stream buffer data
       let aData = [];
       stream.on('data', function(data) {
