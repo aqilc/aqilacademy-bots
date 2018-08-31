@@ -98,7 +98,9 @@ const m = {
   // Settings for the quild
   settings: {
     autojoin: true,
+    repeat: false,
     loop: false,
+    connection: undefined,
     handler: undefined,
     channel: undefined,
     queue: [],
@@ -117,15 +119,28 @@ const m = {
   play(id, options) {
     let vId;
     if(typeof id === "number" && this.settings.queue[id])
-      vId = this.settings.queue[id], this.settkings.np = id;
+      vId = this.settings.queue[id], this.settings.np = id;
     else if(typeof id === "string" && vId.length === 11)
-      this.settings.queue.push(id), vId = id, this.settings.np = this.settings.queue.length - 1;
+      this.settings.queue.push(id), vId = id, [id, this.settings.np] = this.settings.queue.length - 1;
+    else
+      throw new Error("mpe1 Invalid ID put into the 'play' function");
+    if(!this.settings.connection)
+      throw new Error("mpe2 No voice connection to play songs on");
+    if(this.settings.handler)
+      throw new Error("mpe3 Last Song not done yet");
+    if(options && options.next && !this.settings.queue[id])
+      throw new Error("mpe4 Can't play
     
-    if(!this.settings.handler)
-      throw new Error("No handler to play songs on");
   },
   
-  //
+  // Check Handler
+  async check_settings(user) {
+    if(!user.voiceChannel)
+      throw new Error("User with no voice channel imputted into the 'check_handler' function");
+    
+    if(!this.settings.connection)
+      this.settings.connections = await user.voiceChannel.join();
+  },
   
   // Searches a video from YouTube and returns it... or adds it into the queue
   search(msg, search, info = { results: 1, add: false, info: false }) {
