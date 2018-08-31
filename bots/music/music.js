@@ -23,41 +23,41 @@ function run() {
 
   // Client Events
   client.on("ready", () => console.log(`${client.user.tag} ID: ${client.user.id} logged in at ${new Date().toUTCString()}`));
-  client.on("message", message => {
+  client.on("message", msg => {
     
     // Lets the admins run code through the bot
-    if(message.content.startsWith("a:")) {
-      if(!data.devs.includes(message.author.id))
-        return message.reply("You don't have the permissions to run code in this bot");
+    if(msg.content.startsWith("a:")) {
+      if(!data.devs.includes(msg.author.id))
+        return msg.reply("You don't have the permissions to run code in this bot");
 
       let ran;
       try {
-        ran = eval(message.content.slice(2).trim());
+        ran = eval(msg.content.slice(2).trim());
       } catch(err) {
         ran = err;
       }
 
-      return message.channel.send(new Discord.RichEmbed().setDescription(`**Output:**\`\`\`${ran}\`\`\``).setColor(gFuncs.ecol()));
+      return msg.channel.send(new Discord.RichEmbed().setDescription(`**Output:**\`\`\`${ran}\`\`\``).setColor(gFuncs.ecol()));
     }
 
     // Returns if the user is the bot itself
-    if(message.author.id === client.user.id)
+    if(msg.author.id === client.user.id)
       return;
     
-    // Returns if the message is obviously not a command
-    if(!message.content.startsWith(prefix))
+    // Returns if the msg is obviously not a command
+    if(!msg.content.startsWith(prefix))
       return;
     
     // Blocks all non-admins from using the bot
-    if(!data.devs.includes(message.author.id))
-      return message.reply("This bot is still in production. Please wait for it to be fully developed");
+    if(!data.devs.includes(msg.author.id))
+      return msg.reply("This bot is still in production. Please wait for it to be fully developed");
     
     // Does commands
     try {
-      let cmd = message.content.slice(prefix.length + 1).split(" ")[0];
+      let cmd = msg.content.slice(prefix.length + 1).split(" ")[0];
       for(let i in c) {
         if(i === cmd || (c[i].a ? c[i].a : []).includes(cmd))     
-          c[cmd].f(message, message.content.slice(prefix.length + cmd.length + 1).trim());
+          c[cmd].f(msg, msg.content.slice(prefix.length + cmd.length + 1).trim());
       }
     } catch(error) {
       console.log("Music error: " + error);
@@ -87,7 +87,7 @@ const m = {
   },
   
   // Searches a video from YouTube and returns it... or adds it into the queue
-  search(message, search, info = { results: 1, add: false, info: false }) {
+  search(msg, search, info = { results: 1, add: false, info: false }) {
     return new Promise(function (resolve, reject) {
       
       // Search for results
@@ -96,7 +96,7 @@ const m = {
         
         // If it finds an error
         if("error" in json)
-          reject([json.error.errors[0].message, json.error.errors[0].reason], true);
+          reject([json.error.errors[0].msg, json.error.errors[0].reason], true);
         
         // If it didn't find any videos
         else if(json.items.length === 0)
@@ -107,7 +107,7 @@ const m = {
           let vids = info && info.results > 1 ? json.items.splice(info.results).map(j => j.id.videoId) : json.items[0].id.videoId;
           
           if(info.add)
-            m.add(vids, message);
+            m.add(vids, msg);
           
           if(!info || !info.info)
             resolve(vids);
@@ -140,7 +140,7 @@ const m = {
   },
   
   // Adds a song to queue
-  add(ids, message) {
+  add(ids, msg) {
     if(typeof ids !== "object")
       ids = [ids];
     if(!ids.every(i => typeof i === "string"))
@@ -158,7 +158,7 @@ const c = {
     async f(msg, content) {
       
       // Defines variables
-      let vid, ms, embed = new Discord.RichEmbed(), downloaded, desc = d => `**File Size:** \`${vid.size || 0} bytes(${gFuncs.bytes(vid.size || 0)})\`\n**Length:** ${vid.length_seconds} seconds(${gFuncs.time(vid.length_seconds * 1000)})\n**Completed:** \`${d || 0} bytes(${gFuncs.bytes(d || 0)})\``, i;
+      let vid, ms, embed = new Discord.RichEmbed(), downloaded, start = performance.now(), desc = d => `**File Size:** \`${vid.size || 0} bytes(${gFuncs.bytes(vid.size || 0)})\`\n**Length:** ${vid.length_seconds} seconds(${gFuncs.time(vid.length_seconds * 1000)})\n**Completed:** \`${d || 0} bytes(${gFuncs.bytes(d || 0)})\`\n**Time Taken:** ${performance.now() - start} ms(`, i;
       
       // Starts typing to indicate that its working
       msg.channel.startTyping();
@@ -173,7 +173,7 @@ const c = {
       console.log("downloading", vid.video_url);
       
       // Starts an embed
-      embed.setAuthor(`Downloading ${vid.title}`, client.user.avatarURL, vid.video_url).setThumbnail(vid.thumbnail_url)
+      embed.setTitle(`<:loadinggif:406945578967367680> Downloading [${vid.title}](${vid.video_url})`).setThumbnail(vid.thumbnail_url)
       
       // Creates stream and downloads it
       let stream = yt(vid.video_url, { filter : 'audioonly' });
