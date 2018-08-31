@@ -107,7 +107,7 @@ const m = {
   },
   
   // Transforms a url into a video ID
-  id(url) {
+  url(url) {
     if(yt.validateID(url) || yt.validateURL(url))
       return yt.getVideoID(url);
     
@@ -241,8 +241,8 @@ const c = {
       msg.channel.startTyping();
       
       // Determines video ID
-      if(m.id(content))
-        vid = await m.info(m.id(content));
+      if(m.url(content))
+        vid = await m.info(m.url(content));
       else
         vid = await m.search(msg, content, { info: true });
       
