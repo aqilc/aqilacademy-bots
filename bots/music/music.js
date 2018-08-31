@@ -125,6 +125,8 @@ const m = {
       throw new Error("No handler to play songs on");
   },
   
+  //
+  
   // Searches a video from YouTube and returns it... or adds it into the queue
   search(msg, search, info = { results: 1, add: false, info: false }) {
     return new Promise(function (resolve, reject) {
