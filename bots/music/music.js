@@ -116,30 +116,34 @@ const m = {
   },
   
   // Plays a song
-  async play(id, options) {
+  async play(id, options = { seek: 0, next: false, options: undefined, carryoptions: false }) {
     let vId = 0;
     if(typeof id === "number" && this.settings.queue[id])
-      vId = this.settings.queue[id], this.settings.np = id;
+      vId = id, this.settings.np = id;
     else if(typeof id === "string" && vId.length === 11)
-      this.settings.queue.push(id), vId = id, [id, this.settings.np] = this.settings.queue.length - 1;
+      this.settings.queue.push(id), vId = id = this.settings.np = this.settings.queue.length - 1;
     else
       throw new Error("mpe1 Invalid ID put into the 'play' function");
     if(!this.settings.connection)
       throw new Error("mpe2 No voice connection to play songs on");
-    if(options && options.next && !this.settings.queue[id])
+    if(options && options.next && !this.settings.queue[id + 1])
       throw new Error("mpe3 Can't play the next song if there is none");
     
     if(this.settings.handler)
       await this.settings.handler.end(), this.settings.handler = null;
+    if(options && options.options)
+      options.options.options = options.carryoptions ? options.options : null;
     
-    let vid = await this.info(this.settings.queue[id].id), next = this.settings.queue[id + 1] ? id + 1 || 0, handler = this.settings.connection
+    let vid = await this.info(this.settings.queue[id].id), next = this.settings.queue[id + 1] ? id + 1 : this.settings.queue.length > 1 ? 0 : undefined, handler = this.settings.connection
       .playStream(yt("https://www.youtube.com/watch?v=" + this.settings.queue[id].id, { filter: "audioonly" }), { seek: options ? options.seek || 0 : 0 })
       .once("end", reason => {
         if(reason)
           console.log(reason);
         
-        if(options && options.next)
-          this.play(this.settings.queue[id] ? 
+        if(this.settings.repeat)
+          this.play(id, options);
+        if(options && options.next && next)
+          this.play(next, options ? options.options : undefined);
       });
   },
   
