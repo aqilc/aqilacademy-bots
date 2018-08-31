@@ -116,10 +116,11 @@ const m = {
   // Plays a song
   play(id, options) {
     let vId;
-    if(typeof id === "number")
-      vId = this.settings.queue[id];
+    if(typeof id === "number" && this.settings.queue[id])
+      vId = this.settings.queue[id], this.settkings.np = id;
     else if(typeof id === "string" && vId.length === 11)
-      this.settings.queue.push(id), vId = id, np = ;
+      this.settings.queue.push(id), vId = id, this.settings.np = this.settings.queue.length - 1;
+    
   }
   
   // Searches a video from YouTube and returns it... or adds it into the queue
