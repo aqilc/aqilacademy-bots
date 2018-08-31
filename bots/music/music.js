@@ -101,7 +101,8 @@ const m = {
     loop: false,
     handler: undefined,
     channel: undefined,
-    current_queue: [],
+    queue: [],
+    np: 0,
   },
   
   // Transforms a url into a video ID
@@ -111,6 +112,15 @@ const m = {
     
     return false;
   },
+  
+  // Plays a song
+  play(id, options) {
+    let vId;
+    if(typeof id === "number")
+      vId = this.settings.queue[id];
+    else if(typeof id === "string" && vId.length === 11)
+      this.settings.queue.push(id), vId = id, np = ;
+  }
   
   // Searches a video from YouTube and returns it... or adds it into the queue
   search(msg, search, info = { results: 1, add: false, info: false }) {
@@ -177,14 +187,16 @@ const m = {
   
   // Joins a voice channel
   join(member) {
+    
+    // Returns false if there is no channel to join
     if(member.voiceChannel)
       return false;
     
     // Changes the voice channel to that of the users and then joins the channel
     this.settings.channel = member.voiceChannel;
-    member.voiceChannel.join();
     
-    return member.voiceChannel;
+    // Returns connection to channel
+    return member.voiceChannel.join();
   },
 };
 
@@ -258,13 +270,14 @@ const c = {
   },
   play: {
     description: "Plays music in your voice channel!",
-    f(msg, content) {
+    usage: " [song name or link/playlist link]",
+    async f(msg, content) {
       if(!msg.member.voiceChannel)
         return msg.reply("You need to join a voice channel first!");
       
       let connection;
       if(m.autojoin)
-        m.join(msg.member);
+        connection = await m.join(msg.member);
       
       
     }
