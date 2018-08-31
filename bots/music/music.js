@@ -183,8 +183,10 @@ const c = {
       i = setInterval(() => ms.edit(embed.setDescription(desc())), 2000);
       
       // Video Information recieved when starting to download
-      stream.on('info', function(data1, data2, data3) {
-        console.log(data1, data2, data3);
+      stream.on('progress', function(chunk, down, total) {
+        vid.size = total;
+        vid.downloaded = down;
+        
       })
       
       // The downloaded stream buffer data
