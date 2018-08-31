@@ -100,6 +100,7 @@ const m = {
     autojoin: true,
     loop: false,
     handler: undefined,
+    channel: undefined,
     current_queue: [],
   },
   
@@ -175,9 +176,15 @@ const m = {
   },
   
   // Joins a voice channel
-  join(channel, member) {
+  join(member) {
     if(member.voiceChannel)
       return false;
+    
+    // Changes the voice channel to that of the users and then joins the channel
+    this.settings.channel = member.voiceChannel;
+    member.voiceChannel.join();
+    
+    return member.voiceChannel;
   },
 };
 
@@ -250,8 +257,17 @@ const c = {
     },
   },
   play: {
-    cd: 1000,
-    
+    description: "Plays music in your voice channel!",
+    f(msg, content) {
+      if(!msg.member.voiceChannel)
+        return msg.reply("You need to join a voice channel first!");
+      
+      let connection;
+      if(m.autojoin)
+        m.join(msg.member);
+      
+      
+    }
   }
 };
 
