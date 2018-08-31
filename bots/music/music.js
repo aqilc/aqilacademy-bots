@@ -108,8 +108,12 @@ const m = {
   
   // Transforms a url into a video ID
   url(url) {
+    
+    let plm = url.match(/^.*(youtu.be\/|list=)([^#\&\?]*).*/)
     if(yt.validateID(url) || yt.validateURL(url))
-      return yt.getVideoID(url);
+      return { v: yt.getVideoID(url) };
+    else if(plm && plm[0].length === 34)
+      return { p: plm[0] };
     
     return false;
   },
