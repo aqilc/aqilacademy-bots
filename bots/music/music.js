@@ -18,6 +18,9 @@ const db = new sqlite3.Database('./.data/sqlite.db');
 // Logs in
 client.login(process.env.TOKENM);
 
+// Cooldowns
+let cd = [];
+
 // A function for the whole bot to run on
 function run() {
 
@@ -55,16 +58,24 @@ function run() {
     if(!msg.content.startsWith(prefix))
       return;
     
+    // Depermines command name
+    let cmd = msg.content.slice(prefix.length + 1).split(" ")[0];
+    
+    let cdu = cd.find(c => c.id === msg.author.id);
+    if(cdu)
+      return msg.reply(`Please wait! ${gFuncs.time(cdu.edate - Date.now())} left until you can use it again.`);
+    
     // Blocks all non-admins from using the bot
     if(!data.devs.includes(msg.author.id))
       return msg.reply("This bot is still in production. Please wait for it to be fully developed");
     
     // Does commands
     try {
-      let cmd = msg.content.slice(prefix.length + 1).split(" ")[0];
       for(let i in c) {
-        if(i === cmd || (c[i].a ? c[i].a : []).includes(cmd))     
-          c[cmd].f(msg, msg.content.slice(prefix.length + cmd.length + 1).trim());
+        if(i === cmd || (c[i].a ? c[i].a : []).includes(cmd)) {
+          
+          c[cmd in c ? c].f(msg, msg.content.slice(prefix.length + cmd.length + 1).trim());
+        }
       }
     } catch(error) {
       console.log("Music error: " + error);
@@ -160,6 +171,7 @@ const m = {
 // Commands
 const c = {
   download: {
+    cd: 60000,
     a: ["down"],
     desc: "Downloads a song on the bot and sends the file into the channel",
     async f(msg, content) {
@@ -183,8 +195,8 @@ const c = {
       let stream = yt(vid.video_url, { filter : 'audioonly' });
       
       // Sends a message to indicate that the video is being downloaded then edits it every 3 seconds
-      ms = await msg.channel.send(new Discord.RichEmbed().addField(`<a:loadinggif:406945578967367680> Downloading "${vid.title}"`, desc(vid.downloaded)).setThumbnail(vid.thumbnail_url))
-      i = setInterval(() => ms.edit(new Discord.RichEmbed().addField(`<a:loadinggif:406945578967367680> Downloading "${vid.title}"`, desc(vid.downloaded)).setThumbnail(vid.thumbnail_url)), 3000);
+      ms = await msg.channel.send(new Discord.RichEmbed().addField(`<a:loadinggif:406945578967367680> Downloading "${vid.title}"`, desc(vid.downloaded)).setThumbnail(vid.thumbnail_url).setColor(757203))
+      i = setInterval(() => ms.edit(new Discord.RichEmbed().addField(`<a:loadinggif:406945578967367680> Downloading "${vid.title}"`, desc(vid.downloaded)).setThumbnail(vid.thumbnail_url).setColor(757203)), 3000);
       
       // Video Information recieved when downloading
       stream.on('progress', function(chunk, down, total) {
@@ -203,7 +215,7 @@ const c = {
         
         // Stops editing the sent message
         clearInterval(i);
-        ms.edit(new Discord.RichEmbed().addField(`<:yes:416019413314043914> Downloaded and sent "${vid.title}"`, desc(vid.downloaded)).setThumbnail(vid.thumbnail_url));
+        ms.edit(new Discord.RichEmbed().addField(`<:yes:416019413314043914> Downloaded and sent "${vid.title}"`, desc(vid.downloaded)).setThumbnail(vid.thumbnail_url).setColor(757203));
         
         // Forms data into an attachment
         let buffer = Buffer.concat(aData),
