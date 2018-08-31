@@ -117,7 +117,7 @@ const m = {
   
   // Plays a song
   async play(id, options) {
-    let vId, next;
+    let vId = 0;
     if(typeof id === "number" && this.settings.queue[id])
       vId = this.settings.queue[id], this.settings.np = id;
     else if(typeof id === "string" && vId.length === 11)
@@ -132,7 +132,7 @@ const m = {
     if(this.settings.handler)
       await this.settings.handler.end(), this.settings.handler = null;
     
-    let vid = await this.info(this.settings.queue[id].id), handler = this.settings.connection
+    let vid = await this.info(this.settings.queue[id].id), next = this.settings.queue[id + 1] ? id + 1 || 0, handler = this.settings.connection
       .playStream(yt("https://www.youtube.com/watch?v=" + this.settings.queue[id].id, { filter: "audioonly" }), { seek: options ? options.seek || 0 : 0 })
       .once("end", reason => {
         if(reason)
