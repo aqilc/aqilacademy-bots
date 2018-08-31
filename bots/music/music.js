@@ -117,11 +117,10 @@ const m = {
   
   // Plays a song
   async play(id, options = { seek: 0, next: false, options: undefined, carryoptions: false }) {
-    let vId = 0;
     if(typeof id === "number" && this.settings.queue[id])
-      vId = id, this.settings.np = id;
-    else if(typeof id === "string" && vId.length === 11)
-      this.settings.queue.push(id), vId = id = this.settings.np = this.settings.queue.length - 1;
+      this.settings.np = id;
+    else if(typeof id === "string" && id.length === 11)
+      this.settings.queue.push(id), id = this.settings.np = this.settings.queue.length - 1;
     else
       throw new Error("mpe1 Invalid ID put into the 'play' function");
     if(!this.settings.connection)
@@ -202,12 +201,7 @@ const m = {
   
   // Gets some info on a video
   info(id) {
-    return yt.getInfo("https://www.youtube.com/watch?v=" + id, (err, data) => {
-        if(err)
-          rj(err);
-        rs(data);
-      });
-    });
+    return yt.getInfo("https://www.youtube.com/watch?v=" + id);
   },
   
   // Adds a song to queue
