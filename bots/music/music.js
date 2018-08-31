@@ -116,7 +116,7 @@ const m = {
   },
   
   // Plays a song
-  play(id, options) {
+  async play(id, options) {
     let vId;
     if(typeof id === "number" && this.settings.queue[id])
       vId = this.settings.queue[id], this.settings.np = id;
@@ -126,11 +126,15 @@ const m = {
       throw new Error("mpe1 Invalid ID put into the 'play' function");
     if(!this.settings.connection)
       throw new Error("mpe2 No voice connection to play songs on");
-    if(this.settings.handler)
-      throw new Error("mpe3 Last Song not done yet");
     if(options && options.next && !this.settings.queue[id])
-      throw new Error("mpe4 Can't play
+      throw new Error("mpe3 Can't play the next song if there is none");
     
+    if(this.settings.handler)
+      await this.settings.handler.end(), this.settings.handler = null;
+    
+    let vid = await this.info(this.settings.queue[id]), handler = this.settings.connection
+      .playStream(yt("https://www.youtube.com/watch?v=" + this.settings.queue[id].id, { filter: "audioonly" }), { seek: options ? options.seek || 0 : 0 })
+    ;
   },
   
   // Check Handler
