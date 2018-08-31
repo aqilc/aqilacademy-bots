@@ -27,12 +27,19 @@ function run() {
     
     // Lets the admins run code through the bot
     if(msg.content.startsWith("a:")) {
+      let snips = [
+        () => msg.channel.send("<:loadinggif:406945578967367680>"),
+      ];
+      
       if(!data.devs.includes(msg.author.id))
         return msg.reply("You don't have the permissions to run code in this bot");
 
-      let ran;
+      let ran, code = msg.content.slice(2).trim();
+      if(!isNaN(Number(code)))
+        code = snips[Number(code)] || msg.content.slice(2).trim();
+      
       try {
-        ran = eval(msg.content.slice(2).trim());
+        ran = eval(code);
       } catch(err) {
         ran = err;
       }
