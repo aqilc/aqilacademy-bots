@@ -99,7 +99,6 @@ const m = {
   settings: {
     autojoin: true,
     repeat: false,
-    loop: false,
     connection: undefined,
     handler: undefined,
     channel: undefined,
@@ -143,7 +142,7 @@ const m = {
         
         if(this.settings.repeat)
           this.play(id, options);
-        if(options && options.next && next)
+        else if(options && options.next && next)
           this.play(next, options ? options.options : undefined);
       });
   },
@@ -215,17 +214,15 @@ const m = {
   },
   
   // Joins a voice channel
-  join(member) {
+  async join(member, channel) {
     
-    // Returns false if there is no channel to join
-    if(member.voiceChannel)
+    // Returns false if there is no channel to join/No channel to send messages to.
+    if(!member.voiceChannel || !channel)
       return false;
     
     // Changes the voice channel to that of the users and then joins the channel
-    this.settings.channel = member.voiceChannel;
-    
-    // Returns connection to channel
-    return member.voiceChannel.join();
+    this.settings.channel = channel;
+    this.settings.connection = await member.voiceChannel.join();
   },
 };
 
