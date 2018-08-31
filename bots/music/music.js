@@ -158,7 +158,7 @@ const c = {
     async f(msg, content) {
       
       // Defines variables
-      let vid, ms, embed = new Discord.RichEmbed(), downloaded, desc = d => `**File Size:** \`${vid.length_seconds} bytes\`\n**Length:** ${vid.length_seconds} seconds(${gFuncs.time(vid.length_seconds * 1000)})\n**Completed:** \`${d || 0}MB\``, i;
+      let vid, ms, embed = new Discord.RichEmbed(), downloaded, desc = d => `**File Size:** \`${vid.size || 0} bytes(${gFuncs.bytes(vid.size || 0)})\`\n**Length:** ${vid.length_seconds} seconds(${gFuncs.time(vid.length_seconds * 1000)})\n**Completed:** \`${d || 0} bytes(${gFuncs.bytes(d || 0)})\``, i;
       
       // Starts typing to indicate that its working
       msg.channel.startTyping();
@@ -180,13 +180,12 @@ const c = {
       
       // Sends a message to indicate that the video is being downloaded then edits it every 3 seconds
       ms = await msg.channel.send(embed.setDescription(desc()));
-      i = setInterval(() => ms.edit(embed.setDescription(desc())), 2000);
+      i = setInterval(() => ms.edit(embed.setDescription(desc(vid.downloaded))), 3000);
       
-      // Video Information recieved when starting to download
+      // Video Information recieved when downloading
       stream.on('progress', function(chunk, down, total) {
         vid.size = total;
         vid.downloaded = down;
-        
       })
       
       // The downloaded stream buffer data

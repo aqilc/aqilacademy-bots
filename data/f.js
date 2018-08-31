@@ -204,6 +204,14 @@ module.exports = {
     }
     return timeStuff;
   },
+  bytes(bytes) {
+    if(bytes > 1000000)
+      return `${(bytes/1000000).toFixed(1)} MB`;
+    else if(bytes > 1000)
+      return `${(bytes/1000).toFixed(1)} KB`;
+    else
+      return `${bytes} bytes`;
+  },
   
   // Gets JSON from a URL
   parseURL(url) {
