@@ -75,7 +75,7 @@ function run() {
         if(i === cmd || (c[i].a || []).includes(cmd)) {
           
           // Command Cooldowns
-          if(c[i].cd) {
+          if(c[i].cd && data.devs.includes(msg.author.id)) {
             let push = { id: msg.author.id, d: { e: Date.now() + c[i].cd, s: Date.now() } };
             cd.push(push);
             setTimeout(() => cd.splice(cd.findIndex(cdu => cdu === push), 1), c[i].cd);
@@ -106,16 +106,14 @@ const m = {
     np: 0,
   },
   
-  // Transforms a url into a video ID
+  // Transforms a url into a video/playlist ID
   url(url) {
-    
     let plm = url.match(/^.*(youtu.be\/|list=)([^#\&\?]*).*/)
     if(yt.validateID(url) || yt.validateURL(url))
-      return { v: yt.getVideoID(url) };
+      return { v: yt.getVideoID(url), i: yt.getVideoID(url) };
     else if(plm && plm[0].length === 34)
-      return { p: plm[0] };
-    
-    return false;
+      return { p: plm[0], i: plm[0] };
+    return {};
   },
   
   // Plays a song
@@ -149,15 +147,6 @@ const m = {
         else if(options && options.next && next)
           this.play(next, options ? options.options : undefined);
       });
-  },
-  
-  // Check Handler
-  async check_settings(user) {
-    if(!user.voiceChannel)
-      throw new Error("User with no voice channel imputted into the 'check_handler' function");
-    
-    if(!this.settings.connection)
-      this.settings.connections = await user.voiceChannel.join();
   },
   
   // Searches a video from YouTube and returns it... or adds it into the queue
@@ -228,6 +217,9 @@ const m = {
     this.settings.channel = channel;
     this.settings.connection = await member.voiceChannel.join();
   },
+  
+  // Announces the song
+  async announce_song(channel) {}
 };
 
 // Commands
@@ -245,8 +237,8 @@ const c = {
       msg.channel.startTyping();
       
       // Determines video ID
-      if(m.url(content))
-        vid = await m.info(m.url(content));
+      if(m.url(content).v)
+        vid = await m.info(m.url(content).v);
       else
         vid = await m.search(msg, content, { info: true });
       
