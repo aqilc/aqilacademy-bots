@@ -212,7 +212,7 @@ const m = {
     if(!ids.every(i => typeof i === "string"))
       throw new Error("Every imputted ID must be a string");
     
-    this.settings.queue.concat(ids.map(i => { id: i }));
+    this.settings.queue.concat(ids.map(i => new Object({ id: i, user: msg.author })));
   },
   
   // Joins a voice channel
@@ -237,7 +237,7 @@ const m = {
     let message = channel.lastMessageID ? await channel.fetchMessage(channel.lastMessageID) : false,
         embed = new Discord.RichEmbed()
       .setAuthor(`Now Playing "${vid.title}`, channel.guild.iconURL, vid.video_url)
-      .setDescription(vid.description.slice(0, 500) + vid.description.length >= 500 ? "..." : "")
+      .setDescription(`**Length:** ${gFuncs(vid.length_seconds * 1000)}\n\n${vid.description.slice(0, 500) + vid.description.length >= 500 ? "..." : ""}`)
       .setThumbnail(vid.thumbnail_url)
     if(!message)
       channel.send(embed);
