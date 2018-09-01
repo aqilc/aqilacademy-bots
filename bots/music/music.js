@@ -202,6 +202,8 @@ const m = {
   
   // Gets some info on a video
   info(id) {
+    if(!yt.validateID(id))
+      return false;
     return yt.getInfo("https://www.youtube.com/watch?v=" + id);
   },
   
