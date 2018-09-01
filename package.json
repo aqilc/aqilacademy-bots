@@ -17,7 +17,8 @@
     "node-opus": "^0.3.0",
     "socket.io": "^2.1.1",
     "body-parser": "^1.18.3",
-    "youtube-dl": "^1.12.2"
+    "youtube-dl": "^1.12.2",
+    "events": "^3.0.0"
   },
   "engines": {
     "node": "8.x"

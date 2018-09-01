@@ -7,6 +7,7 @@ const yt = require("ytdl-core");
 const download = require("youtube-dl");
 const fs = require("fs");
 const request = require("request");
+const events = require("events");
 const prefix = ["a."];
 const data = require("/app/data/d.js");
 const gFuncs = require("/app/data/f.js");
@@ -142,10 +143,14 @@ const m = {
         if(reason)
           console.log(reason);
         
+        // Emits the song end event
+        this.e.emit("s:end", vid);
+        
         if(this.settings.repeat)
           this.play(id, options);
         else if(options && options.next && next)
           this.play(next, options ? options.options : undefined);
+        
       });
   },
   
@@ -219,7 +224,10 @@ const m = {
   },
   
   // Announces the song
-  async announce_song(channel) {}
+  async announce_song(channel) {},
+  
+  // Event system
+  e: events.EventEmitter(),
 };
 
 // Commands
