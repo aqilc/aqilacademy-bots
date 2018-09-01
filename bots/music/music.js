@@ -104,6 +104,9 @@ const m = {
     handler: undefined,
     channel: undefined,
     queue: [],
+    announce: {
+      song: true,
+    },
     np: 0,
   },
   
@@ -118,7 +121,7 @@ const m = {
   },
   
   // Plays a song
-  async play(id, options = { seek: 0, next: false, options: undefined, carryoptions: false }) {
+  async play(id, options = { seek: 0, next: false, options: undefined, repeat: false, carryoptions: false }) {
     if(typeof id === "number" && this.settings.queue[id])
       this.settings.np = id;
     else if(typeof id === "string" && id.length === 11)
@@ -146,7 +149,8 @@ const m = {
         // Emits the song end event
         this.e.emit("s:end", vid);
         
-        if(this.settings.repeat)
+        // Goes on to repeat or play the next song
+        if(this.settings.repeat || options && options.repeat)
           this.play(id, options);
         else if(options && options.next && next)
           this.play(next, options ? options.options : undefined);
@@ -224,10 +228,19 @@ const m = {
   },
   
   // Announces the song
-  async announce_song(channel) {},
+  async announce_song(vid, channel) {
+    if(!channel || !channel.lastMessageID)
+      throw new Error("No channel to announce the new song in");
+    if(!this.settings.announce.song)
+      return;
+    
+    let message = await channel.fetchMessage(channel.lastMessageID);
+    if(!message instanceof Error)
+      channel.send(embed);
+  },
   
   // Event system
-  e: events.EventEmitter(),
+  e: new events.EventEmitter(),
 };
 
 // Commands
@@ -313,6 +326,9 @@ const c = {
     }
   }
 };
+
+// Events
+m.e.on("s:end", v => m.announce_song(v, m.settings.channel));
 
 // Exports the bot so we can run it outside the file
 module.exports = run;
