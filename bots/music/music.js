@@ -234,8 +234,12 @@ const m = {
     if(!this.settings.announce.song)
       return;
     
-    let message = await channel.fetchMessage(channel.lastMessageID);
-    if(!message instanceof Error)
+    let message = channel.lastMessageID ? await channel.fetchMessage(channel.lastMessageID) : false,
+        embed = new Discord.RichEmbed()
+      .setAuthor(`Now Playing "${vid.title}`, channel.guild.iconURL, vid.video_url)
+      .setDescription(vid.description.slice(0, 500) + vid.description.length >= 500 ? "..." : "")
+      .setThumbnail(vid.thumbnail_url)
+    if(!message)
       channel.send(embed);
   },
   
