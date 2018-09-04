@@ -203,7 +203,7 @@ const m = {
   // Gets some info on a video
   info(id) {
     if(!yt.validateID(id))
-      return false;
+      return new Promise((res, rej) => rej("Invalid ID"));
     return yt.getInfo("https://www.youtube.com/watch?v=" + id);
   },
   
@@ -226,8 +226,19 @@ const m = {
     
     // Changes the voice channel to that of the users and then joins the channel
     this.settings.channel = channel;
-    this.settings.connection = await member.voiceChannel.join();
+    this.set(member.voiceChannel);
+    
+    return member.voiceChannel.join
   },
+  
+  // Sets stuff in settings
+  async set(type, data) {
+    switch(type) {
+      case "channel":
+        this.settings.connection = await data.join();
+        break;
+    }
+  }
   
   // Announces the song
   async announce_song(vid, channel) {
