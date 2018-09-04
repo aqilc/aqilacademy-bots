@@ -302,7 +302,7 @@ const c = {
         let buffer = Buffer.concat(aData),
             
         // Transforms the title into a file name
-            title = vid.title.replace(/\W^[-]/g, "_")
+            title = vid.title.replace(/\W/g, "_")
         
         // Stops typing as it sends the attachment
         msg.channel.stopTyping();
@@ -326,7 +326,7 @@ const c = {
       
       let connection;
       if(m.autojoin)
-        connection = await m.join(msg.member);
+        await m.join(msg.member);
       
       
     }
