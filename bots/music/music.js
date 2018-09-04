@@ -218,7 +218,7 @@ const m = {
   },
   
   // Joins a voice channel
-  async join(member, channel) {
+  join(member, channel) {
     
     // Returns false if there is no channel to join/No channel to send messages to.
     if(!member.voiceChannel || !channel)
@@ -228,7 +228,8 @@ const m = {
     this.settings.channel = channel;
     this.set(member.voiceChannel);
     
-    return member.voiceChannel.join
+    // Returns a promise including the connection to the channel
+    return member.voiceChannel.join();
   },
   
   // Sets stuff in settings
@@ -238,7 +239,7 @@ const m = {
         this.settings.connection = await data.join();
         break;
     }
-  }
+  },
   
   // Announces the song
   async announce_song(vid, channel) {
