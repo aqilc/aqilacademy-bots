@@ -110,6 +110,17 @@ const m = {
     np: 0,
   },
   
+  // Return stuff in m.settings because why not
+  get np() { return this.settings.np },
+  get autojoin() { return this.settings.autojoin },
+  get repeat() { return this.settings.repeat },
+  get connect() { return this.settings.connection },
+  get connection() { return this.settings.connection },
+  queue() {
+    return new Promise(async (res, rej) => {
+      let queue = this.settings.queue.map(async q => m.info("https://www.youtube.com/watch?v=" + q.id));
+      res(
+  
   // Transforms a url into a video/playlist ID
   url(url) {
     let plm = url.match(/^.*(youtu.be\/|list=)([^#\&\?]*).*/)
@@ -351,9 +362,15 @@ const c = {
     description: "Makes the bot join your channel.",
     usage: " (id of channel)",
     f(msg, content) {
+      if(m.settings.handler)
+        return msg.reply("Currently playing music in another channel, sorry");
+      
       let channel;
       if(content && content.length === 18)
-        channel = 
+        channel = msg.guild.channels.get(content) || undefined;
+      
+      if(!channel && !msg.member.voiceChannel)
+        return msg.reply("Please join a channel or give me the ID of which one to join!");
     }
   }
 };
