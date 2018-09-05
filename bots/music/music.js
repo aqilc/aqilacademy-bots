@@ -341,12 +341,23 @@ const c = {
         connection = m.settings.connection;
       else if(m.settings.autojoin)
         connection = await m.join(msg.member);
-      
+      else 
+        return msg.reply(`The \`autojoin\` setting is turned off. You will have to manually do ${prefix}join and make the bot join your channel`);
       
       
     }
+  },
+  join: {
+    description: "Makes the bot join your channel.",
+    usage: " (id of channel)",
+    f(msg, content) {
+      let channel;
+      if(content && content.length === 18)
+        channel = 
+    }
   }
 };
+
 
 // Events
 m.e.on("s:end", v => m.announce_song(v, m.settings.channel));
