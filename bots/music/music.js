@@ -226,7 +226,7 @@ const m = {
     
     // Changes the voice channel to that of the users and then joins the channel
     this.settings.channel = channel;
-    this.set(member.voiceChannel);
+    this.set("connect", member.voiceChannel);
     
     // Returns a promise including the connection to the channel
     return member.voiceChannel.join();
@@ -235,7 +235,7 @@ const m = {
   // Sets stuff in settings
   async set(type, data) {
     switch(type) {
-      case "channel":
+      case "connect":
         this.settings.connection = await data.join();
         break;
     }
@@ -337,8 +337,11 @@ const c = {
         return msg.reply("You need to join a voice channel first!");
       
       let connection;
-      if(m.autojoin)
-        await m.join(msg.member);
+      if(m.settings.channel && m.settings.connection.channel.id === msg.member.voiceChannel.id)
+        connection = m.settings.connection;
+      else if(m.settings.autojoin)
+        connection = await m.join(msg.member);
+      
       
       
     }
