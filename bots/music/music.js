@@ -374,8 +374,13 @@ const c = {
       if(content && content.length === 18)
         channel = msg.guild.channels.get(content) || undefined;
       
+      if(channel && msg.guild.channels.get(content).type !== "voice")
+        return msg.reply("Invalid channel... Specified channel is not a voice channel");
+      
       if(!channel && !msg.member.voiceChannel)
         return msg.reply("Please join a channel or give me the ID of which one to join!");
+      
+      
     }
   }
 };
