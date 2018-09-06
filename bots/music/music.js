@@ -4,7 +4,6 @@ const https = require("https");
 const Discord = require("discord.js");
 const client = new Discord.Client();
 const yt = require("ytdl-core");
-const download = require("youtube-dl");
 const fs = require("fs");
 const request = require("request");
 const events = require("events");
