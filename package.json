@@ -19,7 +19,7 @@
     "ytdl-core": "^0.25.2"
   },
   "engines": {
-    "node": "8.x"
+    "node": "10.x"
   },
   "keywords": [
     "clyde",
