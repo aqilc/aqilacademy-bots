@@ -118,13 +118,13 @@ const m = {
   get connection() { return this.settings.connection },
   queue() {
     return new Promise(async (res, rej) => {
-      let queue = this.settings.queue.map(async q => m.info("https://www.youtube.com/watch?v=" + q.id));
+      let queue = this.settings.queue.map(async q => await m.info("https://www.youtube.com/watch?v=" + q.id));
       res(queue);
     });
   },
   get queue() { return this.settings.queue },
   get handler() { return this.settings.handler },
-  get channel() { return client.guilds.get("294115797326888961").channels.get(this.settings.channel) || false },
+  get channel() { return typeof this.settings.channel === "object" ? this.settings.channel : client.guilds.get("294115797326888961").channels.get(this.settings.channel) || false },
   
   // Transforms a url into a video/playlist ID
   url(url) {
