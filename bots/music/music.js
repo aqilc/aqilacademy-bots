@@ -237,7 +237,7 @@ const m = {
   join(channel) {
     
     // Returns false if there is no channel to join/No channel to send messages to.
-    if(!channel || channel.)
+    if(!channel || channel.type !== "voice")
       return false;
     
     // Changes the voice channel to that of the users and then joins the channel
@@ -262,7 +262,7 @@ const m = {
   
   // Announces the song
   async announce_song(vid, channel) {
-    if(!channel || !channel.lastMessageID)
+    if(!channel)
       throw new Error("No channel to announce the new song in");
     if(!this.settings.announce.song)
       return;
@@ -272,8 +272,10 @@ const m = {
       .setAuthor(`Now Playing "${vid.title}`, channel.guild.iconURL, vid.video_url)
       .setDescription(`**Length:** ${gFuncs(vid.length_seconds * 1000)}\n\n${vid.description.slice(0, 500) + vid.description.length >= 500 ? "..." : ""}`)
       .setThumbnail(vid.thumbnail_url)
-    if(!message)
+    if(!message || message.author.id !== client.user.id)
       channel.send(embed);
+    else
+      message.edit(embed);
   },
   
   // Event system
