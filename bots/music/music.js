@@ -234,27 +234,30 @@ const m = {
   },
   
   // Joins a voice channel
-  join(member, channel) {
+  join(channel) {
     
     // Returns false if there is no channel to join/No channel to send messages to.
-    if(!member.voiceChannel || !channel)
+    if(!channel || channel.)
       return false;
     
     // Changes the voice channel to that of the users and then joins the channel
     this.settings.channel = channel;
-    this.set("connect", member.voiceChannel);
+    if(this.set("connect", channel) instanceof Error)
+      return false;
     
     // Returns a promise including the connection to the channel
-    return member.voiceChannel.join();
+    return channel.join();
   },
   
   // Sets stuff in settings
   async set(type, data) {
-    switch(type) {
-      case "connect":
-        this.settings.connection = await data.join();
-        break;
-    }
+    try {
+      switch(type) {
+        case "connect":
+          this.settings.connection = await data.join();
+          break;
+      }
+    } catch(err) { console.log(err); return new Error(err) }
   },
   
   // Announces the song
@@ -379,8 +382,10 @@ const c = {
       
       if(!channel && !msg.member.voiceChannel)
         return msg.reply("Please join a channel or give me the ID of which one to join!");
+      else
+        channel = msg.member.voiceChannel;
       
-      
+      m.join(msg, channel);
     }
   }
 };
