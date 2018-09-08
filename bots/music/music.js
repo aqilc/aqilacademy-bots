@@ -11,6 +11,8 @@ const prefix = ["a."];
 const data = require("/app/data/d.js");
 const gFuncs = require("/app/data/f.js");
 
+undefined = void 0;
+
 // Database stuff
 const sqlite3 = require("sqlite3").verbose();
 const db = new sqlite3.Database('./.data/sqlite.db');
@@ -123,7 +125,7 @@ const m = {
   },
   get queue() { return this.settings.queue },
   get handler() { return this.settings.handler },
-  get channel() { return typeof this.settings.channel === "object" ? this.settings.channel : client.guilds.get("294115797326888961").channels.get(this.settings.channel) || false },
+  get channel() { return typeof this.settings.channel === "object" ? this.settings.channel : client.guilds.get("294115797326888961").channels.get(this.settings.channel) || void 0 },
   
   // Transforms a url into a video/playlist ID
   url(url) {
