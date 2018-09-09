@@ -367,9 +367,9 @@ const c = {
       if(m.settings.channel && m.settings.connection.channel.id === msg.member.voiceChannel.id)
         connection = m.settings.connection;
       else if(m.settings.autojoin)
-        connection = await m.join(msg.member.voiceChannel);
+        connection = await c.join.f(0, 0, msg.member.voiceChannel);
       else
-        return msg.reply(`The \`autojoin\` setting is turned off. You will have to manually do ${prefix}join and make the bot join your channel`);
+        return msg.reply(`The \`autojoin\` setting is turned off. You will have to manually do \`${prefix}join\` and make the bot join your channel`);
       
       
     }
@@ -377,16 +377,26 @@ const c = {
   join: {
     description: "Makes the bot join your channel.",
     usage: " (id of channel)",
-    f(msg, content) {
-      if(m.settings.handler)
-        return msg.reply("Currently playing music in another channel, sorry");
+    f(msg, content, ch) {
+      if(ch) {
+        if(typeof ch === "object" && ch.type === "voice" && ch.join)
+          return ch.join();
+        else if(typeof ch === "string")
+          return ch.join(m
+        return;
+      }
+        
+      if(m.settings.handler) {
+        return false; msg.reply("Currently playing music in another channel, sorry");
+      }
       
       let channel;
       if(content && content.length === 18)
         channel = msg.guild.channels.get(content) || undefined;
       
-      if(channel && msg.guild.channels.get(content).type !== "voice")
-        return msg.reply("Invalid channel... Specified channel is not a voice channel");
+      if(channel && msg.guild.channels.get(content).type !== "voice") {
+        return false; msg.reply("Invalid channel... Specified channel is not a voice channel");
+      }
       
       if(!channel && !msg.member.voiceChannel)
         return msg.reply("Please join a channel or give me the ID of which one to join!");
