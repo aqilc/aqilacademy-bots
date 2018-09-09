@@ -139,6 +139,8 @@ const m = {
   
   // Plays a song
   async play(id, options = { seek: 0, next: false, options: undefined, repeat: false, carryoptions: false }) {
+    if(typeof options !== "object")
+      options = false;
     if(typeof id === "number" && this.settings.queue[id])
       this.settings.np = id;
     else if(typeof id === "string" && id.length === 11)
