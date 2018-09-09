@@ -237,7 +237,7 @@ const m = {
   // Joins a voice channel
   join(channel) {
     // Returns false if there is no channel to join/No channel to send messages to.
-    if(!channel || channel.type !== "voice")
+    if(typeof channel !== "object" || channel.type !== "voice")
       return false;
     
     // Changes the voice channel to that of the users and then joins the channel
@@ -361,7 +361,7 @@ const c = {
       if(m.settings.channel && m.settings.connection.channel.id === msg.member.voiceChannel.id)
         connection = m.settings.connection;
       else if(m.settings.autojoin)
-        connection = await m.join(msg.member);
+        connection = await m.join(msg.member.voiceChannel);
       else 
         return msg.reply(`The \`autojoin\` setting is turned off. You will have to manually do ${prefix}join and make the bot join your channel`);
       
