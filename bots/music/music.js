@@ -236,7 +236,6 @@ const m = {
   
   // Joins a voice channel
   join(channel) {
-    
     // Returns false if there is no channel to join/No channel to send messages to.
     if(!channel || channel.type !== "voice")
       return false;
@@ -373,7 +372,6 @@ const c = {
     description: "Makes the bot join your channel.",
     usage: " (id of channel)",
     f(msg, content) {
-      console.log("Join called");
       if(m.settings.handler)
         return msg.reply("Currently playing music in another channel, sorry");
       
@@ -389,7 +387,8 @@ const c = {
       else
         channel = msg.member.voiceChannel;
       
-      m.join(msg, channel);
+      if(m.join(channel))
+        return msg.channel.send(new Discord.RichEmbed().setAuthor(`Joined ${channel.name}`, channel.guild.iconURL).setDescription("You can play music on me now"));
     }
   }
 };
