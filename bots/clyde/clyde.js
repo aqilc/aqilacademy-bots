@@ -205,6 +205,7 @@ function run() {
     client.emit(events[event.t], reaction, user);
   });
   
+  // Returns the client
   return client;
 };
 

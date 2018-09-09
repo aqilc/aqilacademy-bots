@@ -90,6 +90,9 @@ function run() {
       console.log("Music error: " + error);
     }
   });
+  
+  // Returns the client
+  return client;
 }
 
 // Music Functions
@@ -400,4 +403,5 @@ const c = {
 m.e.on("s:end", v => m.announce_song(v, m.settings.channel));
 
 // Exports the bot so we can run it outside the file
+run.client = client;
 module.exports = run;
