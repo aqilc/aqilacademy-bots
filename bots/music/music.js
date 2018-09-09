@@ -11,6 +11,7 @@ const prefix = ["a."];
 const data = require("/app/data/d.js");
 const gFuncs = require("/app/data/f.js");
 
+// So undefined stays undefined
 undefined = void 0;
 
 // Database stuff
@@ -367,7 +368,7 @@ const c = {
         connection = m.settings.connection;
       else if(m.settings.autojoin)
         connection = await m.join(msg.member.voiceChannel);
-      else 
+      else
         return msg.reply(`The \`autojoin\` setting is turned off. You will have to manually do ${prefix}join and make the bot join your channel`);
       
       
@@ -397,7 +398,6 @@ const c = {
     }
   }
 };
-
 
 // Events
 m.e.on("s:end", v => m.announce_song(v, m.settings.channel));
