@@ -388,7 +388,7 @@ const c = {
         channel = msg.member.voiceChannel;
       
       if(m.join(channel))
-        return msg.channel.send(new Discord.RichEmbed().setAuthor(`Joined ${channel.name}`, channel.guild.iconURL).setDescription("You can play music on me now"));
+        return msg.channel.send(new Discord.RichEmbed().setAuthor(`Joined ${channel.name}`, channel.guild.iconURL).setThumbnail("You can play music on me now(if someone is present in the channel with me :P)"));
     }
   }
 };
