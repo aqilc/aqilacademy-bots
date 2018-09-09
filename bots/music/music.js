@@ -365,7 +365,7 @@ const c = {
   },
   play: {
     description: "Plays music in your voice channel!",
-    usage: " [song name or link/playlist link]",
+    usage: " [song name or link/playlist link](, [another song name or link]) (s:[ms you want to skip to in the song])",
     async f(msg, content) {
       if(!msg.member.voiceChannel)
         return msg.reply("You need to join a voice channel first!");
@@ -378,24 +378,23 @@ const c = {
       else
         return msg.reply(`The \`autojoin\` setting is turned off. You will have to manually do \`${prefix}join\` and make the bot join your channel`);
       
-      
+      if(content === "")
+        content = data.vids[Math.floor(Math.random() * data.vids.length)]
     }
   },
   join: {
     description: "Makes the bot join your channel.",
     usage: " (id of channel)",
     f(msg, content, ch) {        
-      if(m.settings.handler) {
-        return false; msg.reply("Currently playing music in another channel, sorry");
-      }
+      if(m.settings.handler)
+        return msg.reply("Currently playing music in another channel, sorry");
       
       let channel;
       if(content && content.length === 18)
         channel = msg.guild.channels.get(content) || undefined;
       
-      if(channel && msg.guild.channels.get(content).type !== "voice") {
-        return false; msg.reply("Invalid channel... Specified channel is not a voice channel");
-      }
+      if(channel && msg.guild.channels.get(content).type !== "voice")
+        return msg.reply("Invalid channel... Specified channel is not a voice channel");
       
       if(!channel && !msg.member.voiceChannel)
         return msg.reply("Please join a channel or give me the ID of which one to join!");
@@ -409,7 +408,7 @@ const c = {
 };
 
 // Events
-m.e.on("s:end", v => m.announce_song(v, m.settings.channel));
+m.e.on("s:start", v => m.announce_song(v, m.settings.channel));
 
 // Exports the bot so we can run it outside the file
 run.client = client;

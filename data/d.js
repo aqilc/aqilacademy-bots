@@ -8,5 +8,8 @@ let data = {
   
   // Channel for elections
   echnl: "410233209201229854",
+  
+  // Videos to pick from at random
+  vids: [],
 };
 module.exports = data;
