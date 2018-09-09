@@ -382,7 +382,7 @@ const c = {
         if(typeof ch === "object" && ch.type === "voice" && ch.join)
           return ch.join();
         else if(typeof ch === "string")
-          return ch.join(m
+          return client.channels.get(ch) ? false : client.channels.get(ch).type === "voice" ? client.channels.get(ch).join() : false;
         return;
       }
         
