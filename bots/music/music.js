@@ -161,15 +161,22 @@ const m = {
     if(options && options.options)
       options.options.options = options.carryoptions ? options.options : null;
     
-    let vid = await this.info(this.settings.queue[id].id),
-        next = this.settings.queue[id + 1] ? id + 1 : this.settings.queue.length > 1 ? 0 : undefined,
+    // Gets the info on the song
+    let vid = await this.info(this.settings.queue[id].id);
+    
+    // Emits the start of vid event if song exists
+    if(vid)
+      this.e.emit("s:start", vid);
+    else throw new Error("Invalid song ID");
+    
+    let next = this.settings.queue[id + 1] ? id + 1 : this.settings.queue.length > 1 ? 0 : undefined,
         handler = this.settings.connection
       .playStream(yt("https://www.youtube.com/watch?v=" + this.settings.queue[id].id, { filter: "audioonly" }), { seek: options ? options.seek || 0 : 0 })
       .once("end", reason => {
         if(reason)
           console.log(reason);
         
-        // Emits the song end event
+        // Emits the song end and start event
         this.e.emit("s:end", vid);
         
         // Goes on to repeat or play the next song
@@ -367,7 +374,7 @@ const c = {
       if(m.settings.channel && m.settings.connection.channel.id === msg.member.voiceChannel.id)
         connection = m.settings.connection;
       else if(m.settings.autojoin)
-        connection = await c.join.f(0, 0, msg.member.voiceChannel);
+        connection = await m.join(msg.member.voiceChannel);
       else
         return msg.reply(`The \`autojoin\` setting is turned off. You will have to manually do \`${prefix}join\` and make the bot join your channel`);
       
@@ -377,15 +384,7 @@ const c = {
   join: {
     description: "Makes the bot join your channel.",
     usage: " (id of channel)",
-    f(msg, content, ch) {
-      if(ch) {
-        if(typeof ch === "object" && ch.type === "voice" && ch.join)
-          return ch.join();
-        else if(typeof ch === "string")
-          return client.channels.get(ch) ? false : client.channels.get(ch).type === "voice" ? client.channels.get(ch).join() : false;
-        return;
-      }
-        
+    f(msg, content, ch) {        
       if(m.settings.handler) {
         return false; msg.reply("Currently playing music in another channel, sorry");
       }
