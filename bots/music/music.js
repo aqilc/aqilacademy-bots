@@ -373,6 +373,7 @@ const c = {
     description: "Makes the bot join your channel.",
     usage: " (id of channel)",
     f(msg, content) {
+      console.log("Join called");
       if(m.settings.handler)
         return msg.reply("Currently playing music in another channel, sorry");
       
