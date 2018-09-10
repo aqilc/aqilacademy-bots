@@ -390,8 +390,8 @@ const c = {
         vid = await m.info("https://www.youtube.com/watch?v=" + m.url(content));
       
       if(vid.length && vid.length > 1) {
-        let msg = await msg.channel.send(new Discord.RichEmbed().setAuthor("Pick a video", "http://files.idg.co.kr/itworld/image/2018/07/youtube.jpg").setDescription(vids.map
-        var collector = msg.channel.
+        msg.channel.send(new Discord.RichEmbed().setAuthor("Pick a video", "http://files.idg.co.kr/itworld/image/2018/07/youtube.jpg").setDescription(vid.map(v => `${vid.indexOf(v) + 1}. [**${v.title}**](${vid.video_url})`).join("")).setThumbnail("Respond with the number of the video. You have 30 seconds"));
+        var collector = msg.channel.createMessageCollector(ms => !isNaN(Number(ms.content)) && ms.author.id === msg.author.id, { max: )
       }
     }
   },
