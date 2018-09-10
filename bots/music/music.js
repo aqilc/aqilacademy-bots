@@ -138,7 +138,7 @@ const m = {
       return { v: yt.getVideoID(url), i: yt.getVideoID(url) };
     else if(plm && plm[0].length === 34)
       return { p: plm[0], i: plm[0] };
-    return {};
+    return false;
   },
   
   // Plays a song
@@ -370,7 +370,7 @@ const c = {
       if(!msg.member.voiceChannel)
         return msg.reply("You need to join a voice channel first!");
       
-      let connection;
+      let connection, vid;
       if(m.settings.channel && m.settings.connection.channel.id === msg.member.voiceChannel.id)
         connection = m.settings.connection;
       else if(m.settings.autojoin)
@@ -379,7 +379,12 @@ const c = {
         return msg.reply(`The \`autojoin\` setting is turned off. You will have to manually do \`${prefix}join\` and make the bot join your channel`);
       
       if(content === "")
-        content = data.vids[Math.floor(Math.random() * data.vids.length)]
+        content = data.vid;
+      
+      if(m.url(content))
+        vid = await m.search(content, { results: 10, info: true });
+      else
+        vid = await m.info("https://www.youtube.com/watch?v=" + m.url(content));
     }
   },
   join: {
