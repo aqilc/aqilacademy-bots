@@ -91,6 +91,9 @@ function run() {
       console.log("Music error: " + error);
     }
   });
+
+  // Music Events
+  m.e.on("s:start", v => m.announce_song(v, m.settings.channel));
   
   // Returns the client
   return client;
@@ -385,6 +388,10 @@ const c = {
         vid = await m.search(content, { results: 10, info: true });
       else
         vid = await m.info("https://www.youtube.com/watch?v=" + m.url(content));
+      
+      if(vid.length) {
+        
+      }
     }
   },
   join: {
@@ -398,7 +405,7 @@ const c = {
       if(content && content.length === 18)
         channel = msg.guild.channels.get(content) || undefined;
       
-      if(channel && msg.guild.channels.get(content).type !== "voice")
+      if(channel && channel.type !== "voice")
         return msg.reply("Invalid channel... Specified channel is not a voice channel");
       
       if(!channel && !msg.member.voiceChannel)
@@ -411,9 +418,6 @@ const c = {
     }
   }
 };
-
-// Events
-m.e.on("s:start", v => m.announce_song(v, m.settings.channel));
 
 // Exports the bot so we can run it outside the file
 run.client = client;
