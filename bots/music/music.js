@@ -389,12 +389,14 @@ const c = {
       else
         vid = await m.info("https://www.youtube.com/watch?v=" + m.url(content));
       
-      if(vid.length) {
-        
+      if(vid.length && vid.length > 1) {
+        let msg = await msg.channel.send(new Discord.RichEmbed().setAuthor("Pick a video", "http://files.idg.co.kr/itworld/image/2018/07/youtube.jpg").setDescription(vids.map
+        var collector = msg.channel.
       }
     }
   },
   join: {
+    cd: 10000,
     description: "Makes the bot join your channel.",
     usage: " (id of channel)",
     f(msg, content) {        
