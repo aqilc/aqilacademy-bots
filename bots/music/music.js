@@ -182,9 +182,15 @@ const m = {
         // Emits the song end and start event
         this.e.emit("s:end", vid);
         
+        // Sets options.options.options to options.options if options exists
+        if(options && options.options)
+          options.options.options = options.options;
+        
         // Goes on to repeat or play the next song
         if(this.settings.repeat || options && options.repeat)
           this.play(id, options);
+        
+        
         else if(options && options.next && next)
           this.play(next, options ? options.options : undefined);
         
@@ -370,38 +376,41 @@ const c = {
     description: "Plays music in your voice channel!",
     usage: " [song name or link/playlist link](, [another song name or link]) (s:[ms you want to skip to in the song])",
     async f(msg, content) {
-      if(!msg.member.voiceChannel)
-        return msg.reply("You need to join a voice channel first!");
-      
-      let connection, vid;
-      if(m.settings.channel && m.settings.connection.channel.id === msg.member.voiceChannel.id)
-        connection = m.settings.connection;
-      else if(m.settings.autojoin)
-        connection = await m.join(msg.member.voiceChannel);
-      else
-        return msg.reply(`The \`autojoin\` setting is turned off. You will have to manually do \`${prefix}join\` and make the bot join your channel`);
-      
-      if(content === "")
-        content = data.vid;
-      
-      if(m.url(content))
-        vid = await m.search(content, { results: 10, info: true });
-      else
-        vid = await m.info("https://www.youtube.com/watch?v=" + m.url(content));
-      
-      if(vid.length && vid.length > 1) {
-        msg.channel.send(new Discord.RichEmbed().setAuthor("Pick a video", "http://files.idg.co.kr/itworld/image/2018/07/youtube.jpg").setDescription(vid.map(v => `${vid.indexOf(v) + 1}. [**${v.title}**](${vid.video_url})`).join("")).setThumbnail("Respond with the number of the video. You have 30 seconds"));
-        msg.channel.createMessageCollector(ms => !isNaN(Number(ms.content)) && Number(ms.content) <= 10 && ms.author.id === msg.author.id, { maxMatches: 1, time: 30000 }).on("end", collected => {
-          if(!collected)
-            return msg.channel.send("No message collected, assuming you didn't want to pick any song.");
-          
-          let pvid = Number(collected[0].content);
-          
-          if(
-          m.play(pvid
-          
-          
-      }
+      try {
+        if(!msg.member.voiceChannel)
+          return msg.reply("You need to join a voice channel first!");
+
+        let connection, vid;
+        if(m.settings.channel && m.settings.connection.channel.id === msg.member.voiceChannel.id)
+          connection = m.settings.connection;
+        else if(m.settings.autojoin)
+          connection = await m.join(msg.member.voiceChannel);
+        else
+          return msg.reply(`The \`autojoin\` setting is turned off. You will have to manually do \`${prefix}join\` and make the bot join your channel`);
+
+        if(content === "")
+          content = data.vid;
+
+        if(!m.url(content))
+          vid = await m.search(content, { results: 10, info: true });
+        else
+          vid = await m.info("https://www.youtube.com/watch?v=" + m.url(content).v);
+
+        if(vid.length && vid.length > 1) {
+          msg.channel.send(new Discord.RichEmbed().setAuthor("Pick a video", "http://files.idg.co.kr/itworld/image/2018/07/youtube.jpg").setDescription(vid.map(v => `${vid.indexOf(v) + 1}. [**${v.title}**](${vid.video_url})`).join("")).setThumbnail("Respond with the number of the video. You have 30 seconds"));
+          msg.channel.createMessageCollector(ms => !isNaN(Number(ms.content)) && Number(ms.content) <= 10 && ms.author.id === msg.author.id, { maxMatches: 1, time: 30000 }).on("end", collected => {
+            if(!collected)
+              return msg.channel.send("No message collected, assuming you didn't want to pick any song.");
+
+            let pvid = Number(collected[0].content);
+
+            if(!m.handler)
+              return m.play(vid[pvid].id, { next: true, options: { next: true } });
+
+            m.add(vid[pvid].id);
+          });
+        }
+      } catch(err) { console.log(err); }
     }
   },
   join: {
