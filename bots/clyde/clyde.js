@@ -279,16 +279,6 @@ const f = {
     });
     return f;
   },// Check if elections are going on and sets up a setTimeout if they are.
-  checksql: () => {
-    db.all("SELECT * FROM users", (err, res) => { console.log("users", res); });
-    db.all("SELECT * FROM warns", (err, res) => { console.log("warns", res); });
-    db.all("SELECT * FROM items", (err, res) => { console.log("items", res); });
-    db.all("SELECT * FROM expstore", (err, res) => { console.log("store", res); });
-    db.all("SELECT * FROM elections", (err, res) => { console.log("elections", res); });
-    db.all("SELECT * FROM election", (err, res) => { console.log("election", res); });
-    db.all("SELECT * FROM voters", (err, res) => { console.log("voters", res); });
-    return f;
-  },// Checks and console.logs all sql
   check_and_do_cmd: (message) => {
     let content = message.content;
     let perms = {
@@ -355,11 +345,7 @@ const f = {
     client.users.get(id).send(new Discord.RichEmbed().setAuthor("You have been warned in AqilAcademy by " + client.users.get(mId).tag, client.users.get(mId).avatarURL).setDescription(reason).setColor(f.color).setFooter(`Severity(Level of warn): ${severity}`));
   },// Adds a warn to a user
   get_id: globalfunctions.get_id,
-  calculate_stats: async (id) => {
-    if(!client.users.get(id))
-      return false;
-    return globalfunctions.calculate_stats(id);
-  },
+  calculate_stats: globalfunctions.calculate_stats,
   round_rect: globalfunctions.round_rect,
   circle: globalfunctions.circle,
   autofont: globalfunctions.autofont,
@@ -1260,4 +1246,6 @@ const cmds = {
 
 // Exports a function that runs Clyde
 run.client = client;
+run.c = cmds;
+run.f = f;
 module.exports = run;

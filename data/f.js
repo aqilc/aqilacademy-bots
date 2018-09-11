@@ -2,9 +2,15 @@ const db = new (require("sqlite3").verbose()).Database('./.data/sqlite.db');
 const cdata = require("./d.js");
 const fs = require("fs");
 const https = require("https");
+const clyde = require("/app/bots/clyde/clyde.js").client;
+const music = require("/app/bots/music/music.js").client;
 
 module.exports = {
+  
+  // SQL stuff
   calculate_stats(id) {
+    if(!clyde.users.get(id) && !music.users.get(id))
+      return false;
     return new Promise(function(resolve, reject) {
       let stats = {
         elections_won: 0,
@@ -69,6 +75,7 @@ module.exports = {
     return this;
   },// Adds EXP to a person
   
+  // Canvas functions
   round_rect(ctx, x, y, width, height, radius, fill, stroke) {
     if (typeof stroke == 'undefined') {
       stroke = true;
@@ -118,7 +125,7 @@ module.exports = {
     return { font: ctx.font, size: size };
   },
   
-  
+  // Global stuff for anything
   random(min, max, round) {
     return round ? Math.round(Math.random() * (max-min) + min) : Math.random() * (max-min) + min;
   },// Simplifies "Math.random()"
@@ -132,7 +139,42 @@ module.exports = {
     else
       return false;
   },
+  time(milliseconds) {
+    let x = milliseconds / 1000;
+    let s = Math.floor(x % 60);
+    x /= 60;
+    let m = Math.floor(x % 60);
+    x /= 60;
+    let h = Math.floor(x % 24);
+    x /= 24;
+    let d = Math.floor(x);
+
+    //Shortens the time message by clearing unnecessary things
+    let timeStuff = "";
+    if (d > 0){
+      timeStuff += `${d} day${(d > 1 ? "s" : "") + ((h > 0 || m > 0 || s > 0) ? ", " : "")}, `;
+    }
+    if (h > 0){
+      timeStuff += `${h} hour${(h > 1 ? "s" : "") + ((m > 0 || s > 0) ? ", " : "")}`;
+    }
+    if (m > 0){
+      timeStuff += `${m} minute${(m > 1 ? "s" : "")  + (s > 0 ? ", " : "")}`;
+    }
+    if (s > 0) {
+      timeStuff += `${(d > 0 || h > 0 || m > 0) ? "and " : ""}${s} second${s > 1 ? "s" : ""}`;
+    }
+    return timeStuff;
+  },
+  bytes(bytes) {
+    if(bytes > 1000000)
+      return `${(bytes/1000000).toFixed(1)} MB`;
+    else if(bytes > 1000)
+      return `${(bytes/1000).toFixed(1)} KB`;
+    else
+      return `${bytes} bytes`;
+  },
   
+  // Discord stuff
   get_id(msg, text, per) {
     if(!text || text === "")
       return false;
@@ -174,50 +216,6 @@ module.exports = {
       return string.replace(/`/g, "`" + String.fromCharCode(8203)).replace(/@/g, "@" + String.fromCharCode(8203));
     else
       return string;
-  },
-  page_maker(array, num = 10, page = 0, func) {
-    if(func && typeof func === "function") {
-      for(var i = 0; i < array.slice(page*num, page*num + num).length; i ++) {
-        func(i + page*num, array.slice(page*num, page*num + num)[i]);
-      }
-      return this;
-    }
-    else
-      return array;
-  },
-  time(milliseconds) {
-    let x = milliseconds / 1000;
-    let s = Math.floor(x % 60);
-    x /= 60;
-    let m = Math.floor(x % 60);
-    x /= 60;
-    let h = Math.floor(x % 24);
-    x /= 24;
-    let d = Math.floor(x);
-
-    //Shortens the time message by clearing unnecessary things
-    let timeStuff = "";
-    if (d > 0){
-      timeStuff += `${d} day${(d > 1 ? "s" : "") + ((h > 0 || m > 0 || s > 0) ? ", " : "")}, `;
-    }
-    if (h > 0){
-      timeStuff += `${h} hour${(h > 1 ? "s" : "") + ((m > 0 || s > 0) ? ", " : "")}`;
-    }
-    if (m > 0){
-      timeStuff += `${m} minute${(m > 1 ? "s" : "")  + (s > 0 ? ", " : "")}`;
-    }
-    if (s > 0) {
-      timeStuff += `${(d > 0 || h > 0 || m > 0) ? "and " : ""}${s} second${s > 1 ? "s" : ""}`;
-    }
-    return timeStuff;
-  },
-  bytes(bytes) {
-    if(bytes > 1000000)
-      return `${(bytes/1000000).toFixed(1)} MB`;
-    else if(bytes > 1000)
-      return `${(bytes/1000).toFixed(1)} KB`;
-    else
-      return `${bytes} bytes`;
   },
   set_object(obj, arr) {
     
