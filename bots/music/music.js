@@ -202,7 +202,7 @@ const m = {
     return new Promise(function (resolve, reject) {
       
       // Search for results
-      request("https://www.googleapis.com/youtube/v3/search?part=id&type=video&q=" + encodeURIComponent(search) + "&key=" + m.ytAk, async (error, response, body) => {
+      request("https://www.googleapis.com/youtube/v3/search?part=id,snippet&type=video&q=" + encodeURIComponent(search) + "&key=" + m.ytAk, async (error, response, body) => {
         var json = JSON.parse(body);
         
         // If it finds an error
@@ -442,4 +442,6 @@ const c = {
 
 // Exports the bot so we can run it outside the file
 run.client = client;
+run.m = m;
+run.c = c;
 module.exports = run;
