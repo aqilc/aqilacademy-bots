@@ -201,9 +201,12 @@ const m = {
   vInfo(info) {
     let r = {};
     if(info.id || info.snippet) {
-       
+       [[["vid", "video_id"], "id.videoId"], ["thumbnail", "snippet.thumbnails.high.url"], ["title", "snippet.title"], ["description", "snippet.description"], ["channel", "channelTitle"]].forEach(v => {
+         if(typeof v[0] === "object") {
+           
+         }
+       });
     }
-      
   },
   
   // Searches a video from YouTube and returns it... or adds it into the queue

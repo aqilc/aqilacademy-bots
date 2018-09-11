@@ -58,6 +58,7 @@ module.exports = {
       });
     });
   },
+  
   round_rect(ctx, x, y, width, height, radius, fill, stroke) {
     if (typeof stroke == 'undefined') {
       stroke = true;
@@ -106,10 +107,11 @@ module.exports = {
     // Returns size
     return { font: ctx.font, size: size };
   },
+  
   get_id(msg, text) {
     if(!text || text === "")
       return false;
-    if(msg === "me")
+    if(msg.content === "me")
       return msg.author.id;
 
     let id = text.replace(/[^0-9]/g, ""), person;
@@ -211,6 +213,9 @@ module.exports = {
       return `${(bytes/1000).toFixed(1)} KB`;
     else
       return `${bytes} bytes`;
+  },
+  set_object(obj, arr) {
+    
   },
   
   // Gets JSON from a URL
