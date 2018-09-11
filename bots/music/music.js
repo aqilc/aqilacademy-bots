@@ -229,7 +229,7 @@ const m = {
               data = await m.info(json.items[0].id.videoId);
             else {
               do {
-                data.push(await m.info(json.items[0].id.videoId));
+                data.push(await m.info(json.items[data.length].id.videoId));
               } while (data.length < info.results)
             }
             resolve(data);
@@ -396,7 +396,8 @@ const c = {
         else
           vid = await m.info("https://www.youtube.com/watch?v=" + m.url(content).v);
 
-        if(vid.length && vid.length > 1) {
+        if(typeof vid === "object" && vid.length && vid.length > 1) {
+          console.log(vid);
           msg.channel.send(new Discord.RichEmbed().setAuthor("Pick a video", "http://files.idg.co.kr/itworld/image/2018/07/youtube.jpg").setDescription(vid.map(v => `${vid.indexOf(v) + 1}. [**${v.title}**](${vid.video_url})`).join("")).setThumbnail("Respond with the number of the video. You have 30 seconds"));
           msg.channel.createMessageCollector(ms => !isNaN(Number(ms.content)) && Number(ms.content) <= 10 && ms.author.id === msg.author.id, { maxMatches: 1, time: 30000 }).on("end", collected => {
             if(!collected)
