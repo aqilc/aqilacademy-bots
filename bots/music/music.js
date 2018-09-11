@@ -197,12 +197,17 @@ const m = {
       });
   },
   
+  // Renders info
+  vInfo(info) {
+    if(info.sni
+  },
+  
   // Searches a video from YouTube and returns it... or adds it into the queue
   search(msg, search, info = { results: 1, add: false, info: false }) {
     return new Promise(function (resolve, reject) {
       
       // Search for results
-      request("https://www.googleapis.com/youtube/v3/search?part=id,snippet&type=video&q=" + encodeURIComponent(search) + "&key=" + m.ytAk, async (error, response, body) => {
+      request("https://www.googleapis.com/youtube/v3/search?part=id,snippet&type=video&maxResults=50&q=" + encodeURIComponent(search) + "&key=" + m.ytAk, async (error, response, body) => {
         var json = JSON.parse(body);
         
         // If it finds an error
