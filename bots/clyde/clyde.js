@@ -41,7 +41,7 @@ function run() {
               let ids = [
                 (id, d) => {
                   if(msg.content === "yes") {
-                    client.channels.get(data.echnl).send(new Discord.RichEmbed().setAuthor(client.users.get(id).tag + " is running for president!", client.users.get(id).avatarURL).setDescription(`with <@${msg.author.id}> as his/her Vice President!`).addField("Slogan", d.split("|=|")[0]).addField("Description of term", d.split("|=|")[1]).setColor(f.color())).then(message => {
+                    client.channels.get(data.echnl).send(new Discord.RichEmbed().setAuthor(client.users.get(id).tag + " is running for president!", client.users.get(id).avatarURL).setDescription(`with <@${msg.author.id}> as his/her Vice President!`).addField("Slogan", d.split("|=|")[0]).addField("Description of term", d.split("|=|")[1]).setColor(f.color)).then(message => {
                       message.react("👍");
                       db.run(`INSERT INTO election (id, vId, votes, msgId) VALUES ("${id}", "${msg.author.id}", 0, "${message.id}")`);
                     });
@@ -84,7 +84,7 @@ function run() {
         return msg.channel.send(`My prefix is: \`${prefix}\``);
     } catch(err) {
       // What happens when an error occurs
-      msg.channel.send(new Discord.RichEmbed().setAuthor("Error", client.user.avatarURL).setColor(f.color()).setDescription(`**error on client event "message":**\`\`\`js\n${err}\`\`\``).setTimestamp());
+      msg.channel.send(new Discord.RichEmbed().setAuthor("Error", client.user.avatarURL).setColor(f.color).setDescription(`**error on client event "message":**\`\`\`js\n${err}\`\`\``).setTimestamp());
       console.log("Error on the \"message\" event: " + err);
     }
   });
@@ -330,14 +330,14 @@ const f = {
     }
   },// Does a command
   evalclean: globalfunctions.eclean,// Cleans "evalled"
-  color: globalfunctions.ecol,// Random color
+  get color() { return globalfunctions.ecol },// Random color
   page_maker: globalfunctions.page_maker,// Makes pages for all the things we need pages for :P
   add_exp: globalfunctions.add_exp,// Adds EXP to a person
   add_message: (id) => {
     let xp = f.random(10, 20, true), jackpot = 0;
     if(Math.random() >= 0.999) {
       jackpot = f.random(500, 50000, true) * 10;
-      client.users.get(id).send(new Discord.RichEmbed().setAuthor("YOU JUST WON A JACKPOT!", client.users.get(id).avatarURL).setDescription(`You have earned **${jackpot} EXP**!\nGreat job, keep talking to earn more prizes like these.`).setColor(f.color()));
+      client.users.get(id).send(new Discord.RichEmbed().setAuthor("YOU JUST WON A JACKPOT!", client.users.get(id).avatarURL).setDescription(`You have earned **${jackpot} EXP**!\nGreat job, keep talking to earn more prizes like these.`).setColor(f.color));
     }
     if([0, 6].includes(new Date().getDay()))
       xp *= 2;
@@ -352,7 +352,7 @@ const f = {
   has_roles: globalfunctions.has_roles,
   warn: (mId, id, reason = "Unknown", severity = 1) => {
     db.run(`INSERT INTO warns (warn, user, mod, severity, date) VALUES ("${reason}", "${id}", "${mId}", ${severity}, ${new Date().valueOf()})`);
-    client.users.get(id).send(new Discord.RichEmbed().setAuthor("You have been warned in AqilAcademy by " + client.users.get(mId).tag, client.users.get(mId).avatarURL).setDescription(reason).setColor(f.color()).setFooter(`Severity(Level of warn): ${severity}`));
+    client.users.get(id).send(new Discord.RichEmbed().setAuthor("You have been warned in AqilAcademy by " + client.users.get(mId).tag, client.users.get(mId).avatarURL).setDescription(reason).setColor(f.color).setFooter(`Severity(Level of warn): ${severity}`));
   },// Adds a warn to a user
   get_id: globalfunctions.get_id,
   calculate_stats: async (id) => {
@@ -387,11 +387,11 @@ const cmds = {
     do: (msg, content) => {
       if(content !== "") {
         if(cmds[content.toLowerCase()])
-          return msg.channel.send(new Discord.RichEmbed().setAuthor(prefix + content.toLowerCase(), client.user.avatarURL).setDescription(cmds[content.toLowerCase()].desc).setColor(f.color()).addField("Usage", `\`\`\`\n${prefix + content.toLowerCase() + (cmds[content.toLowerCase()].usage ? cmds[content.toLowerCase()].usage : "")}\`\`\``).addField("Permissions", ["admin", "mod"].includes(cmds[content.toLowerCase()].perms) ? `You need the \`${{ mod: "Moderator", admin: "Administrator" }[cmds[content.toLowerCase()].perms]}\` role to use this command` : { "bot admin": "You need to be a Bot Administrator to use this command", "admin perm": "You need the `ADMINISTRATOR` permission to use this command", "": "You do not need ANY permissions to use this command", undefined: "You do not need ANY permissions to use this command" }[cmds[content.toLowerCase()].perms], true).addField("Category", `${cmds[content.toLowerCase()].cat} (${prefix}help ${cmds[content.toLowerCase()].cat})`, true).addField("Alias(es)", (cmds[content.toLowerCase()].a && cmds[content.toLowerCase()].a.length > 0) ? (cmds[content.toLowerCase()].a.length > 1 ? cmds[content.toLowerCase()].a.slice(0, -1).join(", ") + " and " + cmds[content.toLowerCase()].a[cmds[content.toLowerCase()].a.length-1] : cmds[content.toLowerCase()].a[0]) : "None", true));
+          return msg.channel.send(new Discord.RichEmbed().setAuthor(prefix + content.toLowerCase(), client.user.avatarURL).setDescription(cmds[content.toLowerCase()].desc).setColor(f.color).addField("Usage", `\`\`\`\n${prefix + content.toLowerCase() + (cmds[content.toLowerCase()].usage ? cmds[content.toLowerCase()].usage : "")}\`\`\``).addField("Permissions", ["admin", "mod"].includes(cmds[content.toLowerCase()].perms) ? `You need the \`${{ mod: "Moderator", admin: "Administrator" }[cmds[content.toLowerCase()].perms]}\` role to use this command` : { "bot admin": "You need to be a Bot Administrator to use this command", "admin perm": "You need the `ADMINISTRATOR` permission to use this command", "": "You do not need ANY permissions to use this command", undefined: "You do not need ANY permissions to use this command" }[cmds[content.toLowerCase()].perms], true).addField("Category", `${cmds[content.toLowerCase()].cat} (${prefix}help ${cmds[content.toLowerCase()].cat})`, true).addField("Alias(es)", (cmds[content.toLowerCase()].a && cmds[content.toLowerCase()].a.length > 0) ? (cmds[content.toLowerCase()].a.length > 1 ? cmds[content.toLowerCase()].a.slice(0, -1).join(", ") + " and " + cmds[content.toLowerCase()].a[cmds[content.toLowerCase()].a.length-1] : cmds[content.toLowerCase()].a[0]) : "None", true));
         else if(["utility", "bot admin", "exp", "election", "fun"].includes(content.toLowerCase()))
-          return msg.channel.send(new Discord.RichEmbed().setAuthor(content.slice(0, 1).toUpperCase() + content.slice(1, content.length) + " Commands", client.user.avatarURL).setDescription({ fun: "A bunch of fun commands you can just play around with!", utility: "Commands used for modding, and commands that also give us some info about the bot. ", "bot admin": "A bunch of commands only the Clyde Administrators(people who coded Clyde) can use", exp: "These commands let you interact with Clyde EXP and the EXP Store.", election: "Commands you can use to interact with the AqilAcademy Elections!" }[content.toLowerCase()]).addField("Commands", (function(cat) { let cmd = ""; for(let i in cmds) { if(cmds[i].cat === cat) return " "; } return ""})(content.toLowerCase()) === "" ? "No commands yet" : (function(cat) { let cmd = ""; for(let i in cmds) { if(cmds[i].cat === cat && !cmds[i].hidden) cmd += `**${prefix + i + (cmds[i].usage ? cmds[i].usage : "")}:** ${cmds[i].desc.split("\n")[0]}\n`; } return cmd})(content.toLowerCase())).setColor(f.color()));
+          return msg.channel.send(new Discord.RichEmbed().setAuthor(content.slice(0, 1).toUpperCase() + content.slice(1, content.length) + " Commands", client.user.avatarURL).setDescription({ fun: "A bunch of fun commands you can just play around with!", utility: "Commands used for modding, and commands that also give us some info about the bot. ", "bot admin": "A bunch of commands only the Clyde Administrators(people who coded Clyde) can use", exp: "These commands let you interact with Clyde EXP and the EXP Store.", election: "Commands you can use to interact with the AqilAcademy Elections!" }[content.toLowerCase()]).addField("Commands", (function(cat) { let cmd = ""; for(let i in cmds) { if(cmds[i].cat === cat) return " "; } return ""})(content.toLowerCase()) === "" ? "No commands yet" : (function(cat) { let cmd = ""; for(let i in cmds) { if(cmds[i].cat === cat && !cmds[i].hidden) cmd += `**${prefix + i + (cmds[i].usage ? cmds[i].usage : "")}:** ${cmds[i].desc.split("\n")[0]}\n`; } return cmd})(content.toLowerCase())).setColor(f.color));
         else
-          return msg.channel.send(new Discord.RichEmbed().setAuthor(`Error: No command or category named "${content}" found.`, client.user.avatarURL).setColor(f.color()).setFooter(`Do "${prefix}help" to see all commands and categories.`));
+          return msg.channel.send(new Discord.RichEmbed().setAuthor(`Error: No command or category named "${content}" found.`, client.user.avatarURL).setColor(f.color).setFooter(`Do "${prefix}help" to see all commands and categories.`));
         return console.log(`help error: "${content}"`);
       }
       let comds = "";
@@ -400,7 +400,7 @@ const cmds = {
           comds += prefix + i + "                    ".slice(prefix.length + i.length);
       }
       let embed = new Discord.RichEmbed()
-        .setColor(f.color())
+        .setColor(f.color)
         .setAuthor("List of Clyde's commands", msg.author.avatarURL)
         .setDescription("```md\n" + comds + "```")
         .addField(`Categories (${prefix}help [category name])`, "bot admin, election, exp, fun, and utility");
@@ -418,7 +418,7 @@ const cmds = {
         return msg.reply("Please enter a valid ID/User Mention");
       let stats = await f.calculate_stats(id) || {};
       embed.setAuthor(client.users.get(id).tag + "'s stats", client.users.get(id).avatarURL)
-        .setColor(f.color())
+        .setColor(f.color)
         .addField("<:exp:458774880310263829> EXP", `**Points:** ${stats.points}\n**Real Points:** ${stats.realpoints}\n**Last Daily at:** ${new Date(stats.lastDaily).toLocaleString('en', { timeZone: 'UTC' })}\n**Streak:** ${stats.streak}\n**Place on leaderboard:** \`${stats.leaderboard_place + (JSON.parse(JSON.stringify(stats.leaderboard_place)[JSON.stringify(stats.leaderboard_place).length - 1]) < 4 ? ["th", "st", "nd", "rd"][JSON.stringify(stats.leaderboard_place)[JSON.stringify(stats.leaderboard_place).length - 1]] : "th")}\``, true)
         .addField("📈 Stats", `**Recorded Messages:** ${stats.messages}\n**Account added at:** ${new Date(stats.created).toLocaleString('en', { timeZone: 'UTC' })}\n**Blacklisted:** ${stats.blacklisted ? "Yes" : "No"}`, true)
         .addField(`⚠ Total Infractions: ${stats.warns.length}`, `**Total Severity:** ${stats.severity}`, true);
@@ -433,7 +433,7 @@ const cmds = {
     cat: "exp",
     do: (msg, content) => {
       let embed = new Discord.RichEmbed()
-        .setColor(f.color())
+        .setColor(f.color)
         .setAuthor("Clyde Leaderboard", client.user.avatarURL);
       
       let page = 0;
@@ -465,12 +465,12 @@ const cmds = {
         // Fake Daily
         let exp = f.random(res.realpoints/20, res.realpoints/10, true);
         if(nodaily)
-          return msg.channel.send(new Discord.RichEmbed().setAuthor("Daily Recieved", msg.author.avatarURL).setColor(f.color()).setDescription(`You have recieved **${exp}** points`));
+          return msg.channel.send(new Discord.RichEmbed().setAuthor("Daily Recieved", msg.author.avatarURL).setColor(f.color).setDescription(`You have recieved **${exp}** points`));
         
         if(new Date().getDate() === new Date(res.lastDaily).getDate() && new Date().getFullYear() === new Date(res.lastDaily).getFullYear() && new Date().getMonth() === new Date(res.lastDaily).getMonth())
-          return msg.channel.send(new Discord.RichEmbed().setAuthor("Please wait till tomorrow to recieve your daily", msg.author.avatarURL).setColor(f.color()).setFooter("You can get it anytime tomorrow or after"));
+          return msg.channel.send(new Discord.RichEmbed().setAuthor("Please wait till tomorrow to recieve your daily", msg.author.avatarURL).setColor(f.color).setFooter("You can get it anytime tomorrow or after"));
         db.run(`UPDATE users SET points = ${res.points + exp}, streak = ${(res.streak || 0) + 1}, lastDaily = ${new Date().valueOf()} WHERE id = "${msg.author.id}"`);
-        msg.channel.send(new Discord.RichEmbed().setAuthor("Daily Recieved", msg.author.avatarURL).setColor(f.color()).setDescription(`You have recieved **${exp}** points`));
+        msg.channel.send(new Discord.RichEmbed().setAuthor("Daily Recieved", msg.author.avatarURL).setColor(f.color).setDescription(`You have recieved **${exp}** points`));
       });
     },
   },
@@ -492,7 +492,7 @@ const cmds = {
         case "xp":
         case "exp":
           embed = new Discord.RichEmbed()
-            .setColor(f.color())
+            .setColor(f.color)
             .setAuthor("Edited EXP for " + (client.users.get(id) ? client.users.get(id).tag : id), msg.author.avatarURL);
           if(["add", "sub", "set"].includes(args[2].toLowerCase()) && isNaN(Number(args[3])))
             return msg.reply("Please enter a valid number for the fourth argument!");
@@ -527,7 +527,7 @@ const cmds = {
         case "warn":
         case "warns":
           embed = new Discord.RichEmbed()
-            .setColor(f.color())
+            .setColor(f.color)
             .setAuthor("Edited Rule Infractions for " + (client.users.get(id) ? client.users.get(id).tag : id), msg.author.avatarURL);
           if(args[2].toLowerCase() === "remove" && isNaN(Number(args[3])))
             return msg.reply("Please enter a valid number for the fourth argument!");
@@ -588,7 +588,7 @@ const cmds = {
         if(user.points < Number(content[1]))
           return msg.reply("You do not have enough EXP!");
         f.add_exp(msg.author.id, -Number(content[1])).add_exp(f.get_id(content[0]), Number(content[1]));
-        msg.channel.send("<:exp:458774880310263829> EXP Transfer complete!", new Discord.RichEmbed().setAuthor("EXP Transfer", msg.guild.iconURL).setDescription(`<@${msg.author.id}> sent **${content[1]} EXP** to <@${content[0].replace(/[^0-9]/g, "")}>`).setColor(f.color()));
+        msg.channel.send("<:exp:458774880310263829> EXP Transfer complete!", new Discord.RichEmbed().setAuthor("EXP Transfer", msg.guild.iconURL).setDescription(`<@${msg.author.id}> sent **${content[1]} EXP** to <@${content[0].replace(/[^0-9]/g, "")}>`).setColor(f.color));
       });
     },
   },
@@ -612,7 +612,7 @@ const cmds = {
       //Actually bans the user
       msg.guild.ban(id, `Banned for: ${reason === "" || !reason ? "No reason specified" : reason} (Moderator: ${msg.author.tag})`).then(user => {
         embed.setAuthor(`${user.tag} was banned`, user.avatarURL)
-          .setColor(f.color());
+          .setColor(f.color);
         if(reason)
           embed.addField("Reason:", `${reason}`);
         embed.addField("Moderator:", `<@${msg.author.id}> (ID: \`${msg.author.id}\`)`);
@@ -649,7 +649,7 @@ const cmds = {
       if(reason)
         embed.addField("Reason:", `${reason}`);
       embed.addField("Moderator:", `<@${msg.author.id}> (ID: \`${msg.author.id}\`)`)
-        .setColor(f.color())
+        .setColor(f.color)
         .addField("Roles:", "```" + roles.join("\n") + "```");
       f.log("main", embed);
       msg.channel.send(embed);
@@ -717,7 +717,7 @@ const cmds = {
         severity = isNaN(Number(content.split("S:")[1])) || Number(content.split("S:")[1]) < 1 ? 1 : Number(content.split("S:")[1]);
       else
         reason = content;
-      msg.channel.send(new Discord.RichEmbed().setAuthor(`Warned ${client.users.get(id).tag || id}`, client.users.get(id).avatarURL || msg.author.avatarURL).setDescription(`**For:** ${reason}`).setColor(f.color()));
+      msg.channel.send(new Discord.RichEmbed().setAuthor(`Warned ${client.users.get(id).tag || id}`, client.users.get(id).avatarURL || msg.author.avatarURL).setDescription(`**For:** ${reason}`).setColor(f.color));
       f.warn(msg.author.id, id, reason, severity);
     },
   },
@@ -750,7 +750,7 @@ const cmds = {
     desc: "Displays some stats for the bot",
     cat: "utility",
     do(msg, content) {
-      msg.channel.send(new Discord.RichEmbed().setAuthor("Clyde Stats", client.user.avatarURL).setDescription(`**Memory Usage:** ${(process.memoryUsage().heapUsed / 1048576).toFixed(2)} MB\n**node.js Version:** \`${process.version}\`\n**discord.js Version:** \`v${require("discord.js").version}\`\n**Uptime:** ${globalfunctions.time(client.uptime)}`).setColor(f.color()));
+      msg.channel.send(new Discord.RichEmbed().setAuthor("Clyde Stats", client.user.avatarURL).setDescription(`**Memory Usage:** ${(process.memoryUsage().heapUsed / 1048576).toFixed(2)} MB\n**node.js Version:** \`${process.version}\`\n**discord.js Version:** \`v${require("discord.js").version}\`\n**Uptime:** ${globalfunctions.time(client.uptime)}`).setColor(f.color));
     },
   },
   blacklist: {
@@ -770,10 +770,10 @@ const cmds = {
       db.get(`SELECT * FROM blacklist WHERE user = "${user.id}"`, (err, black) => {
         if(!black) {
           db.run(`INSERT INTO blacklist (user, reason, by, date, time) VALUES (?, ?, ?, ?, ?)`, [user.id, reason === "" ? "No Reason" : reason, msg.author.id, new Date().valueOf(), time || 0]);
-          msg.channel.send(new Discord.RichEmbed().setAuthor(`${user.tag} has been blacklisted!`, user.avatarURL).setDescription(`**Reason:** ${reason + (time ? `\n**For:** ${globalfunctions.time(time * 60000)}` : "")}`).setColor(f.color()));
+          msg.channel.send(new Discord.RichEmbed().setAuthor(`${user.tag} has been blacklisted!`, user.avatarURL).setDescription(`**Reason:** ${reason + (time ? `\n**For:** ${globalfunctions.time(time * 60000)}` : "")}`).setColor(f.color));
         } else {
           db.run(`DELETE FROM blacklist WHERE user = "${user.id}"`);
-          msg.channel.send(new Discord.RichEmbed().setAuthor(`${user.tag} has been removed from the blacklist!`, user.avatarURL).setDescription(`**Had been blacklisted for:** ${globalfunctions.time(new Date().valueOf() - black.date)}`).setColor(f.color()));
+          msg.channel.send(new Discord.RichEmbed().setAuthor(`${user.tag} has been removed from the blacklist!`, user.avatarURL).setDescription(`**Had been blacklisted for:** ${globalfunctions.time(new Date().valueOf() - black.date)}`).setColor(f.color));
         }
       });
     },
@@ -791,7 +791,7 @@ const cmds = {
           f: async function(mess) {
             try {
               let { body } = await snekfetch.get('https://aws.random.cat/meow');
-              msg.channel.send("🐱 **Here is your random cat:**", new Discord.RichEmbed().setImage(body.file).setColor(f.color()));
+              msg.channel.send("🐱 **Here is your random cat:**", new Discord.RichEmbed().setImage(body.file).setColor(f.color));
             } catch (err) {
               msg.channel.send("Sorry, we are experiencing technical difficulties... Try again later");
               console.log(`Cat Error: ${err}`);
@@ -805,11 +805,11 @@ const cmds = {
         googleit: {
           a: ["gi"],
           i: "Sends a \"google it\" picture :P",
-          f: () => msg.channel.send("<:hyperthonk:418591918411350036>", new Discord.RichEmbed().setImage("https://cdn.discordapp.com/attachments/348260146708742149/468921448124383233/Capture.PNG").setColor(f.color())),
+          f: () => msg.channel.send("<:hyperthonk:418591918411350036>", new Discord.RichEmbed().setImage("https://cdn.discordapp.com/attachments/348260146708742149/468921448124383233/Capture.PNG").setColor(f.color)),
         },
         list: {
           i: "Lists all tags",
-          f: () => msg.channel.send(new Discord.RichEmbed().setAuthor("All Tags", client.user.avatarURL).setDescription(Object.keys(tags).join(", ")).setColor(f.color())),
+          f: () => msg.channel.send(new Discord.RichEmbed().setAuthor("All Tags", client.user.avatarURL).setDescription(Object.keys(tags).join(", ")).setColor(f.color)),
         }
       };
       for(let i in tags) {
@@ -846,7 +846,7 @@ const cmds = {
       let embed = new Discord.RichEmbed()
         .setAuthor(f.qclean(question.question), msg.author.avatarURL)
         .setDescription(`**Answers:**\n${string}`)
-        .setColor(f.color())
+        .setColor(f.color)
         .addField("Stats", `**Difficulty:** ${question.difficulty}\n**Category:** ${question.category}`, true)
         .addField("Prizes", `**Correct:** ${exp} Points\n**Incorrect:** - ${exp/2} Points\n**No Answer:** - ${exp} Points`);
       
@@ -922,7 +922,7 @@ const cmds = {
           return msg.reply("An election is already in progress!");
         let embed = new Discord.RichEmbed()
           .setAuthor("A New Election has started!", client.user.avatarURL)
-          .setColor(f.color())
+          .setColor(f.color)
           .addField("How to run", `To run, use the \`${prefix}president\` command. To learn more about the command, do \`${prefix}help president\`.\n**Requirnments:**\`\`\`md\n1. Your should have a 1000 REAL EXP\n2. You need to be a member for AqilAcademy for over 2 weeks\`\`\``)
           .addField("How to vote", "There is **1** reaction, a :thumbsup:. This is your personal voting button. You can vote for anyone but yourself. You technically have unlimited votes untill Aqil finds a fix for that :P")
           .addField("Election Rules", "Here are the current election rules. They can also be found in <#382676611205693441>")
@@ -953,7 +953,7 @@ const cmds = {
           if(m.roles.get(msg.guild.roles.find("name", "Candidate").id))
             m.removeRole(msg.guild.roles.find("name", "Candidate").id);
         });
-        client.channels.get(data.echnl).send(new Discord.RichEmbed().setAuthor("Election has officially stopped by " + msg.author.tag, msg.author.avatarURL).setDescription("There might have been technical problems so please don't be angry").setColor(f.color()));
+        client.channels.get(data.echnl).send(new Discord.RichEmbed().setAuthor("Election has officially stopped by " + msg.author.tag, msg.author.avatarURL).setDescription("There might have been technical problems so please don't be angry").setColor(f.color));
         msg.reply("Ended Election #" + res[res.length-1].num)
       });
     },
@@ -966,7 +966,7 @@ const cmds = {
     del: false,
     do: (msg, content) => {
       let embed = new Discord.RichEmbed()
-        .setColor(f.color())
+        .setColor(f.color)
         .setAuthor("AqilAcademy Elections in the past", client.user.avatarURL);
       
       let page = 0;
@@ -1017,7 +1017,7 @@ const cmds = {
               return msg.reply("You are already waiting for a Vice President!");
             
             db.run(`INSERT INTO waiting (user, id, start, time, for, data) VALUES ("${vp}", 0, ${new Date().valueOf()}, ${res.end - new Date().valueOf()}, "${msg.author.id}", "${args[1] + "|=|" + args[2]}")`);
-            msg.channel.send(new Discord.RichEmbed().setAuthor("Wait for your VP to approve then you will be put in!", msg.author.avatarURL).setColor(f.color()));
+            msg.channel.send(new Discord.RichEmbed().setAuthor("Wait for your VP to approve then you will be put in!", msg.author.avatarURL).setColor(f.color));
             client.users.get(vp).send(`<@${msg.author.id}> has asked you to be his Vice President! Put a \`yes\` if you agree and \`no\` if you don't.\n**Note:** You CAN be multiple people's Vice President`);
           });
         });
@@ -1071,7 +1071,7 @@ const cmds = {
             db.all("SELECT * FROM election", (err, res) => {
               let embed = new Discord.RichEmbed()
                 .setAuthor("Candidates " + (res.length <= 10 ? "(All)" : `(Page: ${page + 1})`), msg.guild.iconURL)
-                .setColor(f.color())
+                .setColor(f.color)
                 .setFooter(`Check #elections for more info | 10 candidates per page | ${res.length} candidates`);
               
               if(res.length === 0)
@@ -1090,7 +1090,7 @@ const cmds = {
             db.all("SELECT * FROM voters WHERE election = " + elec.num, (err, res) => {
               let embed = new Discord.RichEmbed()
                 .setAuthor("Voters " + (res.length <= 10 ? "(All)" : `(Page: ${page + 1})`), msg.guild.iconURL)
-                .setColor(f.color())
+                .setColor(f.color)
                 .setFooter(`Check #elections for more info | 10 voters per page | ${res.length} voters`);
               
               if(res.length === 0)
@@ -1131,7 +1131,7 @@ const cmds = {
         evalled = `ERROR: ${f.evalclean(err)}`;
       }
       let embed = new Discord.RichEmbed()
-        .setColor(f.color())
+        .setColor(f.color)
         .setTimestamp()
         .setAuthor("Run", client.user.avatarURL)
         .setDescription(`**Input:** \`\`\`js\n${content}\`\`\`**Output:** \`\`\`xl\n${evalled}\`\`\``)

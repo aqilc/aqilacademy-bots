@@ -58,6 +58,16 @@ module.exports = {
       });
     });
   },
+  add_exp: (id, exp) => {
+    db.get(`SELECT * FROM users WHERE id = "${id}"`, (err, res) => {
+      if(!res)
+        return console.log("Created user: " + id) && db.run(`INSERT INTO users (id, points, realpoints, messages, created) VALUES ("${id}", 0, 0, 0, ${new Date().valueOf()})`);
+      if(exp < 0 && res.points + exp < 0)
+        exp = - res.points;
+      db.run(`UPDATE users SET points = ${res.points + exp} WHERE id = "${id}"`);
+    });
+    return this;
+  },// Adds EXP to a person
   
   round_rect(ctx, x, y, width, height, radius, fill, stroke) {
     if (typeof stroke == 'undefined') {
@@ -108,10 +118,25 @@ module.exports = {
     return { font: ctx.font, size: size };
   },
   
-  get_id(msg, text) {
+  
+  random(min, max, round) {
+    return round ? Math.round(Math.random() * (max-min) + min) : Math.random() * (max-min) + min;
+  },// Simplifies "Math.random()"
+  page_maker(array, num = 10, page = 0, func) {
+    if(func && typeof func === "function") {
+      for(var i = 0; i < array.slice(page*num, page*num + num).length; i ++) {
+        func(i + page*num, array.slice(page*num, page*num + num)[i]);
+      }
+      return this;
+    }
+    else
+      return false;
+  },
+  
+  get_id(msg, text, per) {
     if(!text || text === "")
       return false;
-    if(msg.content === "me")
+    if(text === "me")
       return msg.author.id;
 
     let id = text.replace(/[^0-9]/g, ""), person;
@@ -124,13 +149,13 @@ module.exports = {
       if(!person)
         person = msg.guild.members.array().filter(m => m.user.username.toLowerCase().startsWith(text.toLowerCase()) || (m.nickname ? m.nickname.toLowerCase().startsWith(text.toLowerCase()) : false))[0];
     }
-    if(person)
-      return person.id;
-    return false;
+    
+    // If it asks for the entire user object
+    if(per)
+      return person;
+    
+    return person.id;
   },
-  random(min, max, round) {
-    return round ? Math.round(Math.random() * (max-min) + min) : Math.random() * (max-min) + min;
-  },// Simplifies "Math.random()"
   has_roles(member, role_name = ["Moderator"]) {
     if(typeof role_name === "string")
       role_name = [role_name];
@@ -141,27 +166,7 @@ module.exports = {
     }
     return has;
   },// Checks if a user has the roles
-  add_exp: (id, exp) => {
-    db.get(`SELECT * FROM users WHERE id = "${id}"`, (err, res) => {
-      if(!res)
-        return console.log("Created user: " + id) && db.run(`INSERT INTO users (id, points, realpoints, messages, created) VALUES ("${id}", 0, 0, 0, ${new Date().valueOf()})`);
-      if(exp < 0 && res.points + exp < 0)
-        exp = - res.points;
-      db.run(`UPDATE users SET points = ${res.points + exp} WHERE id = "${id}"`);
-    });
-    return this;
-  },// Adds EXP to a person
-  page_maker(array, num = 10, page = 0, func) {
-    if(func && typeof func === "function") {
-      for(var i = 0; i < array.slice(page*num, page*num + num).length; i ++) {
-        func(i + page*num, array.slice(page*num, page*num + num)[i]);
-      }
-      return this;
-    }
-    else
-      return false;
-  },
-  ecol() {
+  get ecol() {
     return Math.round(Math.random() * 16777215);
   },
   eclean(string) {
