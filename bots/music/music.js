@@ -199,7 +199,11 @@ const m = {
   
   // Renders info
   vInfo(info) {
-    if(info.sni
+    let r = {};
+    if(info.id || info.snippet) {
+       
+    }
+      
   },
   
   // Searches a video from YouTube and returns it... or adds it into the queue
