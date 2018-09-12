@@ -218,11 +218,11 @@ const m = {
       } else if(get_val(arr[1]))
         r[arr[0]] = get_val(arr[1]);
     };
-    if(info.id || info.snippet) {
-       [[["vid", "video_id"], "id.videoId"], ["thumbnail", "snippet.thumbnails.high.url"], ["title", "snippet.title"], ["description", "snippet.description"], ["channel", "channelTitle"]].forEach(set);
-      if(r.video_id)
-        r.url = r.video_url = "https://www.youtube.com/watch?v=" + r.video_id;
-    }
+    
+    [[["vid", "video_id"], "id.videoId"], ["thumbnail", "snippet.thumbnails.high.url"], ["title", "snippet.title"], ["description", "snippet.description"], ["channel", "channelTitle"]].forEach(set);
+    if(r.video_id)
+      r.url = r.video_url = "https://www.youtube.com/watch?v=" + r.video_id;
+    
   },
   
   // Searches a video from YouTube and returns it... or adds it into the queue

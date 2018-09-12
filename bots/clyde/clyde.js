@@ -281,6 +281,13 @@ const f = {
   },// Check if elections are going on and sets up a setTimeout if they are.
   check_and_do_cmd: (message) => {
     let content = message.content;
+    
+    if(!message.member) {
+      message.member = client.guilds.get("294115797326888961").members.get(message.author.id);
+      if(!message.member)
+        return message.reply("Join AqilAcademy(285cj7j) to use Clyde.");
+    }
+      
     let perms = {
       undefined: [false, ""],
       "": [false, ""],
