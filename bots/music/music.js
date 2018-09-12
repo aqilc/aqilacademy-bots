@@ -200,9 +200,19 @@ const m = {
   // Renders info
   vInfo(info) {
     let r = {};
-    function set_object(arr) {
+    function get_val(str) {
+      str = str.split(".");
+      let v = info;
+      str.forEach(s => 
+      if(str[0] && v[str[0]])
+        v = v[str[0]];
+      
+    }
+    function set(arr) {
       if(arr[0] instanceof Array) {
-        
+        arr.forEach(t => {
+          
+        });
       }
     };
     if(info.id || info.snippet) {
