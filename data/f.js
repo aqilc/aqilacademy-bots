@@ -3,10 +3,12 @@ const cdata = require("./d.js");
 const fs = require("fs");
 const https = require("https");
 
-module.exports = function() {
+let e = function() {
+  
+  
   
   // SQL stuff
-  this.calculate_stats = (id) {
+  this.calculate_stats = function(id) {
     return new Promise(function(resolve, reject) {
       let stats = {
         elections_won: 0,
@@ -60,7 +62,7 @@ module.exports = function() {
       });
     });
   };
-  this.add_exp = (id, exp) => {
+  this.add_exp = function(id, exp) {
     db.get(`SELECT * FROM users WHERE id = "${id}"`, (err, res) => {
       if(!res)
         return console.log("Created user: " + id) && db.run(`INSERT INTO users (id, points, realpoints, messages, created) VALUES ("${id}", 0, 0, 0, ${new Date().valueOf()})`);
@@ -72,7 +74,7 @@ module.exports = function() {
   };// Adds EXP to a person
   
   // Canvas functions
-  this.round_rect = (ctx, x, y, width, height, radius, fill, stroke) {
+  this.round_rect = function(ctx, x, y, width, height, radius, fill, stroke) {
     if (typeof stroke == 'undefined') {
       stroke = true;
     }
@@ -105,13 +107,13 @@ module.exports = function() {
       ctx.stroke();
     }
   },
-  this.circle = (ctx, x, y, radius, color) {
+  this.circle = function(ctx, x, y, radius, color) {
     ctx.beginPath();
     ctx.arc(x, y, radius, 0, Math.PI*2, true);
     ctx.closePath();
     ctx.fill();
   },
-  this.autofont = (msg, canvas, x, mX, size = 70, addons) {
+  this.autofont = function(msg, canvas, x, mX, size = 70, addons) {
     let ctx = canvas.getContext("2d");
 
     // Sizes the text size down to fit space
@@ -122,10 +124,10 @@ module.exports = function() {
   },
   
   // Global stuff for anything
-  this.random = (min, max, round) {
+  this.random = function(min, max, round) {
     return round ? Math.round(Math.random() * (max-min) + min) : Math.random() * (max-min) + min;
   };// Simplifies "Math.random()"
-  this.page_maker = (array, num = 10, page = 0, func) {
+  this.page_maker = function(array, num = 10, page = 0, func) {
     if(func && typeof func === "function") {
       for(var i = 0; i < array.slice(page*num, page*num + num).length; i ++) {
         func(i + page*num, array.slice(page*num, page*num + num)[i]);
@@ -135,7 +137,7 @@ module.exports = function() {
     else
       return false;
   };
-  this.time = (milliseconds) {
+  this.time = function(milliseconds) {
     let x = milliseconds / 1000;
     let s = Math.floor(x % 60);
     x /= 60;
@@ -161,7 +163,7 @@ module.exports = function() {
     }
     return timeStuff;
   };
-  this.bytes = (bytes) {
+  this.bytes = function(bytes) {
     if(bytes > 1000000)
       return `${(bytes/1000000).toFixed(1)} MB`;
     else if(bytes > 1000)
@@ -171,7 +173,7 @@ module.exports = function() {
   };
   
   // Discord stuff
-  this.has_roles = (member, role_name = ["Moderator"]) {
+  this.has_roles = function(member, role_name = ["Moderator"]) {
     if(typeof role_name === "string")
       role_name = [role_name];
     for(let i of role_name) {
@@ -180,7 +182,7 @@ module.exports = function() {
     }
     return true;
   };// Checks if a user has the roles
-  this.get_id = (msg, text, per) {
+  this.get_id = function(msg, text, per) {
     if(!text || text === "")
       return false;
     if(text === "me")
@@ -203,10 +205,7 @@ module.exports = function() {
     
     return person.id;
   };
-  this.get ecol() {
-    return Math.round(Math.random() * 16777215);
-  };
-  this.eclean(string) {
+  this.eclean = function(string) {
     if (typeof(string) === "string")
       return string.replace(/`/g, "`" + String.fromCharCode(8203)).replace(/@/g, "@" + String.fromCharCode(8203));
     else
@@ -214,7 +213,7 @@ module.exports = function() {
   };
   
   // Gets JSON from a URL
-  this.parseURL(url) {
+  this.parseURL = function(url) {
     return new Promise((resolve, reject) => {
       https.get(url, (res) => {
         var data = "";
@@ -235,7 +234,7 @@ module.exports = function() {
   };
   
   // Trivia Functions
-  this.qclean(text) {
+  this.qclean = function(text) {
     return text
       .replace(/&quot;/g, '"')
       .replace(/&#039;/g, "'")
@@ -245,7 +244,7 @@ module.exports = function() {
     let data = await require("./f.js").parseURL("https://opentdb.com/api_category.php");
     return data.trivia_categories;
   },
-  this.get_question(cat, diff, type) {
+  this.get_question = function(cat, diff, type) {
     let url = "https://opentdb.com/api.php?amount=1";
     if(cat && cat <= 32 && cat >= 9)
       url += "&category=" + ~~ cat;
@@ -256,3 +255,10 @@ module.exports = function() {
     return require("./f.js").parseURL(url);
   };
 };
+Object.defineProperty(e, "ecol", {
+  get() {
+    return Math.round(Math.random() * 16777215)
+  }
+});
+
+module.exports = e;
