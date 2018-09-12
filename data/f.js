@@ -3,7 +3,7 @@ const cdata = require("./d.js");
 const fs = require("fs");
 const https = require("https");
 
-let e = function() {
+function e() {
   
   
   
@@ -254,11 +254,14 @@ let e = function() {
       url += "&type=" + ["multiple", "boolean"][type];
     return require("./f.js").parseURL(url);
   };
-};
+  
+  // returns the object we created in this function
+  return this;
+};/*
 Object.defineProperty(e, "ecol", {
   get() {
     return Math.round(Math.random() * 16777215)
   }
-});
+});*/
 
 module.exports = e;
