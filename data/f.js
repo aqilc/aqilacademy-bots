@@ -3,9 +3,7 @@ const cdata = require("./d.js");
 const fs = require("fs");
 const https = require("https");
 
-function e() {
-  
-  
+module.exports = function() {
   
   // SQL stuff
   this.calculate_stats = function(id) {
@@ -257,11 +255,10 @@ function e() {
   
   // returns the object we created in this function
   return this;
-};/*
-Object.defineProperty(e, "ecol", {
+};
+
+Object.defineProperty(module.exports, "ecol", {
   get() {
     return Math.round(Math.random() * 16777215)
   }
-});*/
-
-module.exports = e;
+});
