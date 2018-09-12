@@ -197,30 +197,31 @@ const m = {
       });
   },
   
-  // Renders info
-  vInfo(info) {
+  // Renders info from a search snippet
+  sInfo(info) {
     let r = {};
     function get_val(str) {
-      str = str.split(".");
-      let v = info;
-      str.forEach(s => 
-      if(str[0] && v[str[0]])
-        v = v[str[0]];
-      
+      let v = info; str = str.split(".");
+      for(let i = 0; i < str.length; i ++) {
+        if(v[str[i]])
+          v = v[str[i]];
+        else return false;
+      }
+      return v;
     }
     function set(arr) {
       if(arr[0] instanceof Array) {
         arr.forEach(t => {
-          
+          if(get_val(arr[1]))
+            r[t] = get_val(arr[1]);
         });
-      }
+      } else if(get_val(arr[1]))
+        r[arr[0]] = get_val(arr[1]);
     };
     if(info.id || info.snippet) {
-       [[["vid", "video_id"], "id.videoId"], ["thumbnail", "snippet.thumbnails.high.url"], ["title", "snippet.title"], ["description", "snippet.description"], ["channel", "channelTitle"]].forEach(v => {
-         if(typeof v[0] === "object") {
-           
-         }
-       });
+       [[["vid", "video_id"], "id.videoId"], ["thumbnail", "snippet.thumbnails.high.url"], ["title", "snippet.title"], ["description", "snippet.description"], ["channel", "channelTitle"]].forEach(set);
+      if(r.video_id)
+        r.url = r.video_url = "https://www.youtube.com/watch?v=" + r.video_id;
     }
   },
   
