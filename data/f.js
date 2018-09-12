@@ -178,12 +178,11 @@ module.exports = {
   has_roles(member, role_name = ["Moderator"]) {
     if(typeof role_name === "string")
       role_name = [role_name];
-    let has = true;
     for(let i of role_name) {
       if(!member.roles.map(r => r.name).includes(i))
-        has = false;
+        return false;
     }
-    return has;
+    return true;
   },// Checks if a user has the roles
   get_id(msg, text, per) {
     if(!text || text === "")
