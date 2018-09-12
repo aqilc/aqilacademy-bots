@@ -118,15 +118,20 @@ const m = {
     np: 0,
   },
   
-  toString() { return this.settings },
-  
   // Return stuff in m.settings because why not
+  get np() { return this.settings.np },
+  get autojoin() { return this.settings.autojoin },
+  get repeat() { return this.settings.repeat },
+  get connect() { return this.settings.connection },
+  get connection() { return this.settings.connection },
   queue() {
     return new Promise(async (res, rej) => {
       let queue = this.settings.queue.map(async q => await m.info("https://www.youtube.com/watch?v=" + q.id));
       res(queue);
     });
   },
+  get queue() { return this.settings.queue },
+  get handler() { return this.settings.handler },
   get channel() { return typeof this.settings.channel === "object" ? this.settings.channel : client.guilds.get("294115797326888961").channels.get(this.settings.channel) || void 0 },
   
   // Transforms a url into a video/playlist ID
