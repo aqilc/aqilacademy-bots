@@ -175,6 +175,16 @@ module.exports = {
   },
   
   // Discord stuff
+  has_roles(member, role_name = ["Moderator"]) {
+    if(typeof role_name === "string")
+      role_name = [role_name];
+    let has = true;
+    for(let i of role_name) {
+      if(!member.roles.map(r => r.name).includes(i))
+        has = false;
+    }
+    return has;
+  },// Checks if a user has the roles
   get_id(msg, text, per) {
     if(!text || text === "")
       return false;
@@ -198,16 +208,6 @@ module.exports = {
     
     return person.id;
   },
-  has_roles(member, role_name = ["Moderator"]) {
-    if(typeof role_name === "string")
-      role_name = [role_name];
-    let has = true;
-    for(let i of role_name) {
-      if(!member.roles.map(r => r.name).includes(i))
-        has = false;
-    }
-    return has;
-  },// Checks if a user has the roles
   get ecol() {
     return Math.round(Math.random() * 16777215);
   },
@@ -216,9 +216,6 @@ module.exports = {
       return string.replace(/`/g, "`" + String.fromCharCode(8203)).replace(/@/g, "@" + String.fromCharCode(8203));
     else
       return string;
-  },
-  set_object(obj, arr) {
-    
   },
   
   // Gets JSON from a URL

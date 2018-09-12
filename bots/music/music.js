@@ -146,7 +146,7 @@ const m = {
   
   // Plays a song
   async play(id, options = { seek: 0, next: false, options: undefined, repeat: false, carryoptions: false }) {
-    if(typeof options !== "object")
+    if (!(options instanceof Object))
       options = false;
     if(typeof id === "number" && this.settings.queue[id])
       this.settings.np = id;
@@ -200,6 +200,11 @@ const m = {
   // Renders info
   vInfo(info) {
     let r = {};
+    function set_object(arr) {
+      if(arr[0] instanceof Array) {
+        
+      }
+    };
     if(info.id || info.snippet) {
        [[["vid", "video_id"], "id.videoId"], ["thumbnail", "snippet.thumbnails.high.url"], ["title", "snippet.title"], ["description", "snippet.description"], ["channel", "channelTitle"]].forEach(v => {
          if(typeof v[0] === "object") {
