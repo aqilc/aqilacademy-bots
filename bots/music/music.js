@@ -404,6 +404,7 @@ const c = {
     description: "Plays music in your voice channel!",
     usage: " [song name or link/playlist link](, [another song name or link]) (s:[ms you want to skip to in the song])",
     async f(msg, content) {
+      
         if(!msg.member.voiceChannel)
           return msg.reply("You need to join a voice channel first!");
 
