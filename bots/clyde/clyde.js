@@ -26,7 +26,7 @@ function run() {
   
   // Events
   client.on("message", async msg => {
-    //try {
+    try {
       
       //What happens when DMed
       if(msg.channel.type !== "text" && msg.author.id !== client.user.id) {
@@ -82,11 +82,11 @@ function run() {
       // Tells prefix if mentioned
       if(msg.content.trim() === `<@!${client.user.id}>`)
         return msg.channel.send(`My prefix is: \`${prefix}\``);
-    /*} catch(err) {
+    } catch(err) {
       // What happens when an error occurs
       msg.channel.send(new Discord.RichEmbed().setAuthor("Error", client.user.avatarURL).setColor(f.color).setDescription(`**error on client event "message":**\`\`\`js\n${err}\`\`\``).setTimestamp());
       console.log("Error on the \"message\" event: " + err);
-    }*/
+    }
   });
   client.on("ready", () => {
     console.log(client.user.tag + " has started. Ready for action");

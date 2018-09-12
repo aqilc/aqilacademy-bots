@@ -2,15 +2,11 @@ const db = new (require("sqlite3").verbose()).Database('./.data/sqlite.db');
 const cdata = require("./d.js");
 const fs = require("fs");
 const https = require("https");
-const clyde = require("/app/bots/clyde/clyde.js").client;
-const music = require("/app/bots/music/music.js").client;
 
 module.exports = {
   
   // SQL stuff
   calculate_stats(id) {
-    if(!clyde.users.get(id) && !music.users.get(id))
-      return false;
     return new Promise(function(resolve, reject) {
       let stats = {
         elections_won: 0,
