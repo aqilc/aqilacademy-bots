@@ -146,12 +146,13 @@ const m = {
   
   // Plays a song
   async play(id, options = { seek: 0, next: false, options: undefined, repeat: false, carryoptions: false }) {
+    let ID = 0;
     if (!(options instanceof Object))
       options = false;
     if(typeof id === "number" && this.settings.queue[id])
-      this.settings.np = id;
+      this.settings.np = ID;
     else if(typeof id === "string" && id.length === 11)
-      this.settings.queue.push(id), id = this.settings.np = this.settings.queue.length - 1;
+      this.settings.queue.push(id), ID = this.settings.np = this.settings.queue.length - 1;
     else
       throw new Error("mpe1 Invalid ID put into the 'play' function");
     if(!this.settings.connection)
@@ -163,7 +164,7 @@ const m = {
       options.options.options = options.carryoptions ? options.options : null;
     
     // Gets the info on the song
-    let vid = await this.info(this.settings.queue[id].id);
+    let vid = await this.info(id || this.settings.queue[ID].id);
     
     // Emits the start of vid event if song exists
     if(vid)
@@ -283,18 +284,18 @@ const m = {
   },
   
   // Joins a voice channel
-  join(channel) {
+  join(member) {
     // Returns false if there is no channel to join/No channel to send messages to.
-    if(typeof channel !== "object" || channel.type !== "voice")
+    if(!member.voiceChannel)
       return false;
     
     // Changes the voice channel to that of the users and then joins the channel
-    this.settings.channel = channel;
-    if(this.set("connect", channel) instanceof Error)
+    this.settings.channel = member.voiceChannel;
+    if(this.set("connect", member.voiceChannel) instanceof Error)
       return false;
     
     // Returns a promise including the connection to the channel
-    return channel.join();
+    return member.voiceChannel.join();
   },
   
   // Sets stuff in settings
@@ -318,7 +319,7 @@ const m = {
     let message = channel.lastMessageID ? await channel.fetchMessage(channel.lastMessageID) : false,
         embed = new Discord.RichEmbed()
       .setAuthor(`Now Playing "${vid.title}`, channel.guild.iconURL, vid.video_url)
-      .setDescription(`**Length:** ${gFuncs(vid.length_seconds * 1000)}\n\n${vid.description.slice(0, 500) + vid.description.length >= 500 ? "..." : ""}`)
+      .setDescription(`**Length:** ${gFuncs.time(vid.length_seconds * 1000)}\n\n${vid.description.slice(0, 500) + vid.description.length >= 500 ? "..." : ""}`)
       .setThumbnail(vid.thumbnail_url)
     if(!message || message.author.id !== client.user.id)
       channel.send(embed);
@@ -410,7 +411,7 @@ const c = {
         if(m.settings.channel && m.settings.connection.channel.id === msg.member.voiceChannel.id)
           connection = m.settings.connection;
         else if(m.settings.autojoin)
-          connection = await m.join(msg.member.voiceChannel);
+          connection = await m.join(msg.member);
         else
           return msg.reply(`The \`autojoin\` setting is turned off. You will have to manually do \`${prefix}join\` and make the bot join your channel`);
       
@@ -458,7 +459,7 @@ const c = {
       else
         channel = msg.member.voiceChannel;
       
-      if(m.join(channel))
+      if(m.join(msg.member))
         return msg.channel.send(new Discord.RichEmbed().setAuthor(`Joined ${channel.name}`, channel.guild.iconURL).setThumbnail("You can play music on me now(if someone is present in the channel with me :P)"));
     }
   }
