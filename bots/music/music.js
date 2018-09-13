@@ -205,11 +205,12 @@ const m = {
       for(let i = 0; i < str.length; i ++) {
         if(v[str[i]])
           v = v[str[i]];
-        else return false;
+        else return undefined;
       }
       return v;
     }
-    function set(arr) {
+    
+    [[["vid", "video_id"], "id.videoId"], ["thumbnail", "snippet.thumbnails.high.url"], ["title", "snippet.title"], ["description", "snippet.description"], ["channel", "channelTitle"]].forEach(arr => {
       if(arr[0] instanceof Array) {
         arr.forEach(t => {
           if(get_val(arr[1]))
@@ -217,12 +218,9 @@ const m = {
         });
       } else if(get_val(arr[1]))
         r[arr[0]] = get_val(arr[1]);
-    };
-    
-    [[["vid", "video_id"], "id.videoId"], ["thumbnail", "snippet.thumbnails.high.url"], ["title", "snippet.title"], ["description", "snippet.description"], ["channel", "channelTitle"]].forEach(set);
+    });
     if(r.video_id)
       r.url = r.video_url = "https://www.youtube.com/watch?v=" + r.video_id;
-    
   },
   
   // Searches a video from YouTube and returns it... or adds it into the queue
@@ -254,10 +252,10 @@ const m = {
           let data = [];
           if(info && info.info) {
             if(!info || ~~ info.results <= 1)
-              data = await m.info(json.items[0].id.videoId);
+              data = m.sInfo(json.items[0]);
             else {
               do {
-                data.push(await m.info(json.items[data.length].id.videoId));
+                data.push(m.sInfo(json.items[data.length]));
               } while (data.length < info.results)
             }
             resolve(data);
@@ -415,16 +413,18 @@ const c = {
           connection = await m.join(msg.member.voiceChannel);
         else
           return msg.reply(`The \`autojoin\` setting is turned off. You will have to manually do \`${prefix}join\` and make the bot join your channel`);
-
+      
         if(content === "")
           content = data.vid;
 
         if(!m.url(content))
-          vid = await m.search(content, { results: 5, info: true });
+          vid = await m.search(content, { results: 5, info: true }), console.log("this happened");
         else
           vid = await m.info("https://www.youtube.com/watch?v=" + m.url(content).v);
+        
+        console.log("got here: 1", vid);
 
-        if(typeof vid === "object" && vid.length && vid.length > 1) {
+        if(vid instanceof Array && vid.length > 1) {
           console.log(vid);
           msg.channel.send(new Discord.RichEmbed().setAuthor("Pick a video", "http://files.idg.co.kr/itworld/image/2018/07/youtube.jpg").setDescription(vid.map(v => `${vid.indexOf(v) + 1}. [**${v.title}**](${vid.video_url})`).join("")).setThumbnail("Respond with the number of the video. You have 30 seconds"));
           msg.channel.createMessageCollector(ms => !isNaN(Number(ms.content)) && Number(ms.content) <= 10 && ms.author.id === msg.author.id, { maxMatches: 1, time: 30000 }).on("end", collected => {
