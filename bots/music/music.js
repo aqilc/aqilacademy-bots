@@ -156,8 +156,6 @@ const m = {
       throw new Error("mpe1 Invalid ID put into the 'play' function");
     if(!this.settings.connection)
       throw new Error("mpe2 No voice connection to play songs on");
-    if(options && options.next && !this.settings.queue[id + 1])
-      throw new Error("mpe3 Can't play the next song if there is none");
     
     if(this.settings.handler)
       await this.settings.handler.end(), this.settings.handler = null;
@@ -212,7 +210,7 @@ const m = {
     
     [[["vid", "video_id"], "id.videoId"], ["thumbnail", "snippet.thumbnails.high.url"], ["title", "snippet.title"], ["description", "snippet.description"], ["channel", "channelTitle"]].forEach(arr => {
       if(arr[0] instanceof Array) {
-        arr.forEach(t => {
+        arr[0].forEach(t => {
           if(get_val(arr[1]))
             r[t] = get_val(arr[1]);
         });
@@ -425,15 +423,15 @@ const c = {
           vid = await m.info("https://www.youtube.com/watch?v=" + m.url(content).v);
 
         if(vid instanceof Array && vid.length > 1) {
-          msg.channel.send(new Discord.RichEmbed().setAuthor("Pick a video", "https://pbs.twimg.com/profile_images/902795135934746628/UfD7Svr8_400x400.jpg").setDescription(vid.map(v => `${vid.indexOf(v) + 1}. [**${v.title}**](${vid.video_url})\n`).join("")).setFooter("Respond with the number of the video. You have 30 seconds"));
+          msg.channel.send(new Discord.RichEmbed().setColor(gFuncs.ecol).setAuthor("Pick a video", "https://pbs.twimg.com/profile_images/902795135934746628/UfD7Svr8_400x400.jpg").setDescription(vid.map(v => `${vid.indexOf(v) + 1}. [**${v.title}**](${v.video_url})\n`).join("")).setFooter("Respond with the number of the video. You have 30 seconds"));
           msg.channel.createMessageCollector(ms => !isNaN(Number(ms.content)) && Number(ms.content) <= 10 && ms.author.id === msg.author.id, { maxMatches: 1, time: 30000 }).on("end", collected => {
             if(!collected.array()[0])
               return msg.channel.send("No message collected, assuming you didn't want to pick any song.");
             
             let pvid = Number(collected.array()[0].content);
-
+            console.log(vid[pvid]);
             if(!m.handler)
-              return m.play(vid[pvid].id, { next: true, options: { next: true } });
+              return m.play(vid[pvid].vid, { next: true, options: { next: true } });
 
             m.add(vid[pvid].id);
           });
