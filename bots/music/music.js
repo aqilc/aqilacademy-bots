@@ -420,19 +420,16 @@ const c = {
           content = data.vid;
 
         if(!m.url(content))
-          vid = await m.search(msg, content, { results: 5, info: true }), console.log("this happened");
+          vid = await m.search(msg, content, { results: 5, info: true });
         else
           vid = await m.info("https://www.youtube.com/watch?v=" + m.url(content).v);
-        
-        console.log("got here: 1", vid);
 
         if(vid instanceof Array && vid.length > 1) {
-          console.log(vid);
-          msg.channel.send(new Discord.RichEmbed().setAuthor("Pick a video", "http://files.idg.co.kr/itworld/image/2018/07/youtube.jpg").setDescription(vid.map(v => `${vid.indexOf(v) + 1}. [**${v.title}**](${vid.video_url})`).join("")).setThumbnail("Respond with the number of the video. You have 30 seconds"));
+          msg.channel.send(new Discord.RichEmbed().setAuthor("Pick a video", "https://pbs.twimg.com/profile_images/902795135934746628/UfD7Svr8_400x400.jpg").setDescription(vid.map(v => `${vid.indexOf(v) + 1}. [**${v.title}**](${vid.video_url})`).join("")).setThumbnail("Respond with the number of the video. You have 30 seconds"));
           msg.channel.createMessageCollector(ms => !isNaN(Number(ms.content)) && Number(ms.content) <= 10 && ms.author.id === msg.author.id, { maxMatches: 1, time: 30000 }).on("end", collected => {
             if(!collected)
               return msg.channel.send("No message collected, assuming you didn't want to pick any song.");
-
+            console.log(collected);
             let pvid = Number(collected[0].content);
 
             if(!m.handler)
