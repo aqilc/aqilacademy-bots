@@ -254,9 +254,9 @@ const m = {
             if(~~ info.results <= 1)
               data = m.sInfo(json.items[0]);
             else {
-              do {
+              while (data.length < info.results) {
                 data.push(m.sInfo(json.items[data.length]));
-              } while (data.length < info.results)
+              }
             }
             resolve(data);
           }
