@@ -93,7 +93,7 @@ function run() {
   });
 
   // Music Events
-  m.e.on("s:start", v => m.announce_song(v, m.settings.channel));
+  m.e.on("s:start", (i, v) => m.announce_song(i, v, client.channels.get("342877747149930508")));
   
   // Returns the client
   return client;
@@ -111,6 +111,7 @@ const m = {
     connection: undefined,
     handler: undefined,
     channel: undefined,
+    message: undefined,
     queue: [],
     announce: {
       song: true,
@@ -145,14 +146,14 @@ const m = {
   },
   
   // Plays a song
-  async play(id, options = { seek: 0, next: false, options: undefined, repeat: false, carryoptions: false }) {
+  async play(user, id, options = { seek: 0, next: false, options: undefined, repeat: false, carryoptions: false }) {
     let ID = 0;
     if (!(options instanceof Object))
       options = false;
     if(typeof id === "number" && this.settings.queue[id])
       this.settings.np = ID;
     else if(typeof id === "string" && id.length === 11)
-      this.settings.queue.push(id), ID = this.settings.np = this.settings.queue.length - 1;
+      this.settings.queue.push({ id: id, user: user }), ID = this.settings.np = this.settings.queue.length - 1;
     else
       throw new Error("mpe1 Invalid ID put into the 'play' function");
     if(!this.settings.connection)
@@ -168,12 +169,12 @@ const m = {
     
     // Emits the start of vid event if song exists
     if(vid)
-      this.e.emit("s:start", vid);
+      this.e.emit("s:start", id, vid);
     else throw new Error("Invalid song ID");
     
     let next = this.settings.queue[id + 1] ? id + 1 : this.settings.queue.length > 1 ? 0 : undefined,
         handler = this.settings.connection
-      .playStream(yt("https://www.youtube.com/watch?v=" + this.settings.queue[id].id, { filter: "audioonly" }), { seek: options ? options.seek || 0 : 0 })
+      .playStream(yt("https://www.youtube.com/watch?v=" + (id || this.settings.queue[ID].id), { filter: "audioonly" }), { seek: options ? options.seek || 0 : 0 })
       .once("end", reason => {
         if(reason)
           console.log(reason);
@@ -187,11 +188,11 @@ const m = {
         
         // Goes on to repeat or play the next song
         if(this.settings.repeat || options && options.repeat)
-          this.play(id, options);
+          this.play(user, id, options);
         
         
         else if(options && options.next && next)
-          this.play(next, options ? options.options : undefined);
+          this.play(user, next, options ? options.options : undefined);
         
       });
   },
@@ -310,7 +311,7 @@ const m = {
   },
   
   // Announces the song
-  async announce_song(vid, channel) {
+  async announce_song(id, vid, channel) {
     if(!channel)
       throw new Error("No channel to announce the new song in");
     if(!this.settings.announce.song)
@@ -318,8 +319,9 @@ const m = {
     
     let message = channel.lastMessageID ? await channel.fetchMessage(channel.lastMessageID) : false,
         embed = new Discord.RichEmbed()
+      .setColor(gFuncs.ecol)
       .setAuthor(`Now Playing "${vid.title}`, channel.guild.iconURL, vid.video_url)
-      .setDescription(`**Length:** ${gFuncs.time(vid.length_seconds * 1000)}\n\n${vid.description.slice(0, 500) + vid.description.length >= 500 ? "..." : ""}`)
+      .setDescription(`**Length:** ${gFuncs.time(vid.length_seconds * 1000)}\n**Requested By:** ${m.queue[id].user}\n\n${vid.description.slice(0, 500) + vid.description.length >= 500 ? "..." : ""}`)
       .setThumbnail(vid.thumbnail_url)
     if(!message || message.author.id !== client.user.id)
       channel.send(embed);
@@ -432,7 +434,7 @@ const c = {
             let pvid = Number(collected.array()[0].content);
             console.log(vid[pvid]);
             if(!m.handler)
-              return m.play(vid[pvid].vid, { next: true, options: { next: true } });
+              return m.play(msg.author, vid[pvid].vid, { next: true, options: { next: true } });
 
             m.add(vid[pvid].id);
           });
