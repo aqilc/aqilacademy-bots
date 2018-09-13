@@ -200,9 +200,7 @@ const m = {
         else return undefined;
       }
       return v;
-    }
-    
-    [[["vid", "video_id"], "id.videoId"], ["thumbnail", "snippet.thumbnails.high.url"], ["title", "snippet.title"], ["description", "snippet.description"], ["channel", "channelTitle"]].forEach(arr => {
+    }; function set(arr) {
       if(arr[0] instanceof Array) {
         arr[0].forEach(t => {
           if(get_val(arr[1]))
@@ -210,10 +208,21 @@ const m = {
         });
       } else if(get_val(arr[1]))
         r[arr[0]] = get_val(arr[1]);
-    });
-    if(r.video_id)
-      r.url = r.video_url = "https://www.youtube.com/watch?v=" + r.video_id;
-    
+    };
+    switch (info.kind) {
+      case "youtube#videoListResponse":
+        
+        break;
+      case "youtube#searchResult":
+        [[["vid", "video_id"], "id.videoId"], ["thumbnail", "snippet.thumbnails.high.url"], ["title", "snippet.title"], ["description", "snippet.description"], ["channel", "channelTitle"]].forEach(set);
+        if(r.video_id)
+          r.url = r.video_url = "https://www.youtube.com/watch?v=" + r.video_id;
+        break;
+        
+      default:
+        throw new Error("Invalid information inputted into the `sInfo` function");
+    }
+
     return r;
   },
   
