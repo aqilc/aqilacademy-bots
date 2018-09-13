@@ -119,21 +119,13 @@ const m = {
     np: 0,
   },
   
-  // Return stuff in m.settings because why not
-  get np() { return this.settings.np },
-  get autojoin() { return this.settings.autojoin },
-  get repeat() { return this.settings.repeat },
-  get connect() { return this.settings.connection },
-  get connection() { return this.settings.connection },
+  // Turns the queue into a ton of youtube data XD
   queue() {
     return new Promise(async (res, rej) => {
       let queue = this.settings.queue.map(async q => await m.info("https://www.youtube.com/watch?v=" + q.id));
       res(queue);
     });
   },
-  get queue() { return this.settings.queue },
-  get handler() { return this.settings.handler },
-  get channel() { return typeof this.settings.channel === "object" ? this.settings.channel : client.guilds.get("294115797326888961").channels.get(this.settings.channel) || void 0 },
   
   // Transforms a url into a video/playlist ID
   url(url) {
@@ -151,7 +143,7 @@ const m = {
     if (!(options instanceof Object))
       options = false;
     if(typeof id === "number" && this.settings.queue[id])
-      this.settings.np = ID;
+      this.settings.np = id, ID = id, id = this.settings.queue[id];
     else if(typeof id === "string" && id.length === 11)
       this.settings.queue.push({ id: id, user: user }), ID = this.settings.np = this.settings.queue.length - 1;
     else
@@ -190,7 +182,7 @@ const m = {
         if(this.settings.repeat || options && options.repeat)
           this.play(user, id, options);
         
-        
+        // Plays next song if requested
         else if(options && options.next && next)
           this.play(user, next, options ? options.options : undefined);
         
@@ -321,7 +313,7 @@ const m = {
         embed = new Discord.RichEmbed()
       .setColor(gFuncs.ecol)
       .setAuthor(`Now Playing "${vid.title}`, channel.guild.iconURL, vid.video_url)
-      .setDescription(`**Length:** ${gFuncs.time(vid.length_seconds * 1000)}\n**Requested By:** ${m.queue[id].user}\n\n${vid.description.slice(0, 500) + vid.description.length >= 500 ? "..." : ""}`)
+      .setDescription(`**Length:** ${gFuncs.time(vid.length_seconds * 1000)}\n**Requested By:** ${m.settings.queue[id].user}\n\n${vid.description.slice(0, 500) + vid.description.length >= 500 ? "..." : ""}`)
       .setThumbnail(vid.thumbnail_url)
     if(!message || message.author.id !== client.user.id)
       channel.send(embed);
