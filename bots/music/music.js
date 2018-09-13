@@ -251,7 +251,7 @@ const m = {
           
           let data = [];
           if(info && info.info) {
-            if(!info || ~~ info.results <= 1)
+            if(~~ info.results <= 1)
               data = m.sInfo(json.items[0]);
             else {
               do {
