@@ -222,7 +222,7 @@ const m = {
     return new Promise(function (resolve, reject) {
       
       // Search for results
-      request("https://www.googleapis.com/youtube/v3/search?part=id,snippet&type=video&maxResults=50&q=" + encodeURIComponent(search) + "&key=" + m.ytAk, async (error, response, body) => {
+      request("https://www.googleapis.com/youtube/v3/search?part=id,snippet&type=video&maxResults=50&q=" + encodeURIComponent(search) + "&key=" + m.ytAk, (error, response, body) => {
         var json = JSON.parse(body);
         
         // If it finds an error
@@ -235,6 +235,8 @@ const m = {
         
         // If all goes well...
         else {
+          
+          /*
           let vids = info && info.results > 1 ? json.items.splice(info.results).map(j => j.id.videoId) : json.items[0].id.videoId;
           
           if(info.add)
@@ -253,7 +255,7 @@ const m = {
               }
             }
             resolve(data);
-          }
+          }*/
         }
       });
     });
