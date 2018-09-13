@@ -221,6 +221,8 @@ const m = {
     });
     if(r.video_id)
       r.url = r.video_url = "https://www.youtube.com/watch?v=" + r.video_id;
+    
+    return r;
   },
   
   // Searches a video from YouTube and returns it... or adds it into the queue
