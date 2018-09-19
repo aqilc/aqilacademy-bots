@@ -244,8 +244,6 @@ const m = {
         
         // If all goes well...
         else {
-          
-          /*
           let vids = info && info.results > 1 ? json.items.splice(info.results).map(j => j.id.videoId) : json.items[0].id.videoId;
           
           if(info.add)
@@ -256,6 +254,7 @@ const m = {
           
           let data = [];
           if(info && info.info) {
+            request("https://www.googleapis.com/youtube/v3/search?part=id,snippet&type=video&maxResults=50&q=
             if(~~ info.results <= 1)
               data = m.sInfo(json.items[0]);
             else {
@@ -264,7 +263,7 @@ const m = {
               }
             }
             resolve(data);
-          }*/
+          }
         }
       });
     });
