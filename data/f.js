@@ -196,9 +196,6 @@ module.exports = {
         time = time.split(":");
         let hrs = 0, mins = 0, secs = 0;
         switch(time.length) {
-          case 1:
-            time = Number(time[0]);
-            break;
           case 2:
             time = (Number(time[0]) * 60 + Number(time[1])) * 1000;
             break;
@@ -211,7 +208,8 @@ module.exports = {
         
         if(isNaN(time))
           return false;
-      }
+      } else if(!isNaN(Number(time)))
+        time = Number(time);
     } else if(typeof time !== "number")
       return false;
     
@@ -223,19 +221,25 @@ module.exports = {
     let h = Math.floor(x % 24);
     x /= 24;
     let d = Math.floor(x);
+    
+    if(type === "s")
+      return time/1000;
+    if(type === "ms")
+      return time;
+    if(type === "m:s")
+      return m + ":" + s;
+    if(type === "h:m:s")
+      return h + ":" + m + ":" + 
 
     //Shortens the time message by clearing unnecessary things
     let timeStuff = "";
     if (d > 0){
       timeStuff += `${d} day${(d > 1 ? "s" : "") + ((h > 0 || m > 0 || s > 0) ? ", " : "")}, `;
-    }
-    if (h > 0){
+    } if (h > 0){
       timeStuff += `${h} hour${(h > 1 ? "s" : "") + ((m > 0 || s > 0) ? ", " : "")}`;
-    }
-    if (m > 0){
+    } if (m > 0){
       timeStuff += `${m} minute${(m > 1 ? "s" : "")  + (s > 0 ? ", " : "")}`;
-    }
-    if (s > 0) {
+    } if (s > 0) {
       timeStuff += `${(d > 0 || h > 0 || m > 0) ? "and " : ""}${s} second${s > 1 ? "s" : ""}`;
     }
     return timeStuff;
