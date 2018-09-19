@@ -173,10 +173,10 @@ module.exports = {
           time = time.slice(1);
         
         let str = time,
-            dys = gnfs(str.indexOf("DT"), str),
-            hrs = gnfs(str.indexOf("H"), str),
-            mns = gnfs(str.indexOf("M"), str),
-            scs = gnfs(str.indexOf("S"), str);
+            dys = gnfs(str, str.indexOf("DT")),
+            hrs = gnfs(str, str.indexOf("H")),
+            mns = gnfs(str, str.indexOf("M")),
+            scs = gnfs(str, str.indexOf("S"));
             time = 0;
         
         if(dys)
@@ -190,9 +190,9 @@ module.exports = {
         
         if(type === "ms")
           return time;
-        else if(type === "s")
+        if(type === "s")
           return Math.round(time / 1000);
-      } else {
+      } else if(time.includes(":")) {
         time = time.split(":");
         let hrs = 0, mins = 0, secs = 0;
         switch(time.length) {
