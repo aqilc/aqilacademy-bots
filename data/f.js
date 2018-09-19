@@ -136,8 +136,29 @@ module.exports = {
     else
       return false;
   },
-  time(milliseconds) {
-    let x = milliseconds / 1000;
+  time(time) {
+    if(typeof time === "string") {
+      if(time.startsWith("P")) {
+        
+      } else {
+        time = time.split(":");
+        switch(time.length) {
+          case 1:
+            time = Number(time[0]);
+            break;
+          case 2:
+            let mins = Number(time[0]), secs = Number(time[1]);
+            time = 0;
+            time += mins*60 + secs;
+            time *= 1000;
+            break;
+            case 3
+        }
+      }
+    } else if(typeof time !== "number")
+      return false;
+    
+    let x = time / 1000;
     let s = Math.floor(x % 60);
     x /= 60;
     let m = Math.floor(x % 60);
