@@ -136,24 +136,29 @@ module.exports = {
     else
       return false;
   },
-  time(time) {
+  time(time, type) {
     if(typeof time === "string") {
       if(time.startsWith("P")) {
         
       } else {
         time = time.split(":");
+        let hrs = 0, mins = 0, secs = 0;
         switch(time.length) {
           case 1:
             time = Number(time[0]);
             break;
           case 2:
-            let mins = Number(time[0]), secs = Number(time[1]);
-            time = 0;
-            time += mins*60 + secs;
-            time *= 1000;
+            time = (Number(time[0]) * 60 + Number(time[1])) * 1000;
             break;
-            case 3
+          case 3:
+            time = (Number(time[0]) * 3600 + Number(time[1]) * 60 + Number(time[2])) * 1000;
+            break;
+          default:
+            return false;
         }
+        
+        if(isNaN(time))
+          return false;
       }
     } else if(typeof time !== "number")
       return false;
@@ -190,9 +195,6 @@ module.exports = {
       return `${(bytes/1000).toFixed(1)} KB`;
     else
       return `${bytes} bytes`;
-  },
-  iso_convert(str) {
-    
   },
   
   // Discord stuff
