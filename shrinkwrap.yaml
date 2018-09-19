@@ -4,6 +4,7 @@ dependencies:
   discord.js: 11.4.2
   events: 3.0.0
   express: 4.16.3
+  moment: 2.22.2
   node-opus: 0.3.0
   p5: 0.7.1
   request: 2.88.0
@@ -864,6 +865,10 @@ packages:
     resolution:
       integrity: sha1-MAV0OOrGz3+MR2fzhkjWaX11yQM=
       tarball: 'http://registry.npmjs.org/mkdirp/-/mkdirp-0.5.1.tgz'
+  /moment/2.22.2:
+    dev: false
+    resolution:
+      integrity: sha1-PCV/mDn8DpP/UxSWMiOeuQeD/2Y=
   /ms/2.0.0:
     dev: false
     resolution:
@@ -1602,6 +1607,7 @@ specifiers:
   discord.js: ^11.4.2
   events: ^3.0.0
   express: ^4.16.3
+  moment: ^2.22.2
   node-opus: ^0.3.0
   p5: ^0.7.2
   request: ^2.88.0
