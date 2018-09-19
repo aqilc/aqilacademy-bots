@@ -200,7 +200,7 @@ const m = {
         else return undefined;
       }
       return v;
-    }; function set(arr) {
+    } function set(arr) {
       if(arr[0] instanceof Array) {
         arr[0].forEach(t => {
           if(get_val(arr[1]))
@@ -208,6 +208,8 @@ const m = {
         });
       } else if(get_val(arr[1]))
         r[arr[0]] = get_val(arr[1]);
+    } function vidInfo(obj) {
+      
     };
     switch (info.kind) {
       case "youtube#videoListResponse":
@@ -254,7 +256,9 @@ const m = {
           
           let data = [];
           if(info && info.info) {
-            request("https://www.googleapis.com/youtube/v3/search?part=id,snippet&type=video&maxResults=50&q=
+            request("https://www.googleapis.com/youtube/v3/videos?part=id,snippet,contentDetails,statistics&id=" + (typeof vids === "string" ? vids : vids.join(",")) + "&key=" + m.ytAk, (err, res, bod) => {
+              
+            });/*
             if(~~ info.results <= 1)
               data = m.sInfo(json.items[0]);
             else {
@@ -262,7 +266,7 @@ const m = {
                 data.push(m.sInfo(json.items[data.length]));
               }
             }
-            resolve(data);
+            resolve(data);*/
           }
         }
       });
