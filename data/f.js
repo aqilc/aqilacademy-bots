@@ -1,6 +1,7 @@
 const db = new (require("sqlite3").verbose()).Database('./.data/sqlite.db');
 const cdata = require("./d.js");
 const fs = require("fs");
+const moment = require("moment");
 const https = require("https");
 
 module.exports = {
@@ -170,9 +171,6 @@ module.exports = {
       return `${bytes} bytes`;
   },
   iso_convert(str) {
-    if(!str.startsWith("PT"))
-      return false;
-    str = str.slice(2);
     
   },
   
