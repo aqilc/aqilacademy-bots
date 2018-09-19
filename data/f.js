@@ -137,6 +137,8 @@ module.exports = {
       return false;
   },
   time(time, type) {
+    if(type)
+      type = type.toLowerCase();
     
     function gnfs(str, num) {
       if(num < 1)
@@ -155,7 +157,7 @@ module.exports = {
         return !isNaN(Number(nstr.slice(1))) ? Number(nstr.slice(1)) : false
       } else {
         for(let i = 0; i < nstr.length; i ++) {
-          let strn = nstr.slice(nstr.length - i);
+          let strn = nstr.slice(i);
           if(!isNaN(Number(strn)))
             return Number(strn);
         }
@@ -177,7 +179,7 @@ module.exports = {
             hrs = gnfs(str, str.indexOf("H")),
             mns = gnfs(str, str.indexOf("M")),
             scs = gnfs(str, str.indexOf("S"));
-            time = 0;
+        time = 0;
         
         if(dys)
           time += dys * 8.64e7;
@@ -229,7 +231,7 @@ module.exports = {
     if(type === "m:s")
       return m + ":" + s;
     if(type === "h:m:s")
-      return h + ":" + m + ":" + 
+      return h + ":" + m + ":" + s;
 
     //Shortens the time message by clearing unnecessary things
     let timeStuff = "";
