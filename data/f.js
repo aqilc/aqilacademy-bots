@@ -138,8 +138,26 @@ module.exports = {
   },
   time(time, type) {
     
-    function gnfs(num) {
-      if(num === -1)
+    function gnfs(str, num) {
+      if(num < 1)
+        return false;
+      
+      let ntg = num;
+      if(ntg > 3)
+        ntg = 3;
+      
+      let nstr = str.slice(num - ntg, num);
+      if(nstr.length === 1)
+        return !isNaN(Number(nstr)) ? Number(nstr) : false;
+      else if(nstr.length === 2) {
+        if(!isNaN(Number(nstr)))
+          return Number(nstr);
+        return !isNaN(Number(nstr.slice(1))) ? Number(nstr.slice(1)) : false
+      } else {
+        for(let i = 0; i < nstr.length; i ++) {
+          let strnstr.slice(nstr.length - i)
+        }
+      }
     }
     if(!time)
       return { gnfs: gnfs };
