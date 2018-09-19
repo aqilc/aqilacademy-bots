@@ -169,6 +169,12 @@ module.exports = {
     else
       return `${bytes} bytes`;
   },
+  iso_convert(str) {
+    if(!str.startsWith("PT"))
+      return false;
+    str = str.slice(2);
+    
+  },
   
   // Discord stuff
   has_roles(member, role_name = ["Moderator"]) {

@@ -209,7 +209,7 @@ const m = {
       } else if(get_val(arr[1]))
         r[arr[0]] = get_val(arr[1]);
     } function vidInfo(obj) {
-      
+      [[["vid", "video_id"], "id"], ["thumbnail", "snippet.thumbnails.high.url"], ["title", "snippet.title"], ["description", "snippet.description"], ["channel", "channelTitle"], ["length_seconds", "contentDetails.duration].forEach(set);
     };
     switch (info.kind) {
       case "youtube#videoListResponse":
