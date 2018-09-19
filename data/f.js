@@ -137,9 +137,30 @@ module.exports = {
       return false;
   },
   time(time, type) {
+    
+    function gnfs(num) {
+      if(num === -1)
+    }
+    if(!time)
+      return { gnfs: gnfs };
+    
     if(typeof time === "string") {
-      if(time.startsWith("P")) {
+      if(time[0] === "P") {
+        if(time.startsWith("PT")) {
+          time = time.slice(2);
+        } else
+          time = time.slice(1);
         
+        time = 0;
+        let str = time,
+            dys = time.indexOf("DT") !== -1 ? ,
+            hrs = time.indexOf("H"),
+            mns = time.indexOf("M"),
+            scs = time.indexOf("S");
+        
+        if(dys !== -1)
+          time += dys * 8.64e7;
+        if(
       } else {
         time = time.split(":");
         let hrs = 0, mins = 0, secs = 0;
