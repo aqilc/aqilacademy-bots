@@ -155,8 +155,11 @@ module.exports = {
         return !isNaN(Number(nstr.slice(1))) ? Number(nstr.slice(1)) : false
       } else {
         for(let i = 0; i < nstr.length; i ++) {
-          let strnstr.slice(nstr.length - i)
+          let strn = nstr.slice(nstr.length - i);
+          if(!isNaN(Number(strn)))
+            return Number(strn);
         }
+        return false;
       }
     }
     if(!time)
@@ -169,16 +172,26 @@ module.exports = {
         } else
           time = time.slice(1);
         
-        time = 0;
         let str = time,
-            dys = time.indexOf("DT") !== -1 ? ,
-            hrs = time.indexOf("H"),
-            mns = time.indexOf("M"),
-            scs = time.indexOf("S");
+            dys = gnfs(str.indexOf("DT"), str),
+            hrs = gnfs(str.indexOf("H"), str),
+            mns = gnfs(str.indexOf("M"), str),
+            scs = gnfs(str.indexOf("S"), str);
+            time = 0;
         
-        if(dys !== -1)
+        if(dys)
           time += dys * 8.64e7;
-        if(
+        if(hrs)
+          time += hrs * 3.6e6;
+        if(mns)
+          time += mns * 6e4;
+        if(scs)
+          time += scs * 1e3;
+        
+        if(type === "ms")
+          return time;
+        else if(type === "s")
+          return Math.round(time / 1000);
       } else {
         time = time.split(":");
         let hrs = 0, mins = 0, secs = 0;
