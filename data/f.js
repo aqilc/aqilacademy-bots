@@ -164,6 +164,12 @@ module.exports = {
         return false;
       }
     }
+    function dbldigit(num) {
+      if(isNaN(Number(num)))
+        return false;
+      
+      return Number(String(num).length
+    }
     if(!time)
       return { gnfs: gnfs };
     
@@ -224,14 +230,13 @@ module.exports = {
     x /= 24;
     let d = Math.floor(x);
     
-    if(type === "s")
-      return time/1000;
-    if(type === "ms")
-      return time;
-    if(type === "m:s")
-      return m + ":" + s;
-    if(type === "h:m:s")
-      return h + ":" + m + ":" + s;
+    if(typeof type === "string") {
+      let str = type;
+      if(type.includes("s"))
+        str = str.replace(/(s|S)/g, time / 1000);
+      if(type === "ms")
+        str = str.replace(/(ms|MS)/g, time);
+    }
 
     //Shortens the time message by clearing unnecessary things
     let timeStuff = "";
