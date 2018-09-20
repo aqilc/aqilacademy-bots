@@ -168,10 +168,10 @@ module.exports = {
       if(isNaN(Number(num)))
         return false;
       
-      return Number(String(num).length
+      return Number(String(num).length === 1 ? "0" + num : num.slice(-2, num.length));
     }
     if(!time)
-      return { gnfs: gnfs };
+      return { gnfs, dbldigit };
     
     if(typeof time === "string") {
       if(time[0] === "P") {
@@ -240,16 +240,15 @@ module.exports = {
 
     //Shortens the time message by clearing unnecessary things
     let timeStuff = "";
-    if (d > 0){
+    if (d > 0) {
       timeStuff += `${d} day${(d > 1 ? "s" : "") + ((h > 0 || m > 0 || s > 0) ? ", " : "")}, `;
-    } if (h > 0){
+    } if (h > 0) {
       timeStuff += `${h} hour${(h > 1 ? "s" : "") + ((m > 0 || s > 0) ? ", " : "")}`;
-    } if (m > 0){
+    } if (m > 0) {
       timeStuff += `${m} minute${(m > 1 ? "s" : "")  + (s > 0 ? ", " : "")}`;
     } if (s > 0) {
       timeStuff += `${(d > 0 || h > 0 || m > 0) ? "and " : ""}${s} second${s > 1 ? "s" : ""}`;
-    }
-    return timeStuff;
+    } return timeStuff;
   },
   bytes(bytes) {
     if(bytes > 1000000)
@@ -292,7 +291,7 @@ module.exports = {
       return person;
     
     return person.id;
-  },
+  },// Gets the ID of 
   get ecol() {
     return Math.round(Math.random() * 16777215);
   },
