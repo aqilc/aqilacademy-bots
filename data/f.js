@@ -220,7 +220,9 @@ module.exports = {
     } else if(typeof time !== "number")
       return false;
     
-    let x = time / 1000;
+    let x = time;
+    let ms = Math.floor(x % 1000);
+    x /= 1000;
     let s = Math.floor(x % 60);
     x /= 60;
     let m = Math.floor(x % 60);
@@ -230,17 +232,27 @@ module.exports = {
     let d = Math.floor(x);
     
     if(typeof type === "string") {
+      if(type === "s")
+        return Math.round(time / 1000);
+      if(type === "ms")
+        return time;
+      
       let str = type;
       
-        str = str.replace(/hh/g, dbldigit(h));
-        str = str.replace(/mm/g, dbldigit(m));
-        str = str.replace(/ss/g, dbldigit(s));
-        str = str.replace(/h/g, h);
-        str = str.replace(/m/g, m);
-        str = str.replace(/s/g, s);
+      str = str.replace(/hh/g, dbldigit(h));
+      str = str.replace(/mm/g, dbldigit(m));
+      str = str.replace(/ss/g, dbldigit(s));
+      str = str.replace(/h/g, h);
+      str = str.replace(/m/g, m);
+      str = str.replace(/s/g, s);
+      str = str.replace(/ms/g, ms);
+      str = str.replace(/H/g, time / 3.6e6);
+      str = str.replace(/M/g, time / 6e5);
+      str = str.replace(/S/g, time / 1000);
+      str = str.replace(/MS/g, time);
       
-      if(type === "ms")
-        str = str.replace(/(ms|MS)/g, time);
+      if(str !== type)
+        return str;
     }
 
     //Shortens the time message by clearing unnecessary things
