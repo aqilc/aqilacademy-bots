@@ -268,7 +268,7 @@ module.exports = {
         return false;
     }
     return true;
-  },// Checks if a user has the roles
+  },// Checks if a user has the roles.
   get_id(msg, text, per) {
     if(!text || text === "")
       return false;
@@ -291,16 +291,16 @@ module.exports = {
       return person;
     
     return person.id;
-  },// Gets the ID of 
+  },// Gets the ID of a member form a name.
   get ecol() {
     return Math.round(Math.random() * 16777215);
-  },
+  },// Randomizes a color for a discord embed
   eclean(string) {
     if (typeof(string) === "string")
       return string.replace(/`/g, "`" + String.fromCharCode(8203)).replace(/@/g, "@" + String.fromCharCode(8203));
     else
       return string;
-  },
+  },// cleans Eval
   
   // Gets JSON from a URL
   parseURL(url) {
