@@ -200,16 +200,20 @@ const m = {
         else return undefined;
       }
       return v;
-    } function set(arr) {
+    } function set(arr, v) {
+      let val = v || r;
       if(arr[0] instanceof Array) {
         arr[0].forEach(t => {
           if(get_val(arr[1]))
-            r[t] = get_val(arr[1]);
+            val[t] = get_val(arr[1]);
         });
       } else if(get_val(arr[1]))
-        r[arr[0]] = get_val(arr[1]);
+        val[arr[0]] = get_val(arr[1]);
+      if(!v)
+        r = val;
+      return val;
     } function vidInfo(obj) {
-      [[["vid", "video_id"], "id"], ["thumbnail", "snippet.thumbnails.high.url"], ["title", "snippet.title"], ["description", "snippet.description"], ["channel", "channelTitle"], ["length_seconds", "contentDetails.duration"]].forEach(set);
+      let arr = [[["vid", "video_id"], "id"], ["thumbnail", "snippet.thumbnails.high.url"], ["title", "snippet.title"], ["description", "snippet.description"], ["channel", "channelTitle"], ["length_seconds", "contentDetails.duration"]].map(set);
     };
     switch (info.kind) {
       case "youtube#videoListResponse":
