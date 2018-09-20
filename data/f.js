@@ -1,7 +1,6 @@
 const db = new (require("sqlite3").verbose()).Database('./.data/sqlite.db');
 const cdata = require("./d.js");
 const fs = require("fs");
-const moment = require("moment");
 const https = require("https");
 
 module.exports = {
@@ -61,7 +60,7 @@ module.exports = {
       });
     });
   },
-  add_exp: (id, exp) => {
+  add_exp(id, exp) {
     db.get(`SELECT * FROM users WHERE id = "${id}"`, (err, res) => {
       if(!res)
         return console.log("Created user: " + id) && db.run(`INSERT INTO users (id, points, realpoints, messages, created) VALUES ("${id}", 0, 0, 0, ${new Date().valueOf()})`);
@@ -168,7 +167,7 @@ module.exports = {
       if(isNaN(Number(num)))
         return false;
       
-      return Number(String(num).length === 1 ? "0" + num : num.slice(-2, num.length));
+      return String(num).length === 1 ? "0" + num : String(num).slice(-2, String(num).length);
     }
     if(!time)
       return { gnfs, dbldigit };
@@ -232,8 +231,14 @@ module.exports = {
     
     if(typeof type === "string") {
       let str = type;
-      if(type.includes("s"))
-        str = str.replace(/(s|S)/g, time / 1000);
+      
+        str = str.replace(/hh/g, dbldigit(h));
+        str = str.replace(/mm/g, dbldigit(m));
+        str = str.replace(/ss/g, dbldigit(s));
+        str = str.replace(/h/g, h);
+        str = str.replace(/m/g, m);
+        str = str.replace(/s/g, s);
+      
       if(type === "ms")
         str = str.replace(/(ms|MS)/g, time);
     }
