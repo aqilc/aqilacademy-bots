@@ -276,11 +276,20 @@ const m = {
     });
   },
   
-  // Gets some info on a video
+  // Gets some info on videos
   info(vids, callback) {
     request("https://www.googleapis.com/youtube/v3/videos?part=id,snippet,contentDetails,statistics&id=" + (typeof vids === "string" ? vids : vids.join(",")) + "&key=" + this.ytAk, (error, res, body) => {
-      let vals = []; info = JSON.parse(body);
-      
+      let vals = [],
+          info = JSON.parse(body),
+          gv = gFuncs.get_val;
+      for(let i = 0; i < info.items.length; i ++) {
+        let obj = {}, val = info.items[i];
+        with(obj) {
+          
+        }
+      }
+      callback(vals);
+      return vals;
     });
   },
   
