@@ -283,12 +283,14 @@ const m = {
           info = JSON.parse(body),
           gv = gFuncs.get_val;
       for(let i = 0; i < info.items.length; i ++) {
-        let obj = {}, val = info.items[i];
-        with(obj) {
-          
-        }
+        let obj = {}, val = info.items[i],
+            items = [["views", "statistics.views"],
+                    ["thumbnail", "snippet.thumb];
+        
+        vals.push(obj);
       }
-      callback(vals);
+      if(callback)
+        callback(vals);
       return vals;
     });
   },
