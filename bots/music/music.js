@@ -213,7 +213,7 @@ const m = {
         r = val;
       return val;
     } function vidInfo(obj) {
-      let arr = [[["vid", "video_id"], "id"], ["thumbnail", "snippet.thumbnails.high.url"], ["title", "snippet.title"], ["description", "snippet.description"], ["channel", "channelTitle"], ["length_seconds", "contentDetails.duration"]].map(set);
+      let arr = [[["vid", "video_id"], "id"], ["thumbnail", "snippet.thumbnails.high.url"], ["title", "snippet.title"], ["description", "snippet.description"], ["channel", "channelTitle"], ["length_seconds", "contentDetails.duration"]].map(a => set(a, {}));
     };
     switch (info.kind) {
       case "youtube#videoListResponse":
