@@ -284,8 +284,17 @@ const m = {
           gv = gFuncs.get_val;
       for(let i = 0; i < info.items.length; i ++) {
         let obj = {}, val = info.items[i],
-            items = [["views", "statistics.views"],
-                    ["thumbnail", "snippet.thumb];
+            items = {
+              view_count: "statistics.views", views: "statistics.views",
+              likes: "statist
+              thumbnail: "snippet.thumbnail.high.url", "thumbnail_url": "snippet.thumbnail.high.url",
+              id: "id", "vid": "id", "video_id": "id",
+              title: "snippet.title",
+              description: "snippet.description",
+              channel: "snippet.channelTitle",
+              duration: "contentDetails.duration", length_seconds: "contentDetails.duration", length: "contentDetails.duration",
+              
+            };
         
         vals.push(obj);
       }
