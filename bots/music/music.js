@@ -286,16 +286,22 @@ const m = {
         let obj = {}, val = info.items[i],
             items = {
               view_count: "statistics.views", views: "statistics.views",
-              likes: "statist
-              thumbnail: "snippet.thumbnail.high.url", "thumbnail_url": "snippet.thumbnail.high.url",
-              id: "id", "vid": "id", "video_id": "id",
+              likes: "statistics.likeCount",
+              dislikes: "statistics.dislikeCount",
+              thumbnail: "snippet.thumbnail.high.url", thumbnail_url: "snippet.thumbnail.high.url",
+              id: "id", vid: "id", video_id: "id",
               title: "snippet.title",
               description: "snippet.description",
               channel: "snippet.channelTitle",
+              channelId: "snippet.channelId",
               duration: "contentDetails.duration", length_seconds: "contentDetails.duration", length: "contentDetails.duration",
-              
+              tags: "snippet.tags",
             };
-        
+        for(let j in items) {
+          obj[j] = gv(items[j]);
+        }
+        if(obj.duration && obj.length_seconds && obj.length)
+          obj.duration = obj.length_seconds = obj.length = gFuncs.time(info);
         vals.push(obj);
       }
       if(callback)
