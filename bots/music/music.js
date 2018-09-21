@@ -11,9 +11,6 @@ const prefix = ["a."];
 const data = require("/app/data/d.js");
 const gFuncs = require("/app/data/f.js");
 
-// So undefined stays undefined
-undefined = void 0;
-
 // Database stuff
 const sqlite3 = require("sqlite3").verbose();
 const db = new sqlite3.Database('./.data/sqlite.db');
@@ -214,6 +211,8 @@ const m = {
       return val;
     } function vidInfo(obj) {
       let arr = [[["vid", "video_id"], "id"], ["thumbnail", "snippet.thumbnails.high.url"], ["title", "snippet.title"], ["description", "snippet.description"], ["channel", "channelTitle"], ["length_seconds", "contentDetails.duration"]].map(a => set(a, {}));
+      if(arr.length_seconds)
+        arr.length_seconds = gFuncs.time(arr.length_seconds);
     };
     switch (info.kind) {
       case "youtube#videoListResponse":
