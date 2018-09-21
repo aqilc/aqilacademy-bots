@@ -277,10 +277,11 @@ const m = {
   },
   
   // Gets some info on a video
-  info(id) {
-    if(!yt.validateID(id))
-      return new Promise((res, rej) => rej("Invalid ID"));
-    return yt.getInfo("https://www.youtube.com/watch?v=" + id);
+  info(vids, callback) {
+    request("https://www.googleapis.com/youtube/v3/videos?part=id,snippet,contentDetails,statistics&id=" + (typeof vids === "string" ? vids : vids.join(",")) + "&key=" + this.ytAk, (error, res, body) => {
+      let vals = []; info = JSON.parse(body);
+      
+    });
   },
   
   // Adds a song to queue

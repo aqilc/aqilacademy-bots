@@ -275,6 +275,15 @@ module.exports = {
     else
       return `${bytes} bytes`;
   },
+  get_val(obj, str) {
+      let v = obj; str = str.split(".");
+      for(let i = 0; i < str.length; i ++) {
+        if(v[str[i]])
+          v = v[str[i]];
+        else return undefined;
+      }
+      return v;
+    },
   
   // Discord stuff
   has_roles(member, role_name = ["Moderator"]) {
