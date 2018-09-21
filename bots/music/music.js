@@ -219,7 +219,7 @@ const m = {
         
         break;
       case "youtube#searchResult":
-        [[["vid", "video_id"], "id.videoId"], ["thumbnail", "snippet.thumbnails.high.url"], ["title", "snippet.title"], ["description", "snippet.description"], ["channel", "channelTitle"]].forEach(set);
+        [[["vid", "video_id"], "id.videoId"], ["thumbnail", "snippet.thumbnails.high.url"], ["title", "snippet.title"], ["description", "snippet.description"], ["channel", "channelTitle"], ["views", "statistics.views"]].forEach(set);
         if(r.video_id)
           r.url = r.video_url = "https://www.youtube.com/watch?v=" + r.video_id;
         break;
