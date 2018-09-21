@@ -278,7 +278,12 @@ const m = {
   
   // Gets some info on videos
   info(vids, callback) {
+    
     request("https://www.googleapis.com/youtube/v3/videos?part=id,snippet,contentDetails,statistics&id=" + (typeof vids === "string" ? vids : vids.join(",")) + "&key=" + this.ytAk, (error, res, body) => {
+      if(res.status !== 200)
+        throw new Error(body, res.status);
+      if("error" in body)
+        throw new Error(body, res.status);
       let vals = [],
           info = JSON.parse(body),
           gv = gFuncs.get_val;
@@ -301,7 +306,7 @@ const m = {
           obj[j] = gv(items[j]);
         }
         if(obj.duration && obj.length_seconds && obj.length)
-          obj.duration = obj.length_seconds = obj.length = gFuncs.time(info);
+          obj.duration = obj.length_seconds = obj.length = gFuncs.time(val.contentDetails.duration);
         vals.push(obj);
       }
       if(callback)
