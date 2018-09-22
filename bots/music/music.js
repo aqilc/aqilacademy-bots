@@ -279,9 +279,7 @@ const m = {
   // Gets some info on videos
   info(vids, callback) {
     return new Promise((res, rej) => {
-      request("https://www.googleapis.com/youtube/v3/videos?part=id,snippet,contentDetails,statistics&id=" + (typeof vids === "string" ? vids : vids.join(",")) + "&key=" + this.ytAk, (error, res, body) => {
-        if(res.status !== 200)
-          rej(new Error(res.status, body));
+      request("https://www.googleapis.com/youtube/v3/videos?part=id,snippet,contentDetails,statistics&id=" + (typeof vids === "string" ? vids : vids.join(",")) + "&key=" + this.ytAk, (error, response, body) => {
         let vals = [],
             info = JSON.parse(body),
             gv = gFuncs.get_val;
@@ -304,13 +302,13 @@ const m = {
                 tags: "snippet.tags",
               };
           for(let j in items) {
-            obj[j] = gv(items[j]);
+            obj[j] = gv(val, items[j]);
           }
           if(obj.duration && obj.length_seconds && obj.length)
             obj.duration = obj.length_seconds = obj.length = gFuncs.time(val.contentDetails.duration);
           vals.push(obj);
         }
-        if(callback)
+        if(typeof callback === "funct)
           callback(vals);
         res(vals);
       });
