@@ -26,7 +26,7 @@ function run() {
 
   // Client Events
   client.on("ready", () => console.log(`${client.user.tag} ID: ${client.user.id} logged in at ${new Date().toUTCString()}`));
-  client.on("message", msg => {
+  client.on("message", async msg => {
     
     // Lets the admins run code through the bot
     if(msg.content.startsWith("a:")) {
