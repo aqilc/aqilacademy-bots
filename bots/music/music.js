@@ -186,51 +186,6 @@ const m = {
       });
   },
   
-  // Renders info from a search snippet
-  sInfo(info) {
-    let r = {};
-    function get_val(str) {
-      let v = info; str = str.split(".");
-      for(let i = 0; i < str.length; i ++) {
-        if(v[str[i]])
-          v = v[str[i]];
-        else return undefined;
-      }
-      return v;
-    } function set(arr, v) {
-      let val = v || r;
-      if(arr[0] instanceof Array) {
-        arr[0].forEach(t => {
-          if(get_val(arr[1]))
-            val[t] = get_val(arr[1]);
-        });
-      } else if(get_val(arr[1]))
-        val[arr[0]] = get_val(arr[1]);
-      if(!v)
-        r = val;
-      return val;
-    } function vidInfo(obj) {
-      let arr = [[["vid", "video_id"], "id"], ["thumbnail", "snippet.thumbnails.high.url"], ["title", "snippet.title"], ["description", "snippet.description"], ["channel", "channelTitle"], ["length_seconds", "contentDetails.duration"]].map(a => set(a, {}));
-      if(arr.length_seconds)
-        arr.length_seconds = gFuncs.time(arr.length_seconds);
-    };
-    switch (info.kind) {
-      case "youtube#videoListResponse":
-        
-        break;
-      case "youtube#searchResult":
-        [[["vid", "video_id"], "id.videoId"], ["thumbnail", "snippet.thumbnails.high.url"], ["title", "snippet.title"], ["description", "snippet.description"], ["channel", "channelTitle"], ["views", "statistics.views"]].forEach(set);
-        if(r.video_id)
-          r.url = r.video_url = "https://www.youtube.com/watch?v=" + r.video_id;
-        break;
-        
-      default:
-        throw new Error("Invalid information inputted into the `sInfo` function");
-    }
-
-    return r;
-  },
-  
   // Searches a video from YouTube and returns it... or adds it into the queue
   search(msg, search, info = { results: 1, add: false, info: false }) {
     return new Promise(function (resolve, reject) {
@@ -258,27 +213,17 @@ const m = {
             resolve(vids);
           
           let data = [];
-          if(info && info.info) {
-            request("https://www.googleapis.com/youtube/v3/videos?part=id,snippet,contentDetails,statistics&id=" + (typeof vids === "string" ? vids : vids.join(",")) + "&key=" + m.ytAk, (err, res, bod) => {
-              
-            });/*
-            if(~~ info.results <= 1)
-              data = m.sInfo(json.items[0]);
-            else {
-              while (data.length < info.results) {
-                data.push(m.sInfo(json.items[data.length]));
-              }
-            }
-            resolve(data);*/
-          }
+          if(info && info.info)
+            m.info(vids, resolve);
         }
       });
     });
   },
   
   // Gets some info on videos
-  info(vids, callback) {
-    return new Promise((res, rej) => {
+  info(vids, callback, type) {
+    if(!type)
+      return new Promise((res, rej) => {
       request("https://www.googleapis.com/youtube/v3/videos?part=id,snippet,contentDetails,statistics&id=" + (typeof vids === "string" ? vids : vids.join(",")) + "&key=" + this.ytAk, (error, response, body) => {
         let vals = [],
             info = JSON.parse(body),
@@ -308,11 +253,14 @@ const m = {
             obj.duration = obj.length_seconds = obj.length = gFuncs.time(val.contentDetails.duration);
           vals.push(obj);
         }
-        if(typeof callback === "funct)
+        if(typeof callback === "function")
           callback(vals);
         res(vals);
       });
     });
+    
+    else
+      return yt.getInfo("https://www.youtube.com/watch?v=" + vids);
   },
   
   // Adds a song to queue
