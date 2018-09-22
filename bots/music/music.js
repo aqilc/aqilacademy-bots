@@ -278,40 +278,42 @@ const m = {
   
   // Gets some info on videos
   info(vids, callback) {
-    
-    request("https://www.googleapis.com/youtube/v3/videos?part=id,snippet,contentDetails,statistics&id=" + (typeof vids === "string" ? vids : vids.join(",")) + "&key=" + this.ytAk, (error, res, body) => {
-      if(res.status !== 200)
-        throw new Error(body, res.status);
-      if("error" in body)
-        throw new Error(body, res.status);
-      let vals = [],
-          info = JSON.parse(body),
-          gv = gFuncs.get_val;
-      for(let i = 0; i < info.items.length; i ++) {
-        let obj = {}, val = info.items[i],
-            items = {
-              view_count: "statistics.views", views: "statistics.views",
-              likes: "statistics.likeCount",
-              dislikes: "statistics.dislikeCount",
-              thumbnail: "snippet.thumbnail.high.url", thumbnail_url: "snippet.thumbnail.high.url",
-              id: "id", vid: "id", video_id: "id",
-              title: "snippet.title",
-              description: "snippet.description",
-              channel: "snippet.channelTitle",
-              channelId: "snippet.channelId",
-              duration: "contentDetails.duration", length_seconds: "contentDetails.duration", length: "contentDetails.duration",
-              tags: "snippet.tags",
-            };
-        for(let j in items) {
-          obj[j] = gv(items[j]);
+    return new Promise((res, rej) => {
+      request("https://www.googleapis.com/youtube/v3/videos?part=id,snippet,contentDetails,statistics&id=" + (typeof vids === "string" ? vids : vids.join(",")) + "&key=" + this.ytAk, (error, res, body) => {
+        if(res.status !== 200)
+          rej(new Error(res.status, body));
+        let vals = [],
+            info = JSON.parse(body),
+            gv = gFuncs.get_val;
+        if("error" in info)
+          rej(new Error(res.status, body));
+        for(let i = 0; i < info.items.length; i ++) {
+          let obj = {}, val = info.items[i],
+              items = {
+                publishedAt: "statistics.publishedAt",
+                view_count: "statistics.views", views: "statistics.views",
+                likes: "statistics.likeCount",
+                dislikes: "statistics.dislikeCount",
+                thumbnail: "snippet.thumbnail.high.url", thumbnail_url: "snippet.thumbnail.high.url",
+                id: "id", vid: "id", video_id: "id",
+                title: "snippet.title",
+                description: "snippet.description",
+                channel: "snippet.channelTitle",
+                channelId: "snippet.channelId",
+                duration: "contentDetails.duration", length_seconds: "contentDetails.duration", length: "contentDetails.duration",
+                tags: "snippet.tags",
+              };
+          for(let j in items) {
+            obj[j] = gv(items[j]);
+          }
+          if(obj.duration && obj.length_seconds && obj.length)
+            obj.duration = obj.length_seconds = obj.length = gFuncs.time(val.contentDetails.duration);
+          vals.push(obj);
         }
-        if(obj.duration && obj.length_seconds && obj.length)
-          obj.duration = obj.length_seconds = obj.length = gFuncs.time(val.contentDetails.duration);
-        vals.push(obj);
-      }
-      if(callback)
-        callback(vals);
-      return vals;
+        if(callback)
+          callback(vals);
+        res(vals);
+      });
     });
   },
   
