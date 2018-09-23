@@ -295,29 +295,6 @@ module.exports = {
     }
     return true;
   },// Checks if a user has the roles.
-  get_id(msg, text, per) {
-    if(!text || text === "")
-      return false;
-    if(text === "me")
-      return msg.author.id;
-
-    let id = text.replace(/[^0-9]/g, ""), person;
-    if(id.length === 18)
-      return id;
-    else if(text.includes("#") && text.split("#")[1].trim().length === 4)
-      person = msg.guild.members.array().filter(m => m.user.tag.toLowerCase() === text.toLowerCase())[0];
-    else {
-      person = msg.guild.members.array().filter(m => m.user.username.toLowerCase() === text.toLowerCase() || (m.nickname ? m.nickname : "").toLowerCase() === text.toLowerCase())[0];
-      if(!person)
-        person = msg.guild.members.array().filter(m => m.user.username.toLowerCase().startsWith(text.toLowerCase()) || (m.nickname ? m.nickname.toLowerCase().startsWith(text.toLowerCase()) : false))[0];
-    }
-    
-    // If it asks for the entire user object
-    if(per)
-      return person;
-    
-    return person.id;
-  },// Gets the ID of a member form a name.
   get ecol() {
     return Math.round(Math.random() * 16777215);
   },// Randomizes a color for a discord embed
