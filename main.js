@@ -113,6 +113,9 @@ app.put("/db/set/users/:id", (req, res) => {
   res.redirect("/");
 });
 
+// Process calls
+process.on('unhandledRejection', error => console.error('Uncaught Promise Rejection', error));
+
 /*
 const path = require('path');
 const directoryPath = path.join(__dirname, 'data');
