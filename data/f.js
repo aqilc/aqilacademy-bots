@@ -284,6 +284,29 @@ module.exports = {
       }
       return v;
     },
+  get_id(msg, text, per) {
+    if(!text || text === "")
+      return false;
+    
+    let id = text.replace(/[^0-9]/g, ""), person;
+    if(id.length === 18)
+      return id;
+    else if(text.includes("#") && text.split("#")[1].trim().length === 4)
+      person = msg.guild.members.array().filter(m => m.user.tag.toLowerCase() === text.toLowerCase())[0];
+    else {
+      person = msg.guild.members.array().filter(m => m.user.username.toLowerCase() === text.toLowerCase() || (m.nickname ? m.nickname : "").toLowerCase() === text.toLowerCase())[0];
+      if(!person)
+        person = msg.guild.members.array().filter(m => m.user.username.toLowerCase().startsWith(text.toLowerCase()) || (m.nickname ? m.nickname.toLowerCase().startsWith(text.toLowerCase()) : false))[0];
+    }
+    
+    // If it asks for the entire user object
+    if(per === "u")
+      return person.user;
+    if(per)
+      return person;
+    
+    return person.id;
+  },// Gets the ID or object of a member form a name.
   
   // Discord stuff
   has_roles(member, role_name = ["Moderator"]) {
