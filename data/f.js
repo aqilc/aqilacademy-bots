@@ -284,6 +284,26 @@ module.exports = {
       }
       return v;
     },
+  
+  // Discord stuff
+  has_roles(member, role_name = ["Moderator"]) {
+    if(typeof role_name === "string")
+      role_name = [role_name];
+    for(let i of role_name) {
+      if(!member.roles.map(r => r.name).includes(i))
+        return false;
+    }
+    return true;
+  },// Checks if a user has the roles.
+  get ecol() {
+    return Math.round(Math.random() * 16777215);
+  },// Randomizes a color for a discord embed
+  eclean(string) {
+    if (typeof(string) === "string")
+      return string.replace(/`/g, "`" + String.fromCharCode(8203)).replace(/@/g, "@" + String.fromCharCode(8203));
+    else
+      return string;
+  },// cleans Eval
   get_id(msg, text, per) {
     if(!text || text === "")
       return false;
@@ -307,26 +327,6 @@ module.exports = {
     
     return person.id;
   },// Gets the ID or object of a member form a name.
-  
-  // Discord stuff
-  has_roles(member, role_name = ["Moderator"]) {
-    if(typeof role_name === "string")
-      role_name = [role_name];
-    for(let i of role_name) {
-      if(!member.roles.map(r => r.name).includes(i))
-        return false;
-    }
-    return true;
-  },// Checks if a user has the roles.
-  get ecol() {
-    return Math.round(Math.random() * 16777215);
-  },// Randomizes a color for a discord embed
-  eclean(string) {
-    if (typeof(string) === "string")
-      return string.replace(/`/g, "`" + String.fromCharCode(8203)).replace(/@/g, "@" + String.fromCharCode(8203));
-    else
-      return string;
-  },// cleans Eval
   
   // Gets JSON from a URL
   parseURL(url) {
