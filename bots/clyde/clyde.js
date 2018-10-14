@@ -96,7 +96,7 @@ function run() {
     setTimeout(f.reset_streaks, new Date().setHours(11, 59, 59).valueOf() - new Date().valueOf());
   });
   client.on("guildMemberAdd", member => {
-    if(member.username.includes('discord.gg/'))
+    if(member.user.username.includes('discord.gg/'))
       member.ban();
   })
   client.on("guildMemberRemove", member => {
