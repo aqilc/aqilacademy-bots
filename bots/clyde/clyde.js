@@ -95,10 +95,6 @@ function run() {
     // Resets streaks of those who haven't collected today
     setTimeout(f.reset_streaks, new Date().setHours(11, 59, 59).valueOf() - new Date().valueOf());
   });
-  client.on("guildMemberAdd", member => {
-    if(member.user.username.includes('discord.gg/'))
-      member.ban();
-  })
   client.on("guildMemberRemove", member => {
     db.all(`SELECT * FROM election WHERE id = "${member.user.id}", vId = "${member.user.id}"`, (err, res) => {
       if(!res)
