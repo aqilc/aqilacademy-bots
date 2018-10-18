@@ -250,8 +250,8 @@ const m = {
           }
           if(val.contentDetails.duration)
             obj.duration = obj.length_seconds = obj.length = gFuncs.time(val.contentDetails.duration);
-          if(obj.id)
-            obj.url = obj.video_url = "https://www.youtube.com/watch?v=" + obj.id;
+          if(val.id)
+            obj.url = obj.video_url = "https://www.youtube.com/watch?v=" + val.id;
           vals.push(obj);
         }
         if(typeof callback === "function")
