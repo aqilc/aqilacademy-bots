@@ -243,19 +243,20 @@ const m = {
                 description: "snippet.description",
                 channel: "snippet.channelTitle",
                 channelId: "snippet.channelId",
-                duration: "contentDetails.duration", length_seconds: "contentDetails.duration", length: "contentDetails.duration",
                 tags: "snippet.tags",
               };
           for(let j in items) {
             obj[j] = gv(val, items[j]);
           }
-          if(obj.duration && obj.length_seconds && obj.length)
+          if(val.contentDetails.duration)
             obj.duration = obj.length_seconds = obj.length = gFuncs.time(val.contentDetails.duration);
+          if(obj.id)
+            obj.url = obj.video_url = "https://www.youtube.com/watch?v=" + obj.id;
           vals.push(obj);
         }
         if(typeof callback === "function")
-          callback(vals);
-        res(vals);
+          callback(vals.length <= 1 ? vals[0] : vals);
+        res(vals.length <= 1 ? vals[0] : vals);
       });
     });
     
