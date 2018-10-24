@@ -76,15 +76,16 @@ module.exports = {
         db.all(statement, (err, data) => {
           if(err)
             rej(err);
-          if(statement.includes("WHERE") && data.length === 1)
+          if(statement.includes(/ WHERE [0-9a-zA-Z]+ = [0-9a-zA-Z]+/g) && data.length === 1)
             res(data[0]);
           res(data);
         })
       });
     };
     func.elections = function(election) { return this`SELECT * FROM elections${(election && ` WHERE num = ${election}`) || ""}`; }
-    func.users = function(id) { return this`SELECT * FROM users{(election && ` WHERE num = ${election}`) || ""}`; };
-    func.blacklist = function(
+    func.users = function(id) { return this`SELECT * FROM users${(id && ` WHERE num = ${id}`) || ""}`; }
+    func.blacklist = function(id) { return this`SELECT * FROM blacklist${(id && ` WHERE num = ${id}`) || ""}`; }
+    func.warns = function(id) { return this`SELECT * FROM warns${(id && ` WHERE num = ${id}`) || ""}`; }
     return func;
   },
   
