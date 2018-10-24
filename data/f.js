@@ -82,10 +82,10 @@ module.exports = {
         })
       });
     };
-    func.elections = function(election) { return this`SELECT * FROM elections${(election && ` WHERE num = ${election}`) || ""}`; }
-    func.users = function(id) { return this`SELECT * FROM users${(id && ` WHERE num = ${id}`) || ""}`; }
-    func.blacklist = function(id) { return this`SELECT * FROM blacklist${(id && ` WHERE num = ${id}`) || ""}`; }
-    func.warns = function(id) { return this`SELECT * FROM warns${(id && ` WHERE num = ${id}`) || ""}`; }
+    func.elections = function(election, add) { return this`SELECT * FROM elections${(election && ` WHERE num = ${election}`) || ""}${add || ""}`; }
+    func.users = function(id, add) { return this`SELECT * FROM users${(id && ` WHERE num = ${id}`) || ""}${add || ""}`; }
+    func.blacklist = function(id, add) { return this`SELECT * FROM blacklist${(id && ` WHERE num = ${id}`) || ""}${add || ""}`; }
+    func.warns = function(id, add) { return this`SELECT * FROM warns${(id && ` WHERE num = ${id}`) || ""}${add || ""}`; }
     return func;
   },
   

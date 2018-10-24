@@ -990,7 +990,7 @@ const cmds = {
     },
   },
   president: {
-    a: ["pres", "electme"],
+    a: ["run", "pres", "electme"],
     desc: "Run for president in the AqilAcademy elections!",
     usage: " [vice president mention or id(has to be inside the server)] |=| [slogan] |=| [description of term]",
     cat: "elections",
@@ -1113,8 +1113,7 @@ const cmds = {
   },
   
   // For testing purposes
-  run: {
-    a: ["eval"],
+  eval: {
     desc: "Runs code through Clyde",
     usage: " [code]",
     cat: "bot admin",
