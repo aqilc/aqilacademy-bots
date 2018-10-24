@@ -70,6 +70,16 @@ module.exports = {
     });
     return this;
   },// Adds EXP to a person
+  get get() {
+    let func = function() {
+      return new Promise((res, rej) => {
+        
+      });
+    };
+    func.elections = function(election) {
+      return this`SELECT * FROM elections`;
+    }
+  },
   
   // Canvas functions
   round_rect(ctx, x, y, width, height, radius, fill, stroke) {

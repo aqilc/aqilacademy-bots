@@ -983,7 +983,7 @@ const cmds = {
         
         rows.reverse();
         f.page_maker(rows, 10, page, (i, row) => {
-          embed.addField(row.title ? `${row.title} (#${row.num})` : `Election #${row.num}`, `**Start:** ${new Date(row.start).toUTCString()}\n${row.end < new Date().valueOf() ? `**End:** ${new Date(row.end).toUTCString()}` : "Ongoing"}\n**Winner:** ${client.users.get(row.winner) ? client.users.get(row.winner).tag : row.winner} (VP: ${client.users.get(row.vp) ? client.users.get(row.vp).tag : row.vp})`);
+          embed.addField(row.title ? `${row.title} (#${row.num})` : `Election #${row.num}`, `**Start:** ${new Date(row.start).toUTCString()}\n${row.end < new Date().valueOf() ? `**End:** ${new Date(row.end).toUTCString()}` : "Ongoing"}\n**Winner:** ${client.users.get(row.winner) ? client.users.get(row.winner).tag : "No Winner"} (VP: ${client.users.get(row.vp) ? client.users.get(row.vp).tag : "No Winner"})`);
         });
         msg.channel.send(embed);
       });
