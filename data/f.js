@@ -312,11 +312,11 @@ module.exports = {
     if(id.length === 18)
       return id;
     else if(text.includes("#") && text.split("#")[1].trim().length === 4)
-      person = members.filter(m => m.user.tag.toLowerCase() === text.toLowerCase())[0];
+      person = members.filter(m => m.user.tag.toLowerCase() === text.toLowerCase()).first();
     else {
-      person = msg.guild.members.array().filter(m => m.user.username.toLowerCase() === text.toLowerCase() || (m.nickname ? m.nickname : "").toLowerCase() === text.toLowerCase())[0];
+      person = members.filter(m => m.user.username.toLowerCase() === text.toLowerCase() || (m.nickname ? m.nickname : "").toLowerCase() === text.toLowerCase()).first();
       if(!person)
-        person = msg.guild.members.array().filter(m => m.user.username.toLowerCase().startsWith(text.toLowerCase()) || (m.nickname ? m.nickname.toLowerCase().startsWith(text.toLowerCase()) : false))[0];
+        person = members.filter(m => m.user.username.toLowerCase().startsWith(text.toLowerCase()) || (m.nickname ? m.nickname.toLowerCase().startsWith(text.toLowerCase()) : false)).first();
     }
     
     // If it asks for the entire user object
