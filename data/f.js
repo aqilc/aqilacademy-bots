@@ -1,4 +1,4 @@
-const db = new (require("sqlite3").verbose()).Database('../.data/sqlite.db');
+const db = new (require("sqlite3").verbose()).Database('./.data/sqlite.db');
 const cdata = require("./d.js");
 const fs = require("fs");
 const https = require("https");
@@ -71,6 +71,7 @@ const f = {
     return this;
   },// Adds EXP to a person
   get(statement) {
+    console.log(statement);
     return new Promise((res, rej) => {
       db.all(statement, (err, data) => {
         if(err)
@@ -383,9 +384,9 @@ const f = {
   },
 };
 
-f.get.elections = function(election, add) { return this`SELECT * FROM elections${(election && ` WHERE num = ${election}`) || ""}${" " + add || ""}`; }
-f.get.users = function(id, add) { return this`SELECT * FROM users${(id && ` WHERE num = ${id}`) || ""}${" " + add || ""}`; }
-f.get.blacklist = function(id, add) { return this`SELECT * FROM blacklist${(id && ` WHERE num = ${id}`) || ""}${" " + add || ""}`; }
-f.get.warns = function(id, add) { return this`SELECT * FROM warns${(id && ` WHERE num = ${id}`) || ""}${" " + add || ""}`; }
+f.get.elections = function(election, add) { return this(`SELECT * FROM elections${(election && ` WHERE num = ${election}`) || ""}${(add && " ") + add || ""}`); }
+f.get.users = function(id, add) { return this(`SELECT * FROM users${(id && ` WHERE num = ${id}`) || ""}${(add && " " + add) || ""}`); }
+f.get.blacklist = function(id, add) { return this(`SELECT * FROM blacklist${(id && ` WHERE num = ${id}`) || ""}${(add && " " + add) || ""}`); }
+f.get.warns = function(id, add) { return this(`SELECT * FROM warns${(id && ` WHERE num = ${id}`) || ""}${(add && " " + add) || ""}`); }
 
 module.exports = f;
