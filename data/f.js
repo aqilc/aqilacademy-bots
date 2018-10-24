@@ -1,9 +1,9 @@
-const db = new (require("sqlite3").verbose()).Database('./.data/sqlite.db');
+const db = new (require("sqlite3").verbose()).Database('../.data/sqlite.db');
 const cdata = require("./d.js");
 const fs = require("fs");
 const https = require("https");
 
-module.exports = {
+const f = {
   
   // SQL stuff
   calculate_stats(id) {
@@ -70,23 +70,16 @@ module.exports = {
     });
     return this;
   },// Adds EXP to a person
-  get get() {
-    let func = function(statement) {
-      return new Promise((res, rej) => {
-        db.all(statement, (err, data) => {
-          if(err)
-            rej(err);
-          if(statement.includes(/ WHERE [0-9a-zA-Z]+ = [0-9a-zA-Z]+/g) && data.length === 1)
-            res(data[0]);
-          res(data);
-        })
-      });
-    };
-    func.elections = function(election, add) { return this`SELECT * FROM elections${(election && ` WHERE num = ${election}`) || ""}${add || ""}`; }
-    func.users = function(id, add) { return this`SELECT * FROM users${(id && ` WHERE num = ${id}`) || ""}${add || ""}`; }
-    func.blacklist = function(id, add) { return this`SELECT * FROM blacklist${(id && ` WHERE num = ${id}`) || ""}${add || ""}`; }
-    func.warns = function(id, add) { return this`SELECT * FROM warns${(id && ` WHERE num = ${id}`) || ""}${add || ""}`; }
-    return func;
+  get(statement) {
+    return new Promise((res, rej) => {
+      db.all(statement, (err, data) => {
+        if(err)
+          rej(err);
+        if(statement.includes(/ WHERE [0-9a-zA-Z]+ = [0-9a-zA-Z]+/g) && data.length === 1)
+          res(data[0]);
+        res(data);
+      })
+    });
   },
   
   // Canvas functions
@@ -389,3 +382,10 @@ module.exports = {
     return require("./f.js").parseURL(url);
   },
 };
+
+f.get.elections = function(election, add) { return this`SELECT * FROM elections${(election && ` WHERE num = ${election}`) || ""}${" " + add || ""}`; }
+f.get.users = function(id, add) { return this`SELECT * FROM users${(id && ` WHERE num = ${id}`) || ""}${" " + add || ""}`; }
+f.get.blacklist = function(id, add) { return this`SELECT * FROM blacklist${(id && ` WHERE num = ${id}`) || ""}${" " + add || ""}`; }
+f.get.warns = function(id, add) { return this`SELECT * FROM warns${(id && ` WHERE num = ${id}`) || ""}${" " + add || ""}`; }
+
+module.exports = f;
