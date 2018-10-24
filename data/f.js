@@ -308,11 +308,11 @@ module.exports = {
     if(!text || text === "")
       return false;
     
-    let id = text.replace(/[^0-9]/g, ""), person;
+    let id = text.replace(/[^0-9]/g, ""), person, members = msg.guild.members;
     if(id.length === 18)
       return id;
     else if(text.includes("#") && text.split("#")[1].trim().length === 4)
-      person = msg.guild.members.array().filter(m => m.user.tag.toLowerCase() === text.toLowerCase())[0];
+      person = members.filter(m => m.user.tag.toLowerCase() === text.toLowerCase())[0];
     else {
       person = msg.guild.members.array().filter(m => m.user.username.toLowerCase() === text.toLowerCase() || (m.nickname ? m.nickname : "").toLowerCase() === text.toLowerCase())[0];
       if(!person)
@@ -325,7 +325,7 @@ module.exports = {
     if(per)
       return person;
     
-    return person.id;
+    return person && person.id;
   },// Gets the ID or object of a member form a name.
   
   // Gets JSON from a URL
