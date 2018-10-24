@@ -216,6 +216,7 @@ function run() {
 const chnls = {
   announce: "382353531837087745",
   staff: "382530174677417984",
+  general: "433004874930716673",
 }
 
 // All functions needed to run the bot
