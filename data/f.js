@@ -71,14 +71,21 @@ module.exports = {
     return this;
   },// Adds EXP to a person
   get get() {
-    let func = function() {
+    let func = function(statement) {
       return new Promise((res, rej) => {
-        
+        db.all(statement, (err, data) => {
+          if(err)
+            rej(err);
+          if(statement.includes("WHERE") && data.length === 1)
+            res(data[0]);
+          res(data);
+        })
       });
     };
-    func.elections = function(election) {
-      return this`SELECT * FROM elections`;
-    }
+    func.elections = function(election) { return this`SELECT * FROM elections${(election && ` WHERE num = ${election}`) || ""}`; }
+    func.users = function(id) { return this`SELECT * FROM users{(election && ` WHERE num = ${election}`) || ""}`; };
+    func.blacklist = function(
+    return func;
   },
   
   // Canvas functions
