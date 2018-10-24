@@ -96,7 +96,11 @@ function run() {
     setTimeout(f.reset_streaks, new Date().setHours(11, 59, 59).valueOf() - new Date().valueOf());
   });
   client.on("guildMemberAdd", member => {
-    if(member.user.bot)
+    let embed = new Discord.RichEmbed()
+      .setAuthor(`A New ${member.user.bot ? "Bot" : "Member"} joined!`)
+      .setDescription(`**ID:** ${member.id}\n**Username:** ${member} (**ID:** \`${member.user.tag}\`)`)
+      .setColor("GREEN");
+    client.channels.get(chnls.log).send(embed);
   });
   client.on("guildMemberRemove", member => {
     db.all(`SELECT * FROM election WHERE id = "${member.user.id}", vId = "${member.user.id}"`, (err, res) => {
