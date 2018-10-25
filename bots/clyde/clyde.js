@@ -259,9 +259,9 @@ Array.prototype.shuffle = function () {
 };
 const f = {
   log: (type, log) => {
-    let chnl = { main: "382499510401630209", chat: "433004874930716673", announce: "382353531837087745", staff: "382530174677417984", exp: "407643635358892032" }[type];
+    let chnl = (type.length === 18 && type) || chnls[type];
     if(!chnl)
-      throw new Error(`Incorrect channel type on something. All channel types: \n{ main: "382499510401630209", chat: "433004874930716673", announce: "382353531837087745", staff: "382530174677417984", exp: "407643635358892032" }`);
+      throw new Error(`Incorrect channel type on something. All channel types: \n${JSON.stringify(chnls)}`);
 
     client.channels.get(chnl).send(log);
     return f;
