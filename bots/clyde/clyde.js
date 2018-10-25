@@ -1023,24 +1023,33 @@ const cmds = {
                 if(!(vp = f.get_id(msg, message.content)))
                   return msg.reply("Invalid Vice President. Please try again by doing `c.run`.");
                 
-                msg.channel.send("Vice President
+                msg.channel.send(`Vice President set to \`${client.users.get(vp).tag}\` :check_mark: Now please send the Slogan you are going to use for your term`);
                 if(!slogan) {
                   collectors[1] = collector().on("end", collected => {
                     let message;
                     if(!(message = collected.first()))
                       return msg.reply("You ran out of time. You can try again using `c.run`!");
                     
-                    msg.channel.send("Set Slogan :check_mark: Please send the description of your term now!");
+                    msg.channel.send(`Set Slogan to "${(slogan = message.content)}" :check_mark: Please send the description of your term now!`);
+                    
+                    if(!desc) {
+                      collectors[2] = collector().on("end", collected => {
+                        let message;
+                        if(!(message = collected.first()))
+                          return msg.reply("You ran out of time. You can try again using `c.run`!");
+
+                        msg.channel.send(`Set Description to "${(slogan = message.content)}" :check_mark: Please send the description of your term now!`);
+                        
+                        db.run(`INSERT INTO waiting (user, id, start, time, for, data) VALUES ("${vp}", 0, ${new Date().valueOf()}, ${res.end - new Date().valueOf()}, "${msg.author.id}", "${JSON.stringify({ vp, pres: msg.author.id, slogan, desc })}")`);
+                        msg.channel.send(new Discord.RichEmbed().setAuthor("Wait for your VP to approve then you will be put in!", msg.author.avatarURL)
+                          .setColor(f.color));
+                        client.users.get(vp).send(`<@${msg.author.id}> has asked you to be his Vice President! Put a \`yes\` if you agree and \`no\` if you don't.\n**Note:** You CAN be multiple people's Vice President`);
+                      });
+                    }
                   })
                 }
               });
             }
-            
-            
-            db.run(`INSERT INTO waiting (user, id, start, time, for, data) VALUES ("${vp}", 0, ${new Date().valueOf()}, ${res.end - new Date().valueOf()}, "${msg.author.id}", "${JSON.stringify({ vp, pres: msg.author.id, slogan, desc })}")`);
-            msg.channel.send(new Discord.RichEmbed().setAuthor("Wait for your VP to approve then you will be put in!", msg.author.avatarURL)
-              .setColor(f.color));
-            client.users.get(vp).send(`<@${msg.author.id}> has asked you to be his Vice President! Put a \`yes\` if you agree and \`no\` if you don't.\n**Note:** You CAN be multiple people's Vice President`);
           });
         });
       });
@@ -1100,7 +1109,7 @@ const cmds = {
                 embed.setDescription("No candidates (yet)!")
               else
                 f.page_maker(res, 10, res.length <= 10 ? 0 : 1, (i, row) => {
-                  embed.addField(`${row.num}. ${client.users.get(row.id).tag}`, `**Vice:** ${client.users.get(row.vId).tag} (ID: \`${row.vId}\`)\n**Votes:** ${row.votes} votes`);
+                  embed.addField(`${row.num}. ${client.users.get(row.id) && client.users.get(row.id).tag || "None"}`, `**Vice:** ${client.users.get(row.vId) && client.users.get(row.vId).tag || "None"} (ID: \`${row.vId}\`)\n**Votes:** ${row.votes} votes`);
                 });
               
               msg.channel.send(embed);
