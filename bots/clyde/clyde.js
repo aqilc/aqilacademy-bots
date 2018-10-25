@@ -1013,9 +1013,28 @@ const cmds = {
             if(w)
               return msg.reply("You are already waiting for a Vice President!");
             
-            let collectors = [], collector = () => msg.channel.createMessageCollector(m => m.author.id === msg.author.id && "y n yes no".split().includes(m.content), { time: 30000, maxMatches: 1 });
-            if(!vp)
-              collectors[0] = collector();
+            let collectors = [], collector = () => msg.channel.createMessageCollector(m => m.author.id === msg.author.id, { time: 30000, maxMatches: 1 });
+            if(!vp) {
+              collectors[0] = collector().on("end", collected => {
+                let message;
+                if(!(message = collected.first()))
+                  return msg.reply("You ran out of time. You can try again using `c.run`!");
+                
+                if(!(vp = f.get_id(msg, message.content)))
+                  return msg.reply("Invalid Vice President. Please try again by doing `c.run`.");
+                
+                msg.channel.send("Vice President
+                if(!slogan) {
+                  collectors[1] = collector().on("end", collected => {
+                    let message;
+                    if(!(message = collected.first()))
+                      return msg.reply("You ran out of time. You can try again using `c.run`!");
+                    
+                    msg.channel.send("Set Slogan :check_mark: Please send the description of your term now!");
+                  })
+                }
+              });
+            }
             
             
             db.run(`INSERT INTO waiting (user, id, start, time, for, data) VALUES ("${vp}", 0, ${new Date().valueOf()}, ${res.end - new Date().valueOf()}, "${msg.author.id}", "${JSON.stringify({ vp, pres: msg.author.id, slogan, desc })}")`);
