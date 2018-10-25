@@ -996,7 +996,7 @@ const cmds = {
     a: ["run", "pres", "electme"],
     desc: "Run for president in the AqilAcademy elections!\nAll options are optional... if not specified, it will ask personally.",
     usage: " (vice president mention or id(has to be inside the server)) | (slogan) | (description of term)",
-    cat: "elections",
+    cat: "election",
     do: (msg, content) => {
       let vp, slogan, desc;
       if(content) {
@@ -1088,6 +1088,7 @@ const cmds = {
     },
   },
   electinfo: {
+    a: ["election"],
     desc: "Shows you some stats for elections",
     usage: " [candidates or voters] (page num)",
     cat: "election",
@@ -1106,8 +1107,7 @@ const cmds = {
             db.all("SELECT * FROM election", (err, res) => {
               let embed = new Discord.RichEmbed()
                 .setAuthor("Candidates " + (res.length <= 10 ? "(All)" : `(Page: ${page + 1})`), msg.guild.iconURL)
-                .setColor(f.color)
-                .setFooter(`Check #elections for more info | 10 candidates per page | ${res.length} candidates`);
+                .setColor(f.color).setFooter(`Check #elections for more info | 10 candidates per page | ${res.length} candidates`);
               
               if(res.length === 0)
                 embed.setDescription("No candidates (yet)!")
