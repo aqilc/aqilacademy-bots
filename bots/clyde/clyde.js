@@ -951,9 +951,10 @@ const cmds = {
         db.run(`DELETE FROM waiting WHERE id = 0`);
         db.run("DELETE FROM election");
         msg.guild.channels.get(data.echnl).overwritePermissions(msg.guild.roles.get("294115797326888961"), { READ_MESSAGES: false });
+        let candidate = msg.guild.roles.find("name", "Candidate").id;
         msg.guild.members.array().forEach(m => {
-          if(m.roles.get(msg.guild.roles.find("name", "Candidate").id))
-            m.removeRole(msg.guild.roles.find("name", "Candidate").id);
+          if(m.roles.get(candidate))
+            m.removeRole(candidate);
         });
         client.channels.get(data.echnl).send(new Discord.RichEmbed().setAuthor("Election has officially stopped by " + msg.author.tag, msg.author.avatarURL).setDescription("There might have been technical problems so please don't be angry").setColor(f.color));
         msg.reply("Ended Election #" + res[res.length-1].num)
@@ -1015,6 +1016,7 @@ const cmds = {
             
             let collectors = [], collector = () => msg.channel.createMessageCollector(m => m.author.id === msg.author.id, { time: 30000, maxMatches: 1 });
             if(!vp) {
+              msg.channel.send("Please specify the Vice President you are running with!");
               collectors[0] = collector().on("end", collected => {
                 let message;
                 if(!(message = collected.first()))
@@ -1023,14 +1025,14 @@ const cmds = {
                 if(!(vp = f.get_id(msg, message.content)))
                   return msg.reply("Invalid Vice President. Please try again by doing `c.run`.");
                 
-                msg.channel.send(`Vice President set to \`${client.users.get(vp).tag}\` :check_mark: Now please send the Slogan you are going to use for your term`);
+                msg.channel.send(`Vice President set to \`${client.users.get(vp).tag}\` <:yes:416019413314043914>\nNow please send the Slogan you are going to use for your term`);
                 if(!slogan) {
                   collectors[1] = collector().on("end", collected => {
                     let message;
                     if(!(message = collected.first()))
                       return msg.reply("You ran out of time. You can try again using `c.run`!");
                     
-                    msg.channel.send(`Set Slogan to "${(slogan = message.content)}" :check_mark: Please send the description of your term now!`);
+                    msg.channel.send(`Set Slogan to "${(slogan = message.content)}" <:yes:416019413314043914>\nPlease send the description of your term now!`);
                     
                     if(!desc) {
                       collectors[2] = collector().on("end", collected => {
@@ -1038,9 +1040,9 @@ const cmds = {
                         if(!(message = collected.first()))
                           return msg.reply("You ran out of time. You can try again using `c.run`!");
 
-                        msg.channel.send(`Set Description to "${(slogan = message.content)}" :check_mark: Please send the description of your term now!`);
+                        msg.channel.send(`Set Description to "${(slogan = message.content)}" <:yes:416019413314043914>`);
                         
-                        db.run(`INSERT INTO waiting (user, id, start, time, for, data) VALUES ("${vp}", 0, ${new Date().valueOf()}, ${res.end - new Date().valueOf()}, "${msg.author.id}", "${JSON.stringify({ vp, pres: msg.author.id, slogan, desc })}")`);
+                        db.run(`INSERT INTO waiting (user, id, start, time, for, data) VALUES ("${vp}", 0, ${new Date().valueOf()}, ${res.end - new Date().valueOf()}, "${msg.author.id}", '${JSON.stringify({ vp, pres: msg.author.id, slogan, desc })}')`);
                         msg.channel.send(new Discord.RichEmbed().setAuthor("Wait for your VP to approve then you will be put in!", msg.author.avatarURL)
                           .setColor(f.color));
                         client.users.get(vp).send(`<@${msg.author.id}> has asked you to be his Vice President! Put a \`yes\` if you agree and \`no\` if you don't.\n**Note:** You CAN be multiple people's Vice President`);
