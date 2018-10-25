@@ -40,15 +40,19 @@ function run() {
               // Functions for waiting IDs
               let ids = [
                 (id, d) => {
-                  d = JSON.parse(d);
+                  let user = client.users.get(id); d = JSON.parse(d);
                   if(msg.content === "yes") {
-                    client.channels.get(data.echnl).send(new Discord.RichEmbed().setAuthor(client.users.get(id).tag + " is running for president!", client.users.get(id).avatarURL).setDescription(`with <@${msg.author.id}> as his/her Vice President!`).addField("Slogan", d.slogan).addField("Description of term", d.description).setColor(f.color)).then(message => {
+                    
+                    client.channels.get(data.echnl).send(new Discord.RichEmbed().setAuthor(user.tag + " is running for president!", user.avatarURL)
+                      .setDescription(`with <@${msg.author.id}> as his/her Vice President!`)
+                      .addField("Slogan", d.slogan).addField("Description of term", d.description)
+                      .setColor(f.color)).then(message => {
                       message.react("👍");
                       db.run(`INSERT INTO election (id, vId, votes, msgId) VALUES ("${id}", "${msg.author.id}", 0, "${message.id}")`);
                     });
                     db.run(`DELETE FROM waiting WHERE for = "${id}"`);
                     msg.channel.send(`Thanks! You and <@${id}> have been entered into the election!`);
-                    client.users.get(id).send(`<@${msg.author.id}> has approved your request to be your Vice President! You both have been put into the Election.`);
+                    user.send(`<@${msg.author.id}> has approved your request to be your Vice President! You both have been put into the Election.`);
                     client.guilds.get("294115797326888961").members.get(id).addRole(client.guilds.get("294115797326888961").roles.find("name", "Candidate").id, "Elections")
                     client.guilds.get("294115797326888961").members.get(msg.author.id).addRole(client.guilds.get("294115797326888961").roles.find("name", "Candidate").id, "Elections")
                   } else if (msg.content === "no") {
@@ -130,15 +134,10 @@ function run() {
   // Election voting systems
   client.on("messageReactionAdd", (reaction, user) => {
     console.log(user.tag + " added " + reaction.emoji.name);
-    if(reaction.emoji.name !== "👍")
-      return;
-    if(reaction.message.channel.id !== data.echnl)
+    if(reaction.emoji.name !== "👍" && reaction.message.channel.id !== data.echnl && user.id !== client.user.id)
       return;
     db.get("SELECT * FROM elections ORDER BY end DESC", (err, row) => {
-      if(!row)
-        return;
-
-      if(row.end < new Date().valueOf())
+      if(!row || row.end < new Date().valueOf())
         return;
 
       db.get(`SELECT * FROM election WHERE msgId = "${reaction.message.id}"`, (err, res) => {
