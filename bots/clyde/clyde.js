@@ -998,10 +998,11 @@ const cmds = {
       let vp, slogan, desc;
       if(content) {
         let args = content.split("|");
-        if(!(vp = f.get_id(msg, args[0].trim()))
+        if(!(vp = f.get_id(msg, args[0].trim())))
+          return msg.reply("Please specify a valid Vice President!");
+        slogan = args[1];
+        desc = args[2];
       }
-      
-      
       db.get("SELECT * FROM elections ORDER BY end DESC", (err, res) => {
         if(!res || res.end < new Date().valueOf())
           return msg.reply("There isn't an election going on yet!");
@@ -1012,8 +1013,14 @@ const cmds = {
             if(w)
               return msg.reply("You are already waiting for a Vice President!");
             
+            let collectors = [], collector = () => msg.channel.createMessageCollector(m => m.author.id === msg.author.id && "y n yes no".split().includes(m.content), { time: 30000, maxMatches: 1 });
+            if(!vp)
+              collectors[0] = collector();
+            
+            
             db.run(`INSERT INTO waiting (user, id, start, time, for, data) VALUES ("${vp}", 0, ${new Date().valueOf()}, ${res.end - new Date().valueOf()}, "${msg.author.id}", "${JSON.stringify({ vp, pres: msg.author.id, slogan, desc })}")`);
-            msg.channel.send(new Discord.RichEmbed().setAuthor("Wait for your VP to approve then you will be put in!", msg.author.avatarURL).setColor(f.color));
+            msg.channel.send(new Discord.RichEmbed().setAuthor("Wait for your VP to approve then you will be put in!", msg.author.avatarURL)
+              .setColor(f.color));
             client.users.get(vp).send(`<@${msg.author.id}> has asked you to be his Vice President! Put a \`yes\` if you agree and \`no\` if you don't.\n**Note:** You CAN be multiple people's Vice President`);
           });
         });
