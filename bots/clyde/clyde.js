@@ -40,9 +40,9 @@ function run() {
               // Functions for waiting IDs
               let ids = [
                 (id, d) => {
+                  d = JSON.parse(d);
                   if(msg.content === "yes") {
-    
-                    client.channels.get(data.echnl).send(new Discord.RichEmbed().setAuthor(client.users.get(id).tag + " is running for president!", client.users.get(id).avatarURL).setDescription(`with <@${msg.author.id}> as his/her Vice President!`).addField("Slogan", d.split("|=|")[0]).addField("Description of term", d.split("|=|")[1]).setColor(f.color)).then(message => {
+                    client.channels.get(data.echnl).send(new Discord.RichEmbed().setAuthor(client.users.get(id).tag + " is running for president!", client.users.get(id).avatarURL).setDescription(`with <@${msg.author.id}> as his/her Vice President!`).addField("Slogan", d.slogan).addField("Description of term", d.description).setColor(f.color)).then(message => {
                       message.react("👍");
                       db.run(`INSERT INTO election (id, vId, votes, msgId) VALUES ("${id}", "${msg.author.id}", 0, "${message.id}")`);
                     });
@@ -268,7 +268,7 @@ const f = {
   },
   checkelections: () => {
     db.get("SELECT * FROM elections ORDER BY end DESC", (err, elec) => {
-      if(!elec || elec.end < new Date().valueOf())
+      if(!elec || elec.end < +(new Date()))
         return;
       
       setTimeout(() => {
@@ -283,9 +283,10 @@ const f = {
           }
           db.run(`UPDATE elections SET winners = ${sqlwin} WHERE num = ${elec.num}`);
           client.guilds.get("294115797326888961").channels.get(chnls.announce).send(`**:yes: The election has officially ended. Winner(s):**\`\`\`\n${winner}\`\`\``);
-          client.guilds.get("294115797326888961").channels.get(data.echnl).overwritePermissions(client.guilds.get("294115797326888961").guild.roles.get("294115797326888961"), { READ_MESSAGES: true });
+          let guild; (guild = client.guilds.get("294115797326888961")).channels.get(data.echnl)
+            .overwritePermissions(guild.roles.get("294115797326888961"), { READ_MESSAGES: true });
         })
-      }, elec.end - new Date().valueOf());
+      }, elec.end - Date.now());
     });
     return f;
   },// Check if elections are going on and sets up a setTimeout if they are.
