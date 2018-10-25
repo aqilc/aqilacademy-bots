@@ -995,19 +995,8 @@ const cmds = {
     usage: " [vice president mention or id(has to be inside the server)] |=| [slogan] |=| [description of term]",
     cat: "elections",
     do: (msg, content) => {
-      let args = content.split("|=|").map(a => a.trim());
-      let vp = f.get_id(msg, args[0]);
+      let vp, slogan, desc;
       
-      if(!args[2])
-        return msg.reply("Please fill in all required parameters.\n**Required Parameters:** ` [Vice President mention or id] |=| [slogan] |=| [description of term]`");
-      if(!msg.guild.members.get(vp))
-        return msg.reply("Please enter a valid member of AqilAcademy for your Vice President");
-      if(msg.author.id === vp)
-        return msg.reply("Your Vice President cannot be yourself :face_palm:");
-      if(client.users.get(vp).bot)
-        return msg.reply("Your Vice President has to be a human user");
-      if(args[1] === "" || args[2] === "")
-        return msg.reply("No empty parameters allowed");
       db.get("SELECT * FROM elections ORDER BY end DESC", (err, res) => {
         if(!res || res.end < new Date().valueOf())
           return msg.reply("There isn't an election going on yet!");
