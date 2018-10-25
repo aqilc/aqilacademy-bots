@@ -42,19 +42,17 @@ function run() {
                 (id, d) => {
                   let user = client.users.get(id); d = JSON.parse(d);
                   if(msg.content === "yes") {
-                    
                     client.channels.get(data.echnl).send(new Discord.RichEmbed().setAuthor(user.tag + " is running for president!", user.avatarURL)
                       .setDescription(`with <@${msg.author.id}> as his/her Vice President!`)
-                      .addField("Slogan", d.slogan).addField("Description of term", d.description)
-                      .setColor(f.color)).then(message => {
+                      .addField("Slogan", d.slogan).addField("Description of term", d.description).setColor(f.color)).then(message => {
                       message.react("👍");
                       db.run(`INSERT INTO election (id, vId, votes, msgId) VALUES ("${id}", "${msg.author.id}", 0, "${message.id}")`);
                     });
-                    db.run(`DELETE FROM waiting WHERE for = "${id}"`);
+                    db.run(`DELETE FROM waiting WHERE id = 0 AND for = "${id}"`);
                     msg.channel.send(`Thanks! You and <@${id}> have been entered into the election!`);
                     user.send(`<@${msg.author.id}> has approved your request to be your Vice President! You both have been put into the Election.`);
-                    client.guilds.get("294115797326888961").members.get(id).addRole(client.guilds.get("294115797326888961").roles.find("name", "Candidate").id, "Elections")
-                    client.guilds.get("294115797326888961").members.get(msg.author.id).addRole(client.guilds.get("294115797326888961").roles.find("name", "Candidate").id, "Elections")
+                    let aa; (aa = client.guilds.get("294115797326888961")).members.get(id).addRole(aa.roles.find(r => r.name === "Candidate").id, "Elections");
+                    aa.members.get(msg.author.id).addRole(aa.roles.find(r => r.name === "Candidate").id, "Elections");
                   } else if (msg.content === "no") {
                     db.run(`DELETE FROM waiting WHERE id = "${msg.author.id}"`);
                     msg.channel.send(`Thanks! <@${id}> has been informed about your rejection immediately.`);
@@ -944,20 +942,21 @@ const cmds = {
     cat: "election",
     perms: "bot admin",
     del: true,
-    do: (msg, content) => {
+    async do(msg, content) {
       db.all(`SELECT * FROM elections`, (err, res) => {
         if(res[res.length-1].end < new Date().valueOf())
           return msg.reply("No ongoing election.");
         db.run(`UPDATE elections SET end = ${new Date().valueOf()} WHERE num = ${res[res.length-1].num}`);
         db.run(`DELETE FROM waiting WHERE id = 0`);
         db.run("DELETE FROM election");
-        msg.guild.channels.get(data.echnl).overwritePermissions(msg.guild.roles.get("294115797326888961"), { READ_MESSAGES: false });
-        let candidate = msg.guild.roles.find("name", "Candidate").id;
+        let echnl, candidate = msg.guild.roles.find(r => r.name === "Candidate").id; (echnl = msg.guild.channels.get(data.echnl))
+          .overwritePermissions(msg.guild.roles.get("294115797326888961"), { READ_MESSAGES: false });
         msg.guild.members.array().forEach(m => {
           if(m.roles.get(candidate))
             m.removeRole(candidate);
         });
-        client.channels.get(data.echnl).send(new Discord.RichEmbed().setAuthor("Election has officially stopped by " + msg.author.tag, msg.author.avatarURL).setDescription("There might have been technical problems so please don't be angry").setColor(f.color));
+        
+        echnl.send(new Discord.RichEmbed().setAuthor("Election has officially stopped by " + msg.author.tag, msg.author.avatarURL).setDescription("There might have been technical problems so please don't be angry").setColor(f.color)).then(m => m.delete(60000));
         msg.reply("Ended Election #" + res[res.length-1].num)
       });
     },
