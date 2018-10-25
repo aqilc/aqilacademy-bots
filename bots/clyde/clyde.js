@@ -991,11 +991,16 @@ const cmds = {
   },
   president: {
     a: ["run", "pres", "electme"],
-    desc: "Run for president in the AqilAcademy elections!",
-    usage: " [vice president mention or id(has to be inside the server)] |=| [slogan] |=| [description of term]",
+    desc: "Run for president in the AqilAcademy elections!\nAll options are optional... if not specified, it will ask personally.",
+    usage: " (vice president mention or id(has to be inside the server)) | (slogan) | (description of term)",
     cat: "elections",
     do: (msg, content) => {
       let vp, slogan, desc;
+      if(content) {
+        let args = content.split("|");
+        if(!(vp = f.get_id(msg, args[0].trim()))
+      }
+      
       
       db.get("SELECT * FROM elections ORDER BY end DESC", (err, res) => {
         if(!res || res.end < new Date().valueOf())
@@ -1007,7 +1012,7 @@ const cmds = {
             if(w)
               return msg.reply("You are already waiting for a Vice President!");
             
-            db.run(`INSERT INTO waiting (user, id, start, time, for, data) VALUES ("${vp}", 0, ${new Date().valueOf()}, ${res.end - new Date().valueOf()}, "${msg.author.id}", "${args[1] + "|=|" + args[2]}")`);
+            db.run(`INSERT INTO waiting (user, id, start, time, for, data) VALUES ("${vp}", 0, ${new Date().valueOf()}, ${res.end - new Date().valueOf()}, "${msg.author.id}", "${JSON.stringify({ vp, pres: msg.author.id, slogan, desc })}")`);
             msg.channel.send(new Discord.RichEmbed().setAuthor("Wait for your VP to approve then you will be put in!", msg.author.avatarURL).setColor(f.color));
             client.users.get(vp).send(`<@${msg.author.id}> has asked you to be his Vice President! Put a \`yes\` if you agree and \`no\` if you don't.\n**Note:** You CAN be multiple people's Vice President`);
           });
