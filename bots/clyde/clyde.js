@@ -30,7 +30,7 @@ function run() {
       
       //What happens when DMed
       if(msg.channel.type !== "text" && msg.author.id !== client.user.id) {
-        f.log("main", `**${msg.author.tag}**(ID: ${msg.author.id}) said:\`\`\`${msg.content}\`\`\``);
+        f.log("log", `**${msg.author.tag}**(ID: ${msg.author.id}) said:\`\`\`${msg.content}\`\`\``);
         db.get("SELECT * FROM elections ORDER BY end DESC", (err, res) => {
           db.all("SELECT * FROM election", (err, rows) => {
             db.get(`SELECT * FROM users WHERE id = "${msg.author.id}"`, (err, user) => {
@@ -619,7 +619,7 @@ const cmds = {
         embed.addField("Moderator:", `<@${msg.author.id}> (ID: \`${msg.author.id}\`)`);
         if(roles)
           embed.addField("Roles:", "```" + roles.join("\n") + "```");
-        f.log("main", embed);
+        f.log("log", embed);
         msg.channel.send(embed);
       }).catch(err => {
         msg.channel.send(`ERROR:\`\`\`${err}\`\`\``);
@@ -652,7 +652,7 @@ const cmds = {
       embed.addField("Moderator:", `<@${msg.author.id}> (ID: \`${msg.author.id}\`)`)
         .setColor(f.color)
         .addField("Roles:", "```" + roles.join("\n") + "```");
-      f.log("main", embed);
+      f.log("log", embed);
       msg.channel.send(embed);
     },
   },
