@@ -128,6 +128,7 @@ function run() {
     })
     db.run(`DELETE * FROM users WHERE id = "${member.user.id}"`);
   });
+  client.on("error", console.log);
   
   // Election voting systems
   client.on("messageReactionAdd", (reaction, user) => {
