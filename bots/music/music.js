@@ -411,7 +411,7 @@ const c = {
           content = data.vid;
 
         if(!m.url(content))
-          vid = await m.search(msg, content, { results: 10, info: true });
+          vid = await m.search(msg, content, { results: 8, info: true });
         else
           vid = await m.info("https://www.youtube.com/watch?v=" + m.url(content).v);
 
