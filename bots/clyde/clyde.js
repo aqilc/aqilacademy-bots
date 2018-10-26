@@ -186,6 +186,11 @@ function run() {
     });
   });
   client.on('raw', async event => {
+    console.log(event);
+    if(event.t === "MESSAGE_REACTION_REMOVE_ALL") {
+      console.log(event);
+    }
+    
     const events = {
       MESSAGE_REACTION_ADD: 'messageReactionAdd',
       MESSAGE_REACTION_REMOVE: 'messageReactionRemove',
