@@ -380,11 +380,12 @@ const f = {
       url += "&difficulty=" + ["easy", "medium", "hard"][diff];
     if([0, 1].includes(type))
       url += "&type=" + ["multiple", "boolean"][type];
-    return require("./f.js").parseURL(url);
+    return f.parseURL(url);
   },
 };
 
 f.get.elections = function(election, add) { return this(`SELECT * FROM elections${(election && ` WHERE num = ${election}`) || ""}${(add && " ") + add || ""}`); }
+f.get.election = function(add) { return this(`SELECT * FROM election${(add && " ") + add || ""}`) };
 f.get.users = function(id, add) { return this(`SELECT * FROM users${(id && ` WHERE num = ${id}`) || ""}${(add && " " + add) || ""}`); }
 f.get.blacklist = function(id, add) { return this(`SELECT * FROM blacklist${(id && ` WHERE num = ${id}`) || ""}${(add && " " + add) || ""}`); }
 f.get.warns = function(id, add) { return this(`SELECT * FROM warns${(id && ` WHERE num = ${id}`) || ""}${(add && " " + add) || ""}`); }
