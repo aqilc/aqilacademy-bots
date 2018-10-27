@@ -54,17 +54,16 @@ function run() {
                     let aa; (aa = client.guilds.get("294115797326888961")).members.get(id).addRole(aa.roles.find(r => r.name === "Candidate").id, "Elections");
                     aa.members.get(msg.author.id).addRole(aa.roles.find(r => r.name === "Candidate").id, "Elections");
                   } else if (msg.content === "no") {
-                    db.run(`DELETE FROM waiting WHERE id = "${msg.author.id}"`);
+                    db.run(`DELETE FROM waiting WHERE for = "${msg.author.id}"`);
                     msg.channel.send(`Thanks! <@${id}> has been informed about your rejection immediately.`);
-                    client.users.get(id).send(`<@${msg.author.id}> has rejected your request to be your Vice President.`);
+                    user.send(`<@${msg.author.id}> has rejected your request to be your Vice President.`);
                   }
                 },
               ];
 
               db.all("SELECT * FROM waiting", (err, rows) => {
-                for(let i of rows) {
+                for(let i of rows)
                   ids[i.id](i.for, i.data);
-                }
               });
             })
           });
