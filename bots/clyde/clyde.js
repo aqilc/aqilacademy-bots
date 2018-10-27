@@ -279,29 +279,28 @@ const f = {
             }
           }
           db.run(`UPDATE elections SET winners = ${sqlwin} WHERE num = ${elec.num}`);
-          client.guilds.get("294115797326888961").channels.get(chnls.announce).send(`**:yes: The election has officially ended. Winner(s):**\`\`\`\n${winner}\`\`\``);
-          let guild; (guild = client.guilds.get("294115797326888961")).channels.get(data.echnl)
-            .overwritePermissions(guild.roles.get("294115797326888961"), { READ_MESSAGES: true });
+          let guild = client.guilds.get(data.aa); f.endelections();
+          guild.channels.get(chnls.announce).send(`**:yes: The election has officially ended. Winner(s):**\`\`\`\n${winner}\`\`\``);
         })
       }, elec.end - Date.now());
     });
     return f;
   },// Check if elections are going on and sets up a setTimeout if they are.
-  endelections(forced) {
+  endelections(channel, forced) {
     db.all(`SELECT * FROM elections`, async (err, res) => {
-      if(res[res.length-1].end < new Date().valueOf())
-        return new Error("No Ongoing Election");
+      if(res[res.length - 1].end < new Date().valueOf())
+        return channel && channel.send("No Ongoing Election");
       db.run(`UPDATE elections SET end = ${new Date().valueOf()} WHERE num = ${res[res.length - 1].num}`);
       db.run(`DELETE FROM waiting WHERE id = 0`);
       db.run("DELETE FROM election");
-      let echnl = client.guilds.get(data.aa).channels.get(data.echnl), candidate = echnl.guild.roles.find(r => r.name === "Candidate").id,
-          
-      echnl.guild.members.array().forEach(m => {
+      let echnl = client.guilds.get(data.aa).channels.get(data.echnl), candidate = echnl.guild.roles.find(r => r.name === "Candidate").id;
+      await echnl.bulkDelete(100, true)
+      echnl.guild.members.array().forEach(async m => {
         if(m.roles.get(candidate))
-          m.removeRole(candidate);
+          await m.removeRole(candidate);
       });
-      
-      echnl.send(new Discord.RichEmbed().setAuthor("Election has officially stopped", echnl.guild.iconURL).setDescription("There might have been technical problems so please don't be angry").setColor(f.color)).then(m => m.delete(60000));
+      if(forced)
+        echnl.send(new Discord.RichEmbed().setAuthor("Election has officially stopped", echnl.guild.iconURL).setDescription("There might have been technical problems so please don't be angry").setColor(f.color)).then(m => m.delete(60000));
     });
   },
   check_and_do_cmd: (message) => {
@@ -959,26 +958,7 @@ const cmds = {
     cat: "election",
     perms: "bot admin",
     del: true,
-    async do(msg, content) {
-      db.all(`SELECT * FROM elections`, async (err, res) => {
-        if(res[res.length-1].end < new Date().valueOf())
-          return msg.reply("No ongoing election.");
-        db.run(`UPDATE elections SET end = ${new Date().valueOf()} WHERE num = ${res[res.length - 1].num}`);
-        db.run(`DELETE FROM waiting WHERE id = 0`);
-        db.run("DELETE FROM election");
-        let echnl = msg.guild.channels.get(data.echnl), candidate = msg.guild.roles.find(r => r.name === "Candidate").id,
-            clone = (await echnl.clone(undefined, true, true, "Elections have ended")).overwritePermissions(msg.guild.roles.get("294115797326888961"), {
-              READ_MESSAGES: false
-            }).then(c => c.setPosition(echnl.position)).then(() => echnl.delete("Elections have ended"));
-        msg.guild.members.array().forEach(m => {
-          if(m.roles.get(candidate))
-            m.removeRole(candidate);
-        });
-        
-        echnl.send(new Discord.RichEmbed().setAuthor("Election has officially stopped by " + msg.author.tag, msg.author.avatarURL).setDescription("There might have been technical problems so please don't be angry").setColor(f.color)).then(m => m.delete(60000));
-        msg.reply("Ended Election #" + res[res.length-1].num)
-      });
-    },
+    do: msg => f.checkelections(msg.channel, true),
   },
   elections: {
     desc: "Shows some elections from AqilAcademy's history",
