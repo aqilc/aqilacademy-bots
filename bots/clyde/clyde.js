@@ -1282,6 +1282,9 @@ const cmds = {
           // Sends the image
           msg.channel.send(`📃 **| Here is ${id === msg.author.id ? "your" : user.tag + "'s"} profile**`, new Discord.Attachment(canvas.toBuffer(), "profile.png"));
           break;
+        case "w", "welcome":
+          
+          break;
         default:
           cmds.testimage.do(msg, "profile " + content.slice(content.indexOf(" ") + 1));
       }
