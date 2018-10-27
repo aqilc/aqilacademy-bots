@@ -1183,7 +1183,9 @@ const cmds = {
     do: async (msg, content) => {
       let canvas, ctx;
       switch(content.split(" ")[0]) {
-        case "hello":
+          
+        // Hello thing lol
+        case "hello": {
           canvas = createCanvas(400, 100),
             ctx = canvas.getContext("2d");
           
@@ -1212,7 +1214,10 @@ const cmds = {
 
           msg.channel.send(new Discord.Attachment(canvas.toBuffer(), "test-image.png"));
           break;
-        case "profile":
+        }
+        
+        // Profile info(WIP)
+        case "profile": {
           let canvas = createCanvas(400, 100),
                 ctx = canvas.getContext("2d");
           
@@ -1284,6 +1289,9 @@ const cmds = {
           // Sends the image
           msg.channel.send(`📃 **| Here is ${id === msg.author.id ? "your" : user.tag + "'s"} profile**`, new Discord.Attachment(canvas.toBuffer(), "profile.png"));
           break;
+        }
+        
+        // Welcome Message(WIP)
         case "w":
         case "welcome":
           
