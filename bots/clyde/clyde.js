@@ -17,6 +17,12 @@ const prefix = "c.";
 // Cooldowns
 const cooldowns = {};
 
+// Images store so the bot can be a lot faster.
+const images = {
+  welcome: [],
+  profile: {},
+};
+
 // The Client
 const client = new Discord.Client();
 client.login(process.env.TOKENC);
@@ -1213,8 +1219,7 @@ const cmds = {
           ctx.fillText("Hello,", canvas.width/2 - ctx.measureText("Hello,").width/2, 25);
 
           msg.channel.send(new Discord.Attachment(canvas.toBuffer(), "test-image.png"));
-          break;
-        }
+        } break;
         
         // Profile info(WIP)
         case "profile": {
@@ -1288,14 +1293,15 @@ const cmds = {
           
           // Sends the image
           msg.channel.send(`📃 **| Here is ${id === msg.author.id ? "your" : user.tag + "'s"} profile**`, new Discord.Attachment(canvas.toBuffer(), "profile.png"));
-          break;
-        }
+        } break;
         
         // Welcome Message(WIP)
-        case "w":
-        case "welcome":
+        case "w": case "welcome": {
           
-          break;
+          
+        } break;
+          
+        // Guides you to profile thing if you don't
         default:
           cmds.testimage.do(msg, "profile " + content.slice(content.indexOf(" ") + 1));
       }
