@@ -263,7 +263,7 @@ const f = {
     client.channels.get(chnl).send(log);
     return f;
   },
-  checkelections: () => {
+  checkelections() {
     db.get("SELECT * FROM elections ORDER BY end DESC", (err, elec) => {
       if(!elec || elec.end < +(new Date()))
         return;
@@ -287,6 +287,23 @@ const f = {
     });
     return f;
   },// Check if elections are going on and sets up a setTimeout if they are.
+  endelections(forced) {
+    db.all(`SELECT * FROM elections`, async (err, res) => {
+      if(res[res.length-1].end < new Date().valueOf())
+        return new Error("No Ongoing Election");
+      db.run(`UPDATE elections SET end = ${new Date().valueOf()} WHERE num = ${res[res.length - 1].num}`);
+      db.run(`DELETE FROM waiting WHERE id = 0`);
+      db.run("DELETE FROM election");
+      let echnl = client.guilds.get(data.aa).channels.get(data.echnl), candidate = echnl.guild.roles.find(r => r.name === "Candidate").id,
+          
+      echnl.guild.members.array().forEach(m => {
+        if(m.roles.get(candidate))
+          m.removeRole(candidate);
+      });
+      
+      echnl.send(new Discord.RichEmbed().setAuthor("Election has officially stopped", echnl.guild.iconURL).setDescription("There might have been technical problems so please don't be angry").setColor(f.color)).then(m => m.delete(60000));
+    });
+  },
   check_and_do_cmd: (message) => {
     let content = message.content;
     
