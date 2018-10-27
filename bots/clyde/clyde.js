@@ -397,6 +397,36 @@ const f = {
   }
 };
 
+// All current tags
+let tags = {
+  randomcat: {
+    a: ["rc"],
+    i: "Sends a random cat picture!",
+    f: async function(msg, mess) {
+      try {
+        let { body } = await snekfetch.get('https://aws.random.cat/meow');
+        msg.channel.send("🐱 **Here is your random cat:**", new Discord.RichEmbed().setImage(body.file).setColor(f.color));
+      } catch (err) {
+        msg.channel.send("Sorry, we are experiencing technical difficulties... Try again later");
+        console.log(`Cat Error: ${err}`);
+      }
+    }
+  },
+  daily: {
+    i: "Does a fake daily for you",
+    f: msg => cmds.daily.do(msg, "", true),
+  },
+  googleit: {
+    a: ["gi"],
+    i: "Sends a \"google it\" picture :P",
+    f: msg => msg.channel.send("<:hyperthonk:418591918411350036>", new Discord.RichEmbed().setImage("https://cdn.discordapp.com/attachments/348260146708742149/468921448124383233/Capture.PNG").setColor(f.color)),
+  },
+  list: {
+    i: "Lists all tags",
+    f: msg => msg.channel.send(new Discord.RichEmbed().setAuthor("All Tags", client.user.avatarURL).setDescription(Object.keys(tags).join(", ")).setColor(f.color)),
+  }
+};
+
 // Commands
 const cmds = {
   help: {
@@ -804,37 +834,9 @@ const cmds = {
     usage: " (tag name) (args)",
     cat: "fun",
     do: async (msg, content) => {
-      let tags = {
-        randomcat: {
-          a: ["rc"],
-          i: "Sends a random cat picture!",
-          f: async function(mess) {
-            try {
-              let { body } = await snekfetch.get('https://aws.random.cat/meow');
-              msg.channel.send("🐱 **Here is your random cat:**", new Discord.RichEmbed().setImage(body.file).setColor(f.color));
-            } catch (err) {
-              msg.channel.send("Sorry, we are experiencing technical difficulties... Try again later");
-              console.log(`Cat Error: ${err}`);
-            }
-          }
-        },
-        daily: {
-          i: "Does a fake daily for you",
-          f: () => cmds.daily.do(msg, content, true),
-        },
-        googleit: {
-          a: ["gi"],
-          i: "Sends a \"google it\" picture :P",
-          f: () => msg.channel.send("<:hyperthonk:418591918411350036>", new Discord.RichEmbed().setImage("https://cdn.discordapp.com/attachments/348260146708742149/468921448124383233/Capture.PNG").setColor(f.color)),
-        },
-        list: {
-          i: "Lists all tags",
-          f: () => msg.channel.send(new Discord.RichEmbed().setAuthor("All Tags", client.user.avatarURL).setDescription(Object.keys(tags).join(", ")).setColor(f.color)),
-        }
-      };
       for(let i in tags) {
         if(content.split(" ")[0] == i || (tags[i].a && tags[i].a.includes(content.split(" ")[0])))
-          return tags[i].f(content.slice(content.indexOf(" ") + 1));
+          return tags[i].f(msg, content.slice(content.indexOf(" ") + 1));
       }
       msg.reply("Tag doesn't exist!");
     },
@@ -1282,7 +1284,8 @@ const cmds = {
           // Sends the image
           msg.channel.send(`📃 **| Here is ${id === msg.author.id ? "your" : user.tag + "'s"} profile**`, new Discord.Attachment(canvas.toBuffer(), "profile.png"));
           break;
-        case "w", "welcome":
+        case "w":
+        case "welcome":
           
           break;
         default:
