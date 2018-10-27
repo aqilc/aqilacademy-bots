@@ -943,14 +943,14 @@ const cmds = {
     perms: "bot admin",
     del: true,
     async do(msg, content) {
-      db.all(`SELECT * FROM elections`, (err, res) => {
+      db.all(`SELECT * FROM elections`, async (err, res) => {
         if(res[res.length-1].end < new Date().valueOf())
           return msg.reply("No ongoing election.");
-        db.run(`UPDATE elections SET end = ${new Date().valueOf()} WHERE num = ${res[res.length-1].num}`);
+        db.run(`UPDATE elections SET end = ${new Date().valueOf()} WHERE num = ${res[res.length - 1].num}`);
         db.run(`DELETE FROM waiting WHERE id = 0`);
         db.run("DELETE FROM election");
-        let echnl, candidate = msg.guild.roles.find(r => r.name === "Candidate").id; (echnl = msg.guild.channels.get(data.echnl))
-          .overwritePermissions(msg.guild.roles.get("294115797326888961"), { READ_MESSAGES: false });
+        let echnl, candidate = msg.guild.roles.find(r => r.name === "Candidate").id, clone = await (echnl = msg.guild.channels.get(data.echnl)).clone(null, true, true, "Elections have ended");
+        clone.overwritePermissions(msg.guild.roles.get("294115797326888961"), { READ_MESSAGES: false });
         msg.guild.members.array().forEach(m => {
           if(m.roles.get(candidate))
             m.removeRole(candidate);
