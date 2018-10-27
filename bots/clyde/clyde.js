@@ -950,7 +950,7 @@ const cmds = {
         db.run(`DELETE FROM waiting WHERE id = 0`);
         db.run("DELETE FROM election");
         let echnl = msg.guild.channels.get(data.echnl), candidate = msg.guild.roles.find(r => r.name === "Candidate").id,
-            clone = (await echnl.clone(null, true, true, "Elections have ended")).overwritePermissions(msg.guild.roles.get("294115797326888961"), {
+            clone = (await echnl.clone(undefined, true, true, "Elections have ended")).overwritePermissions(msg.guild.roles.get("294115797326888961"), {
               READ_MESSAGES: false
             }).then(c => c.setPosition(echnl.position)).then(() => echnl.delete("Elections have ended"));
         msg.guild.members.array().forEach(m => {
