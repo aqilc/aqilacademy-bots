@@ -7,7 +7,7 @@ const exists = fs.existsSync('./.data/sqlite.db');
 const sqlite3 = require('sqlite3').verbose();
 const db = new sqlite3.Database('./.data/sqlite.db');
 const Discord = require("discord.js");
-const data = require("/app/data/d.js");
+let data = require("/app/data/d.js");
 const levels = require("/app/data/l.js");
 const globalfunctions = require("/app/data/f.js");
 
@@ -949,8 +949,10 @@ const cmds = {
         db.run(`UPDATE elections SET end = ${new Date().valueOf()} WHERE num = ${res[res.length - 1].num}`);
         db.run(`DELETE FROM waiting WHERE id = 0`);
         db.run("DELETE FROM election");
-        let echnl, candidate = msg.guild.roles.find(r => r.name === "Candidate").id, clone = await (echnl = msg.guild.channels.get(data.echnl)).clone(null, true, true, "Elections have ended");
-        clone.overwritePermissions(msg.guild.roles.get("294115797326888961"), { READ_MESSAGES: false });
+        let echnl = msg.guild.channels.get(data.echnl), candidate = msg.guild.roles.find(r => r.name === "Candidate").id,
+            clone = (await echnl.clone(null, true, true, "Elections have ended")).overwritePermissions(msg.guild.roles.get("294115797326888961"), {
+              READ_MESSAGES: false
+            }).then(c => c.setPosition(echnl.position)).then(() => echnl.delete("Elections have ended"));
         msg.guild.members.array().forEach(m => {
           if(m.roles.get(candidate))
             m.removeRole(candidate);
