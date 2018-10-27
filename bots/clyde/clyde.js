@@ -7,7 +7,7 @@ const exists = fs.existsSync('./.data/sqlite.db');
 const sqlite3 = require('sqlite3').verbose();
 const db = new sqlite3.Database('./.data/sqlite.db');
 const Discord = require("discord.js");
-let data = require("/app/data/d.js");
+const data = require("/app/data/d.js");
 const levels = require("/app/data/l.js");
 const globalfunctions = require("/app/data/f.js");
 
@@ -278,8 +278,8 @@ const f = {
               sqlwin += `${res[i].id} ${res[i].vId}  `;
             }
           }
-          db.run(`UPDATE elections SET winners = ${sqlwin} WHERE num = ${elec.num}`);
-          let guild = client.guilds.get(data.aa); f.endelections();
+          db.run(`UPDATE elections SET winners = ${sqlwin} WHERE num = ${elec.num}`, f.endelections);
+          let guild = client.guilds.get(data.aa);
           guild.channels.get(chnls.announce).send(`**:yes: The election has officially ended. Winner(s):**\`\`\`\n${winner}\`\`\``);
         })
       }, elec.end - Date.now());
@@ -299,10 +299,11 @@ const f = {
         if(m.roles.get(candidate))
           await m.removeRole(candidate);
       });
+      
       if(forced)
-        channel.send(`Ended Election #${res[res.length - 1].num} (${res[res.length - 1].title || "No Title"}`), echnl.send(new Discord.RichEmbed().setAuthor("Election has officially stopped", echnl.guild.iconURL).setDescription("There might have been technical problems so please don't be angry").setColor(f.color)).then(m => m.delete(60000));
-      else
-        echnl.send(new Discord.RichEmbed().setAuthor(`Election #${res[res.length - 1].num} (Title: ${res[res.length - 1].title || "None"})`, echnl.guild.iconURL).setDescription(`**Winner:**).setColor(f.color)).then(m => m.delete(60000));
+        return channel.send(`Ended Election #${res[res.length - 1].num} (${res[res.length - 1].title || "No Title"}`), echnl.send(new Discord.RichEmbed().setAuthor("Election has officially stopped", echnl.guild.iconURL).setDescription("There might have been technical problems so please don't be angry").setColor(f.color)).then(m => m.delete(60000));
+      
+      echnl.send(new Discord.RichEmbed().setAuthor(`Election #${res[res.length - 1].num} (Title: ${res[res.length - 1].title || "None"})`, echnl.guild.iconURL).setDescription(`**Winner(s):** ${res.winners.split("  ").map(v => `<@${v.split(" ")[0]}> (VP: <@${v.split(" ")[1]}>)`).join(" ,")}`).setColor(f.color))
     });
   },
   check_and_do_cmd: (message) => {
@@ -943,13 +944,10 @@ const cmds = {
           .setAuthor("A New Election has started!", client.user.avatarURL)
           .setColor(f.color)
           .addField("How to run", `To run, use the \`${prefix}president\` command. To learn more about the command, do \`${prefix}help president\`.\n**Requirnments:**\`\`\`md\n1. You should have a 1000 REAL EXP\n2. You need to be a member for AqilAcademy for over 2 weeks\`\`\``)
-          .addField("How to vote", "There is **1** reaction, a :thumbsup:. This is your personal voting button. You can vote for anyone but yourself. You technically have unlimited votes untill Aqil finds a fix for that :P")
+          .addField("How to vote", "There is **1** reaction, a :thumbsup:. This is your personal voting button. You can vote for anyone but yourself and your President(if you are a Vice President).")
           .addField("Election Rules", "Here are the current election rules. They can also be found in <#382676611205693441>")
           .setImage("https://cdn.glitch.com/87717c00-94ec-4ab4-96ea-8f031a709af4%2FCapture.PNG?1525539358951");
-        setTimeout(() => {
-          f.checkelections();
-        }, 2000);
-        db.run(`INSERT INTO elections (end, start, title) VALUES (${new Date().valueOf() + 172800000}, ${new Date().valueOf()}, "${content === "" || !content ? "" : content}")`);
+        db.run(`INSERT INTO elections (end, start, title) VALUES (${new Date().valueOf() + 172800000}, ${new Date().valueOf()}, "${content === "" || !content ? "" : content}")`, f.checkelections());
         msg.guild.channels.get(data.echnl).overwritePermissions(msg.guild.roles.get("294115797326888961"), { READ_MESSAGES: true });
         client.channels.get(data.echnl).send(embed);
       });
