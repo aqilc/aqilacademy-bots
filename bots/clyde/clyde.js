@@ -300,7 +300,9 @@ const f = {
           await m.removeRole(candidate);
       });
       if(forced)
-        echnl.send(new Discord.RichEmbed().setAuthor("Election has officially stopped", echnl.guild.iconURL).setDescription("There might have been technical problems so please don't be angry").setColor(f.color)).then(m => m.delete(60000));
+        channel.send(`Ended Election #${res[res.length - 1].num} (${res[res.length - 1].title || "No Title"}`), echnl.send(new Discord.RichEmbed().setAuthor("Election has officially stopped", echnl.guild.iconURL).setDescription("There might have been technical problems so please don't be angry").setColor(f.color)).then(m => m.delete(60000));
+      else
+        echnl.send(new Discord.RichEmbed().setAuthor(`Election #${res[res.length - 1].num} (Title: ${res[res.length - 1].title || "None"})`, echnl.guild.iconURL).setDescription(`**Winner:**).setColor(f.color)).then(m => m.delete(60000));
     });
   },
   check_and_do_cmd: (message) => {
@@ -958,7 +960,7 @@ const cmds = {
     cat: "election",
     perms: "bot admin",
     del: true,
-    do: msg => f.checkelections(msg.channel, true),
+    do: msg => f.endelections(msg.channel, true),
   },
   elections: {
     desc: "Shows some elections from AqilAcademy's history",
