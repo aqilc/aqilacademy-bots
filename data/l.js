@@ -51,8 +51,9 @@ module.exports = {
   47: 45000000,
   48: 50000000,
   get length() { return 48; }, get size() { return 48; },
+  get filter() { return Object.values(this).filter; },
   level(points) {
     let l = Object.values(this);
-    return l.indexOf(l.filter(l => l > points)[0])
-  }
-}
+    return l.indexOf(this.filter(l => l > points)[0])
+  },
+};
