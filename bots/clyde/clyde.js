@@ -17,12 +17,6 @@ const prefix = "c.";
 // Cooldowns
 const cooldowns = {};
 
-// Images store so the bot can be a lot faster.
-const cache = {
-  welcome: [],
-  profile: {},
-};
-
 // The Client
 const client = new Discord.Client();
 client.login(process.env.TOKENC);
@@ -1318,17 +1312,12 @@ const cmds = {
               bar_exp = [levels.level(f.realpoints), levels.level(f.realpoints) + 1],
               
               // If the background is cached, it retrieves it.
-              buffer1,
-              bg = cache.profile.bg,
+              { body: buffer1 } = await snekfetch.get("https://i.pinimg.com/originals/90/cd/dc/90cddc7eeddbac6b17b4e25674e9e971.jpg"),
+              bg = await loadImage(buffer1),
               
               // User's Avatar
               { body: buffer2 } = await snekfetch.get(user.displayAvatarURL),
-              avatar = await loadImage(buffer2);;
-          
-              // The background
-          if(!bg)
-            buffer1 = (await snekfetch.get("https://i.pinimg.com/originals/90/cd/dc/90cddc7eeddbac6b17b4e25674e9e971.jpg")).body,
-            bg = cache.profile.bg = await loadImage(buffer1),
+              avatar = await loadImage(buffer2);
           
           // Background
           ctx.drawImage(bg, 0, 0, canvas.width, 200);
