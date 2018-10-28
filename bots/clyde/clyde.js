@@ -1019,8 +1019,7 @@ const cmds = {
         //if((await echnl.fetchMessages()).size !== 0)
           //await client.channels.get(data.echnl).bulkDelete(50, true);
         let embed = new Discord.RichEmbed()
-          .setAuthor("A New Election has started!", client.user.avatarURL)
-          .setColor(f.color)
+          .setAuthor("A New Election has started!", client.user.avatarURL).setColor(f.color)
           .addField("How to run", `To run, use the \`${prefix}president\` command. To learn more about the command, do \`${prefix}help president\`.\n**Requirnments:**\`\`\`md\n1. You should have a 1000 REAL EXP\n2. You need to be a member for AqilAcademy for over 2 weeks\`\`\``)
           .addField("How to vote", "There is **1** reaction, a :thumbsup:. This is your personal voting button. You can vote for anyone but yourself and your President(if you are a Vice President).")
           .addField("Election Rules", "Here are the current election rules. They can also be found in <#382676611205693441>")
