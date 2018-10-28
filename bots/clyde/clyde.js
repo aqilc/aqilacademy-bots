@@ -1022,8 +1022,8 @@ const cmds = {
         if(res && (res !== {} || res !== []) && res.end > new Date().valueOf())
           return msg.reply("An election is already in progress!");
         let echnl = client.channels.get(data.echnl);
-        if((await echnl.fetchMessages()).size !== 0)
-          await client.channels.get(data.echnl).bulkDelete(50, true);
+        //if((await echnl.fetchMessages()).size !== 0)
+          //await client.channels.get(data.echnl).bulkDelete(50, true);
         let embed = new Discord.RichEmbed()
           .setAuthor("A New Election has started!", client.user.avatarURL)
           .setColor(f.color)
