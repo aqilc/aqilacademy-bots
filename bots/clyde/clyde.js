@@ -1017,10 +1017,11 @@ const cmds = {
     perms: "bot admin",
     del: true,
     do: (msg, content) => {
-      db.get(`SELECT * FROM elections ORDER BY end DESC`, (err, res) => {
+      db.get(`SELECT * FROM elections ORDER BY end DESC`, async (err, res) => {
         console.log(res);
         if(res && (res !== {} || res !== []) && res.end > new Date().valueOf())
           return msg.reply("An election is already in progress!");
+        await client.channels.get(data.echnl).bulkDelete(50, true);
         let embed = new Discord.RichEmbed()
           .setAuthor("A New Election has started!", client.user.avatarURL)
           .setColor(f.color)
