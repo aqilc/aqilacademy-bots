@@ -1,5 +1,5 @@
 const db = new (require("sqlite3").verbose()).Database('./.data/sqlite.db');
-const cdata = require("./d.js");
+const cdata = require("./d.js"), levels = require("./l.js");
 const fs = require("fs");
 const https = require("https");
 
@@ -296,6 +296,7 @@ const f = {
       }
       return v;
     },
+  getLevel(points) {},
   
   // Discord stuff
   has_roles(member, role_name = ["Moderator"]) {
