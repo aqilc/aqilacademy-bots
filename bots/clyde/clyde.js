@@ -18,9 +18,11 @@ const prefix = "c.";
 const cooldowns = {};
 
 // Images store so the bot can be a lot faster.
-const images = {
+const cache = {
   welcome: [],
-  profile: {},
+  profile: {
+    users: {}
+  },
 };
 
 // The Client
@@ -1318,7 +1320,7 @@ const cmds = {
               bar_exp = levels.getObj(stats.realpoints, "points", true) || [{ points: 0 }, { points: stats.realpoints }],
           
               // The background
-              { body: buffer2 } = await snekfetch.get("https://i.pinimg.com/originals/90/cd/dc/90cddc7eeddbac6b17b4e25674e9e971.jpg"),
+              { body: buffer1 } = await snekfetch.get("https://i.pinimg.com/originals/90/cd/dc/90cddc7eeddbac6b17b4e25674e9e971.jpg"),
               bg = await loadImage(buffer2),
               
               // User's Avatar
