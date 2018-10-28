@@ -935,6 +935,79 @@ const cmds = {
       });
     },
   },
+  poll: {
+    a: [],
+    d: {
+      desc: "Creates a poll for you! Make sure you include the title.\n**Optional Parameters:** Description, and Time",
+      usage: ":(title) (D:[description]) (T:[seconds, minutes with an \"m\" at the end, or hours with an \"h\" at the end])",
+      perms: "everyone",
+    },
+    f: (msg, content) => {
+      let title = content.split("D:")[0].split("T:")[0].trim(), embed = new Discord.RichEmbed(),
+          desc = content.includes("D:") ? content.split("D:")[1].split("T:")[0].trim() : "", time = 0;
+      if(content.split("T:")[1]) {
+        if (content.split("T:")[1].trim()[content.split("T:")[1].trim().length-1] === "m")
+          time = Number(f.sti(content.split("T:")[1].trim())) * 60;
+        else if (content.split("T:")[1].trim()[content.split("T:")[1].trim().length-1] === "h")
+          time = Number(f.sti(content.split("T:")[1].trim())) * 3600;
+        else
+          time = Number(f.sti(content.split("T:")[1].trim()));
+      }
+      
+      if(title === "")
+        msg.channel.send("Please include a title");
+      
+      embed.setAuthor(title, msg.author.avatarURL)
+        .setFooter(`Vote with the reactions below${time > 0 ? ` | Ends at ${new Date(new Date().valueOf() + time * 1000).toUTCString()}` : ""}`);
+      
+      if(desc !== "")
+        embed.setDescription(desc);
+      
+      msg.channel.send(embed)
+        .then(async msg => {
+          await msg.react("👍")
+          await msg.react("👎")
+          await msg.react("🤷");
+          
+          if (time > 0) {
+            setTimeout(() => {
+              let [winner, reactions, results] = ["", msg.reactions.array(), { up: 0, down: 0, shrug: 0, other: ""}];
+              for(let i = 0; i < reactions.length; i ++) {
+                switch(decodeURIComponent(reactions[i].emoji.identifier)) {
+                  case "👍":
+                    results.up = reactions[i].count;
+                    break;
+                  case "👎":
+                    results.down = reactions[i].count;
+                    break;
+                  case "🤷":
+                    results.shrug = reactions[i].count;
+                    break;
+                  default:
+                    results.other += reactions[i].emoji + " ";
+                }
+              }
+              if(results.up > results.down)
+                winner = "👍";
+              else if(results.up < results.down)
+                winner = "👎";
+              
+              let embed = new Discord.RichEmbed()
+                .setColor(f.rcol())
+                .setAuthor(title, message.author.avatarURL)
+                .setFooter(`Poll Ended | ${winner === "" ? "No Winner" : `${winner} Wins!`} |  👍: ${results.up}  👎: ${results.down}  🤷: ${results.shrug}`)
+                .setTimestamp();
+              if(desc !== "")
+                embed.setDescription(desc);
+              
+              msg.edit(embed);
+            }, time * 1000);
+          }
+        });
+    },
+    t: 3,
+    del: true
+  },
   
   // Election commands
   startelection: {
