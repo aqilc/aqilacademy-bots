@@ -294,7 +294,7 @@ const f = {
   },// Check if elections are going on and sets up a setTimeout if they are.
   endelections(channel, forced) {
     db.all(`SELECT * FROM elections`, async (err, res) => {
-      if(res[res.length - 1].end < new Date().valueOf())
+      if(!res || !res.length || res[res.length - 1].end < new Date().valueOf())
         return channel && channel.send("No Ongoing Election");
       db.run(`UPDATE elections SET end = ${new Date().valueOf()} WHERE num = ${res[res.length - 1].num}`);
       db.run(`DELETE FROM waiting WHERE id = 0`);
@@ -1031,7 +1031,7 @@ const cmds = {
           .addField("How to vote", "There is **1** reaction, a :thumbsup:. This is your personal voting button. You can vote for anyone but yourself and your President(if you are a Vice President).")
           .addField("Election Rules", "Here are the current election rules. They can also be found in <#382676611205693441>")
           .setImage("https://cdn.glitch.com/87717c00-94ec-4ab4-96ea-8f031a709af4%2FCapture.PNG?1525539358951");
-        db.run(`INSERT INTO elections (end, start, title) VALUES (${Date.now() + 172800000}, ${Date.now()}, "${content || ""}")`, f.checkelections());
+        db.run(`INSERT INTO elections (end, start, title) VALUES (${Date.now() + 172800000}, ${Date.now()}, "${content === "" || !content ? "" : content}")`, f.checkelections());
         msg.guild.channels.get(data.echnl).overwritePermissions(msg.guild.roles.get("294115797326888961"), { READ_MESSAGES: true });
         client.channels.get(data.echnl).send(embed);
       });
