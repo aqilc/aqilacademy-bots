@@ -1,4 +1,4 @@
-module.exports = {
+let l = {
   1: 0,
   2: 100,
   3: 250,
@@ -50,8 +50,12 @@ module.exports = {
   46: 35000000,
   47: 45000000,
   48: 50000000,
-  level(points) {
+};
+Object.defineProperty(l, "levels", {
+  enumerable: false,
+  value(points) {
     let l = Object.values(this);
     return l.indexOf(l.filter(l => l >= points)[0])
-  },
-};
+  }
+});
+module.exports = l;
