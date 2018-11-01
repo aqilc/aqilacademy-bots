@@ -994,7 +994,7 @@ const cmds = {
               
               let embed = new Discord.RichEmbed()
                 .setColor(f.rcol())
-                .setAuthor(title, message.author.avatarURL)
+                .setAuthor(title, msg.author.avatarURL)
                 .setFooter(`Poll Ended | ${winner === "" ? "No Winner" : `${winner} Wins!`} |  👍: ${results.up}  👎: ${results.down}  🤷: ${results.shrug}`)
                 .setTimestamp();
               if(desc !== "")
@@ -1262,13 +1262,12 @@ const cmds = {
     perms: "bot admin",
     hidden: true,
     do: async (msg, content) => {
-      let canvas, ctx;
       switch(content.split(" ")[0]) {
           
         // Hello thing lol
         case "hello": {
-          canvas = createCanvas(400, 100),
-            ctx = canvas.getContext("2d");
+          let canvas = createCanvas(400, 100),
+              ctx = canvas.getContext("2d");
           
           // Background
           let { body: buffer } = await snekfetch.get("https://png.pngtree.com/thumb_back/fw800/back_pic/03/70/42/7957b6808adc0e9.jpg"),
@@ -1299,7 +1298,7 @@ const cmds = {
         // Profile info(WIP)
         case "profile": {
           let canvas = createCanvas(400, 100),
-                ctx = canvas.getContext("2d");
+              ctx = canvas.getContext("2d");
           
           // Starts typing to indicate that its calculating something
           msg.channel.startTyping();
@@ -1314,7 +1313,7 @@ const cmds = {
               user = id === msg.author.id ? msg.author : await client.fetchUser(id),
               
               // Excludes all values except the ones that have more points than the requested user's real points
-              bar_exp = [levels.level(f.realpoints), levels.level(f.realpoints) + 1],
+              bar_exp = [levels[levels.level(f.realpoints)], levels[levels.level(f.realpoints) + 1]],
               
               // If the background is cached, it retrieves it.
               { body: buffer1 } = await snekfetch.get("https://i.pinimg.com/originals/90/cd/dc/90cddc7eeddbac6b17b4e25674e9e971.jpg"),
@@ -1332,7 +1331,7 @@ const cmds = {
           f.round_rect(ctx, 100, 20, canvas.width - 120, 80, { tl: 4, tr: 4 }, true, false);
           
           // Exp Bar
-          let p = [180, 30, canvas.width - 210, 25, 5, (stats.realpoints - bar_exp[0].points) / (bar_exp[1].points - bar_exp[0].points) <= 1 ? (stats.realpoints - bar_exp[0].points) / (bar_exp[1].points - bar_exp[0].points) : 1];
+          let p = [180, 30, canvas.width - 210, 25, 5, (stats.realpoints - bar_exp[0]) / (bar_exp[1] - bar_exp[0]) <= 1 ? (stats.realpoints - bar_exp[0]) / (bar_exp[1] - bar_exp[0]) : 1];
           f.round_rect(ctx, p[0], p[1], p[2], p[3], p[4], true, false);
           ctx.fillStyle = "rgb(100, 150, 255)";
           f.round_rect(ctx, p[0] + 2, p[1] + 2, p[2] * p[5] - 4, p[3] - 4, p[4], true, false);
@@ -1340,11 +1339,11 @@ const cmds = {
           // Text
           ctx.fillStyle = "rgba(50, 50, 50, 0.7)";
           ctx.font = "bold 10px monospace";
-          let text = `Points: ${stats.realpoints} / ${bar_exp[1].points}`;
+          let text = `Points: ${stats.realpoints} / ${bar_exp[1]}`;
           ctx.fillText(text, p[0] + p[2]/2 - ctx.measureText(text).width/2, p[1] + p[3]/2 + 4);
           
           // Level text
-          let text2 = "Level " + levels.indexOf(bar_exp[0]);
+          let text2 = "Level " + Object.values(levels).indexOf(bar_exp[0]);
           let { font: font1, size: size1 } = f.autofont(text2, canvas, 105, 175, 30, { before: "bold", after: "Arial" });
           ctx.font = font1;
           ctx.fillText(text2, 140 - ctx.measureText(text2).width/2, 42 + size1/2);
