@@ -1343,7 +1343,7 @@ const cmds = {
           ctx.fillText(text, p[0] + p[2]/2 - ctx.measureText(text).width/2, p[1] + p[3]/2 + 4);
           
           // Level text
-          let text2 = "Level " + Object.values(levels).indexOf(bar_exp[0]);
+          let text2 = "Level " + levels.level(bar_exp[0]);
           let { font: font1, size: size1 } = f.autofont(text2, canvas, 105, 175, 30, { before: "bold", after: "Arial" });
           ctx.font = font1;
           ctx.fillText(text2, 140 - ctx.measureText(text2).width/2, 42 + size1/2);
