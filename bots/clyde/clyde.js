@@ -1313,9 +1313,9 @@ const cmds = {
               user = id === msg.author.id ? msg.author : await client.fetchUser(id),
               
               // Excludes all values except the ones that have more points than the requested user's real points
-              bar_exp = [levels[levels.level(f.realpoints)], levels[levels.level(f.realpoints) + 1]],
+              bar_exp = [levels[levels.level(stats.realpoints)], levels[levels.level(stats.realpoints) + 1]],
               
-              // If the background is cached, it retrieves it.
+              // Gets the backgrouns
               { body: buffer1 } = await snekfetch.get("https://i.pinimg.com/originals/90/cd/dc/90cddc7eeddbac6b17b4e25674e9e971.jpg"),
               bg = await loadImage(buffer1),
               
@@ -1371,6 +1371,18 @@ const cmds = {
         
         // Welcome Message(WIP)
         case "w": case "welcome": {
+          
+          // Starts Typing
+          msg.channel.startTyping();
+          
+          let canvas = createCanvas(500, 200),
+              ctx = canvas.getContext("2d"),
+              
+              // Gets member
+              member = msg.guild.members.get(f.get_id(msg, content.slice(content.indexOf(" ") + 1)) || msg.author.id),
+              
+              // Gets Background
+              
           
           
         } break;

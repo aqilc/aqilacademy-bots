@@ -51,11 +51,15 @@ let l = {
   47: 45000000,
   48: 50000000,
 };
-Object.defineProperty(l, "levels", {
+Object.defineProperty(l, "level", {
   enumerable: false,
   value(points) {
     let l = Object.values(this);
     return l.indexOf(l.filter(l => l >= points)[0])
   }
+});
+Object.defineProperty(l, "length", {
+  enumerable: false,
+  value: 48
 });
 module.exports = l;
