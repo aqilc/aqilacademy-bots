@@ -1375,6 +1375,7 @@ const cmds = {
           // Starts Typing
           msg.channel.startTyping();
           
+              // Creates canvas and drawing context
           let canvas = createCanvas(500, 200),
               ctx = canvas.getContext("2d"),
               
@@ -1382,9 +1383,22 @@ const cmds = {
               member = msg.guild.members.get(f.get_id(msg, content.slice(content.indexOf(" ") + 1)) || msg.author.id),
               
               // Gets Background
+              { body: buffer } = await snekfetch.get("https://coolbackgrounds.io/images/backgrounds/sea-edge-311c5cd5.png"),
+              bg = await loadImage(buffer),
               
+              // User's Avatar
+              { body: buffer2 } = await snekfetch.get(member.user.displayAvatarURL),
+              avatar = await loadImage(buffer2);
           
           
+          ctx.drawImage(bg, 0, 0, canvas.width, canvas.height);
+          
+          
+          // Stops typing to show its done calculating
+          msg.channel.stopTyping();
+          
+          // Sends the image
+          msg.channel.send(new Discord.Attachment(canvas.toBuffer(), "welcome.png"));
         } break;
           
         // Guides you to profile thing if you don't
