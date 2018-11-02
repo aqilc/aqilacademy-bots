@@ -138,7 +138,7 @@ function run() {
   // Election voting systems
   client.on("messageReactionAdd", (reaction, user) => {
     console.log(user.tag + " added " + reaction.emoji.name);
-    if(reaction.emoji.name !== "👍" && reaction.message.channel.id !== data.echnl && user.id !== client.user.id)
+    if(reaction.emoji.name !== "👍" || reaction.message.channel.id !== data.echnl || user.id === client.user.id)
       return;
     db.get("SELECT * FROM elections ORDER BY end DESC", (err, row) => {
       if(!row || row.end < new Date().valueOf())
@@ -170,9 +170,7 @@ function run() {
   });
   client.on("messageReactionRemove", (reaction, user) => {
     console.log(user.tag + " removed " + reaction.emoji.name);
-    if(reaction.emoji.name !== "👍")
-      return;
-    if(reaction.message.channel.id !== data.echnl)
+    if(reaction.emoji.name !== "👍" || reaction.message.channel.id !== data.echnl || user.id === client.user.id)
       return;
     db.get("SELECT * FROM elections ORDER BY end DESC", (err, row) => {
       if(!row)
