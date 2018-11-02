@@ -1022,15 +1022,15 @@ const cmds = {
         if(res && (res !== {} || res !== []) && res.end > new Date().valueOf())
           return msg.reply("An election is already in progress!");
         let echnl = client.channels.get(data.echnl);
-        //if((await echnl.fetchMessages()).size !== 0)
-          //await client.channels.get(data.echnl).bulkDelete(50, true);
+        if((await echnl.fetchMessages()).size !== 0)
+          await client.channels.get(data.echnl).bulkDelete(50, true);
         let embed = new Discord.RichEmbed()
           .setAuthor("A New Election has started!", client.user.avatarURL).setColor(f.color)
           .addField("How to run", `To run, use the \`${prefix}president\` command. To learn more about the command, do \`${prefix}help president\`.\n**Requirnments:**\`\`\`md\n1. You should have a 1000 REAL EXP\n2. You need to be a member for AqilAcademy for over 2 weeks\`\`\``)
           .addField("How to vote", "There is **1** reaction, a :thumbsup:. This is your personal voting button. You can vote for anyone but yourself and your President(if you are a Vice President).")
           .addField("Election Rules", "Here are the current election rules. They can also be found in <#382676611205693441>")
           .setImage("https://cdn.glitch.com/87717c00-94ec-4ab4-96ea-8f031a709af4%2FCapture.PNG?1525539358951");
-        db.run(`INSERT INTO elections (end, start, title) VALUES (${+(new Date()) + 1.728e8}, ${+(new Date())}, "${content === "" || !content ? "" : content}")`, f.checkelections());
+        db.run(`INSERT INTO elections (end, start, title) VALUES (${+(new Date()) + 1.728e8}, ${+(new Date())}, "${content === "" || !content ? "" : content}")`, () => f.checkelections());
         msg.guild.channels.get(data.echnl).overwritePermissions(msg.guild.roles.get("294115797326888961"), { READ_MESSAGES: true });
         client.channels.get(data.echnl).send(embed);
       });
@@ -1098,14 +1098,15 @@ const cmds = {
             
             let collectors = [], collector = () => msg.channel.createMessageCollector(m => m.author.id === msg.author.id, { time: 30000, maxMatches: 1 });
             if(!vp) {
-              msg.channel.send("Please specify the Vice President you are running with!");
+              msg.channel.send("Please send a message with the name of the Vice President you are running with!");
               collectors[0] = collector().on("end", collected => {
                 let message;
                 if(!(message = collected.first()))
                   return msg.reply("You ran out of time. You can try again using `c.run`!");
                 
-                if(!(vp = f.get_id(msg, message.content)))
-                  return msg.reply("Invalid Vice President. Please try again by doing `c.run`.");
+                let reason;
+                if(!(vp = f.get_id(msg, message.content)) && vp !== msg.author.id)
+                  return msg.reply(`Invalid Vice President. Please try again by doing \`c.run\`.`);
                 
                 msg.channel.send(`Vice President set to \`${client.users.get(vp).tag}\` <:yes:416019413314043914>\nNow please send the Slogan you are going to use for your term`);
                 if(!slogan) {
