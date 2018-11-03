@@ -148,21 +148,21 @@ function run() {
         if(!res)
           return;
         if(user.id === res.id || user.id === res.vId)
-          user.send("You can only vote for someone other than you or your vice president!").catch(console.log) && reaction.remove(user);
+          return user.send("You can only vote for someone other than you or your vice president!").catch(console.log) && reaction.remove(user);
 
         db.get(`SELECT * FROM users WHERE id = "${user.id}"`, (err, ur) => {
           if(err)
-            return console.log(err);
+            return console.error(err);
           if(!ur || (ur.realpoints > ur.points && ur.realpoints < 1000) || ur.points < 1000)
-            user.send("You need **1000 EXP** to vote in the AqilAcademy Elections!").catch(console.log) && reaction.remove(user);
+            return user.send("You need **1000 EXP** to vote in the AqilAcademy Elections!").catch(console.log) && reaction.remove(user);
           db.get(`SELECT * FROM voters WHERE id = "${user.id}"`, (err, voter) => {
             if(err)
               return console.log(err);
             if(voter)
-              user.send("You have already voted!").catch(console.log) && reaction.remove(user);
+              return user.send("You have already voted!").catch(console.log) && reaction.remove(user);
             db.run(`INSERT INTO voters (id, for, date, election) VALUES (?, ?, ?, ?)`, [ user.id, res.id, new Date().valueOf(), row.num ]);
             db.run(`UPDATE election SET votes = ${reaction.count - 1} WHERE id = "${res.id}"`);
-            user.send(`Your vote for <@${reaction.message.author.id}> has been recorded!`);
+            user.send(`Your vote for <@${res.id}> has been recorded!`);
           });
         });
       });
@@ -183,7 +183,6 @@ function run() {
         if(!res)
           return user.send(`No one running under this message`);
         user.send(`Successfully removed your vote for <@${res.id}>`);
-
         db.run(`DELETE FROM voters WHERE id = "${user.id}"`);
         db.run(`UPDATE election SET votes = ${reaction.count - 1} WHERE id = "${res.id}"`);
       });
