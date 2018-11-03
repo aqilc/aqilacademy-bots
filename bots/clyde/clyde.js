@@ -44,7 +44,7 @@ function run() {
                   if(msg.content === "yes") {
                     client.channels.get(data.echnl).send(new Discord.RichEmbed().setAuthor(user.tag + " is running for president!", user.avatarURL)
                       .setDescription(`with <@${msg.author.id}> as his/her Vice President!`)
-                      .addField("Slogan", d.slogan).addField("Description of term", d.description).setColor(f.color)).then(message => {
+                      .addField("Slogan", d.slogan).addField("Description of term", d.desc).setColor(f.color)).then(message => {
                       message.react("👍");
                       db.run(`INSERT INTO election (id, vId, votes, msgId) VALUES ("${id}", "${msg.author.id}", 0, "${message.id}")`);
                     });
