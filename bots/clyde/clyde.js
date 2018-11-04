@@ -1093,7 +1093,7 @@ const cmds = {
             if(w)
               return msg.reply("You are already waiting for a Vice President!");
             
-            let collectors = [], collector = () => msg.channel.createMessageCollector(m => m.author.id === msg.author.id, { time: 30000, maxMatches: 1 });
+            let collectors = [], collector = () => msg.channel.createMessageCollector(m => m.author.id === msg.author.id && m.content.trim() !== "", { time: 30000, maxMatches: 1 });
             if(!vp) {
               msg.channel.send("Please send a message with the name of the Vice President you are running with!");
               collectors[0] = collector().on("end", collected => {
