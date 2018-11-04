@@ -100,7 +100,7 @@ function run() {
   client.on("guildMemberAdd", member => {
     let embed = new Discord.RichEmbed()
       .setAuthor(`A New ${member.user.bot ? "Bot" : "Member"} joined!`)
-      .setDescription(`**Username:** ${member} (**ID:** \`${member.id}\`)`)
+      .setDescription(`${member} (${member.user.tag}) (**ID:** \`${member.id}\`)`)
       .setColor("GREEN");
     client.channels.get(chnls.log).send(embed);
   });
@@ -108,7 +108,7 @@ function run() {
     let embed = new Discord.RichEmbed()
       .setAuthor(`A ${member.user.bot ? "Bot" : "Member"} left!`)
       .setDescription(`**ID:** ${member.id}\n**Roles:**\`\`\`md\n • ${member.roles.map(r => r.name).join("\n • ")}`)
-      .setColor("GREEN");
+      .setColor("RED");
     client.channels.get(chnls.log).send(embed);
     
     db.all(`SELECT * FROM election WHERE id = "${member.user.id}", vId = "${member.user.id}"`, (err, res) => {
