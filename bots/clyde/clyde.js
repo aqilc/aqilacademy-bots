@@ -272,7 +272,7 @@ const f = {
         return;
       
       setTimeout(() => {
-        db.run("SELECT * FROM election ORDER BY votes", (err, res) => {
+        db.all("SELECT * FROM election ORDER BY votes", (err, res) => {
           let winner = "";
           let sqlwin = "";
           for(var i = 0; i < res.length; i ++) {
@@ -285,7 +285,7 @@ const f = {
           let guild = client.guilds.get(data.aa);
           guild.channels.get(chnls.announce).send(`**:yes: The election has officially ended. Winner(s):**\`\`\`\n${winner}\`\`\``);
         })
-      }, /*elec.end - Date.now()*/ 6e5);
+      }, /*elec.end - Date.now()*/ 1000);
     });
     return f;
   },// Check if elections are going on and sets up a setTimeout if they are.
