@@ -273,19 +273,19 @@ const f = {
       
       setTimeout(() => {
         db.all("SELECT * FROM election ORDER BY votes", (err, res) => {
-          let winner = "";
-          let sqlwin = "";
+          //let winner = "";
+          let sqlwin = [];
           for(var i = 0; i < res.length; i ++) {
             if(res[i].votes === res[0].votes) {
-              winner += `${i + 1}. ${client.users.get(res[i].id).tag}\n   Vice: ${client.users.get(res[i].vId).tag}`;
-              sqlwin += `${res[i].id} ${res[i].vId}  `;
+              //winner += `${i + 1}. ${client.users.get(res[i].id).tag}\n   Vice: ${client.users.get(res[i].vId).tag}`;
+              sqlwin.push(`${res[i].id} ${res[i].vId}`);
             }
           }
-          db.run(`UPDATE elections SET winners = ${sqlwin} WHERE num = ${elec.num}`, f.endelections);
+          db.run(`UPDATE elections SET winners = "${sqlwin.join("  ")}" WHERE num = ${elec.num}`, f.endelections);
           let guild = client.guilds.get(data.aa);
-          guild.channels.get(chnls.announce).send(`**:yes: The election has officially ended. Winner(s):**\`\`\`\n${winner}\`\`\``);
+          //guild.channels.get(chnls.announce).send(`**:yes: The election has officially ended. Winner(s):**\`\`\`\n${winner}\`\`\``);
         })
-      }, /*elec.end - Date.now()*/ 1000);
+      }, /*elec.end - Date.now()*/ 6e5);
     });
     return f;
   },// Check if elections are going on and sets up a setTimeout if they are.
@@ -293,7 +293,8 @@ const f = {
     db.all(`SELECT * FROM elections`, async (err, res) => {
       if(!res || !res.length || res[res.length - 1].end < new Date().valueOf())
         return channel && channel.send("No Ongoing Election");
-      db.run(`UPDATE elections SET end = ${new Date().valueOf()} WHERE num = ${res[res.length - 1].num}`);
+      if(forced)
+        db.run(`UPDATE elections SET end = ${new Date().valueOf()} WHERE num = ${res[res.length - 1].num}`);
       db.run(`DELETE FROM waiting WHERE id = 0`);
       db.run("DELETE FROM election");
       let echnl = client.guilds.get(data.aa).channels.get(data.echnl), candidate = echnl.guild.roles.find(r => r.name === "Candidate").id;
@@ -306,7 +307,7 @@ const f = {
       if(forced)
         return channel && channel.send(`Ended Election #${res[res.length - 1].num} (${res[res.length - 1].title || "No Title"}`), echnl.send(new Discord.RichEmbed().setAuthor("Election has officially stopped", echnl.guild.iconURL).setDescription("There might have been technical problems so please don't be angry").setColor(f.color)).then(m => m.delete(60000));
       
-      echnl.send(new Discord.RichEmbed().setAuthor(`Election #${res[res.length - 1].num} (Title: ${res[res.length - 1].title || "None"})`, echnl.guild.iconURL).setDescription(`**Winner(s):** ${res.winners.split("  ").map(v => `<@${v.split(" ")[0]}> (VP: <@${v.split(" ")[1]}>)`).join(" ,")}`).setColor(f.color))
+      client.channels.get(chnls.announce).send(new Discord.RichEmbed().setAuthor(`Election #${res[res.length - 1].num} (Title: ${res[res.length - 1].title || "None"})`, echnl.guild.iconURL).setDescription(`**Winner(s):** ${res.winners.split("  ").map(v => `<@${v.split(" ")[0]}> (VP: <@${v.split(" ")[1]}>)`).join(" ,")}`).setColor(f.color))
     });
   },
   check_and_do_cmd: (message) => {
