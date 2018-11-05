@@ -285,7 +285,7 @@ const f = {
           let guild = client.guilds.get(data.aa);
           guild.channels.get(chnls.announce).send(`**:yes: The election has officially ended. Winner(s):**\`\`\`\n${winner}\`\`\``);
         })
-      }, elec.end - Date.now());
+      }, /*elec.end - Date.now()*/ 6e5);
     });
     return f;
   },// Check if elections are going on and sets up a setTimeout if they are.
@@ -1120,7 +1120,7 @@ const cmds = {
                         if(!(message = collected.first()))
                           return msg.reply("You ran out of time. You can try again using `c.run`!");
 
-                        msg.channel.send(`Set Description to "${(slogan = message.content)}" <:yes:416019413314043914>`, new Discord.RichEmbed().setAuthor("Wait for your VP to approve then you will be put in!", msg.author.avatarURL).setColor(f.color));
+                        msg.channel.send(`Set Description to "${(desc = message.content)}" <:yes:416019413314043914>`, new Discord.RichEmbed().setAuthor("Wait for your VP to approve then you will be put in!", msg.author.avatarURL).setColor(f.color));
                         
                         db.run(`INSERT INTO waiting (user, id, start, time, for, data) VALUES ("${vp}", 0, ${new Date().valueOf()}, ${res.end - new Date().valueOf()}, "${msg.author.id}", '${JSON.stringify({ vp, pres: msg.author.id, slogan, desc })}')`);
                         client.users.get(vp).send(`<@${msg.author.id}> has asked you to be his Vice President! Put a \`yes\` if you agree and \`no\` if you don't.\n**Note:** You CAN be multiple people's Vice President`);
@@ -1156,8 +1156,11 @@ const cmds = {
             
             client.users.get(row.vId).send(`Your President(<@${row.id}>) has withdrawn from the elections! You are not his Vice President anymore`);
             msg.channel.send(`You and <@${row.vId}> have been taken out of the election`);
-            let mess = await client.channels.get(data.echnl).fetchMessage(row.msgId);
-            mess.delete();
+            db.run(`DELETE FROM election WHERE id = "${msg.author.id}"`);
+            try {
+              let mess = await client.channels.get(data.echnl).fetchMessage(row.msgId);
+              mess.delete();
+            } catch(err) { console.log(err); }
           });
         });
       });
