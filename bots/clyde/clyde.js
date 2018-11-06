@@ -1390,7 +1390,7 @@ const cmds = {
               { body: buffer2 } = await snekfetch.get(member.user.displayAvatarURL),
               avatar = await loadImage(buffer2);
           
-          
+          // The Background
           ctx.drawImage(bg, 0, 0, canvas.width, canvas.height);
           
           
