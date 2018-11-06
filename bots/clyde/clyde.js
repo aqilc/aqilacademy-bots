@@ -111,7 +111,7 @@ function run() {
       .setColor("RED");
     client.channels.get(chnls.log).send(embed);
     
-    db.all(`SELECT * FROM election WHERE id = "${member.user.id}", vId = "${member.user.id}"`, (err, res) => {
+    db.all(`SELECT * FROM election WHERE id = "${member.user.id}" OR vId = "${member.user.id}"`, (err, res) => {
       if(!res)
         return;
       for(let i of res) {
