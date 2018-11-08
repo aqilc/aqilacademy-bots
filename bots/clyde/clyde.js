@@ -7,7 +7,7 @@ const exists = fs.existsSync('./.data/sqlite.db');
 const sqlite3 = require('sqlite3').verbose();
 const db = new sqlite3.Database('./.data/sqlite.db');
 const Discord = require("discord.js");
-const data = require("/app/data/d.js");
+const data = require("../../data/d.js");
 const levels = require("/app/data/l.js");
 const globalfunctions = require("/app/data/f.js");
 
@@ -1103,7 +1103,7 @@ const cmds = {
                   return msg.reply("You ran out of time. You can try again using `c.run`!");
                 
                 let reason;
-                if(!(vp = f.get_id(msg, message.content, "u")) || vp.id === msg.author.id || vp)
+                if(!(vp = typeof f.get_id(msg, message.content, "u") === "string" ? client.users.get(f.get_id(msg, message.content, "u")) : f.get_id(msg, message.content, "u")) || vp.id === msg.author.id || data.devs.includes(vp.id) || vp.bot)
                   return msg.reply(`Invalid Vice President. Please try again by doing \`c.run\`.`);
                 
                 msg.channel.send(`Vice President set to \`${vp.tag}\` <:yes:416019413314043914>\nNow please send the Slogan you are going to use for your term`);
@@ -1123,7 +1123,7 @@ const cmds = {
 
                         msg.channel.send(`Set Description to "${(desc = message.content)}" <:yes:416019413314043914>`, new Discord.RichEmbed().setAuthor("Wait for your VP to approve then you will be put in!", msg.author.avatarURL).setColor(f.color));
                         
-                        db.run(`INSERT INTO waiting (user, id, start, time, for, data) VALUES ("${vp}", 0, ${new Date().valueOf()}, ${res.end - new Date().valueOf()}, "${msg.author.id}", '${JSON.stringify({ vp: vp.id, pres: msg.author.id, slogan, desc })}')`);
+                        db.run(`INSERT INTO waiting (user, id, start, time, for, data) VALUES ("${vp.id}", 0, ${new Date().valueOf()}, ${res.end - new Date().valueOf()}, "${msg.author.id}", '${JSON.stringify({ pres: msg.author.id, slogan, desc })}')`);
                         vp.send(`<@${msg.author.id}> has asked you to be his Vice President! Put a \`yes\` if you agree and \`no\` if you don't.\n**Note:** You CAN be multiple people's Vice President`);
                       });
                     }
