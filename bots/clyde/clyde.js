@@ -1103,10 +1103,10 @@ const cmds = {
                   return msg.reply("You ran out of time. You can try again using `c.run`!");
                 
                 let reason;
-                if(!(vp = f.get_id(msg, message.content)) && vp !== msg.author.id)
+                if(!(vp = f.get_id(msg, message.content, "u")) || vp.id === msg.author.id || vp)
                   return msg.reply(`Invalid Vice President. Please try again by doing \`c.run\`.`);
                 
-                msg.channel.send(`Vice President set to \`${client.users.get(vp).tag}\` <:yes:416019413314043914>\nNow please send the Slogan you are going to use for your term`);
+                msg.channel.send(`Vice President set to \`${vp.tag}\` <:yes:416019413314043914>\nNow please send the Slogan you are going to use for your term`);
                 if(!slogan) {
                   collectors[1] = collector().on("end", collected => {
                     let message;
@@ -1123,8 +1123,8 @@ const cmds = {
 
                         msg.channel.send(`Set Description to "${(desc = message.content)}" <:yes:416019413314043914>`, new Discord.RichEmbed().setAuthor("Wait for your VP to approve then you will be put in!", msg.author.avatarURL).setColor(f.color));
                         
-                        db.run(`INSERT INTO waiting (user, id, start, time, for, data) VALUES ("${vp}", 0, ${new Date().valueOf()}, ${res.end - new Date().valueOf()}, "${msg.author.id}", '${JSON.stringify({ vp, pres: msg.author.id, slogan, desc })}')`);
-                        client.users.get(vp).send(`<@${msg.author.id}> has asked you to be his Vice President! Put a \`yes\` if you agree and \`no\` if you don't.\n**Note:** You CAN be multiple people's Vice President`);
+                        db.run(`INSERT INTO waiting (user, id, start, time, for, data) VALUES ("${vp}", 0, ${new Date().valueOf()}, ${res.end - new Date().valueOf()}, "${msg.author.id}", '${JSON.stringify({ vp: vp.id, pres: msg.author.id, slogan, desc })}')`);
+                        vp.send(`<@${msg.author.id}> has asked you to be his Vice President! Put a \`yes\` if you agree and \`no\` if you don't.\n**Note:** You CAN be multiple people's Vice President`);
                       });
                     }
                   })
