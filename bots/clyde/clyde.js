@@ -935,11 +935,9 @@ const cmds = {
   },
   poll: {
     a: [],
-    d: {
-      desc: "Creates a poll for you! Make sure you include the title.\n**Optional Parameters:** Description, and Time",
-      usage: ":(title) (D:[description]) (T:[seconds, minutes with an \"m\" at the end, or hours with an \"h\" at the end])",
-      perms: "everyone",
-    },
+    desc: "Creates a poll for you! Make sure you include the title.\n**Optional Parameters:** Description, and Time",
+    usage: " (title) (D:[description]) (T:[seconds, minutes with an \"m\" at the end, or hours with an \"h\" at the end])",
+    cd: 60000,
     f: (msg, content) => {
       let title = content.split("D:")[0].split("T:")[0].trim(), embed = new Discord.RichEmbed(),
           desc = content.includes("D:") ? content.split("D:")[1].split("T:")[0].trim() : "", time = 0;
