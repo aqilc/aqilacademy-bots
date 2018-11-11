@@ -282,7 +282,7 @@ const f = {
             }
           }
           db.run(`UPDATE elections SET winners = "${sqlwin.join("  ")}" WHERE num = ${elec.num}`, f.endelections);
-          let guild = client.guilds.get(data.aa);
+          //let guild = client.guilds.get(data.aa);
           //guild.channels.get(chnls.announce).send(`**:yes: The election has officially ended. Winner(s):**\`\`\`\n${winner}\`\`\``);
         })
       }, elec.end - Date.now());
