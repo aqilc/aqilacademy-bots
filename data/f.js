@@ -364,10 +364,7 @@ const f = {
   
   // Trivia Functions
   qclean(text) {
-    return text
-      .replace(/&quot;/g, '"')
-      .replace(/&#039;/g, "'")
-      .replace(/&eacute;/g, "é");
+    return decodeURIComponent(text)
   },
   async get_categories() {
     let data = await require("./f.js").parseURL("https://opentdb.com/api_category.php");
