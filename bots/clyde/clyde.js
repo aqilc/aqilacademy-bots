@@ -37,33 +37,9 @@ function run() {
               if(res.end < new Date().valueOf())
                 return;
 
-              // Functions for waiting IDs
-              let ids = [
-                (id, d) => {
-                  let user = client.users.get(id); d = JSON.parse(d);
-                  if(msg.content === "yes") {
-                    client.channels.get(data.echnl).send(new Discord.RichEmbed().setAuthor(user.tag + " is running for president!", user.avatarURL)
-                      .setDescription(`with <@${msg.author.id}> as his/her Vice President!`)
-                      .addField("Slogan", d.slogan).addField("Description of term", d.desc).setColor(f.color)).then(message => {
-                      message.react("👍");
-                      db.run(`INSERT INTO election (id, vId, votes, msgId) VALUES ("${id}", "${msg.author.id}", 0, "${message.id}")`);
-                    });
-                    db.run(`DELETE FROM waiting WHERE id = 0 AND for = "${id}"`);
-                    msg.channel.send(`Thanks! You and <@${id}> have been entered into the election!`);
-                    user.send(`<@${msg.author.id}> has approved your request to be your Vice President! You both have been put into the Election.`);
-                    let aa; (aa = client.guilds.get("294115797326888961")).members.get(id).addRole(aa.roles.find(r => r.name === "Candidate").id, "Elections");
-                    aa.members.get(msg.author.id).addRole(aa.roles.find(r => r.name === "Candidate").id, "Elections");
-                  } else if (msg.content === "no") {
-                    db.run(`DELETE FROM waiting WHERE for = "${msg.author.id}"`);
-                    msg.channel.send(`Thanks! <@${id}> has been informed about your rejection immediately.`);
-                    user.send(`<@${msg.author.id}> has rejected your request to be your Vice President.`);
-                  }
-                },
-              ];
-
               db.all("SELECT * FROM waiting", (err, rows) => {
                 for(let i of rows)
-                  ids[i.id](i.for, i.data);
+                  ids[i.id](msg, i.for, i.data);
               });
             })
           });
@@ -400,6 +376,30 @@ const f = {
     });
   }
 };
+
+// Functions for waiting IDs
+let ids = [
+  (msg, id, d) => {
+    let user = client.users.get(id); d = JSON.parse(d);
+    if(msg.content === "yes") {
+      client.channels.get(data.echnl).send(new Discord.RichEmbed().setAuthor(user.tag + " is running for president!", user.avatarURL)
+        .setDescription(`with <@${msg.author.id}> as his/her Vice President!`)
+        .addField("Slogan", d.slogan).addField("Description of term", d.desc).setColor(f.color)).then(message => {
+        message.react("👍");
+        db.run(`INSERT INTO election (id, vId, votes, msgId) VALUES ("${id}", "${msg.author.id}", 0, "${message.id}")`);
+      });
+      db.run(`DELETE FROM waiting WHERE id = 0 AND for = "${id}"`);
+      msg.channel.send(`Thanks! You and <@${id}> have been entered into the election!`);
+      user.send(`<@${msg.author.id}> has approved your request to be your Vice President! You both have been put into the Election.`);
+      let aa; (aa = client.guilds.get("294115797326888961")).members.get(id).addRole(aa.roles.find(r => r.name === "Candidate").id, "Elections");
+      aa.members.get(msg.author.id).addRole(aa.roles.find(r => r.name === "Candidate").id, "Elections");
+    } else if (msg.content === "no") {
+      db.run(`DELETE FROM waiting WHERE for = "${msg.author.id}"`);
+      msg.channel.send(`Thanks! <@${id}> has been informed about your rejection immediately.`);
+      user.send(`<@${msg.author.id}> has rejected your request to be your Vice President.`);
+    }
+  },
+];
 
 // All current tags
 let tags = {
