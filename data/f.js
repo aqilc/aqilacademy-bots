@@ -364,10 +364,10 @@ const f = {
   
   // Trivia Functions
   qclean(text) {
-    return decodeURIComponent(text)
+    return decodeURIComponent(text);
   },
   async get_categories() {
-    let data = await require("./f.js").parseURL("https://opentdb.com/api_category.php");
+    let data = await f.parseURL("https://opentdb.com/api_category.php");
     return data.trivia_categories;
   },
   async get_question(cat, diff, type) {
@@ -378,7 +378,10 @@ const f = {
       url += "&difficulty=" + ["easy", "medium", "hard"][diff];
     if([0, 1].includes(type))
       url += "&type=" + ["multiple", "boolean"][type];
-    return f.parseURL(url);
+    let q = await f.parseURL(url);
+    if(q.response_code !== 0)
+      throw new Error(q);
+    return q.results[0];
   },
 };
 
