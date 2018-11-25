@@ -39,7 +39,7 @@ setInterval(() => {
 const tables = [
   
   // Universal
-  "users (id TEXT, points INTEGER, lastDaily INTEGER, messages INTEGER, realpoints INTEGER, created INTEGER, streak INTEGER, items TEXT, quests TEXT, name TEXT, password TEXT, username TEXT, tags TEXT)",
+  "users (id TEXT, points INTEGER, lastDaily INTEGER, messages INTEGER, realpoints INTEGER, created INTEGER, streak INTEGER, tags TEXT)",
   "blacklist (user TEXT, reason TEXT, by TEXT, date INTEGER, time INTEGER)",
 
   // Clyde
@@ -57,9 +57,8 @@ const tables = [
   
 ];
 db.serialize(function() {
-  for(let i of tables) {
+  for(let i of tables)
     db.run("CREATE TABLE IF NOT EXISTS " + i);
-  }
 });
 
 // Runs the 2 bots

@@ -9,6 +9,7 @@ dependencies:
   request: 2.88.0
   snekfetch: 4.0.4
   socket.io: 2.1.1
+  sqlite: 3.0.0
   sqlite3: 4.0.3
   ytdl-core: 0.26.1
 packages:
@@ -1267,6 +1268,21 @@ packages:
     dev: false
     resolution:
       integrity: sha512-rORqq9c+7W0DAK3cleWNSyfv/qKXV99hV4tZe+gGLfBECw3XEhBy7x85F3wypA9688LKjtwO9pX9L33/xQI8yA==
+  /sql-template-strings/2.2.2:
+    dev: false
+    engines:
+      node: '>=4.0.0'
+    optional: true
+    resolution:
+      integrity: sha1-PxFQiiWt384hejBCqdMAwxk7lv8=
+  /sqlite/3.0.0:
+    dependencies:
+      sqlite3: 4.0.4
+    dev: false
+    optionalDependencies:
+      sql-template-strings: 2.2.2
+    resolution:
+      integrity: sha512-bGCCf43nnIcVHRXuQfSv0C9khuKvHGlbzzL0dFeXgnsjRS1Vqjs0yUaLPf3Qt+0j0AKUggEmBumGNDNOl4feig==
   /sqlite3/4.0.3:
     dependencies:
       nan: 2.10.0
@@ -1276,6 +1292,15 @@ packages:
     requiresBuild: true
     resolution:
       integrity: sha512-nuWqc26oiJZXyY5MEz+rQbiki1BTibnXsy8Kqo7QD/ut6eksOWi6uWwFMbdnFNME7CZyplWdDXj2fbdQVaEfuA==
+  /sqlite3/4.0.4:
+    dependencies:
+      nan: 2.10.0
+      node-pre-gyp: 0.10.3
+      request: 2.88.0
+    dev: false
+    requiresBuild: true
+    resolution:
+      integrity: sha512-CO8vZMyUXBPC+E3iXOCc7Tz2pAdq5BWfLcQmOokCOZW5S5sZ/paijiPOCdvzpdP83RroWHYa5xYlVqCxSqpnQg==
   /sshpk/1.15.1:
     dependencies:
       asn1: 0.2.4
@@ -1507,5 +1532,6 @@ specifiers:
   request: ^2.88.0
   snekfetch: ^4.0.4
   socket.io: ^2.1.1
+  sqlite: ^3.0.0
   sqlite3: ^4.0.3
   ytdl-core: ^0.26.1
