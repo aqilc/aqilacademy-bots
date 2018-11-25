@@ -1,4 +1,6 @@
-const sql = require("sqlite").open("./rpg/.db/sqlite.db");
+const sql = require("sqlite")
+  .open("./rpg/.db/sqlite.db");
+
 class RPG {
   constructor(id) {
     

@@ -33,10 +33,6 @@ const f = {
           for(let i = 0; i < res.length; i ++) {
             if(res[i].id === id) {
               stats.leaderboard_place = i + 1;
-              
-              stats.items = JSON.parse(res[i].items);
-              stats.quests = JSON.parse(res[i].quests);
-              delete res[i].id, res[i].items, res[i].quests;
               for(let j in res[i])
                 stats[j] = res[i][j];
             }
