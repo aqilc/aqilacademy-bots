@@ -22,7 +22,7 @@
         top: 0px;
         margin-bottom: -30px;
         padding-bottom: 0px;
-        color: rgb(150, 0, 0);
+        color: rgb(100, 100, 100);
         text-align: center;
       }
       
@@ -59,8 +59,9 @@
       
       /* Leaderboard styling */
       #lb {
-        border-style: ridge;
         border-color: rgb(200, 100, 0);
+        border-radius: 20px;
+        border-width: 20px;
         background-color: rgb(50, 50, 50);
         margin: 50px;
         padding: 20px;
@@ -75,6 +76,7 @@
         text-align: right;
       }
       th {
+        color: white;
         padding-bottom: 30px;
         font-size: 40px;
       }
@@ -85,7 +87,7 @@
         text-align: left;
       }
       a {
-        color: black;
+        color: white;
         text-decoration: none;
       }
       a:hover {
@@ -123,7 +125,15 @@
       async function updatelb() {
         users = await hr.get.user();
         let html = "<table><tr> <th>User Tag</th> <th>Points</th> </tr>";
-        users.sort((a, b) => b.points - a.points).forEach(u => html += `\n<tr><td><a target="_blank" href="${"https://" + window.location.hostname + "/user/" + u.id}"><image src="${u.user.displayAvatarURL}" style="width: 25px; height: 25px; border-radius: 50%;"> ${u.user.tag}</a></td>\n<td>${u.points} Points</td>\n</tr>`);
+        users.sort((a, b) => b.points - a.points).forEach(u => html += `\n
+        <tr>
+          <td>
+            <a target="_blank" href="${"https://" + window.location.hostname + "/user/" + u.id}">
+              <image src="${u.user.displayAvatarURL}" style="width: 25px; height: 25px; border-radius: 50%;"> ${u.user.tag}
+            </a>
+          </td>\n
+          <td>${u.points} Points</td>
+        </tr>`);
         html += "</table>";
         lb.innerHTML = html + "\n</table>";
       }

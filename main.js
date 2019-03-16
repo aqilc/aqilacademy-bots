@@ -23,7 +23,7 @@ app.use(bodyParser.urlencoded({	extended: true }));
 
 // Keeps website and app up
 app.get("/", (request, response) => {
-  response.sendFile(__dirname + '/views/index.html');
+  response.sendFile(__dirname + '/views/lb.html');
 });
 app.get("/lb", (req, res) => {
   res.sendFile(__dirname + "/views/lb.html");
