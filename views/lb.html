@@ -39,14 +39,20 @@
         (users = users.sort((a, b) => b.points - a.points)).forEach(u => {
           let i = users.indexOf(u) + 1;
           html += `
-          <tr>
+          <tr style="border: 1px solid #969696;">
             <td><span ${i <= 3 && `id="n${i}"`} class="placement">${i}</span><img class="avatar" src="${u.user.displayAvatarURL}"></td>
             <td class="user-info"><a target="_blank" href="${"https://" + window.location.hostname + "/user/" + u.id}">
-              <span>${u.user.username}</span>
+              <span class="username">${u.user.username}</span>
+              <span class="tag">${u.user.tag.slice(u.user.username.length)}</span>
             </a></td>
             <td class="num-points">${u.points} Points</td>
           </tr>`
         });
+        // so the problem I think I see atm is that after the js script is loaded, some how the styling won't follow suite|| hmm why won't it tho
+        // i remember something pamela once said about the fact that scripts are supposed to be loaded after the whole webpage, where as
+        // the styling and css gets loaded beforehand yeah ofcourse but this is a problem even when the page reloads which is the part i don't get...
+        // should i just do something with socket.io that updates a users place? that would be pretty hard tho
+        // tbh I feel like the one thing that would fix it is explicitly code out the table 
         lb.innerHTML = html + "\n</table>";
       }
       updatelb();

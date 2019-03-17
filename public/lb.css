@@ -52,6 +52,9 @@ td:last-child {
   text-align: right;
   border-width: 0px;
 }
+tr {
+  border: 3px solid #969696;
+}
 a {
   color: rgb(150, 150, 150);
   text-decoration: none;
@@ -61,7 +64,7 @@ a:hover {
 }
 .avatar {
   margin-top: 10px;
-  border-radius: 50%;
+  border-radius: 100%;
   width: 40px;
   height: 40px;
 }
