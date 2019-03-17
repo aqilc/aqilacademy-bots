@@ -34,6 +34,7 @@ td {
 }
 td:last-child {
   text-align: right;
+  border-width: 0;
 }
 a {
   color: rgb(150, 150, 150);

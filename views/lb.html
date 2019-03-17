@@ -38,10 +38,10 @@
         let html = "<table>\n";
         users.sort((a, b) => b.points - a.points).forEach(u => html += `
         <tr>
-          <td><a target="_blank" href="${"https://" + window.location.hostname + "/user/" + u.id}">
+          <td class="user-info"><a target="_blank" href="${"https://" + window.location.hostname + "/user/" + u.id}">
             <image src="${u.user.displayAvatarURL}" style="width: 25px; height: 25px; border-radius: 50%;"> ${u.user.tag}
           </a></td>
-          <td>${u.points} Points</td>
+          <td class="num-points">${u.points} Points</td>
         </tr>`);
         lb.innerHTML = html + "\n</table>";
       }
