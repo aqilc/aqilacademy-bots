@@ -25,6 +25,7 @@ h1 {
   width: 100%;
 }
 #lb table td {
+  font-size: 25px;
   padding: 20px;
   border-bottom: 1px solid #969696;
 }
@@ -43,10 +44,8 @@ h1 {
 .num-points {
   margin-left: -1px;
 }
-td {
-  font-size: 25px;
-}
 td:second-child {
+  background-color: white;
   text-align: right;
 }
 td:last-child {
