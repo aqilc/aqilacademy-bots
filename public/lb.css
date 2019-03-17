@@ -24,9 +24,10 @@ h1 {
 #lb table {
   width: 100%;
 }
-#lb table tr {
-  padding: 20px !important;
+#lb table td {
+  padding: 20px;
   margin: 20px;
+  border-bottom: 1px solid #969696;
 }
 td {
   font-size: 25px;
