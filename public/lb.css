@@ -28,6 +28,15 @@ h1 {
   padding: 20px;
   border-bottom: 1px solid #969696;
 }
+#n1 {
+  color: gold;
+}
+#n2 {
+  color: silver;
+}
+#n3 {
+  color: darkorange;
+}
 .num-points {
   margin-left: -1px;
 }

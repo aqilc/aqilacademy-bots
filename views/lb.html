@@ -35,15 +35,16 @@
       }
       async function updatelb() {
         users = await hr.get.user();
-        let html = "<table>\n", i;
+        let html = "<table>\n";
         (users = users.sort((a, b) => b.points - a.points)).forEach(u => {
+          let i = users.indexOf(u) + 1;
           html += `
-        <tr>
-          <td class="user-info"><a target="_blank" href="${"https://" + window.location.hostname + "/user/" + u.id}">
-            <span id="${users.indexOf(u) + 1}">${users.indexOf(u) + 1}. </span><image src="${u.user.displayAvatarURL}" style="width: 25px; height: 25px; border-radius: 50%;"> ${u.user.tag}
-          </a></td>
-          <td class="num-points">${u.points} Points</td>
-        </tr>`
+          <tr>
+            <td class="user-info"><a target="_blank" href="${"https://" + window.location.hostname + "/user/" + u.id}">
+              <span ${i <= 3 && `id="n${i}"`}>${i}. </span><image src="${u.user.displayAvatarURL}" style="width: 25px; height: 25px; border-radius: 50%;"> ${u.user.tag}
+            </a></td>
+            <td class="num-points">${u.points} Points</td>
+          </tr>`
         });
         lb.innerHTML = html + "\n</table>";
       }
