@@ -74,7 +74,8 @@ app.get("/db/get/users/:id", async (req, res) => {
     return db.all("SELECT * FROM users", async (err, users) => {
       for(let i = 0; i < users.length; i ++) {
         try {
-          let user = client.users.get(users[i].id) || await client.fetchUser(users[i].id), nuser = {}, attr = ["tag", "userame", "id", "avatar", "avatarURL", "bot", "discriminator", "displayAvatarURL", "lastMessageID", "presence", "send"];
+          let user = client.users.get(users[i].id) || await client.fetchUser(users[i].id),
+              nuser = {}, attr = ["tag", "username", "id", "avatar", "avatarURL", "bot", "discriminator", "displayAvatarURL", "lastMessageID", "presence", "send"];
           for(let i = 0; i < attr.length; i ++) {
             nuser[attr[i]] = user[attr[i]];
           }
