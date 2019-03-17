@@ -23,6 +23,7 @@ h1 {
 }
 #lb table {
   width: 100%;
+  border-collapse: collapse;
 }
 #lb table td {
   font-size: 25px;
@@ -31,6 +32,7 @@ h1 {
 }
 .placement {
   padding-right: 10px;
+  margin-bottom: 20px;
 }
 #n1 {
   color: gold;
