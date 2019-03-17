@@ -87,7 +87,7 @@ app.get("/db/get/users/:id", async (req, res) => {
       res.send(users);
     });
   
-  let stats = await functions.calculate_stats(req.params.id);
+  let stats = Object.assign(client.users.get(req.params.id), await functions.calculate_stats(req.params.id));
   res.json(stats);
 });
 app.get("/db/get/black/", (req, res) => {
