@@ -26,8 +26,10 @@ h1 {
 }
 #lb table td {
   padding: 20px;
-  margin: 20px;
   border-bottom: 1px solid #969696;
+}
+.num-points {
+  margin-left: -1px;
 }
 td {
   font-size: 25px;
