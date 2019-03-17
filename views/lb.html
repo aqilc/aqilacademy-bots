@@ -69,25 +69,18 @@
       #lb table {
         width: 100%;
       }
+      tr {
+        padding: 20px;
+      }
       td {
         font-size: 20px;
       }
       td:last-child {
         text-align: right;
       }
-      th {
-        color: white;
-        padding-bottom: 30px;
-        font-size: 40px;
-      }
-      th:last-child {
-        text-align: right;
-      }
-      th:first-child {
-        text-align: left;
-      }
       a {
-        color: white;
+        color: rgb(150, 150, 150);
+        font-style: bold;
         text-decoration: none;
       }
       a:hover {
@@ -124,17 +117,14 @@
       }
       async function updatelb() {
         users = await hr.get.user();
-        let html = "<table><tr> <th>User Tag</th> <th>Points</th> </tr>";
-        users.sort((a, b) => b.points - a.points).forEach(u => html += `\n
+        let html = "<table>";
+        users.sort((a, b) => b.points - a.points).forEach(u => html += `
         <tr>
-          <td>
-            <a target="_blank" href="${"https://" + window.location.hostname + "/user/" + u.id}">
-              <image src="${u.user.displayAvatarURL}" style="width: 25px; height: 25px; border-radius: 50%;"> ${u.user.tag}
-            </a>
-          </td>\n
+          <td><a target="_blank" href="${"https://" + window.location.hostname + "/user/" + u.id}">
+            <image src="${u.user.displayAvatarURL}" style="width: 25px; height: 25px; border-radius: 50%;"> ${u.user.tag}
+          </a></td>\n
           <td>${u.points} Points</td>
         </tr>`);
-        html += "</table>";
         lb.innerHTML = html + "\n</table>";
       }
       updatelb();
