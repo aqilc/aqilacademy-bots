@@ -8,37 +8,9 @@ h1 {
   top: 0px;
   margin-bottom: -30px;
   padding-bottom: 0px;
-  color: rgb(100, 100, 100);
+  color: rgb(50, 50, 50);
   text-align: center;
 }
-
-/* Navigation bar */
-#nav ul {
-  list-style-type: none;
-  margin: 0px;
-  padding: 0px;
-  background-color: #ffffff;
-  position: fixed;
-  top: 0px;
-  right: 0px;
-  width: 100%;
-  overflow: hidden;
-}
-#nav li {
-  float: left;
-}
-#nav li a {
-  font-size: 20px;
-  display: block;
-  color: black;
-  text-align: center;
-  padding: 14px 16px;
-  text-decoration: none;
-}
-#nav li a:hover {
-  background-color: #f0f0f0;
-}
-
 
 /* Leaderboard styling */
 #lb {
