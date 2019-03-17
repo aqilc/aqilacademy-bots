@@ -42,7 +42,7 @@
           <tr>
             <td><span ${i <= 3 && `id="n${i}"`} class="placement">${i}</span><img class="avatar" src="${u.user.displayAvatarURL}"></td>
             <td class="user-info"><a target="_blank" href="${"https://" + window.location.hostname + "/user/" + u.id}">
-              ${u.user.tag}
+              <span>${u.user.username}</span>
             </a></td>
             <td class="num-points">${u.points} Points</td>
           </tr>`
