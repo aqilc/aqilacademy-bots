@@ -40,7 +40,7 @@
           let i = users.indexOf(u) + 1;
           html += `
           <tr>
-            <td><span ${i <= 3 && `id="n${i}"`}>${i} </span><img class="avatar" src="${u.user.displayAvatarURL}"></td>
+            <td><span ${i <= 3 && `id="n${i}"`} class="placement">${i}</span><img class="avatar" src="${u.user.displayAvatarURL}"></td>
             <td class="user-info"><a target="_blank" href="${"https://" + window.location.hostname + "/user/" + u.id}">
               ${u.user.tag}
             </a></td>
@@ -50,7 +50,7 @@
         lb.innerHTML = html + "\n</table>";
       }
       updatelb();
-      setInterval(updatelb, 10000);
+      setInterval(updatelb, 100000);
     </script>
   </body>
 </html>

@@ -28,6 +28,9 @@ h1 {
   padding: 20px;
   border-bottom: 1px solid #969696;
 }
+.placement {
+  padding-right: 10px;
+}
 #n1 {
   color: gold;
 }
@@ -42,11 +45,13 @@ h1 {
 }
 td {
   font-size: 25px;
-  vertical-align: top;
+} /*so what are you trying to achiev ok so the username should be bolded at the top and the tag should be at the bottom in small size. also everythign should be aligned lol*/
+td:second-child {
+  text-align: right;
 }
 td:last-child {
   text-align: right;
-  border-width: 0;
+  border-width: 0px;
 }
 a {
   color: rgb(150, 150, 150);
@@ -60,4 +65,7 @@ a:hover {
   border-radius: 50%;
   width: 40px;
   height: 40px;
+}
+td span {
+  color: gray;
 }
