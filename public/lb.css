@@ -45,7 +45,7 @@ h1 {
 }
 td {
   font-size: 25px;
-} /*so what are you trying to achiev ok so the username should be bolded at the top and the tag should be at the bottom in small size. also everythign should be aligned lol*/
+}
 td:second-child {
   text-align: right;
 }
