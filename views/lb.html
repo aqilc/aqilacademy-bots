@@ -52,7 +52,12 @@
         // i remember something pamela once said about the fact that scripts are supposed to be loaded after the whole webpage, where as
         // the styling and css gets loaded beforehand yeah ofcourse but this is a problem even when the page reloads which is the part i don't get...
         // should i just do something with socket.io that updates a users place? that would be pretty hard tho
-        // tbh I feel like the one thing that would fix it is explicitly code out the table 
+        // tbh I feel like the one thing that would fix it is explicitly code out the table first, and then in the script load the information.
+        // cuz from what I see here, you're using the script to inject an entire line of html yeah but the thing is, i have a loading thing up there too so idrk how to make the whole table just say "loading" when its loading so i tried to fill up the whole table with script
+        // so how do we do this... should i use like jsx or something to preload the entire leaderboard when its sent?
+        // ummmm
+        // halp something happened go to discord
+        
         lb.innerHTML = html + "\n</table>";
       }
       updatelb();
