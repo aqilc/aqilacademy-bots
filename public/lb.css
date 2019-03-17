@@ -42,7 +42,7 @@ h1 {
 }
 td {
   font-size: 25px;
-  text-align: center;
+  vertical-align: top;
 }
 td:last-child {
   text-align: right;
@@ -55,8 +55,9 @@ a {
 a:hover {
   color: gray;
 }
-image {
-  border-radius: 50px;
-  width: 25px;
-  height: 25px;
+.avatar {
+  margin-top: 10px;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
 }

@@ -40,8 +40,9 @@
           let i = users.indexOf(u) + 1;
           html += `
           <tr>
+            <td><span ${i <= 3 && `id="n${i}"`}>${i} </span><img class="avatar" src="${u.user.displayAvatarURL}"></td>
             <td class="user-info"><a target="_blank" href="${"https://" + window.location.hostname + "/user/" + u.id}">
-              <span ${i <= 3 && `id="n${i}"`}>${i} </span><image src="${u.user.displayAvatarURL}" style="width: 25px; height: 25px; border-radius: 50%;"> ${u.user.tag}
+              ${u.user.tag}
             </a></td>
             <td class="num-points">${u.points} Points</td>
           </tr>`
