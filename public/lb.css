@@ -46,17 +46,17 @@ h1 {
   box-shadow: 0px 0px 20px darkorange;
 	transition-duration: 0.2s;
 }
-#n1 {
+.top3 {
   text-align: center;
+  border-radius: 50%;
+}
+#n1 {
   background-color: gold;
 }
 #n2 {
-  text-align: center;
   background-color: white;
 }
 #n3 {
-  text-align: center;
-  border-radius: 50%;
   background-color: darkorange;
 }
 .num-points {
