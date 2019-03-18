@@ -33,15 +33,23 @@ h1 {
 .placement {
   padding-right: 10px;
   margin-bottom: 20px;
+} /* I'ma go work on galactic guns nooo i need some help to align... i have no idea how to fix the place */
+
+.top3 {
+
 }
 #n1 {
-  color: gold;
+  text-align: center; /* :thonk: can you give the table row of the first, second and third place an id? um its #n1 #n2 and #n3  no the entire row, the entire <tr> tag, not just the number that would be class then then what's the class of it? you made it yourself... its called placement but I want a specific id for the first and second and third place so a class for them? if you wish to use a class, then an individual class for each one i made one for the first 3 specifically called `top3`*/
+  background-color: gold;
 }
 #n2 {
-  color: silver;
+  text-align: center;
+  background-color: silver;
 }
 #n3 {
-  color: darkorange;
+  text-align: center;
+  border-radius: 50%;
+  background-color: darkorange;
 }
 .num-points {
   margin-left: -1px;
