@@ -35,15 +35,15 @@ h1 {
   margin-bottom: 20px;
 }
 #top1:hover {
-  box-shadow: 0px 0px 30px gold;
+  box-shadow: 0px 0px 20px gold;
 	transition-duration: 0.2s;
 }
 #top2:hover {
-  box-shadow: 0px 0px 30px silver;
+  box-shadow: 0px 0px 20px silver;
 	transition-duration: 0.2s;
 }
 #top3:hover {
-  box-shadow: 0px 0px 30px darkorange;
+  box-shadow: 0px 0px 20px darkorange;
 	transition-duration: 0.2s;
 }
 #n1 {
@@ -52,7 +52,7 @@ h1 {
 }
 #n2 {
   text-align: center;
-  background-color: silver;
+  background-color: white;
 }
 #n3 {
   text-align: center;
@@ -71,12 +71,12 @@ tr:last-child {
   /* border-bottom: none !important; */
 }
 tr {
-  border-bottom: 1px solid #969696;
+  border-bottom: 1px solid #5b5b5b;
   text-align: center;
   transition-duration: 0.2s;
 }
 tr:hover {
-  box-shadow: 0px 0px 30px #969696;
+  box-shadow: 0px 0px 30px #5b5b5b;
 	transition-duration: 0.2s;
 }
 a {
