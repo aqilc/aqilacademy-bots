@@ -28,18 +28,26 @@ h1 {
 #lb table td {
   font-size: 25px;
   padding: 20px;
-  border-bottom: 1px solid #969696;
+  border-bottom: 1px solid #5b5b5b;
 }
 .placement {
   padding-right: 10px;
   margin-bottom: 20px;
-} /* I'ma go work on galactic guns nooo i need some help to align... i have no idea how to fix the place */
-
-.top3 {
-
+}
+#top1:hover {
+  box-shadow: 0px 0px 30px gold;
+	transition-duration: 0.2s;
+}
+#top2:hover {
+  box-shadow: 0px 0px 30px silver;
+	transition-duration: 0.2s;
+}
+#top3:hover {
+  box-shadow: 0px 0px 30px darkorange;
+	transition-duration: 0.2s;
 }
 #n1 {
-  text-align: center; /* :thonk: can you give the table row of the first, second and third place an id? um its #n1 #n2 and #n3  no the entire row, the entire <tr> tag, not just the number that would be class then then what's the class of it? you made it yourself... its called placement but I want a specific id for the first and second and third place so a class for them? if you wish to use a class, then an individual class for each one i made one for the first 3 specifically called `top3`*/
+  text-align: center;
   background-color: gold;
 }
 #n2 {
