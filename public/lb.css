@@ -23,23 +23,23 @@ h1 {
   width: 900px;
 }
 table {
-  width: 900px;
+  width: 100%;
   border-collapse: collapse;
 }
 .placement {
-  padding: 0;
+  margin-top: 0px;
   vertical-align: central;
 }
 #top1:hover {
-  box-shadow: 0px 0px 50px gold;
+  box-shadow: 0px 0px 30px gold;
 	transition-duration: 0.2s;
 }
 #top2:hover {
-  box-shadow: 0px 0px 50px silver;
+  box-shadow: 0px 0px 30px silver;
 	transition-duration: 0.2s;
 }
 #top3:hover {
-  box-shadow: 0px 0px 50px rgb(200, 150, 50);
+  box-shadow: 0px 0px 30px rgb(200, 150, 50);
 	transition-duration: 0.2s;
 }
 .num-points {
@@ -56,14 +56,11 @@ td:first-child {
 }
 tr {
   border-bottom: 1px solid #5b5b5b;
-  border-radius: 10px;
   text-align: center;
   transition-duration: 0.2s;
 }
 tr:hover {
-  background-color: #5b5b5b;
-  border-radius: 10px;
-  box-shadow: 0px 0px 50px #5b5b5b;
+  box-shadow: 0px 0px 30px #5b5b5b;
 	transition-duration: 0.2s;
 }
 a {
@@ -82,4 +79,7 @@ a:hover {
 }
 td span {
   color: gray;
+}
+.tag {
+  font-size: 15px;
 }
