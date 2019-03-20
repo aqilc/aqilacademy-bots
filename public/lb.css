@@ -20,15 +20,11 @@ h1 {
   background-color: rgb(50, 50, 50);
   margin: 50px;
   padding: 20px;
+  width: 900px;
 }
-#lb table {
-  width: 100%;
+table {
+  width: 900px;
   border-collapse: collapse;
-}
-#lb table td {
-  font-size: 25px;
-  padding: 20px;
-  border-bottom: 1px solid #5b5b5b;
 }
 .placement {
   padding: 5px 10px;
@@ -49,12 +45,17 @@ h1 {
 .num-points {
   margin-left: -1px;
 }
-td:middle-child {
-  background-color: white;
+td {
+  text-align: left;
+  font-size: 25px;
+  padding: 5px;
+  border-bottom: 1px solid #5b5b5b;
+}
+td:first-child {
   text-align: right;
 }
-tr:last-child {
-  text-align: center;
+td:last-child {
+  text-align: center !important;
   /* border-bottom: none !important; */
 }
 tr {
