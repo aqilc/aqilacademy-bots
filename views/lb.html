@@ -55,10 +55,12 @@
         let table = document.getElementById("maintable");
             users = await hr.get.user();
         for (let i in (users = users.sort((a, b) => b.points - a.points)))
-          table.rows[i].cells[1].firstChild
+          //lmao have you seen the alignment I see on my page, it's off to the right owo wut check discord #chat
+          table.rows[i].cells[1].children[0].src = users[i].displayAvatar,
+          ((table.rows[i].cells[2].children[0].children)[0].innerHTML = users[i].username)[1].innerHTML = users[i].tag.slice(users[i].username.length);
       }
       spawn();
-      setInterval(updatelb, 100000);
+      setInterval(updatelb, 1000);
     </script>
   </body>
 </html>
