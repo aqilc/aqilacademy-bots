@@ -33,9 +33,9 @@
             adding.innerHTML = html;
         val.appendChild(adding);
       }
-      async function updatelb() {
+      async function spawn() {
         users = await hr.get.user();
-        let html = "<table>\n";
+        let html = "<table id="maintable">\n";
         (users = users.sort((a, b) => b.points - a.points)).forEach(u => {
           let i = users.indexOf(u) + 1;
           html += `
@@ -51,7 +51,10 @@
         
         lb.innerHTML = html + "\n</table>";
       }
-      updatelb();
+      function updatelb() {
+        let table 
+      }
+      spawn();
       setInterval(updatelb, 100000);
     </script>
   </body>

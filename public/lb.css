@@ -30,6 +30,15 @@ table {
   margin-top: 0px;
   vertical-align: central;
 }
+#n1 {
+  color: gold;
+}
+#n2 {
+  color: silver;
+}
+#n3 {
+  color: darkorange;
+}
 #top1:hover {
   box-shadow: 0px 0px 30px gold;
 	transition-duration: 0.2s;
@@ -52,16 +61,17 @@ td {
   vertical-align: central;
 }
 td:first-child {
+  position: relative;
   text-align: right;
 }
 td:second-child {
-  position: absolute;
+  position: static;
   text-align: right;
-  padding-right: -10px;
+  padding-right: 0px;
 }
 tr {
+  color: gray;
   border-bottom: 1px solid #5b5b5b;
-  text-align: center;
   transition-duration: 0.2s;
 }
 tr:hover {
