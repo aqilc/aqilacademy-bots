@@ -35,7 +35,7 @@
       }
       async function spawn() {
         users = await hr.get.user();
-        let html = "<table id="maintable">\n";
+        let html = "<table id=\"maintable\">\n";
         (users = users.sort((a, b) => b.points - a.points)).forEach(u => {
           let i = users.indexOf(u) + 1;
           html += `
@@ -51,8 +51,11 @@
         
         lb.innerHTML = html + "\n</table>";
       }
-      function updatelb() {
-        let table 
+      async function updatelb() {
+        let table = document.getElementById("#maintable");
+            users = await hr.get.user();
+        for (let i in (users = users.sort((a, b) => b.points - a.points)))
+          table.rows[i].cells[2].
       }
       spawn();
       setInterval(updatelb, 100000);
