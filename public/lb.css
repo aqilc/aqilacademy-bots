@@ -24,46 +24,46 @@ h1 {
 }
 table {
   width: 900px;
+  border-collapse: collapse;
 }
 .placement {
-  padding: 5px 10px;
-  margin-bottom: 20px;
+  padding: 0;
+  vertical-align: central;
 }
 #top1:hover {
-  box-shadow: 0px 0px 20px gold;
+  box-shadow: 0px 0px 50px gold;
 	transition-duration: 0.2s;
 }
 #top2:hover {
-  box-shadow: 0px 0px 20px silver;
+  box-shadow: 0px 0px 50px silver;
 	transition-duration: 0.2s;
 }
 #top3:hover {
-  box-shadow: 0px 0px 20px darkorange;
+  box-shadow: 0px 0px 50px rgb(200, 150, 50);
 	transition-duration: 0.2s;
 }
 .num-points {
-  margin-left: -1px;
+  text-align: right !important;
 }
 td {
   text-align: left;
   font-size: 25px;
   padding: 5px;
+  vertical-align: central;
 }
 td:first-child {
   text-align: right;
 }
-td:last-child {
-  text-align: center !important;
-  /* border-bottom: none !important; */
-}
 tr {
   border-bottom: 1px solid #5b5b5b;
-  border-radius: 20px;
+  border-radius: 10px;
   text-align: center;
   transition-duration: 0.2s;
 }
 tr:hover {
-  box-shadow: 0px 0px 30px #5b5b5b;
+  background-color: #5b5b5b;
+  border-radius: 10px;
+  box-shadow: 0px 0px 50px #5b5b5b;
 	transition-duration: 0.2s;
 }
 a {
@@ -71,13 +71,14 @@ a {
   text-decoration: none;
 }
 a:hover {
-  color: gray;
+  color: lightgray;
 }
 .avatar {
   margin-top: 10px;
   border-radius: 100%;
   width: 40px;
   height: 40px;
+  vertical-align: central;
 }
 td span {
   color: gray;
