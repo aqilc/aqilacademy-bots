@@ -48,10 +48,9 @@ table {
 td {
   text-align: left;
   font-size: 25px;
-  padding: 5px;
   vertical-align: central;
 }
-td:first-child {
+td:first-child, td:second-child {
   text-align: right;
 }
 tr {

@@ -40,7 +40,8 @@
           let i = users.indexOf(u) + 1;
           html += `
           <tr id="${ i <= 3 && `top${i}`}">
-            <td><span ${i <= 3 && `id="n${i}"`} class="placement${ i <= 3 && ` topn3`}">${i}</span><img class="avatar" src="${u.user.displayAvatarURL}"></td>
+            <td ${i <= 3 && `id="n${i}"`} class="placement${ i <= 3 && ` topn3`}">${i}.</td>
+            <td><img class="avatar" src="${u.user.displayAvatarURL}"></td>
             <td class="user-info"><a target="_blank" href="${"https://" + window.location.hostname + "/user/" + u.id}">
               <span class="username">${u.user.username}</span><span class="tag"> ${u.user.tag.slice(u.user.username.length)}</span>
             </a></td>
