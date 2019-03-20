@@ -24,7 +24,6 @@ h1 {
 }
 table {
   width: 900px;
-  border-collapse: collapse;
 }
 .placement {
   padding: 5px 10px;
@@ -49,7 +48,6 @@ td {
   text-align: left;
   font-size: 25px;
   padding: 5px;
-  border-bottom: 1px solid #5b5b5b;
 }
 td:first-child {
   text-align: right;
@@ -60,6 +58,7 @@ td:last-child {
 }
 tr {
   border-bottom: 1px solid #5b5b5b;
+  border-radius: 20px;
   text-align: center;
   transition-duration: 0.2s;
 }
