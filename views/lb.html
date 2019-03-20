@@ -52,10 +52,10 @@
         lb.innerHTML = html + "\n</table>";
       }
       async function updatelb() {
-        let table = document.getElementById("#maintable");
+        let table = document.getElementById("maintable");
             users = await hr.get.user();
         for (let i in (users = users.sort((a, b) => b.points - a.points)))
-          table.rows[i].cells[2].
+          table.rows[i].cells[1].firstChild
       }
       spawn();
       setInterval(updatelb, 100000);
