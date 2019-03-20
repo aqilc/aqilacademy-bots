@@ -6,7 +6,7 @@ h1 {
   font-size: 100px;
   margin-top: 50px;
   top: 0px;
-  margin-bottom: -30px;
+  margin-bottom: 15px;
   padding-bottom: 0px;
   color: rgb(50, 50, 50);
   text-align: center;
@@ -18,7 +18,7 @@ h1 {
   border-radius: 20px;
   border-width: 20px;
   background-color: rgb(50, 50, 50);
-  margin: 50px;
+  margin: 0 auto;
   padding: 20px;
   width: 900px;
 }
@@ -27,7 +27,7 @@ table {
   border-collapse: collapse;
 }
 .placement {
-  margin-top: 0px;
+  margin-top: 10px;
   vertical-align: central;
 }
 #n1 {
