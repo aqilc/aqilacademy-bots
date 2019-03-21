@@ -44,6 +44,7 @@
             <td><img class="avatar" src="${u.user.displayAvatarURL}"></td>
             <td class="user-info"><a target="_blank" href="${"https://" + window.location.hostname + "/user/" + u.id}">
               <span class="username">${u.user.username}</span><span class="tag">${u.user.tag.slice(u.user.username.length)}</span>
+              <div class="id">ID: ${u.user.id}</div>
             </a></td>
             <td class="points"><div class="txt-points">Points</div><div class="num-points">${u.points}</div></td>
           </tr>`
@@ -58,6 +59,7 @@
           table.rows[i].cells[1].children[0].src = users[i].user.displayAvatarURL,
           table.rows[i].cells[2].children[0].children[0].innerHTML = users[i].user.username,
           table.rows[i].cells[2].children[0].children[1].innerHTML = users[i].user.tag.slice(users[i].user.username.length),
+          table.rows[i].cells[2].children[0].children[2].innerHTML = `ID: ` + users[i].user.id,
           table.rows[i].cells[3].children[1].innerHTML = users[i].points;
       }
       spawn();

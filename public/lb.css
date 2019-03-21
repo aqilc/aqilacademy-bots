@@ -41,23 +41,18 @@ table {
 #n3 {
   color: darkorange;
 }
-#top1:hover {
-  box-shadow: 0px 0px 30px gold;
-	transition-duration: 0.2s;
-}
-#top2:hover {
-  box-shadow: 0px 0px 30px silver;
-	transition-duration: 0.2s;
-}
-#top3:hover {
-  box-shadow: 0px 0px 30px rgb(200, 150, 50);
-	transition-duration: 0.2s;
-}
 .points {
   text-align: right !important;
   padding-right: 40px;
 }
 .txt-points {
+  font-size: 10px;
+}
+.num-points {
+  font-family: monospace;
+}
+.id {
+  font-family: monospace;
   font-size: 10px;
 }
 td {
@@ -70,15 +65,28 @@ tr {
   border-bottom: 1px solid #5b5b5b;
   transition-duration: 0.2s;
 }
+/* Some shadow crap thats completely unnecessary and looks downright bad
 tr:hover {
   box-shadow: 0px 0px 30px #5b5b5b;
 	transition-duration: 0.2s;
 }
+#top1:hover {
+  box-shadow: 0px 0px 30px gold;
+	transition-duration: 0.2s;
+}
+#top2:hover {
+  box-shadow: 0px 0px 30px silver;
+	transition-duration: 0.2s;
+}
+#top3:hover {
+  box-shadow: 0px 0px 30px rgb(200, 150, 50);
+	transition-duration: 0.2s;
+}*/
 tr:last-child {
   border-bottom: none;
 }
 a {
-  color: rgb(150, 150, 150);
+  color: gray;
   text-decoration: none;
 }
 a:hover {
@@ -91,9 +99,6 @@ a:hover {
   border-radius: 100%;
   width: 40px;
   height: 40px;
-}
-td span {
-  color: gray;
 }
 .tag {
   font-size: 15px;
