@@ -1,5 +1,5 @@
 body {
-  background-color: rgb(100, 100, 100);
+  background-color: #2F3136;
   font-family: arial;
 }
 h1 {
@@ -8,7 +8,7 @@ h1 {
   top: 0px;
   margin-bottom: 15px;
   padding-bottom: 0px;
-  color: rgb(50, 50, 50);
+  color: gray;
   text-align: center;
 }
 
@@ -17,7 +17,7 @@ h1 {
   border-color: rgb(200, 100, 0);
   border-radius: 20px;
   border-width: 20px;
-  background-color: rgb(50, 50, 50);
+  background-color: #36393F;
   margin: 0 auto;
   padding: 10px 20px;
   width: 800px;
@@ -90,7 +90,7 @@ a {
   text-decoration: none;
 }
 a:hover {
-  color: lightgray;
+  color: #7280B2;
 }
 .avatar {
   display: inline-block;
