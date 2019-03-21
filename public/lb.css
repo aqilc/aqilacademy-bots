@@ -53,9 +53,12 @@ table {
   box-shadow: 0px 0px 30px rgb(200, 150, 50);
 	transition-duration: 0.2s;
 }
-.num-points {
+.points {
   text-align: right !important;
   padding-right: 40px;
+}
+.txt-points {
+  font-size: 10px;
 }
 td {
   text-align: left;
