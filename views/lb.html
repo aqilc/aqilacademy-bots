@@ -24,8 +24,7 @@
     
     <!-- the js crap -->
     <script>
-      let list = document.getElementById("list"),
-          lb = document.getElementById("lb"),
+      let lb = document.getElementById("lb"),
           users = [];
       
       function add(val, element, html) {
@@ -54,7 +53,8 @@
               <span class="username">${u.user.username}</span><span class="tag">${u.user.tag.slice(u.user.username.length)}</span>
               <div class="id">ID: ${u.user.id}</div>
             </a></td>
-            <td class="points"><div class="txt-points">Points</div><div class="num-points">${num(u.points)}</div></td>
+            <td class="stats"><div class="smol">Points</div><div class="mono">${num(u.points)}</div></td>
+            <td class="stats"><div class="smol">Messages</div><div class="mono">${num(u.messages)}</div></td>
           </tr>`
         });
         

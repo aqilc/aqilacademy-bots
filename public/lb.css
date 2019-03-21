@@ -41,14 +41,14 @@ table {
 #n3 {
   color: darkorange;
 }
-.points {
+.stats {
   text-align: right !important;
-  padding-right: 40px;
+  padding-right: 10px;
 }
-.txt-points {
+.smol {
   font-size: 10px;
 }
-.num-points {
+.mono {
   font-family: monospace;
 }
 .id {
