@@ -33,6 +33,14 @@
             adding.innerHTML = html;
         val.appendChild(adding);
       }
+      function num(n) {
+        let num = "" + n;
+        if(num.length >= 7)
+          num = num.slice(0, -6) + "m";
+        else if(num.length >= 4)
+          num = `${num.slice(0, -3)}.${num[num.length - 2]}k`;
+        return num;
+      }
       async function spawn() {
         users = await hr.get.user();
         let html = "<table id=\"maintable\">\n";
@@ -46,7 +54,7 @@
               <span class="username">${u.user.username}</span><span class="tag">${u.user.tag.slice(u.user.username.length)}</span>
               <div class="id">ID: ${u.user.id}</div>
             </a></td>
-            <td class="points"><div class="txt-points">Points</div><div class="num-points">${u.points}</div></td>
+            <td class="points"><div class="txt-points">Points</div><div class="num-points">${num(u.points)}</div></td>
           </tr>`
         });
         
@@ -60,7 +68,7 @@
           table.rows[i].cells[2].children[0].children[0].innerHTML = users[i].user.username,
           table.rows[i].cells[2].children[0].children[1].innerHTML = users[i].user.tag.slice(users[i].user.username.length),
           table.rows[i].cells[2].children[0].children[2].innerHTML = `ID: ` + users[i].user.id,
-          table.rows[i].cells[3].children[1].innerHTML = users[i].points;
+          table.rows[i].cells[3].children[1].innerHTML = num(users[i].points);
       }
       spawn();
       setInterval(updatelb, 10000);

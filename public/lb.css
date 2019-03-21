@@ -65,6 +65,9 @@ tr {
   border-bottom: 1px solid #5b5b5b;
   transition-duration: 0.2s;
 }
+tr:last-child {
+  border-bottom: none;
+}
 /* Some shadow crap thats completely unnecessary and looks downright bad
 tr:hover {
   box-shadow: 0px 0px 30px #5b5b5b;
@@ -82,9 +85,6 @@ tr:hover {
   box-shadow: 0px 0px 30px rgb(200, 150, 50);
 	transition-duration: 0.2s;
 }*/
-tr:last-child {
-  border-bottom: none;
-}
 a {
   color: gray;
   text-decoration: none;
@@ -95,7 +95,7 @@ a:hover {
 .avatar {
   display: inline-block;
   margin: 0 -7px 0 0;
-  padding: 10px 0;
+  padding: 7px 0;
   border-radius: 100%;
   width: 40px;
   height: 40px;
