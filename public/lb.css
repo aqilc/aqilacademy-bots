@@ -41,9 +41,13 @@ table {
 #n3 {
   color: darkorange;
 }
-.stats {
+.points {
   text-align: right !important;
-  padding-right: 10px;
+  padding: 0 20px 0 0px;
+}
+.msgs {
+  text-align: right !important;
+  padding-right: 0px;
 }
 .smol {
   font-size: 10px;

@@ -51,10 +51,10 @@
             <td><img class="avatar" src="${u.user.displayAvatarURL}"></td>
             <td class="user-info"><a target="_blank" href="${"https://" + window.location.hostname + "/user/" + u.id}">
               <span class="username">${u.user.username}</span><span class="tag">${u.user.tag.slice(u.user.username.length)}</span>
-              <div class="id">ID: ${u.user.id}</div>
+              <div class="smol mono">ID: ${u.user.id}</div>
             </a></td>
-            <td class="stats"><div class="smol">Points</div><div class="mono">${num(u.points)}</div></td>
-            <td class="stats"><div class="smol">Messages</div><div class="mono">${num(u.messages)}</div></td>
+            <td class="msgs"><div class="smol">Messages</div><div class="mono">${num(u.messages)}</div></td>
+            <td class="points"><div class="smol">Points</div><div class="mono">${num(u.points)}</div></td>
           </tr>`
         });
         
