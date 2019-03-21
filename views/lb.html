@@ -54,11 +54,10 @@
       async function updatelb() {
         let table = document.getElementById("maintable");
             users = await hr.get.user();
-        console.log(users);
         for (let i in (users = users.sort((a, b) => b.points - a.points)))
           table.rows[i].cells[1].children[0].src = users[i].user.displayAvatarURL,
           table.rows[i].cells[2].children[0].children[0].innerHTML = users[i].user.username,
-          table.rows[i].cells[2].children[0].children[1].innerHTML = " " + users[i].user.tag.slice(users[i].user.username.length),
+          table.rows[i].cells[2].children[0].children[1].innerHTML = users[i].user.tag.slice(users[i].user.username.length),
           table.rows[i].cells[3].innerHTML = `${users[i].points} Points`;
       }
       spawn();
