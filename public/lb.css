@@ -27,7 +27,7 @@ table {
   border-collapse: collapse;
 }
 .placement {
-  padding: 5px 5px 0 0;
+  padding: 0 5px 0 0;
   vertical-align: central;
   text-align: right;
   position: relative;
@@ -94,7 +94,7 @@ a:hover {
 }
 .avatar {
   display: inline-block;
-  margin: 0 -7px 0 0;
+  margin: 0 -10px 0 0;
   padding: 7px 0;
   border-radius: 100%;
   width: 40px;
