@@ -25,7 +25,17 @@
     <!-- the js crap -->
     <script>
       let lb = document.getElementById("lb"),
-          users = [];
+          users = [], template = (u, i) => `
+          <tr id="${ i <= 3 && `top${i}`}">
+            <td ${i <= 3 && `id="n${i}"`} class="placement${ i <= 3 ? ` topn3` : ""}">${i}.</td>
+            <td><img class="avatar" src="${u.user.displayAvatarURL}"></td>
+            <td class="user-info"><a target="_blank" href="${"https://" + window.location.hostname + "/user/" + u.id}">
+              <span class="username">${u.user.username}</span><span class="tag">${u.user.tag.slice(u.user.username.length)}</span>
+              <div class="smol mono">ID: ${u.user.id}</div>
+            </a></td>
+            <td><div class="msgs"><div class="smol">Messages</div><div class="mono">${num(u.messages)}</div></div></td>
+            <td class="points"><div class="smol">Points</div><div class="mono">${num(u.points)}</div></td>
+          </tr>`;
       
       function add(val, element, html) {
         let adding = document.createElement(element);
@@ -45,17 +55,7 @@
         let html = "<table id=\"maintable\">\n";
         (users = users.sort((a, b) => b.points - a.points)).forEach(u => {
           let i = users.indexOf(u) + 1;
-          html += `
-          <tr id="${ i <= 3 && `top${i}`}">
-            <td ${i <= 3 && `id="n${i}"`} class="placement${ i <= 3 ? ` topn3` : ""}">${i}.</td>
-            <td><img class="avatar" src="${u.user.displayAvatarURL}"></td>
-            <td class="user-info"><a target="_blank" href="${"https://" + window.location.hostname + "/user/" + u.id}">
-              <span class="username">${u.user.username}</span><span class="tag">${u.user.tag.slice(u.user.username.length)}</span>
-              <div class="smol mono">ID: ${u.user.id}</div>
-            </a></td>
-            <td><div class="msgs"><div class="smol">Messages</div><div class="mono">${num(u.messages)}</div></div></td>
-            <td class="points"><div class="smol">Points</div><div class="mono">${num(u.points)}</div></td>
-          </tr>`
+          html += template(u, i);
         });
         
         lb.innerHTML = html + "\n</table>";
