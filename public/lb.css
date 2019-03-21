@@ -67,6 +67,7 @@ td {
   vertical-align: central;
 }
 tr {
+  padding: 20px;
   color: gray;
   border-bottom: 1px solid #5b5b5b;
   transition-duration: 0.2s;
@@ -101,7 +102,7 @@ a:hover {
 .avatar {
   display: inline-block;
   margin: 0 -10px 0 0;
-  padding: 7px 0;
+  padding: 10px 0;
   border-radius: 100%;
   width: 40px;
   height: 40px;
