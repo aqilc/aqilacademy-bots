@@ -65,7 +65,7 @@ td:first-child {
   text-align: right;
 }
 td:second-child {
-  position: static;
+  display: block;
   text-align: right;
   padding-right: 0px;
 }
