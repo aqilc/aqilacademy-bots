@@ -29,6 +29,7 @@ table {
 .placement {
   padding: 10px 5px 0 0;
   vertical-align: central;
+  text-align: right;
 }
 #n1 {
   color: gold;
@@ -59,10 +60,6 @@ td {
   text-align: left;
   font-size: 25px;
   vertical-align: central;
-}
-td:first-child {
-  position: relative;
-  text-align: right;
 }
 td:second-child {
   display: block;
