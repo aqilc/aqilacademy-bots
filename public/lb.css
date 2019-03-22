@@ -1,5 +1,5 @@
 body {
-  background-color: #2F3136;
+  background-image: linear-gradient(to bottom, rgb(30, 30, 30), #2F3136 200px, #2F3136);
   font-family: arial;
 }
 h1 {
@@ -23,12 +23,13 @@ h1, h3 {
 /* Leaderboard styling */
 #lb {
   border-color: rgb(200, 100, 0);
-  border-radius: 20px;
+  border-radius: 50px;
   border-width: 20px;
   background-color: #36393F;
   margin: 0 auto;
   padding: 10px 20px;
   width: 800px;
+  margin-bottom: 50px;
 }
 table {
   width: 100%;
