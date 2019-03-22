@@ -44,13 +44,13 @@ table {
   position: relative;
 }
 #n1 {
-  color: gold;
+  color: rgb(150, 140, 0);
 }
 #n2 {
   color: silver;
 }
 #n3 {
-  color: rgb(50, 40, 30);
+  color: rgb(140, 80, 0);
 }
 .points {
   text-align: right !important;
@@ -109,6 +109,15 @@ a {
 }
 a:hover {
   color: #7280B2;
+}
+#top1 a:hover {
+  color: rgb(150, 140, 0);
+}
+#top2 a:hover {
+  color: silver;
+}
+#top3 a:hover {
+  color: rgb(140, 90, 0);
 }
 .avatar {
   display: inline-block;
