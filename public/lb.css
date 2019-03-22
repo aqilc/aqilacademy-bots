@@ -108,6 +108,7 @@ a:hover {
   height: 40px;
 }
 .tag {
+  font-family: monospace;
   font-size: 15px;
   padding: 2px;
 }
