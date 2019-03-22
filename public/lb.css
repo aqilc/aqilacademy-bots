@@ -1,5 +1,6 @@
 body {
   background-image: linear-gradient(to bottom, rgb(30, 30, 30), #2F3136 200px, #2F3136);
+  background-attachment: local;
   font-family: 'Oswald', sans-serif;
 }
 h1 {
