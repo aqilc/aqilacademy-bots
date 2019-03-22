@@ -3,10 +3,18 @@ body {
   font-family: arial;
 }
 h1 {
-  font-size: 100px;
   margin-top: 50px;
-  top: 0px;
-  margin-bottom: 15px;
+  font-size: 100px;
+  margin-bottom: 0px;
+}
+h3 {
+  position: relative;
+  bottom: 50px;
+  font-size: 50px;
+  margin-bottom: 0px;
+}
+
+h1, h3 {
   padding-bottom: 0px;
   color: gray;
   text-align: center;
