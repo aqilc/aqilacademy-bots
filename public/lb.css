@@ -50,7 +50,7 @@ table {
   color: silver;
 }
 #n3 {
-  color: rgb(140, 80, 0);
+  color: rgb(140, 70, 0);
 }
 .points {
   text-align: right !important;
@@ -117,7 +117,7 @@ a:hover {
   color: silver;
 }
 #top3 a:hover {
-  color: rgb(140, 90, 0);
+  color: rgb(140, 70, 0);
 }
 .avatar {
   display: inline-block;
