@@ -26,7 +26,7 @@ app.get("/user/:id", (req, res) => {
   res.sendFile(__dirname + "/views/profile.html");
 });
 setInterval(() => {
-  http.get(`https://${process.env.PROJECT_DOMAIN}.glitch.me/`);
+  https.get(`https://${process.env.PROJECT_DOMAIN}.glitch.me/`);
 }, 280000);
 
 // if ./.data/sqlite.db does not exist, create it, and add tables
