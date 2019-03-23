@@ -25,14 +25,11 @@ app.use(bodyParser.urlencoded({	extended: true }));
 app.get("/", (request, response) => {
   response.sendFile(__dirname + '/views/lb.html');
 });
-app.get("/lb", (req, res) => {
-  res.sendFile(__dirname + "/views/lb.html");
-});
 app.get("/user/:id", (req, res) => {
   res.sendFile(__dirname + "/views/profile.html");
 });
 setInterval(() => {
-  http.get(`http://${process.env.PROJECT_DOMAIN}.glitch.me/`);
+  http.get(`https://${process.env.PROJECT_DOMAIN}.glitch.me/`);
 }, 280000);
 
 // if ./.data/sqlite.db does not exist, create it, and add tables
