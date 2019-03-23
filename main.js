@@ -14,9 +14,6 @@ app.listen(process.env.PORT);
 
 // The Site add-ons, middleware, etc
 app.use(express.static('public'));
-app.use(express.static('node_modules/p5/lib'));
-app.use(express.static('node_modules/p5/lib/addons'));
-app.use(express.static('node_modules/sqlite3'));
 app.use(express.static('data'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({	extended: true }));
