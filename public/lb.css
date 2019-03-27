@@ -133,23 +133,29 @@ a:hover {
   padding: 2px;
 }
 #sortby {
+  background-color: #36393F;
   position: fixed;
   top: 89%;
   left: 30px;
   font-size: 30px;
+  height: 50px;
+  padding: 10px;
+  border-radius: 20px;
 }
 #sortby p {
+  position: relative;
+  bottom: 25px;
   color: gray;
 }
 #sortby select {
   color: gray;
   font: inherit;
-  background: transparent;
+  background: rgba(0, 0, 0, 0.1);
   border: none;
-  border-radius: 10px;
-  height: 40px;
+  border-radius: 5px;
+  height: 45px;
   font-size: 30px;
 }
-#sortby options {
+#sortby option {
   font-size: 20px;
 }
