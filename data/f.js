@@ -360,7 +360,7 @@ const f = {
   
   // Trivia Functions
   qclean(text) {
-    return decodeURIComponent(text);
+    return decodeURIComponent(text).replace(/;quot/g, "\"");
   },
   async get_categories() {
     let data = await f.parseURL("https://opentdb.com/api_category.php");
