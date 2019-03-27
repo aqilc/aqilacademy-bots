@@ -26,9 +26,22 @@
       </p>
     </div>
     
+    <!-- the sortby thing lol -->
+    <div id="sortby">
+      <p>
+        Sort By:
+      </p>
+      <select>
+        <option>Points</option>
+        <option>Messages</option>
+        <option>Real Points</option>
+      </select>
+    </div>
+    
     <!-- the js crap -->
     <script>
       let lb = document.getElementById("lb"),
+          sortby = "points",
           users = [], template = (u, i) => `
           <tr id="${ i <= 3 && `top${i}`}">
             <td ${i <= 3 && `id="n${i}"`} class="placement${ i <= 3 ? ` topn3` : ""}">${i}.</td>
