@@ -134,4 +134,22 @@ a:hover {
 }
 #sortby {
   position: fixed;
+  top: 89%;
+  left: 30px;
+  font-size: 30px;
+}
+#sortby p {
+  color: gray;
+}
+#sortby select {
+  color: gray;
+  font: inherit;
+  background: transparent;
+  border: none;
+  border-radius: 10px;
+  height: 40px;
+  font-size: 30px;
+}
+#sortby options {
+  font-size: 20px;
 }
