@@ -922,7 +922,7 @@ const cmds = {
             return msg.reply(`You got it wrong. You lose: ${exp/2} Points`) && mess.edit(embed.setDescription(string + `BTW, ${answers.indexOf(question.correct_answer) + 1} was the right one`).setFooter("")) && f.add_exp(msg.author.id, -exp/2);
         } catch(err) {
           console.log(err);
-          collect.emit("collect", m);
+          msg.channel.send(":no: Sorry, an error occurred");
         }
       })
       
