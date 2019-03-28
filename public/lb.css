@@ -155,6 +155,9 @@ a:hover {
   border-radius: 5px;
   height: 40px;
 }
+#sortby select:hover {
+  background: rgba(0, 0, 0, 0.2);
+}
 #sortby option {
   font-size: 20px;
 }
