@@ -30,7 +30,7 @@
     <div id="sortby">
       <p>
         Sort By:
-        <select id="dd">
+        <select onclick="check()" id="dd">
           <option>Points</option>
           <option>Messages</option>
           <option>Real Points</option>
@@ -69,7 +69,7 @@
         return num;
       }
       function check() {
-        let dd = document.getElementByID("dd"),
+        let dd = document.getElementById("dd"),
             si = ["p", "m", "r"][dd.selectedIndex];
         if(si !== sortby)
           sortby = si, localStorage.setItem("sortby", si), updatelb();
@@ -78,16 +78,16 @@
         users = await hr.get.user();
         console.log(users);
         let html = "<table id=\"maintable\">\n", i = 0;
-        (users = users.sort(sortfunc()).forEach(u => {
+        (users = users.sort(sortfunc())).forEach(u => {
           html += template(u, ++i);
-        })
+        });
         
         lb.innerHTML = html + "\n</table>";
       }
       async function updatelb() {
         let table = document.getElementById("maintable");
             users = await hr.get.user();
-        for (let i in (users = users.sort(sortfunc()))
+        for (let i in (users = users.sort(sortfunc())))
           table.rows[i].cells[1].children[0].src = users[i].user.displayAvatarURL,
           table.rows[i].cells[2].children[0].children[0].innerHTML = users[i].user.username,
           table.rows[i].cells[2].children[0].children[1].innerHTML = users[i].user.tag.slice(users[i].user.username.length),
