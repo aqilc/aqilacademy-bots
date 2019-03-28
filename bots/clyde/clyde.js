@@ -925,12 +925,15 @@ const cmds = {
             return msg.reply(`You got it wrong. You lose: ${exp/2} Points`) && mess.edit(embed.setDescription(string + `BTW, ${answers.indexOf(question.correct_answer) + 1} was the right one`).setFooter("")) && f.add_exp(msg.author.id, -exp/2);
         } catch(err) {
           console.log(err);
-          msg.channel.send(":no: Sorry, an error occurred");
+          error = true;
+          collect.end();
         }
       })
       
       // If the person ran out of time
       collect.on("end", c => {
+        if(error)
+          return msg.channel.send("<:no:444918606145388564> Sorry, an error occurred");
         if(!answered)
           return msg.reply("You ran out of time... :P") && f.add_exp(msg.author.id, -exp);
       });
@@ -941,7 +944,7 @@ const cmds = {
     desc: "Creates a poll for you! Make sure you include the title.\n**Optional Parameters:** Description, and Time",
     usage: " (title) (D:[description]) (T:[seconds, minutes with an \"m\" at the end, or hours with an \"h\" at the end])",
     cd: 60000,
-    f: (msg, content) => {
+    do: (msg, content) => {
       let title = content.split("D:")[0].split("T:")[0].trim(), embed = new Discord.RichEmbed(),
           desc = content.includes("D:") ? content.split("D:")[1].split("T:")[0].trim() : "", time = 0;
       if(content.split("T:")[1]) {
