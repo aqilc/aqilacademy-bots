@@ -62,7 +62,7 @@ require("./bots/music/music.js")();
 // API Responses
 app.get("/db/get/users/:id", async (req, res) => {
   if(!req.params.id || (req.params.id !== "all" && req.params.id.length !== 18))
-    res.status(400).send("No ID provided");
+    return res.status(400).send("No ID provided");
   
   if(req.params.id === "all")
     return db.all("SELECT * FROM users", async (err, users) => {
