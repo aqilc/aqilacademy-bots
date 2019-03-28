@@ -152,7 +152,7 @@ a:hover {
   font: inherit;
   background: rgba(0, 0, 0, 0.1);
   border: none;
-  border-radius: 5px 15px 15px 5px;
+  border-radius: 5px;
   height: 40px;
 }
 #sortby option {
