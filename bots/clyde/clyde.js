@@ -862,7 +862,10 @@ const cmds = {
           answers = [question.correct_answer].concat(question.incorrect_answers).shuffle(), string = "", answered,
           
           // Determines the amount of exp you get
-          exp = Math.round([100, 250, 1e3][["easy", "medium", "hard"].indexOf(question.difficulty)] * (f.random(-0.25, 0.25) + 1)) * 10;
+          exp = Math.round([100, 250, 1e3][["easy", "medium", "hard"].indexOf(question.difficulty)] * (f.random(-0.25, 0.25) + 1)) * 10,
+          
+          // Tells if an error occurred
+          error;
       
       // Makes a string we can use for showing the answers
       for(let i = 0; i < answers.length; i ++)
