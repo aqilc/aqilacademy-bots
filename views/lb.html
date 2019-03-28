@@ -30,7 +30,7 @@
     <div id="sortby">
       <p>
         Sort By:
-        <select>
+        <select id="dd">
           <option>Points</option>
           <option>Messages</option>
           <option>Real Points</option>
@@ -41,7 +41,7 @@
     <!-- the js crap -->
     <script>
       let lb = document.getElementById("lb"),
-          sortby = "points",
+          sortby = "p",
           users = [], template = (u, i) => `
           <tr id="${ i <= 3 && `top${i}`}">
             <td ${i <= 3 && `id="n${i}"`} class="placement${ i <= 3 ? ` topn3` : ""}">${i}.</td>
@@ -57,7 +57,7 @@
       function add(val, element, html) {
         let adding = document.createElement(element);
             adding.innerHTML = html;
-        val.appendChild(adding);
+        return val.appendChild(adding);
       }
       function num(n) {
         let num = "" + n;
@@ -67,13 +67,15 @@
           num = `${num.slice(0, -3)}.${num[num.length - 2]}k`;
         return num;
       }
+      function check() {
+        document.getElementsByTagName("select");
+      }
       async function spawn() {
         users = await hr.get.user();
         console.log(users);
-        let html = "<table id=\"maintable\">\n";
+        let html = "<table id=\"maintable\">\n", i = 0;
         (users = users.sort((a, b) => b.points - a.points)).forEach(u => {
-          let i = users.indexOf(u) + 1;
-          html += template(u, i);
+          html += template(u, ++i);
         });
         
         lb.innerHTML = html + "\n</table>";
