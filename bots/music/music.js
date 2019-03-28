@@ -196,7 +196,7 @@ const m = {
         
         // If it finds an error
         if("error" in json)
-          reject([json.error.errors[0].msg, json.error.errors[0].reason], true);
+          reject([json.error.errors[0].message, json.error.errors[0].reason], true);
         
         // If it didn't find any videos
         else if(json.items.length === 0)
