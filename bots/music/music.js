@@ -315,8 +315,7 @@ const m = {
       .setThumbnail(vid.thumbnail_url)
     if(!message || message.author.id !== client.user.id)
       channel.send(embed);
-    else
-      message.edit(embed);
+    else message.edit(embed);
   },
   
   // Event system
