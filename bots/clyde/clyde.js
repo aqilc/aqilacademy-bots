@@ -926,7 +926,7 @@ const cmds = {
         } catch(err) {
           console.log(err);
           error = true;
-          collect.end();
+          collect.stop();
         }
       })
       
