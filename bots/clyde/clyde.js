@@ -631,7 +631,7 @@ const cmds = {
         return msg.reply("Please enter the required parameters!\n**Required Parameters:** `[id or mention] [exp amount]`");
       if(content[0].replace(/[^0-9]/g, "") === msg.author.id)
         return msg.reply("You cannot transfer EXP to yourself!");
-      if(!client.users.get(content[0].replace(/[^0-9]/g, "")));
+      if(!client.users.get(content[0].replace(/[^0-9]/g, "")))
         return msg.reply("Please enter a valid user ID/mention!");
       if(isNaN(Number(content[1])) || Number(content[1]) < 1)
         return msg.reply("Please enter a positive integer value for the EXP Amount");
