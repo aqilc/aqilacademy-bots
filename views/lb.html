@@ -54,6 +54,8 @@
             <td><div class="msgs"><div class="smol">MESSAGES</div><div class="mono">${num(u.messages)}</div></div></td>
             <td class="points"><div class="smol">POINTS</div><div class="mono">${num(u.points)}</div></td>
           </tr>`;
+      if(sortby !== "p")
+        document.getElementById("dd").selectedIndex = ["p", "m", "r"].indexOf(sortby);
       
       function add(val, element, html) {
         let adding = document.createElement(element);
