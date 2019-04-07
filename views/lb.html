@@ -67,7 +67,7 @@
         if(num.length >= 7)
           num = num.slice(0, -6) + "m";
         else if(num.length >= 4)
-          num = `<span class="num"><p>${num.slice(0, -3)}.${num[num.length - 3]}k<p><div></span>`;
+          num = `<span class="num"><p>${num.slice(0, -3)}.${num[num.length - 3]}k<p><div>${n}</div></span>`;
         return num;
       }
       function check() {

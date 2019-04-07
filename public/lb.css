@@ -161,3 +161,19 @@ a:hover {
 #sortby option {
   font-size: 20px;
 }
+.num {
+  padding: 0px;
+  margin: 0px;
+}
+.num p {
+  padding: 0px;
+  margin: 0px;
+}
+.num div {
+  display: none;
+}
+.num:hover div {
+  background: rgb(100, 100, 100);
+  display: block;
+  position: absolute;
+}
