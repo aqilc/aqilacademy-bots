@@ -57,10 +57,25 @@
       if(sortby !== "p")
         document.getElementById("dd").selectedIndex = ["p", "m", "r"].indexOf(sortby);
       
-      function add(val, element, html) {
+      function add(val, element, html, other) {
         let adding = document.createElement(element);
             adding.innerHTML = html;
+        Object.assign(adding, other);
         return val.appendChild(adding);
+      }
+      function show(val, x, y) {
+        let body = document.getElementsByTagName("body")[0];
+        add(body, "div", val, {
+          style: {
+            position: "absolute",
+            top: y + "px",
+            left: x + "px"
+          },
+          class: "show"
+        })
+      }
+      function hide() {
+        
       }
       function num(n) {
         let num = "" + n;
