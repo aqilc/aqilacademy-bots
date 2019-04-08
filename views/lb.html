@@ -51,8 +51,8 @@
               <span class="username">${u.user.username}</span><span class="tag">${u.user.tag.slice(u.user.username.length)}</span>
               <div class="smol mono">ID: ${u.user.id}</div>
             </a></td>
-            <td><div class="msgs"><div class="smol">MESSAGES</div><div class="mono">${num(u.messages)}</div></div></td>
-            <td class="points"><div class="smol">POINTS</div><div class="mono">${num(u.points)}</div></td>
+            <td><div class="msgs"><div class="smol">MESSAGES</div><div class="mono num">${num(u.messages)}</div></div></td>
+            <td class="points"><div class="smol">POINTS</div><div class="mono num">${num(u.points)}</div></td>
           </tr>`;
       if(sortby !== "p")
         document.getElementById("dd").selectedIndex = ["p", "m", "r"].indexOf(sortby);
@@ -64,7 +64,7 @@
         return val.appendChild(adding);
       }
       function num(n) {
-        let num = "" + n, format = t => `<span class="num"><p>${t}<p><div>${n}</div></span>`;
+        let num = "" + n, format = t => `<p>${t}<p><div>${n}</div>`;
         if(num.length >= 7)
           num = format(num.slice(0, -6) + "m");
         else if(num.length >= 4)
