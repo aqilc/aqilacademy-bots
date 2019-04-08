@@ -63,28 +63,12 @@
         Object.assign(adding, other);
         return val.appendChild(adding);
       }
-      function show(val) {
-        let body = document.getElementsByTagName("body")[0];
-        let x, y;
-        
-        add(body, "div", val, {
-          style: {
-            position: "absolute",
-            top: y + "px",
-            left: x + "px"
-          },
-          class: "show"
-        })
-      }
-      function hide() {
-        
-      }
       function num(n) {
-        let num = "" + n;
+        let num = "" + n, format = t => `<span class="num"><div>${n}</div><p>${t}<p></span>`;
         if(num.length >= 7)
           num = num.slice(0, -6) + "m";
         else if(num.length >= 4)
-          num = `<span class="num" onmouseover="show(${val})">${num.slice(0, -3)}.${num[num.length - 3]}k</span>`;
+          num = `<span class="num"><div></div><p>${num.slice(0, -3)}.${num[num.length - 3]}k<p></span>`;
         return num;
       }
       function check() {
