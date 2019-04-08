@@ -170,10 +170,10 @@ a:hover {
   margin: 0px;
 }
 .num div {
+  position: relative;
   display: none;
 }
 .num:hover div {
   background: rgb(100, 100, 100);
   display: block;
-  position: absolute;
 }

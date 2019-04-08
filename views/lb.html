@@ -64,11 +64,11 @@
         return val.appendChild(adding);
       }
       function num(n) {
-        let num = "" + n, format = t => `<span class="num"><div>${n}</div><p>${t}<p></span>`;
+        let num = "" + n, format = t => `<span class="num"><p>${t}<p><div>${n}</div></span>`;
         if(num.length >= 7)
-          num = num.slice(0, -6) + "m";
+          num = format(num.slice(0, -6) + "m");
         else if(num.length >= 4)
-          num = `<span class="num"><div></div><p>${num.slice(0, -3)}.${num[num.length - 3]}k<p></span>`;
+          num = format(`${num.slice(0, -3)}.${num[num.length - 3]}k`);
         return num;
       }
       function check() {
