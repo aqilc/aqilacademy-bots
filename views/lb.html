@@ -42,7 +42,7 @@
     <script>
       let lb = document.getElementById("lb"),
           sortby = localStorage.getItem("sortby") || "p",
-          sortfunc = () => [(a, b) => b.points - a.points, (a, b) => b.messages - a.messages, (a, b) => b.realpoints - a.realpoints][["p", "m", "r"].indexOf(sortby)],
+          sortfunc = () => [(a, b) => b.points - a.points, (a, b) => b.messages - a.messages, (a, b) => b.realpoints - a.realpoints][["p", "m", "r"].indexOf(sortby)], showdiv = document.createElement("div"),
           users = [], template = (u, i) => `
           <tr id="${ i <= 3 && `top${i}`}">
             <td ${i <= 3 && `id="n${i}"`} class="placement${ i <= 3 ? ` topn3` : ""}">${i}.</td>
