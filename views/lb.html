@@ -58,13 +58,15 @@
         document.getElementById("dd").selectedIndex = ["p", "m", "r"].indexOf(sortby);
       
       function add(val, element, html, other) {
-        let adding = document.createElement(element);
+        let adding = typeof element === "string" ? document.createElement(element) : element;
             adding.innerHTML = html;
         Object.assign(adding, other);
         return val.appendChild(adding);
       }
-      function show(val, x, y) {
+      function show(val) {
         let body = document.getElementsByTagName("body")[0];
+        let x, y;
+        
         add(body, "div", val, {
           style: {
             position: "absolute",
@@ -82,7 +84,7 @@
         if(num.length >= 7)
           num = num.slice(0, -6) + "m";
         else if(num.length >= 4)
-          num = `<span class="num"><p>${num.slice(0, -3)}.${num[num.length - 3]}k<p><div>${n}</div></span>`;
+          num = `<span class="num" onmouseover="show(${val})">${num.slice(0, -3)}.${num[num.length - 3]}k</span>`;
         return num;
       }
       function check() {
