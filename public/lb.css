@@ -177,7 +177,7 @@ a:hover {
   display: block;
   position: absolute;
   font-size: 10px;
-  text-align: left;
+  align: right;
   right: 0px;
   /*bottom: 10px;*/
 }
