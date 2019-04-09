@@ -53,6 +53,7 @@ table {
   color: rgb(140, 70, 0);
 }
 .points {
+  position: relative;
   text-align: right !important;
   padding: 0 20px 0 0px;
 }
@@ -176,6 +177,7 @@ a:hover {
   display: block;
   position: absolute;
   font-size: 10px;
-  text-align: center;
+  text-align: left;
+  right: 0px;
   /*bottom: 10px;*/
 }
