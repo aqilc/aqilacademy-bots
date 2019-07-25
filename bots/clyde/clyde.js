@@ -945,7 +945,7 @@ const cmds = {
     usage: " (title) (D:[description]) (T:[seconds, minutes with an \"m\" at the end, or hours with an \"h\" at the end])",
     cd: 60000,
     do: (msg, content) => {
-      let title = content.split("D:")[0].split("T:")[0].trim(), embed = new Discord.RichEmbed(),
+      let title = content.split("D:")[0].split("T:")[0].trim(), embed = new Discord.RichEmbed().setColor(1344448),
           desc = content.includes("D:") ? content.split("D:")[1].split("T:")[0].trim() : "", time = 0;
       if(content.split("T:")[1]) {
         if (content.split("T:")[1].trim()[content.split("T:")[1].trim().length-1] === "m")
