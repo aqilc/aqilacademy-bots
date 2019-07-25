@@ -949,11 +949,11 @@ const cmds = {
           desc = content.includes("D:") ? content.split("D:")[1].split("T:")[0].trim() : "", time = 0;
       if(content.split("T:")[1]) {
         if (content.split("T:")[1].trim()[content.split("T:")[1].trim().length-1] === "m")
-          time = Number(f.sti(content.split("T:")[1].trim())) * 60;
+          time = Number(f.get_id(content.split("T:")[1].trim())) * 60;
         else if (content.split("T:")[1].trim()[content.split("T:")[1].trim().length-1] === "h")
-          time = Number(f.sti(content.split("T:")[1].trim())) * 3600;
+          time = Number(f.get_id(content.split("T:")[1].trim())) * 3600;
         else
-          time = Number(f.sti(content.split("T:")[1].trim()));
+          time = Number(f.get_id(content.split("T:")[1].trim()));
       }
       
       if(title === "")
@@ -971,7 +971,7 @@ const cmds = {
           await msg.react("👎")
           await msg.react("🤷");
           
-          if (time > 0) {
+          if (time > 0)
             setTimeout(() => {
               let [winner, reactions, results] = ["", msg.reactions.array(), { up: 0, down: 0, shrug: 0, other: ""}];
               for(let i = 0; i < reactions.length; i ++) {
@@ -995,7 +995,7 @@ const cmds = {
                 winner = "👎";
               
               let embed = new Discord.RichEmbed()
-                .setColor(f.rcol())
+                .setColor(f.color())
                 .setAuthor(title, msg.author.avatarURL)
                 .setFooter(`Poll Ended | ${winner === "" ? "No Winner" : `${winner} Wins!`} |  👍: ${results.up}  👎: ${results.down}  🤷: ${results.shrug}`)
                 .setTimestamp();
@@ -1004,7 +1004,6 @@ const cmds = {
               
               msg.edit(embed);
             }, time * 1000);
-          }
         });
     },
     t: 3,
