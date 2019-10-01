@@ -996,7 +996,7 @@ const cmds = {
               let embed = new Discord.RichEmbed()
                 .setColor(1344448)
                 .setAuthor(title, msg.author.avatarURL)
-                .setFooter(`Poll Ended • ${winner === "" ? "No Winner" : `${winner} Wins!`} •  👍: ${results.up}  👎: ${results.down}  🤷: ${results.shrug}`)
+                .setFooter(`Poll Ended • ${winner === "" ? "No Winner" : `${winner} Wins!`} |  👍: ${results.up}  👎: ${results.down}  🤷: ${results.shrug}`)
                 .setTimestamp();
               if(desc !== "")
                 embed.setDescription(desc);
