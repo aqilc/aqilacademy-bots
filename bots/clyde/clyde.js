@@ -947,7 +947,7 @@ const cmds = {
     do: (msg, content) => {
       let title = content.split("D:")[0].split("T:")[0].trim(), embed = new Discord.RichEmbed().setColor(1344448),
           desc = content.includes("D:") ? content.split("D:")[1].split("T:")[0].trim() : "", time = 0;
-      if(content.split("T:")[1]) {
+      if(console.log(content.split("T:")[1])) {
         if (content.split("T:")[1].trim()[content.split("T:")[1].trim().length-1] === "m")
           time = Number(f.get_id(content.split("T:")[1].trim())) * 60;
         else if (content.split("T:")[1].trim()[content.split("T:")[1].trim().length-1] === "h")
@@ -955,6 +955,7 @@ const cmds = {
         else
           time = Number(f.get_id(content.split("T:")[1].trim()));
       }
+      console.log(time);
       
       if(title === "")
         msg.channel.send("Please include a title");
@@ -1386,7 +1387,7 @@ const cmds = {
               member = msg.guild.members.get(f.get_id(msg, content.slice(content.indexOf(" ") + 1)) || msg.author.id),
               
               // Gets Background
-              { body: buffer } = await snekfetch.get("https://coolbackgrounds.io/images/backgrounds/sea-edge-311c5cd5.png"),
+              { body: buffer } = await snekfetch.get("https://skitguys.com/media/images/video/Light_Flares_Welcome_Still_LSM-HD.jpg"),
               bg = await loadImage(buffer),
               
               // User's Avatar
