@@ -947,18 +947,16 @@ const cmds = {
     do: (msg, content) => {
       let title = content.split("D:")[0].split("T:")[0].trim(), embed = new Discord.RichEmbed().setColor(1344448),
           desc = content.includes("D:") ? content.split("D:")[1].split("T:")[0].trim() : "", time = 0;
-      if(console.log(content.split("T:")[1])) {
+      if(content.split("T:")[1]) {
         if (content.split("T:")[1].trim()[content.split("T:")[1].trim().length-1] === "m")
-          time = Number(f.get_id(content.split("T:")[1].trim())) * 60;
+          time = Number(content.split("T:")[1].trim()) * 60;
         else if (content.split("T:")[1].trim()[content.split("T:")[1].trim().length-1] === "h")
-          time = Number(f.get_id(content.split("T:")[1].trim())) * 3600;
-        else
-          time = Number(f.get_id(content.split("T:")[1].trim()));
+          time = Number(content.split("T:")[1].trim()) * 3600;
+        else time = Number(content.split("T:")[1].trim());
       }
-      console.log(time);
       
       if(title === "")
-        msg.channel.send("Please include a title");
+        return msg.channel.send("Please include a title");
       
       embed.setAuthor(title, msg.author.avatarURL)
         .setFooter(`Vote with the reactions below${time > 0 ? ` | Ends at ${new Date(new Date().valueOf() + time * 1000).toUTCString()}` : ""}`);
@@ -967,14 +965,14 @@ const cmds = {
         embed.setDescription(desc);
       
       msg.channel.send(embed)
-        .then(async msg => {
-          await msg.react("👍")
-          await msg.react("👎")
-          await msg.react("🤷");
+        .then(async m => {
+          await m.react("👍")
+          await m.react("👎")
+          await m.react("🤷");
           
           if (time > 0)
             setTimeout(() => {
-              let [winner, reactions, results] = ["", msg.reactions.array(), { up: 0, down: 0, shrug: 0, other: ""}];
+              let [winner, reactions, results] = ["", m.reactions.array(), { up: 0, down: 0, shrug: 0, other: ""}];
               for(let i = 0; i < reactions.length; i ++) {
                 switch(decodeURIComponent(reactions[i].emoji.identifier)) {
                   case "👍":
@@ -996,14 +994,14 @@ const cmds = {
                 winner = "👎";
               
               let embed = new Discord.RichEmbed()
-                .setColor(f.color())
+                .setColor(1344448)
                 .setAuthor(title, msg.author.avatarURL)
-                .setFooter(`Poll Ended | ${winner === "" ? "No Winner" : `${winner} Wins!`} |  👍: ${results.up}  👎: ${results.down}  🤷: ${results.shrug}`)
+                .setFooter(`Poll Ended • ${winner === "" ? "No Winner" : `${winner} Wins!`} •  👍: ${results.up}  👎: ${results.down}  🤷: ${results.shrug}`)
                 .setTimestamp();
               if(desc !== "")
                 embed.setDescription(desc);
               
-              msg.edit(embed);
+              m.edit(embed);
             }, time * 1000);
         });
     },
