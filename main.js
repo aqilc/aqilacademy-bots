@@ -1,8 +1,8 @@
 const fs = require("fs");
-const exists = fs.existsSync('./.data/sqlite.db');
-const sqlite3 = require('sqlite3').verbose();
-const db = new sqlite3.Database('./.data/sqlite.db');
-const http = require('http');
+const exists = fs.existsSync("./.data/sqlite.db");
+const sqlite3 = require("sqlite3").verbose();
+const db = new sqlite3.Database("./.data/sqlite.db");
+const http = require("http");
 const https = require("https");
 const express = require("express");
 const app = express();
@@ -13,14 +13,14 @@ const bodyParser = require("body-parser");
 app.listen(process.env.PORT);
 
 // The Site add-ons, middleware, etc
-app.use(express.static('public'));
-app.use(express.static('data'));
+app.use(express.static("public"));
+app.use(express.static("data"));
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({	extended: true }));
+app.use(bodyParser.urlencoded({ extended: true }));
 
 // Keeps website and app up
 app.get("/", (request, response) => {
-  response.sendFile(__dirname + '/views/lb.html');
+  response.sendFile(__dirname + "/views/lb.html");
 });
 app.get("/user/:id", (req, res) => {
   res.sendFile(__dirname + "/views/profile.html");
@@ -31,7 +31,6 @@ setInterval(() => {
 
 // if ./.data/sqlite.db does not exist, create it, and add tables
 const tables = [
-  
   // Universal
   "users (id TEXT, points INTEGER, lastDaily INTEGER, messages INTEGER, realpoints INTEGER, created INTEGER, streak INTEGER, tags TEXT)",
   "blacklist (user TEXT, reason TEXT, by TEXT, date INTEGER, time INTEGER)",
@@ -47,12 +46,10 @@ const tables = [
 
   // Music data tables
   "history (dat INTEGER, id TEXT, com TEXT, error NOT NULL)",
-  "queue (addedAt INTEGER, vidId TEXT, title TEXT, desc TEXT, thumb TEXT, views TEXT, user TEXT, duration INTEGER)",
-  
+  "queue (addedAt INTEGER, vidId TEXT, title TEXT, desc TEXT, thumb TEXT, views TEXT, user TEXT, duration INTEGER)"
 ];
 db.serialize(function() {
-  for(let i of tables)
-    db.run("CREATE TABLE IF NOT EXISTS " + i);
+  for (let i of tables) db.run("CREATE TABLE IF NOT EXISTS " + i);
 });
 
 // Runs the 2 bots
@@ -61,28 +58,49 @@ require("./bots/music/music.js")();
 
 // API Responses
 app.get("/db/get/users/:id", async (req, res) => {
-  if(!req.params.id || (req.params.id !== "all" && req.params.id.length !== 18))
+  if (
+    !req.params.id ||
+    (req.params.id !== "all" && req.params.id.length !== 18)
+  )
     return res.status(400).send("No ID provided");
-  
-  if(req.params.id === "all")
+
+  if (req.params.id === "all")
     return db.all("SELECT * FROM users", async (err, users) => {
-      for(let i = 0; i < users.length; i ++) {
+      for (let i = 0; i < users.length; i++) {
         try {
-          let user = client.users.get(users[i].id) || await client.fetchUser(users[i].id),
-              nuser = {}, attr = ["tag", "username", "id", "avatar", "avatarURL", "bot", "discriminator", "displayAvatarURL", "lastMessageID", "presence", "send"];
-          for(let i = 0; i < attr.length; i ++) {
+          let user =
+              client.users.get(users[i].id) ||
+              (await client.fetchUser(users[i].id)),
+            nuser = {},
+            attr = [
+              "tag",
+              "username",
+              "id",
+              "avatar",
+              "avatarURL",
+              "bot",
+              "discriminator",
+              "displayAvatarURL",
+              "lastMessageID",
+              "presence",
+              "send"
+            ];
+          for (let i = 0; i < attr.length; i++) {
             nuser[attr[i]] = user[attr[i]];
           }
           users[i].user = nuser;
-        } catch(err) {
+        } catch (err) {
           console.log("Error sending user data: " + err);
           res.status(403).send(err);
         }
       }
       res.send(users);
     });
-  
-  let stats = Object.assign(client.users.get(req.params.id), await functions.calculate_stats(req.params.id));
+
+  let stats = Object.assign(
+    client.users.get(req.params.id),
+    await functions.calculate_stats(req.params.id)
+  );
   res.json(stats);
 });
 app.get("/db/get/black/", (req, res) => {
@@ -92,15 +110,13 @@ app.get("/db/get/black/", (req, res) => {
 });
 app.put("/db/set/users/:id", (req, res) => {
   let q = req.query;
-  if(!req.params.id)
-    res.status(400).send("No ID to edit");
+  if (!req.params.id) res.status(400).send("No ID to edit");
   let id = req.params.id;
-  
-  if(q === {})
-    res.status(400).send(`Nothing to edit ${id} with`);
-  
+
+  if (q === {}) res.status(400).send(`Nothing to edit ${id} with`);
+
   let params = [];
-  for(let i in q) {
+  for (let i in q) {
     params.push(`${i} = ${q[i]}`);
   }
   db.run(`UPDATE users SET ${params.join(" ")} WHERE id = "${id}"`);
@@ -108,7 +124,9 @@ app.put("/db/set/users/:id", (req, res) => {
 });
 
 // Process calls
-process.on('unhandledRejection', error => console.error('Uncaught Promise Rejection', error));
+process.on("unhandledRejection", error =>
+  console.error("Uncaught Promise Rejection", error)
+);
 
 /*
 const path = require('path');
