@@ -859,8 +859,7 @@ const cmds = {
           question = await globalfunctions.get_question(cat, diff, 0), correct,
       
           // Answer-related variables
-          answers = [question.correct_answer].concat(question.incorrect_answers).shuffle(), string = "",
-          answered = [["1", "one"], ["2", "two"], ["3", "three"], ["4", "four"]],
+          answers = [question.correct_answer].concat(question.incorrect_answers).shuffle(), string = "", answered,
           
           // Determines the amount of exp you get
           exp = Math.round([100, 250, 1e3][["easy", "medium", "hard"].indexOf(question.difficulty)] * (f.random(-0.25, 0.25) + 1)) * 10,
@@ -898,29 +897,27 @@ const cmds = {
           }, 2000);
       
       // Creates a message collector so we can get the next message the person sends immediately
-      let collect = msg.channel.createMessageCollector(m => !isNaN(Number(m.content.toLowerCase())) && Number(m.content.toLowerCase()) && m.author.id == msg.author.id, { maxMatches: 1, time: timer });
+      let collect = msg.channel.createMessageCollector(m => m.author.id == msg.author.id && ["1", "2", "3", "4"].includes(m.content.toLowerCase()), { maxMatches: 1, time: timer });
       
       // When it collects the answer
       collect.on("collect", m => {
         try {
-          // Determines your answer
-          for(let i = 0; i < answered.length; i ++)
-            if(answered[i].includes(m.content.toLowerCase()))
-              answered = answers[i];
 
           // Deterines if you got it right or wrong
-          correct = answered === question.correct_answer;
+          correct = answers[Number(m.content)-1] === question.correct_answer;
 
           // Destroys the interval so the bot is spared
           clearInterval(int);
 
+          // sets answered to true
+          answered = true;
+          
           // If correct, send a message that you got it right, and edit the embed
           if(correct)
-            return msg.reply(`You got it right! You get ${exp} Points!`) && mess.edit(embed.setDescription(string + "Great Job, you got it right!").setFooter("")) && f.add_exp(msg.author.id, exp);
+            return msg.reply(`<:yes:416019413314043914> **You got it right :) You get \`${exp}\` Points!**`) && mess.edit(embed.setDescription(string + "Great Job, you got it right!").setFooter("")) && f.add_exp(msg.author.id, exp);
 
           // If wrong, send a message that you got it wrong, then edit the embed
-          else
-            return msg.reply(`You got it wrong. You lose: ${exp/2} Points`) && mess.edit(embed.setDescription(string + `BTW, ${answers.indexOf(question.correct_answer) + 1} was the right one`).setFooter("")) && f.add_exp(msg.author.id, -exp/2);
+          else return msg.reply(`<:no:444918606145388564> **You got it wrong :( You lose: \`${exp/2}\` Points**`) && mess.edit(embed.setDescription(string + `BTW, ${answers.indexOf(question.correct_answer) + 1} was the right one`).setFooter("")) && f.add_exp(msg.author.id, -exp/2);
         } catch(err) {
           console.log(err);
           error = true;
