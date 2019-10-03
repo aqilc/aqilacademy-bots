@@ -909,15 +909,15 @@ const cmds = {
           // Destroys the interval so the bot is spared
           clearInterval(int);
 
-          // sets answered to true
+          // Sets answered to true
           answered = true;
           
           // If correct, send a message that you got it right, and edit the embed
           if(correct)
-            return msg.reply(`<:yes:416019413314043914> **You got it right :) You get \`${exp}\` Points!**`) && mess.edit(embed.setDescription(string + "Great Job, you got it right!").setFooter("")) && f.add_exp(msg.author.id, exp);
+            return msg.reply(`**You got it right :) You get \`${exp}\` Points!**`) && mess.edit(embed.setDescription(string + "Great Job, you got it right!").setFooter(`You had ${timer/1000} seconds left`)) && f.add_exp(msg.author.id, exp);
 
           // If wrong, send a message that you got it wrong, then edit the embed
-          else return msg.reply(`<:no:444918606145388564> **You got it wrong :( You lose: \`${exp/2}\` Points**`) && mess.edit(embed.setDescription(string + `BTW, ${answers.indexOf(question.correct_answer) + 1} was the right one`).setFooter("")) && f.add_exp(msg.author.id, -exp/2);
+          else return msg.reply(`**You got it wrong :( You lose: \`${exp/2}\` Points**`) && mess.edit(embed.setDescription(string + `BTW, ${answers.indexOf(question.correct_answer) + 1} was the right one`).setFooter("")) && f.add_exp(msg.author.id, -exp/2);
         } catch(err) {
           console.log(err);
           error = true;
