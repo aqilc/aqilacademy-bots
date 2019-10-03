@@ -887,14 +887,14 @@ const cmds = {
           
           // Edits the message each second showing how much time we have.
           int = setInterval(() => {
-            timer -= 1000;
+            timer -= 2000;
             if(timer > 999)
               mess.edit(embed.setFooter(`You have ${timer/1000} seconds left`))
             else {
               mess.edit(embed.setDescription(string + `BTW, ${answers.indexOf(f.qclean(question.correct_answer)) + 1} was the right one`).setFooter(""));
               clearInterval(int);
             }
-          }, 1000);
+          }, 2000);
       
       // Creates a message collector so we can get the next message the person sends immediately
       let collect = msg.channel.createMessageCollector(m => ["1", "2", "3", "4", "one", "two", "three", "four"].includes(m.content.toLowerCase()) && m.author.id == msg.author.id, { maxMatches: 1, time: timer });
@@ -904,11 +904,9 @@ const cmds = {
         try {
           // Determines your answer
           answered = [["1", "one"], ["2", "two"], ["3", "three"], ["4", "four"]];
-          for(let i = 0; i < answered.length; i ++) {
-            if(answered[i].includes(m.content.toLowerCase())) {
+          for(let i = 0; i < answered.length; i ++)
+            if(answered[i].includes(m.content.toLowerCase()))
               answered = answers[i];
-            }
-          }
 
           // Deterines if you got it right or wrong
           correct = answered === question.correct_answer;
@@ -918,7 +916,7 @@ const cmds = {
 
           // If correct, send a message that you got it right, and edit the embed
           if(correct)
-            return msg.reply(`You got it right! You get ${exp} Points!`) && mess.edit(embed.setDescription("Great Job, you got it right!").setFooter("")) && f.add_exp(msg.author.id, exp);
+            return msg.reply(`You got it right! You get ${exp} Points!`) && mess.edit(embed.setDescription(string + "Great Job, you got it right!").setFooter("")) && f.add_exp(msg.author.id, exp);
 
           // If wrong, send a message that you got it wrong, then edit the embed
           else
