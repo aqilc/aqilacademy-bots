@@ -855,7 +855,7 @@ const cmds = {
           // Difficulty
       let diff = ["easy", "medium", "hard"].indexOf(content), cat = !isNaN(Number(content)) && Number(content) <= 32 && Number(content) >= 9 ? Number(content) : 0,
           
-         // Question related variables
+          // Question related variables
           question = await globalfunctions.get_question(cat, diff, 0), correct,
       
           // Answer-related variables
