@@ -859,7 +859,8 @@ const cmds = {
           question = await globalfunctions.get_question(cat, diff, 0), correct,
       
           // Answer-related variables
-          answers = [question.correct_answer].concat(question.incorrect_answers).shuffle(), string = "", answered,
+          answers = [question.correct_answer].concat(question.incorrect_answers).shuffle(), string = "",
+          answered = [["1", "one"], ["2", "two"], ["3", "three"], ["4", "four"]],
           
           // Determines the amount of exp you get
           exp = Math.round([100, 250, 1e3][["easy", "medium", "hard"].indexOf(question.difficulty)] * (f.random(-0.25, 0.25) + 1)) * 10,
@@ -897,13 +898,12 @@ const cmds = {
           }, 2000);
       
       // Creates a message collector so we can get the next message the person sends immediately
-      let collect = msg.channel.createMessageCollector(m => ["1", "2", "3", "4", "one", "two", "three", "four"].includes(m.content.toLowerCase()) && m.author.id == msg.author.id, { maxMatches: 1, time: timer });
+      let collect = msg.channel.createMessageCollector(m => !isNaN(Number(m.content.toLowerCase())) && Number(m.content.toLowerCase()) && m.author.id == msg.author.id, { maxMatches: 1, time: timer });
       
       // When it collects the answer
       collect.on("collect", m => {
         try {
           // Determines your answer
-          answered = [["1", "one"], ["2", "two"], ["3", "three"], ["4", "four"]];
           for(let i = 0; i < answered.length; i ++)
             if(answered[i].includes(m.content.toLowerCase()))
               answered = answers[i];
