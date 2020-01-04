@@ -303,57 +303,39 @@ const f = {
         return false;
     }
     return true;
-  },// Checks if a user has the roles.(i)) return false;
-    }
-    return true;
-  }, // Checks if a user has the roles.
+  },// Checks if a user has the roles.
   get ecol() {
     return Math.round(Math.random() * 16777215);
-  }, // Randomizes a color for a discord embed
+  },// Randomizes a color for a discord embed
   eclean(string) {
-    if (typeof string === "string")
-      return string
-        .replace(/`/g, "`" + String.fromCharCode(8203))
-        .replace(/@/g, "@" + String.fromCharCode(8203));
-    else return string;
-  }, // cleans Eval
+    if (typeof(string) === "string")
+      return string.replace(/`/g, "`" + String.fromCharCode(8203)).replace(/@/g, "@" + String.fromCharCode(8203));
+    else
+      return string;
+  },// cleans Eval
   get_id(msg, text, per) {
-    if (!text || text === "") return false;
-
-    let id = text.replace(/[^0-9]/g, ""),
-      person,
-      members = msg.guild.members;
-    if (id.length === 18) return id;
-    else if (text.includes("#") && text.split("#")[1].trim().length === 4)
-      person = members
-        .filter(m => m.user.tag.toLowerCase() === text.toLowerCase())
-        .first();
+    if(!text || text === "")
+      return false;
+    
+    let id = text.replace(/[^0-9]/g, ""), person, members = msg.guild.members;
+    if(id.length === 18)
+      return id;
+    else if(text.includes("#") && text.split("#")[1].trim().length === 4)
+      person = members.filter(m => m.user.tag.toLowerCase() === text.toLowerCase()).first();
     else {
-      person = members
-        .filter(
-          m =>
-            m.user.username.toLowerCase() === text.toLowerCase() ||
-            (m.nickname ? m.nickname : "").toLowerCase() === text.toLowerCase()
-        )
-        .first();
-      if (!person)
-        person = members
-          .filter(
-            m =>
-              m.user.username.toLowerCase().startsWith(text.toLowerCase()) ||
-              (m.nickname
-                ? m.nickname.toLowerCase().startsWith(text.toLowerCase())
-                : false)
-          )
-          .first();
+      person = members.filter(m => m.user.username.toLowerCase() === text.toLowerCase() || (m.nickname ? m.nickname : "").toLowerCase() === text.toLowerCase()).first();
+      if(!person)
+        person = members.filter(m => m.user.username.toLowerCase().startsWith(text.toLowerCase()) || (m.nickname ? m.nickname.toLowerCase().startsWith(text.toLowerCase()) : false)).first();
     }
-
+    
     // If it asks for the entire user object
-    if (per === "u") return person.user;
-    if (per) return person;
-
+    if(per === "u")
+      return person.user;
+    if(per)
+      return person;
+    
     return person && person.id;
-  }, // Gets the ID or object of a member form a name.
+  },// Gets the ID or object of a member form a name.
 
   // Gets JSON from a URL
   parseURL(url) {
