@@ -91,8 +91,7 @@ function run() {
       if(!res)
         return;
       for(let i of res) {
-        db.run(`DELETE FROM election WHERE id = "${i.id}"`);
-        db.run(`DELETE FROM waiting WHERE id = "${i.id}" OR for = "${i.id}"`);
+        db.run(`DELETE FROM election WHERE id = "${i.id}"; DELETE FROM waiting WHERE id = "${i.id}" OR for = "${i.id}"`);
         if(member.user.id === i.id) {
           member.user.send("You and your Vice President have been disqualified from the election");
           if(client.users.get(i.vId))
