@@ -300,7 +300,7 @@ const f = {
       mod: [!message.member.permissions.has(["MANAGE_MESSAGES", "MANAGE_ROLES"], true) || !f.has_roles(message.member, "Moderator"), "You need the `Moderator` role to use this command!"],
       admin: [!message.member.permissions.has(["MANAGE_MESSAGES", "MANAGE_ROLES", "MANAGE_GUILD", "BAN_MEMBERS", "KICK_MEMBERS"], true) || !f.has_roles(message.member, "Administrator"), "You need the `Administrator` role to use this command!"],
       admin_perm: [!message.member.permissions.has(["ADMINISTRATOR"], true), "You need the `ADMINISTRATOR` permission to use this command!"],
-      "bot admin": [!data.devs.includes(message.author.id), "You need to be a Clyde Admin to use this command!"],
+      "bot admin": [!data.devs.includes(message.author.id) && !f.has_roles(message.member, "Clyde Developer"), "You need to be a Clyde Admin to use this command!"],
     };
     for (var i in cmds) {
       if((cmds[i].a && cmds[i].a.includes(message.content.slice(prefix.length).split(" ")[0])) || message.content.slice(prefix.length).split(" ")[0] === i) {
