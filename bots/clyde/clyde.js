@@ -47,11 +47,10 @@ function run() {
       }
 
       // Does commands
-      if(msg.content.startsWith(prefix) && !msg.author.bot) {
+      if(msg.content.startsWith(prefix) && !msg.author.bot)
         if(!f.check_and_do_cmd(msg) && data.whitelist.includes(msg.channel.id))
           f.add_message(msg.author.id);
         return;
-      }
 
       // Adds exp
       if(data.whitelist.includes(msg.channel.id) && !msg.author.bot)
