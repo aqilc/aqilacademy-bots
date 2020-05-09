@@ -1265,7 +1265,7 @@ const cmds = {
               ctx = canvas.getContext("2d");
           
           // Background
-          let { body: buffer } = await snekfetch.get("https://png.pngtree.com/thumb_back/fw800/back_pic/03/70/42/7957b6808adc0e9.jpg"),
+          let { body: buffer } = await snekfetch.get("https://img.freepik.com/free-vector/abstract-hand-painted-background_23-2148416030.jpg?size=626&ext=jpg"),
               img = await loadImage(buffer);
           ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
           
@@ -1296,7 +1296,7 @@ const cmds = {
               ctx = canvas.getContext("2d");
           
           // Starts typing to indicate that its calculating something
-          msg.channel.startTyping();
+          await msg.channel.startTyping();
           
               // User ID
           let id = f.get_id(msg, content.slice(content.indexOf(" ") + 1)) || msg.author.id,
@@ -1358,7 +1358,7 @@ const cmds = {
           ctx.fillText(user.tag, 90 - ctx.measureText(user.tag).width, 95 - size2/4);
           
           // Stops typing to show its done calculating
-          msg.channel.stopTyping();
+          await msg.channel.stopTyping();
           
           // Sends the image
           msg.channel.send(`📃 **| Here is ${id === msg.author.id ? "your" : user.tag + "'s"} profile**`, new Discord.Attachment(canvas.toBuffer(), "profile.png"));
