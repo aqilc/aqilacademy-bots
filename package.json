@@ -5,20 +5,20 @@
     "start": "node main.js"
   },
   "dependencies": {
-    "body-parser": "^1.18.3",
-    "canvas": "^2.4.1",
+    "body-parser": "^1.19.0",
+    "canvas": "^2.6.1",
     "discord.js": "^11.4.2",
-    "events": "^3.0.0",
-    "express": "^4.16.4",
-    "node-opus": "^0.3.1",
-    "request": "^2.88.0",
+    "events": "^3.1.0",
+    "express": "^4.17.1",
+    "node-opus": "^0.3.3",
+    "request": "^2.88.2",
     "snekfetch": "^4.0.4",
-    "sqlite3": "^4.0.6",
-    "ytdl-core": "^0.29.0",
+    "sqlite3": "^4.2.0",
+    "ytdl-core": "^2.1.2",
     "sqlite": "^3.0.3"
   },
   "engines": {
-    "node": "10.x"
+    "node": "12.x"
   },
   "keywords": [
     "clyde",
